@@ -1,0 +1,463 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		5714A8BE18BD322900ED67EE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5714A8BC18BD322900ED67EE /* InfoPlist.strings */; };
+		5714A8C018BD322900ED67EE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5714A8BF18BD322900ED67EE /* main.m */; };
+		5714A8C718BD322900ED67EE /* YuDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 5714A8C618BD322900ED67EE /* YuDocument.m */; };
+		5714A8CA18BD322900ED67EE /* YuDocument.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5714A8C818BD322900ED67EE /* YuDocument.xib */; };
+		5714A8CD18BD322900ED67EE /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5714A8CB18BD322900ED67EE /* MainMenu.xib */; };
+		5714A8CF18BD322900ED67EE /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5714A8CE18BD322900ED67EE /* Images.xcassets */; };
+		575F56F818C357080034B28C /* MgAnimationNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 575F56D518C357080034B28C /* MgAnimationNode.m */; };
+		575F56F918C357080034B28C /* MgBasicAnimationNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 575F56D818C357080034B28C /* MgBasicAnimationNode.m */; };
+		575F56FA18C357080034B28C /* MgBezierTimingFunction.mm in Sources */ = {isa = PBXBuildFile; fileRef = 575F56DA18C357080034B28C /* MgBezierTimingFunction.mm */; };
+		575F56FC18C357080034B28C /* MgDrawableNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 575F56DE18C357080034B28C /* MgDrawableNode.m */; };
+		575F56FD18C357080034B28C /* MgFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 575F56E018C357080034B28C /* MgFunction.m */; };
+		575F56FE18C357080034B28C /* MgGradientNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 575F56E218C357080034B28C /* MgGradientNode.m */; };
+		575F56FF18C357080034B28C /* MgImageNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 575F56E418C357080034B28C /* MgImageNode.m */; };
+		575F570018C357080034B28C /* MgLayerNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 575F56E618C357080034B28C /* MgLayerNode.m */; };
+		575F570118C357080034B28C /* MgNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 575F56E818C357080034B28C /* MgNode.m */; };
+		575F570218C357080034B28C /* MgPathNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 575F56EB18C357080034B28C /* MgPathNode.m */; };
+		575F570318C357080034B28C /* MgRectNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 575F56ED18C357080034B28C /* MgRectNode.m */; };
+		575F570418C357080034B28C /* MgTimelineNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 575F56EF18C357080034B28C /* MgTimelineNode.m */; };
+		575F570518C357080034B28C /* MgTimingFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 575F56F218C357080034B28C /* MgTimingFunction.m */; };
+		575F570618C357080034B28C /* MgTimingStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 575F56F418C357080034B28C /* MgTimingStorage.m */; };
+		579CAFD118C381BD0051454F /* MgCoreGraphics.c in Sources */ = {isa = PBXBuildFile; fileRef = 579CAFCF18C381BD0051454F /* MgCoreGraphics.c */; };
+		579CAFD518C38B9C0051454F /* MgImageProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 579CAFD418C38B9C0051454F /* MgImageProvider.m */; };
+		579CAFD918C3F63A0051454F /* MgCoderExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 579CAFD818C3F63A0051454F /* MgCoderExtensions.m */; };
+		57E776B318BD3478007CD31F /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57E776B218BD3478007CD31F /* Quartz.framework */; };
+		57E776B418BD347D007CD31F /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5714A8B618BD322900ED67EE /* AppKit.framework */; };
+		57E776B618BD3488007CD31F /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57E776B518BD3487007CD31F /* ImageIO.framework */; };
+		57E776B818BD348D007CD31F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57E776B718BD348D007CD31F /* CoreGraphics.framework */; };
+		57E776B918BD3493007CD31F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5714A8B818BD322900ED67EE /* Foundation.framework */; };
+		57E776BB18BD3498007CD31F /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57E776BA18BD3498007CD31F /* CoreFoundation.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		5714A8B018BD322900ED67EE /* Yuca.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Yuca.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5714A8B618BD322900ED67EE /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		5714A8B818BD322900ED67EE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		5714A8BB18BD322900ED67EE /* Yuca-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Yuca-Info.plist"; path = "resources/Yuca-Info.plist"; sourceTree = "<group>"; };
+		5714A8BD18BD322900ED67EE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		5714A8BF18BD322900ED67EE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = main.m; path = src/main.m; sourceTree = "<group>"; };
+		5714A8C118BD322900ED67EE /* Yuca-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Yuca-Prefix.pch"; path = "src/Yuca-Prefix.pch"; sourceTree = "<group>"; };
+		5714A8C518BD322900ED67EE /* YuDocument.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = YuDocument.h; path = src/YuDocument.h; sourceTree = SOURCE_ROOT; };
+		5714A8C618BD322900ED67EE /* YuDocument.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = YuDocument.m; path = src/YuDocument.m; sourceTree = "<group>"; };
+		5714A8C918BD322900ED67EE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/YuDocument.xib; sourceTree = "<group>"; };
+		5714A8CC18BD322900ED67EE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		5714A8CE18BD322900ED67EE /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = resources/Images.xcassets; sourceTree = "<group>"; };
+		575F56D318C357080034B28C /* Magnesium.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Magnesium.h; sourceTree = "<group>"; };
+		575F56D418C357080034B28C /* MgAnimationNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgAnimationNode.h; sourceTree = "<group>"; };
+		575F56D518C357080034B28C /* MgAnimationNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgAnimationNode.m; sourceTree = "<group>"; };
+		575F56D718C357080034B28C /* MgBasicAnimationNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgBasicAnimationNode.h; sourceTree = "<group>"; };
+		575F56D818C357080034B28C /* MgBasicAnimationNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgBasicAnimationNode.m; sourceTree = "<group>"; };
+		575F56D918C357080034B28C /* MgBezierTimingFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgBezierTimingFunction.h; sourceTree = "<group>"; };
+		575F56DA18C357080034B28C /* MgBezierTimingFunction.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MgBezierTimingFunction.mm; sourceTree = "<group>"; };
+		575F56DD18C357080034B28C /* MgDrawableNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgDrawableNode.h; sourceTree = "<group>"; };
+		575F56DE18C357080034B28C /* MgDrawableNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgDrawableNode.m; sourceTree = "<group>"; };
+		575F56DF18C357080034B28C /* MgFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgFunction.h; sourceTree = "<group>"; };
+		575F56E018C357080034B28C /* MgFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgFunction.m; sourceTree = "<group>"; };
+		575F56E118C357080034B28C /* MgGradientNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgGradientNode.h; sourceTree = "<group>"; };
+		575F56E218C357080034B28C /* MgGradientNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgGradientNode.m; sourceTree = "<group>"; };
+		575F56E318C357080034B28C /* MgImageNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgImageNode.h; sourceTree = "<group>"; };
+		575F56E418C357080034B28C /* MgImageNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgImageNode.m; sourceTree = "<group>"; };
+		575F56E518C357080034B28C /* MgLayerNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgLayerNode.h; sourceTree = "<group>"; };
+		575F56E618C357080034B28C /* MgLayerNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgLayerNode.m; sourceTree = "<group>"; };
+		575F56E718C357080034B28C /* MgNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgNode.h; sourceTree = "<group>"; };
+		575F56E818C357080034B28C /* MgNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgNode.m; sourceTree = "<group>"; };
+		575F56E918C357080034B28C /* MgNodeInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgNodeInternal.h; sourceTree = "<group>"; };
+		575F56EA18C357080034B28C /* MgPathNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgPathNode.h; sourceTree = "<group>"; };
+		575F56EB18C357080034B28C /* MgPathNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgPathNode.m; sourceTree = "<group>"; };
+		575F56EC18C357080034B28C /* MgRectNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgRectNode.h; sourceTree = "<group>"; };
+		575F56ED18C357080034B28C /* MgRectNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgRectNode.m; sourceTree = "<group>"; };
+		575F56EE18C357080034B28C /* MgTimelineNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgTimelineNode.h; sourceTree = "<group>"; };
+		575F56EF18C357080034B28C /* MgTimelineNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgTimelineNode.m; sourceTree = "<group>"; };
+		575F56F018C357080034B28C /* MgTiming.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgTiming.h; sourceTree = "<group>"; };
+		575F56F118C357080034B28C /* MgTimingFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgTimingFunction.h; sourceTree = "<group>"; };
+		575F56F218C357080034B28C /* MgTimingFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgTimingFunction.m; sourceTree = "<group>"; };
+		575F56F318C357080034B28C /* MgTimingStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgTimingStorage.h; sourceTree = "<group>"; };
+		575F56F418C357080034B28C /* MgTimingStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgTimingStorage.m; sourceTree = "<group>"; };
+		575F56F718C357080034B28C /* MgUnitBezier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgUnitBezier.h; sourceTree = "<group>"; };
+		579CAFCB18C377F90051454F /* MgDrawableNodeInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgDrawableNodeInternal.h; sourceTree = "<group>"; };
+		579CAFCF18C381BD0051454F /* MgCoreGraphics.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = MgCoreGraphics.c; path = magnesium/util/MgCoreGraphics.c; sourceTree = SOURCE_ROOT; };
+		579CAFD018C381BD0051454F /* MgCoreGraphics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MgCoreGraphics.h; path = magnesium/util/MgCoreGraphics.h; sourceTree = SOURCE_ROOT; };
+		579CAFD218C385310051454F /* MgMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgMacros.h; sourceTree = "<group>"; };
+		579CAFD318C38B9C0051454F /* MgImageProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgImageProvider.h; sourceTree = "<group>"; };
+		579CAFD418C38B9C0051454F /* MgImageProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgImageProvider.m; sourceTree = "<group>"; };
+		579CAFD618C391BD0051454F /* MgBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgBase.h; sourceTree = "<group>"; };
+		579CAFD718C3F63A0051454F /* MgCoderExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgCoderExtensions.h; sourceTree = "<group>"; };
+		579CAFD818C3F63A0051454F /* MgCoderExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgCoderExtensions.m; sourceTree = "<group>"; };
+		57E776B218BD3478007CD31F /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = System/Library/Frameworks/Quartz.framework; sourceTree = SDKROOT; };
+		57E776B518BD3487007CD31F /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		57E776B718BD348D007CD31F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		57E776BA18BD3498007CD31F /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		5714A8AD18BD322900ED67EE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				57E776BB18BD3498007CD31F /* CoreFoundation.framework in Frameworks */,
+				57E776B918BD3493007CD31F /* Foundation.framework in Frameworks */,
+				57E776B818BD348D007CD31F /* CoreGraphics.framework in Frameworks */,
+				57E776B618BD3488007CD31F /* ImageIO.framework in Frameworks */,
+				57E776B418BD347D007CD31F /* AppKit.framework in Frameworks */,
+				57E776B318BD3478007CD31F /* Quartz.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		5714A8A718BD322900ED67EE = {
+			isa = PBXGroup;
+			children = (
+				57E776BC18BD35D0007CD31F /* Source */,
+				575F56D118C357080034B28C /* magnesium */,
+				57E776BD18BD35DF007CD31F /* Nibs */,
+				57E776BE18BD3609007CD31F /* Resources */,
+				5714A8B218BD322900ED67EE /* Frameworks */,
+				5714A8B118BD322900ED67EE /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		5714A8B118BD322900ED67EE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5714A8B018BD322900ED67EE /* Yuca.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		5714A8B218BD322900ED67EE /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				57E776BA18BD3498007CD31F /* CoreFoundation.framework */,
+				57E776B718BD348D007CD31F /* CoreGraphics.framework */,
+				57E776B518BD3487007CD31F /* ImageIO.framework */,
+				57E776B218BD3478007CD31F /* Quartz.framework */,
+				5714A8B618BD322900ED67EE /* AppKit.framework */,
+				5714A8B818BD322900ED67EE /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		575F56D118C357080034B28C /* magnesium */ = {
+			isa = PBXGroup;
+			children = (
+				575F56D218C357080034B28C /* api */,
+				575F56F618C357080034B28C /* util */,
+			);
+			path = magnesium;
+			sourceTree = "<group>";
+		};
+		575F56D218C357080034B28C /* api */ = {
+			isa = PBXGroup;
+			children = (
+				575F56D318C357080034B28C /* Magnesium.h */,
+				575F56D418C357080034B28C /* MgAnimationNode.h */,
+				575F56D518C357080034B28C /* MgAnimationNode.m */,
+				575F56D718C357080034B28C /* MgBasicAnimationNode.h */,
+				575F56D818C357080034B28C /* MgBasicAnimationNode.m */,
+				575F56D918C357080034B28C /* MgBezierTimingFunction.h */,
+				575F56DA18C357080034B28C /* MgBezierTimingFunction.mm */,
+				575F56DD18C357080034B28C /* MgDrawableNode.h */,
+				575F56DE18C357080034B28C /* MgDrawableNode.m */,
+				579CAFCB18C377F90051454F /* MgDrawableNodeInternal.h */,
+				575F56DF18C357080034B28C /* MgFunction.h */,
+				575F56E018C357080034B28C /* MgFunction.m */,
+				575F56E118C357080034B28C /* MgGradientNode.h */,
+				575F56E218C357080034B28C /* MgGradientNode.m */,
+				575F56E318C357080034B28C /* MgImageNode.h */,
+				575F56E418C357080034B28C /* MgImageNode.m */,
+				579CAFD318C38B9C0051454F /* MgImageProvider.h */,
+				579CAFD418C38B9C0051454F /* MgImageProvider.m */,
+				575F56E518C357080034B28C /* MgLayerNode.h */,
+				575F56E618C357080034B28C /* MgLayerNode.m */,
+				575F56E718C357080034B28C /* MgNode.h */,
+				575F56E818C357080034B28C /* MgNode.m */,
+				575F56E918C357080034B28C /* MgNodeInternal.h */,
+				575F56EA18C357080034B28C /* MgPathNode.h */,
+				575F56EB18C357080034B28C /* MgPathNode.m */,
+				575F56EC18C357080034B28C /* MgRectNode.h */,
+				575F56ED18C357080034B28C /* MgRectNode.m */,
+				575F56EE18C357080034B28C /* MgTimelineNode.h */,
+				575F56EF18C357080034B28C /* MgTimelineNode.m */,
+				575F56F018C357080034B28C /* MgTiming.h */,
+				575F56F118C357080034B28C /* MgTimingFunction.h */,
+				575F56F218C357080034B28C /* MgTimingFunction.m */,
+				575F56F318C357080034B28C /* MgTimingStorage.h */,
+				575F56F418C357080034B28C /* MgTimingStorage.m */,
+			);
+			path = api;
+			sourceTree = "<group>";
+		};
+		575F56F618C357080034B28C /* util */ = {
+			isa = PBXGroup;
+			children = (
+				579CAFD618C391BD0051454F /* MgBase.h */,
+				579CAFD718C3F63A0051454F /* MgCoderExtensions.h */,
+				579CAFD818C3F63A0051454F /* MgCoderExtensions.m */,
+				579CAFCF18C381BD0051454F /* MgCoreGraphics.c */,
+				579CAFD018C381BD0051454F /* MgCoreGraphics.h */,
+				579CAFD218C385310051454F /* MgMacros.h */,
+				575F56F718C357080034B28C /* MgUnitBezier.h */,
+			);
+			path = util;
+			sourceTree = "<group>";
+		};
+		57E776BC18BD35D0007CD31F /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				5714A8C518BD322900ED67EE /* YuDocument.h */,
+				5714A8C618BD322900ED67EE /* YuDocument.m */,
+				5714A8BF18BD322900ED67EE /* main.m */,
+				5714A8C118BD322900ED67EE /* Yuca-Prefix.pch */,
+			);
+			name = Source;
+			sourceTree = SOURCE_ROOT;
+		};
+		57E776BD18BD35DF007CD31F /* Nibs */ = {
+			isa = PBXGroup;
+			children = (
+				5714A8C818BD322900ED67EE /* YuDocument.xib */,
+				5714A8CB18BD322900ED67EE /* MainMenu.xib */,
+			);
+			name = Nibs;
+			sourceTree = "<group>";
+		};
+		57E776BE18BD3609007CD31F /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				5714A8BB18BD322900ED67EE /* Yuca-Info.plist */,
+				5714A8CE18BD322900ED67EE /* Images.xcassets */,
+				5714A8BC18BD322900ED67EE /* InfoPlist.strings */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		5714A8AF18BD322900ED67EE /* Yuca */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5714A8E418BD322900ED67EE /* Build configuration list for PBXNativeTarget "Yuca" */;
+			buildPhases = (
+				5714A8AC18BD322900ED67EE /* Sources */,
+				5714A8AD18BD322900ED67EE /* Frameworks */,
+				5714A8AE18BD322900ED67EE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Yuca;
+			productName = Yuca;
+			productReference = 5714A8B018BD322900ED67EE /* Yuca.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		5714A8A818BD322900ED67EE /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = Yu;
+				LastUpgradeCheck = 0510;
+				ORGANIZATIONNAME = Unfactored;
+			};
+			buildConfigurationList = 5714A8AB18BD322900ED67EE /* Build configuration list for PBXProject "Yuca" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 5714A8A718BD322900ED67EE;
+			productRefGroup = 5714A8B118BD322900ED67EE /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				5714A8AF18BD322900ED67EE /* Yuca */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		5714A8AE18BD322900ED67EE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5714A8CA18BD322900ED67EE /* YuDocument.xib in Resources */,
+				5714A8CF18BD322900ED67EE /* Images.xcassets in Resources */,
+				5714A8BE18BD322900ED67EE /* InfoPlist.strings in Resources */,
+				5714A8CD18BD322900ED67EE /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		5714A8AC18BD322900ED67EE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				579CAFD918C3F63A0051454F /* MgCoderExtensions.m in Sources */,
+				575F56F818C357080034B28C /* MgAnimationNode.m in Sources */,
+				575F570118C357080034B28C /* MgNode.m in Sources */,
+				579CAFD518C38B9C0051454F /* MgImageProvider.m in Sources */,
+				575F56FD18C357080034B28C /* MgFunction.m in Sources */,
+				575F570318C357080034B28C /* MgRectNode.m in Sources */,
+				575F570218C357080034B28C /* MgPathNode.m in Sources */,
+				575F570618C357080034B28C /* MgTimingStorage.m in Sources */,
+				575F570018C357080034B28C /* MgLayerNode.m in Sources */,
+				575F56FA18C357080034B28C /* MgBezierTimingFunction.mm in Sources */,
+				579CAFD118C381BD0051454F /* MgCoreGraphics.c in Sources */,
+				575F56F918C357080034B28C /* MgBasicAnimationNode.m in Sources */,
+				5714A8C718BD322900ED67EE /* YuDocument.m in Sources */,
+				575F56FF18C357080034B28C /* MgImageNode.m in Sources */,
+				575F56FC18C357080034B28C /* MgDrawableNode.m in Sources */,
+				5714A8C018BD322900ED67EE /* main.m in Sources */,
+				575F56FE18C357080034B28C /* MgGradientNode.m in Sources */,
+				575F570418C357080034B28C /* MgTimelineNode.m in Sources */,
+				575F570518C357080034B28C /* MgTimingFunction.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		5714A8BC18BD322900ED67EE /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5714A8BD18BD322900ED67EE /* en */,
+			);
+			name = InfoPlist.strings;
+			path = resources;
+			sourceTree = "<group>";
+		};
+		5714A8C818BD322900ED67EE /* YuDocument.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5714A8C918BD322900ED67EE /* Base */,
+			);
+			name = YuDocument.xib;
+			path = ../yuca/resources;
+			sourceTree = "<group>";
+		};
+		5714A8CB18BD322900ED67EE /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5714A8CC18BD322900ED67EE /* Base */,
+			);
+			name = MainMenu.xib;
+			path = ../yuca/resources;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		5714A8E218BD322900ED67EE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				WARNING_CFLAGS = "-Wall";
+			};
+			name = Debug;
+		};
+		5714A8E318BD322900ED67EE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				SDKROOT = macosx;
+				WARNING_CFLAGS = "-Wall";
+			};
+			name = Release;
+		};
+		5714A8E518BD322900ED67EE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "src/Yuca-Prefix.pch";
+				INFOPLIST_FILE = "$(SRCROOT)/resources/Yuca-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		5714A8E618BD322900ED67EE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "src/Yuca-Prefix.pch";
+				INFOPLIST_FILE = "$(SRCROOT)/resources/Yuca-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		5714A8AB18BD322900ED67EE /* Build configuration list for PBXProject "Yuca" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5714A8E218BD322900ED67EE /* Debug */,
+				5714A8E318BD322900ED67EE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5714A8E418BD322900ED67EE /* Build configuration list for PBXNativeTarget "Yuca" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5714A8E518BD322900ED67EE /* Debug */,
+				5714A8E618BD322900ED67EE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 5714A8A818BD322900ED67EE /* Project object */;
+}
