@@ -24,6 +24,9 @@
 
 #import "MgImageProvider.h"
 
+#import <Foundation/Foundation.h>
+#import <ImageIO/ImageIO.h>
+
 @implementation MgImageProvider
 {
   id _image;				/* CGImageRef */

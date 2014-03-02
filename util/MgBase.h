@@ -72,8 +72,9 @@
 #endif
 
 #ifdef __OBJC__
-@class NSArray, NSMutableArray, NSDictionary, NSMutableDictionary,
-    NSSet, NSMutableSet, NSIndexSet, NSMutableIndexSet, NSPointerArray;
+@class NSArray, NSMutableArray, NSData, NSMutableData, NSDictionary,
+    NSMutableDictionary, NSSet, NSMutableSet, NSIndexSet, NSMutableIndexSet,
+    NSPointerArray, NSURL;
 @class MgAnimationNode, MgBasicAnimationNode, MgBezierTimingFunction,
     MgDrawableNode, MgLayerNode, MgFunction, MgGradientNode, MgImageNode,
     MgImageProvider, MgNode, MgPathNode, MgRectNode, MgTimelineNode,

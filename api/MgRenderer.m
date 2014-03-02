@@ -26,6 +26,8 @@
 
 #import "MgDrawableNodeInternal.h"
 
+#import <Foundation/Foundation.h>
+
 @implementation MgRenderer
 {
   id _ctx;				/* CGContextRef */
