@@ -22,17 +22,19 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "MgDrawableNode.h"
+#import "MgBase.h"
 
-@interface MgImageNode : MgDrawableNode
+@protocol MgImageProvider <NSObject, NSSecureCoding>
 
-+ (void)registerImageProviderClass:(Class)cls;
+- (CGImageRef)mg_providedImage;
 
-@property(nonatomic, retain) id<MgImageProvider> imageProvider;
+@end
 
-@property(nonatomic, assign) CGRect cropRect;
-@property(nonatomic, assign) CGRect centerRect;
+/* Note that this class currently does NOT encode images! */
 
-@property(nonatomic, assign) BOOL repeats;
+@interface MgImageProvider : NSObject <MgImageProvider>
+
++ (instancetype)imageProviderWithImage:(CGImageRef)image;
++ (instancetype)imageProviderWithURL:(NSURL *)url;
 
 @end

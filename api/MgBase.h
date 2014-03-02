@@ -76,7 +76,9 @@
     NSSet, NSMutableSet, NSIndexSet, NSMutableIndexSet, NSPointerArray;
 @class MgAnimationNode, MgBasicAnimationNode, MgBezierTimingFunction,
     MgDrawableNode, MgLayerNode, MgFunction, MgGradientNode, MgImageNode,
-    MgNode, MgPathNode, MgRectNode, MgTimelineNode, MgTimingFunction;
+    MgImageProvider, MgNode, MgPathNode, MgRectNode, MgTimelineNode,
+    MgTimingFunction;
+@protocol MgImageProvider;
 #endif
 
 #endif /* MG_BASE_H */

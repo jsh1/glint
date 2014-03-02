@@ -26,6 +26,7 @@
 
 #import "MgCoderExtensions.h"
 #import "MgDrawableNodeInternal.h"
+#import "MgImageProvider.h"
 #import "MgNodeInternal.h"
 
 #import <Foundation/Foundation.h>
@@ -149,7 +150,7 @@ static NSMutableSet *image_provider_classes;
   if (self.hidden)
     return;
 
-  CGImageRef im = [self.imageProvider providedImage];
+  CGImageRef im = [self.imageProvider mg_providedImage];
   bool release_im = false;
 
   CGRect crop = self.cropRect;
