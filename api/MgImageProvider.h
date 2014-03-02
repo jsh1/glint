@@ -24,15 +24,27 @@
 
 #import "MgBase.h"
 
-@protocol MgImageProvider <NSObject, NSSecureCoding>
+/* Note: this object will be encoded along with any MgImageNode
+   instances that refer to it, but only if it conforms to the
+   NSSecureCoding protocol. We don't force this as many applications
+   won't be serializing the objects. Caveat emptor! */
+
+@protocol MgImageProvider <NSObject>
+
+/* Should return the image that the receiver represents. */
 
 - (CGImageRef)mg_providedImage;
 
+@optional
+
+/* May be called to obtain the original (i.e. possibly compressed)
+   image data. */
+
+- (NSData *)mg_providedImageData;
+
 @end
 
-/* Note that this class currently does NOT encode images! */
-
-@interface MgImageProvider : NSObject <MgImageProvider>
+@interface MgImageProvider : NSObject <MgImageProvider, NSSecureCoding>
 
 + (instancetype)imageProviderWithImage:(CGImageRef)image;
 + (instancetype)imageProviderWithURL:(NSURL *)url;

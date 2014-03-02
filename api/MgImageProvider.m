@@ -27,6 +27,8 @@
 @implementation MgImageProvider
 {
   id _image;				/* CGImageRef */
+  NSURL *_url;
+  NSData *_data;
   id _imageSource;			/* CGImageSourceRef */
 }
 
@@ -53,6 +55,7 @@
     return nil;
 
   MgImageProvider *p = [[self alloc] init];
+  p->_url = [url copy];
   p->_imageSource = CFBridgingRelease(src);
 
   return p;
@@ -77,6 +80,15 @@
   return NULL;
 }
 
+- (NSData *)mg_providedImageData
+{
+  if (_data != nil)
+    return _data;
+  else if (_url != nil)
+    return [NSData dataWithContentsOfURL:_url];
+  else
+    return nil;
+}
 
 /** NSSecureCoding methods. **/
 
@@ -87,12 +99,54 @@
 
 - (void)encodeWithCoder:(NSCoder *)c
 {
-  NSLog(@"WARNING: MgImageProvider is ignoring -encodeWithCoder:");
+  NSData *data = nil;
+
+  if (_data != nil)
+    data = _data;
+  else if (_url != nil)
+    data = [NSData dataWithContentsOfURL:_url];
+  else if (_image != nil)
+    {
+      CFStringRef type = CFSTR("public.png");
+      NSMutableData *mdata = [NSMutableData data];
+      CGImageDestinationRef dest = CGImageDestinationCreateWithData(
+			(__bridge CFMutableDataRef)mdata, type, 1, NULL);
+      if (dest != NULL)
+	{
+	  CGImageDestinationAddImage(dest, (__bridge CGImageRef)_image, NULL);
+	  CGImageDestinationFinalize(dest);
+	  CFRelease(dest);
+	  data = mdata;
+	}
+    }
+
+  if (data != nil)
+    [c encodeObject:data forKey:@"imageData"];
 }
 
 - (id)initWithCoder:(NSCoder *)c
 {
-  return [self init];
+  self = [self init];
+  if (self == nil)
+    return nil;
+
+  NSData *data = [c decodeObjectOfClass:[NSData class] forKey:@"imageData"];
+  if (data == nil)
+    return nil;
+
+  CGImageSourceRef src
+    = CGImageSourceCreateWithData((__bridge CFDataRef)data, NULL);
+
+  if (src == NULL)
+    return nil;
+
+  /* Stash the data away -- prevents us recompressing the image when it's
+     next serialized. */
+
+  _data = data;
+  _imageSource = CFBridgingRelease(src);
+
+  return self;
 }
 
 @end

@@ -191,8 +191,11 @@ static NSMutableSet *image_provider_classes;
 {
   [super encodeWithCoder:c];
 
-  if (_imageProvider != nil)
-    [c encodeObject:_imageProvider forKey:@"imageProvider"];
+  if (_imageProvider != nil
+      && [_imageProvider conformsToProtocol:@protocol(NSSecureCoding)])
+    {
+      [c encodeObject:_imageProvider forKey:@"imageProvider"];
+    }
 
   if (!CGRectIsNull(_cropRect))
     [c mg_encodeCGRect:_cropRect forKey:@"cropRect"];

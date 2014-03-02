@@ -35,6 +35,7 @@
 # import "MgFunction.h"
 # import "MgGradientNode.h"
 # import "MgImageNode.h"
+# import "MgImageProvider.h"
 # import "MgLayerNode.h"
 # import "MgNode.h"
 # import "MgPathNode.h"
