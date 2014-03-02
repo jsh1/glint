@@ -25,6 +25,8 @@
 #import "MgPathNode.h"
 
 #import "MgCoderExtensions.h"
+#import "MgCoreGraphics.h"
+#import "MgDrawableNodeInternal.h"
 #import "MgNodeInternal.h"
 
 #import <Foundation/Foundation.h>
@@ -50,6 +52,8 @@
     return nil;
 
   _drawingMode = kCGPathFill;
+  _fillColor = (__bridge id)MgBlackColor();
+  _strokeColor = (__bridge id)MgBlackColor();
   _lineWidth = 1;
   _miterLimit = 10;
   _lineCap = kCGLineCapButt;
@@ -266,6 +270,45 @@
       [self incrementVersion];
       [self didChangeValueForKey:@"lineDashPattern"];
     }
+}
+
+- (void)renderWithState:(MgDrawableRenderState *)rs
+{
+  if (self.hidden)
+    return;
+
+  CGPathRef path = self.path;
+  if (path == NULL)
+    return;
+
+  CGContextSaveGState(rs->ctx);
+
+  switch (self.drawingMode)
+    {
+    case kCGPathFill:
+    case kCGPathEOFill:
+      CGContextSetFillColorWithColor(rs->ctx, self.fillColor);
+      CGContextBeginPath(rs->ctx);
+      CGContextAddPath(rs->ctx, self.path);
+      CGContextFillPath(rs->ctx);
+      break;
+
+    default:
+      CGContextSetFillColorWithColor(rs->ctx, self.fillColor);
+      CGContextSetStrokeColorWithColor(rs->ctx, self.strokeColor);
+      CGContextSetLineWidth(rs->ctx, self.lineWidth);
+      CGContextSetMiterLimit(rs->ctx, self.miterLimit);
+      CGContextSetLineJoin(rs->ctx, self.lineJoin);
+      CGContextSetLineCap(rs->ctx, self.lineCap);
+      MgContextSetLineDash(rs->ctx, (__bridge CFArrayRef)self.lineDashPattern,
+			   self.lineDashPhase);
+      CGContextBeginPath(rs->ctx);
+      CGContextAddRect(rs->ctx, rs->bounds);
+      CGContextDrawPath(rs->ctx, self.drawingMode);
+      break;
+    }
+
+  CGContextRestoreGState(rs->ctx);
 }
 
 /** NSCopying methods. **/

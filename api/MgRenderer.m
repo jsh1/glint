@@ -22,28 +22,53 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "MgBase.h"
+#import "MgRenderer.h"
 
-@interface MgNode : NSObject <NSCopying, NSSecureCoding>
+#import "MgDrawableNodeInternal.h"
 
-/* Value that increments whenever this node changes (or a node that it
-   transitively refers to changes). */
+@implementation MgRenderer
+{
+  id _ctx;				/* CGContextRef */
 
-@property(nonatomic, readonly) NSUInteger version;
+  MgDrawableNode *_rootNode;
+  CGRect _bounds;
 
-/* Calls `block(node)' for each node referred to by the receiver. (Note
-   that this includes all kinds of nodes, e.g. including animations.)  */
+  CFTimeInterval _frameTime;
+}
 
-- (void)foreachNode:(void (^)(MgNode *node))block;
+@synthesize rootNode = _rootNode;
+@synthesize bounds = _bounds;
 
-/* Calls `block(node)' for each node referred to by the receiver, iff
-   their current mark value is not `mark'. Before `block(node)' is
-   called, `node' has its mark value set to `mark'. */
++ (instancetype)rendererWithCGContext:(CGContextRef)ctx
+{
+  MgRenderer *r = [[self alloc] init];
+  r->_ctx = (__bridge id)ctx;
+  return r;
+}
 
-- (void)foreachNode:(void (^)(MgNode *node))block mark:(uint32_t)mark;
+- (void)beginFrameAtTime:(CFTimeInterval)t
+{
+  _frameTime = t;
+}
 
-/* Returns a new unused mark value for calling -foreachNode:mark: */
+- (void)endFrame
+{
+  _frameTime = 0;
+}
 
-+ (uint32_t)nextMark;
+- (CFTimeInterval)render
+{
+  MgDrawableRenderState rs;
+  rs.ctx = (__bridge CGContextRef)_ctx;
+  rs.t = _frameTime;
+  rs.tnext = HUGE_VAL;
+  rs.bounds = _bounds;
+  rs.cornerRadius = 0;
+  rs.alpha = 1;
+
+  [_rootNode renderWithState:&rs];
+
+  return rs.tnext;
+}
 
 @end

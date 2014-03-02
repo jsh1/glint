@@ -24,26 +24,20 @@
 
 #import "MgBase.h"
 
-@interface MgNode : NSObject <NSCopying, NSSecureCoding>
+MG_EXTERN_C_BEGIN
 
-/* Value that increments whenever this node changes (or a node that it
-   transitively refers to changes). */
+MG_EXTERN CGColorRef MgBlackColor(void);
+MG_EXTERN CGColorRef MgWhiteColor(void);
 
-@property(nonatomic, readonly) NSUInteger version;
+MG_EXTERN CGColorRef MgCreateSRGBColor(CGFloat r, CGFloat g, CGFloat b,
+    CGFloat a) CF_RETURNS_RETAINED;
 
-/* Calls `block(node)' for each node referred to by the receiver. (Note
-   that this includes all kinds of nodes, e.g. including animations.)  */
+MG_EXTERN CGColorSpaceRef MgSRGBColorSpace(void);
 
-- (void)foreachNode:(void (^)(MgNode *node))block;
+MG_EXTERN void MgContextSetLineDash(CGContextRef ctx, CFArrayRef pattern,
+    CGFloat phase);
 
-/* Calls `block(node)' for each node referred to by the receiver, iff
-   their current mark value is not `mark'. Before `block(node)' is
-   called, `node' has its mark value set to `mark'. */
+MG_EXTERN CGGradientRef MgCreateGradient(CFArrayRef colors,
+    CFArrayRef locations) CF_RETURNS_RETAINED;
 
-- (void)foreachNode:(void (^)(MgNode *node))block mark:(uint32_t)mark;
-
-/* Returns a new unused mark value for calling -foreachNode:mark: */
-
-+ (uint32_t)nextMark;
-
-@end
+MG_EXTERN_C_END

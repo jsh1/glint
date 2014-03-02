@@ -25,6 +25,8 @@
 #import "MgRectNode.h"
 
 #import "MgCoderExtensions.h"
+#import "MgCoreGraphics.h"
+#import "MgDrawableNodeInternal.h"
 #import "MgNodeInternal.h"
 
 #import <Foundation/Foundation.h>
@@ -44,6 +46,8 @@
     return nil;
 
   _drawingMode = kCGPathFill;
+  _fillColor = (__bridge id)MgBlackColor();
+  _strokeColor = (__bridge id)MgBlackColor();
   _lineWidth = 1;
 
   return self;
@@ -131,6 +135,39 @@
       [self incrementVersion];
       [self didChangeValueForKey:@"lineWidth"];
     }
+}
+
+- (void)renderWithState:(MgDrawableRenderState *)rs
+{
+  if (self.hidden)
+    return;
+
+  CGContextSaveGState(rs->ctx);
+
+  switch (self.drawingMode)
+    {
+    case kCGPathFill:
+    case kCGPathEOFill:
+      CGContextSetFillColorWithColor(rs->ctx, self.fillColor);
+      CGContextFillRect(rs->ctx, rs->bounds);
+      break;
+
+    case kCGPathStroke:
+      CGContextSetStrokeColorWithColor(rs->ctx, self.strokeColor);
+      CGContextStrokeRectWithWidth(rs->ctx, rs->bounds, self.lineWidth);
+      break;
+
+    default:
+      CGContextSetFillColorWithColor(rs->ctx, self.fillColor);
+      CGContextSetStrokeColorWithColor(rs->ctx, self.strokeColor);
+      CGContextSetLineWidth(rs->ctx, self.lineWidth);
+      CGContextBeginPath(rs->ctx);
+      CGContextAddRect(rs->ctx, rs->bounds);
+      CGContextDrawPath(rs->ctx, self.drawingMode);
+      break;
+    }
+
+  CGContextRestoreGState(rs->ctx);
 }
 
 /** NSCopying methods. **/

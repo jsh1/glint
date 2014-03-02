@@ -25,6 +25,8 @@
 #import "MgGradientNode.h"
 
 #import "MgCoderExtensions.h"
+#import "MgCoreGraphics.h"
+#import "MgDrawableNodeInternal.h"
 #import "MgNodeInternal.h"
 
 #import <Foundation/Foundation.h>
@@ -40,6 +42,9 @@
   CGFloat _endRadius;
   BOOL _drawsBeforeStart;
   BOOL _drawsAfterEnd;
+
+  /* Cached. */
+  id _gradient;				/* CGGradientRef */
 }
 
 + (BOOL)automaticallyNotifiesObserversOfColors
@@ -58,6 +63,7 @@
     {
       [self willChangeValueForKey:@"colors"];
       _colors = [array copy];
+      _gradient = nil;
       [self incrementVersion];
       [self didChangeValueForKey:@"colors"];
     }
@@ -79,6 +85,7 @@
     {
       [self willChangeValueForKey:@"locations"];
       _locations = [array copy];
+      _gradient = nil;
       [self incrementVersion];
       [self didChangeValueForKey:@"locations"];
     }
@@ -228,6 +235,41 @@
       _drawsAfterEnd = flag;
       [self incrementVersion];
       [self didChangeValueForKey:@"drawsAfterEnd"];
+    }
+}
+
+- (void)renderWithState:(MgDrawableRenderState *)rs
+{
+  if (self.hidden)
+    return;
+
+  if (_gradient == nil)
+    {
+      CGGradientRef g = MgCreateGradient((__bridge CFArrayRef)self.colors,
+					 (__bridge CFArrayRef)self.locations);
+      _gradient = CFBridgingRelease(g);
+    }
+
+  CGGradientRef grad = (__bridge CGGradientRef)_gradient;
+  if (grad == NULL)
+    return;
+
+  CGGradientDrawingOptions options = 0;
+  if (self.drawsBeforeStart)
+    options |= kCGGradientDrawsBeforeStartLocation;
+  if (self.drawsAfterEnd)
+    options |= kCGGradientDrawsAfterEndLocation;
+
+  if (!self.radial)
+    {
+      CGContextDrawLinearGradient(rs->ctx, grad, self.startPoint,
+				  self.endPoint, options);
+    }
+  else
+    {
+      CGContextDrawRadialGradient(rs->ctx, grad, self.startPoint,
+				  self.startRadius, self.endPoint,
+				  self.endRadius, options);
     }
 }
 

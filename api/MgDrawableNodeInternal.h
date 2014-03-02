@@ -22,28 +22,22 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "MgBase.h"
+#import "MgDrawableNode.h"
 
-@interface MgNode : NSObject <NSCopying, NSSecureCoding>
+typedef struct MgDrawableRenderState MgDrawableRenderState;
 
-/* Value that increments whenever this node changes (or a node that it
-   transitively refers to changes). */
+struct MgDrawableRenderState
+{
+  CGContextRef ctx;
+  CFTimeInterval t;
+  CFTimeInterval tnext;
+  CGRect bounds;
+  CGFloat cornerRadius;
+  float alpha;
+};
 
-@property(nonatomic, readonly) NSUInteger version;
+@interface MgDrawableNode ()
 
-/* Calls `block(node)' for each node referred to by the receiver. (Note
-   that this includes all kinds of nodes, e.g. including animations.)  */
-
-- (void)foreachNode:(void (^)(MgNode *node))block;
-
-/* Calls `block(node)' for each node referred to by the receiver, iff
-   their current mark value is not `mark'. Before `block(node)' is
-   called, `node' has its mark value set to `mark'. */
-
-- (void)foreachNode:(void (^)(MgNode *node))block mark:(uint32_t)mark;
-
-/* Returns a new unused mark value for calling -foreachNode:mark: */
-
-+ (uint32_t)nextMark;
+- (void)renderWithState:(MgDrawableRenderState *)rs;
 
 @end

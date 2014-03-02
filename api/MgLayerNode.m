@@ -25,6 +25,7 @@
 #import "MgLayerNode.h"
 
 #import "MgCoderExtensions.h"
+#import "MgDrawableNodeInternal.h"
 #import "MgNodeInternal.h"
 
 #import <Foundation/Foundation.h>
@@ -171,6 +172,22 @@
       [self incrementVersion];
       [self didChangeValueForKey:@"affineTransform"];
     }
+}
+
+- (CGAffineTransform)frameAffineTransform
+{
+  const CGPoint *position = &_position;
+  const CGPoint *anchor = &_anchor;
+  const CGRect *bounds = &_bounds;
+
+  CGFloat ax = bounds->origin.x + anchor->x * bounds->size.width;
+  CGFloat ay = bounds->origin.y + anchor->y * bounds->size.height;
+
+  CGAffineTransform m = CGAffineTransformTranslate(_affineTransform, -ax, -ay);
+  m.tx += position->x;
+  m.ty += position->y;
+
+  return m;
 }
 
 + (BOOL)automaticallyNotifiesObserversOfGroup
@@ -366,6 +383,69 @@
 
   if (_maskNode != nil)
     block(_maskNode);
+}
+
+/** Rendering. **/
+
+- (void)renderWithState:(MgDrawableRenderState *)rs
+{
+  if (self.hidden)
+    return;
+
+  float alpha = rs->alpha * fmin(self.alpha, 1);
+
+  if (!(alpha > 0))
+    return;
+
+  if ([self.contentNodes count] == 0)
+    return;
+
+  CGAffineTransform m = [self frameAffineTransform];
+  BOOL group = self.group;
+
+  MgDrawableRenderState r;
+  r.ctx = rs->ctx;
+  r.t = rs->t;
+  r.tnext = HUGE_VAL;
+  r.bounds = self.bounds;
+  r.cornerRadius = self.cornerRadius;
+  r.alpha = group ? 1 : alpha;
+
+  CGContextSaveGState(r.ctx);
+  CGContextConcatCTM(r.ctx, m);
+  CGContextSetAlpha(r.ctx, alpha);
+  CGContextSetBlendMode(r.ctx, self.blendMode);
+
+  if (self.masksToBounds)
+    {
+      if (r.cornerRadius == 0)
+	CGContextClipToRect(r.ctx, r.bounds);
+      else
+	{
+	  CGPathRef p = CGPathCreateWithRoundedRect(r.bounds, r.cornerRadius,
+						    r.cornerRadius, NULL);
+	  CGContextBeginPath(r.ctx);
+	  CGContextAddPath(r.ctx, p);
+	  CGPathRelease(p);
+	  CGContextClip(r.ctx);
+	}
+    }
+
+  /* FIXME: ignoring maskNode. */
+
+  if (group)
+    CGContextBeginTransparencyLayer(r.ctx, NULL);
+
+  for (MgDrawableNode *node in self.contentNodes)
+    [node renderWithState:&r];
+
+  if (group)
+    CGContextEndTransparencyLayer(r.ctx);
+
+  CGContextRestoreGState(r.ctx);
+
+  if (r.tnext < rs->tnext)
+    rs->tnext = r.tnext;
 }
 
 /** NSCopying methods. **/

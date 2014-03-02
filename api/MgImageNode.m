@@ -25,6 +25,7 @@
 #import "MgImageNode.h"
 
 #import "MgCoderExtensions.h"
+#import "MgDrawableNodeInternal.h"
 #import "MgNodeInternal.h"
 
 #import <Foundation/Foundation.h>
@@ -140,6 +141,32 @@ static NSMutableSet *image_provider_classes;
       _repeats = flag;
       [self incrementVersion];
       [self didChangeValueForKey:@"repeats"];
+    }
+}
+
+- (void)renderWithState:(MgDrawableRenderState *)rs
+{
+  if (self.hidden)
+    return;
+
+  CGImageRef im = [self.imageProvider providedImage];
+  bool release_im = false;
+
+  CGRect crop = self.cropRect;
+  if (!CGRectIsNull(crop))
+    {
+      im = CGImageCreateWithImageInRect(im, crop);
+      release_im = true;
+    }
+
+  if (im != NULL)
+    {
+      /* FIXME: implement 9-part and tiling. */
+
+      CGContextDrawImage(rs->ctx, rs->bounds, im);
+
+      if (release_im)
+	CGImageRelease(im);
     }
 }
 

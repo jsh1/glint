@@ -125,6 +125,13 @@ static NSUInteger version_counter;
     }
 }
 
++ (uint32_t)nextMark
+{
+  static int32_t counter;
+
+  return OSAtomicIncrement32(&counter);
+}
+
 /** NSCopying methods. **/
 
 - (id)copyWithZone:(NSZone *)zone

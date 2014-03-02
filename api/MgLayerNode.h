@@ -35,6 +35,8 @@
 @property(nonatomic, assign) CGFloat cornerRadius;
 @property(nonatomic, assign) CGAffineTransform affineTransform;
 
+@property(nonatomic, readonly) CGAffineTransform frameAffineTransform;
+
 /** Compositing properties. **/
 
 @property(nonatomic, assign, getter=isGroup) BOOL group;

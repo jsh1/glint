@@ -22,7 +22,7 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "MgDrawableNode.h"
+#import "MgDrawableNodeInternal.h"
 
 #import "MgAnimationNode.h"
 #import "MgNodeInternal.h"
@@ -148,6 +148,10 @@
 
   for (MgAnimationNode *anim in _animations)
     block(anim);
+}
+
+- (void)renderWithState:(MgDrawableRenderState *)rs
+{
 }
 
 /** NSCopying methods. **/

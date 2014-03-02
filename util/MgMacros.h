@@ -1,6 +1,6 @@
 /* -*- c-style: gnu -*-
 
-   Copyright (c) 2014 John Harper <jsh@unfactored.org>
+   Copyright (c) 2013 John Harper <jsh@unfactored.org>
 
    Permission is hereby granted, free of charge, to any person
    obtaining a copy of this software and associated documentation files
@@ -22,28 +22,46 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "MgBase.h"
+#ifndef MG_MACROS_H
+#define MG_MACROS_H
 
-@interface MgNode : NSObject <NSCopying, NSSecureCoding>
+/* Useful macros. */
 
-/* Value that increments whenever this node changes (or a node that it
-   transitively refers to changes). */
+#undef N_ELEMENTS
+#define N_ELEMENTS(x) (sizeof(x) / sizeof((x)[0]))
 
-@property(nonatomic, readonly) NSUInteger version;
+#undef MIN
+#define MIN(a, b) ((a) < (b) ? (a) : (b))
 
-/* Calls `block(node)' for each node referred to by the receiver. (Note
-   that this includes all kinds of nodes, e.g. including animations.)  */
+#undef MAX
+#define MAX(a, b) ((a) > (b) ? (a) : (b))
 
-- (void)foreachNode:(void (^)(MgNode *node))block;
+#undef CLAMP
+#define CLAMP(a, b, c) MIN(MAX(a, b), c)
 
-/* Calls `block(node)' for each node referred to by the receiver, iff
-   their current mark value is not `mark'. Before `block(node)' is
-   called, `node' has its mark value set to `mark'. */
+#undef ABS
+#define ABS(x) ((a) > 0 ? (a) : -(a))
 
-- (void)foreachNode:(void (^)(MgNode *node))block mark:(uint32_t)mark;
+#undef MIX
+#define MIX(a, b, c) ((a) + ((b) - (a)) * (f))
 
-/* Returns a new unused mark value for calling -foreachNode:mark: */
+#define POINTER_TO_INT(x) ((intptr_t)(x))
+#define INT_TO_POINTER(x) ((void *)(intptr_t)(x))
 
-+ (uint32_t)nextMark;
+#define POINTER_TO_UINT(x) ((uintptr_t)(x))
+#define UINT_TO_POINTER(x) ((void *)(uintptr_t)(x))
 
-@end
+/* Will use alloca() if safe, else malloc(). */
+
+#define STACK_ALLOC(type, count) 		\
+  (sizeof(type) * (count) <= 4096 		\
+   ? (type *)alloca(sizeof(type) * (count)) 	\
+   : (type *)malloc(sizeof(type) * (count)))
+
+#define STACK_FREE(type, count, ptr) 		\
+  do {						\
+    if (sizeof(type) * (count) > 4096)		\
+      free(ptr);				\
+  } while (0)
+
+#endif /* MG_MACROS_H */
