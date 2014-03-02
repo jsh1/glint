@@ -50,6 +50,40 @@
   return self;
 }
 
+- (CFTimeInterval)applyToTime:(CFTimeInterval)t
+{                                
+  /* See SMIL spec for description of this timing math. */
+
+  if (_speed != 0)
+    {
+      t = t - _begin;
+
+      if (_holdsBeforeStart && t < 0)
+	t = 0;
+      else if (_holdsAfterEnd && isfinite(_duration))
+	{
+	  CFTimeInterval dur = !_autoreverses ? _duration : _duration * 2;
+	  CFTimeInterval len = dur * _repeat * fabs(_speed);
+	  if (!(t < len))
+	    t = len - 1e-100;
+	}
+
+      t = t * _speed + _offset;
+    }
+  else
+    t = _offset;
+
+  if (t > 0 && isfinite(_duration))
+    {
+      CFTimeInterval dur = !_autoreverses ? _duration : _duration * 2;
+      t = t - dur * floor(t / dur);
+      if (_autoreverses && t > _duration)
+	t = dur - t;
+    }
+
+  return t;
+}
+
 /** NSCopying methods. **/
 
 - (id)copyWithZone:(NSZone *)zone

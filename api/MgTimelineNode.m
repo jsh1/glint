@@ -24,6 +24,7 @@
 
 #import "MgTimelineNode.h"
 
+#import "MgDrawableNodeInternal.h"
 #import "MgNodeInternal.h"
 #import "MgTimingStorage.h"
 
@@ -261,6 +262,21 @@
 
   if (_node != nil)
     block(_node);
+}
+
+- (void)renderWithState:(MgDrawableRenderState *)rs
+{
+  if (self.hidden || _node == nil)
+    return;
+
+  MgDrawableRenderState r = *rs;
+  r.t = _timing != nil ? [_timing applyToTime:rs->t] : rs->t;
+  r.tnext = HUGE_VAL;
+
+  [_node renderWithState:&r];
+
+  if (r.tnext < rs->tnext)
+    rs->tnext = r.tnext;
 }
 
 /** NSCopying methods. **/

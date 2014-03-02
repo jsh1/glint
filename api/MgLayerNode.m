@@ -403,9 +403,7 @@
   CGAffineTransform m = [self frameAffineTransform];
   BOOL group = self.group;
 
-  MgDrawableRenderState r;
-  r.ctx = rs->ctx;
-  r.t = rs->t;
+  MgDrawableRenderState r = *rs;
   r.tnext = HUGE_VAL;
   r.bounds = self.bounds;
   r.cornerRadius = self.cornerRadius;

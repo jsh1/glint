@@ -29,4 +29,6 @@
 - (void)encodeWithCoder:(NSCoder *)c;
 - (void)decodeWithCoder:(NSCoder *)c;
 
+- (CFTimeInterval)applyToTime:(CFTimeInterval)t;
+
 @end
