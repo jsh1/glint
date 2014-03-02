@@ -122,8 +122,8 @@ struct foreach_node
 };
 
 static void
-foreach_path_to_node(MgNode *node, MgNode *root, struct foreach_node *lst,
-		     void (^block)(NSArray *p))
+foreach_path_to_node(MgNode *node, MgNode *root, bool reversed,
+		     struct foreach_node *lst, void (^block)(NSArray *p))
 {
   /* Cons 'node' onto 'lst' for the lifetime of this stack frame. */
 
@@ -140,7 +140,7 @@ foreach_path_to_node(MgNode *node, MgNode *root, struct foreach_node *lst,
       if (objects != nil)
 	{
 	  for (size_t i = 0; lst != NULL; i++, lst = lst->next)
-	    objects[i] = lst->node;
+	    objects[reversed ? i : (count - i - 1)] = lst->node;
 
 	  block([NSArray arrayWithObjects:objects count:count]);
 
@@ -150,13 +150,18 @@ foreach_path_to_node(MgNode *node, MgNode *root, struct foreach_node *lst,
   else
     {
       for (id ptr in node->_references)
-	foreach_path_to_node(ptr, root, lst, block);
+	foreach_path_to_node(ptr, root, reversed, lst, block);
     }
+}
+
+- (void)foreachPathToNode:(MgNode *)root handler:(void (^)(NSArray *p))block;
+{
+  foreach_path_to_node(self, root, false, NULL, block);
 }
 
 - (void)foreachPathFromNode:(MgNode *)root handler:(void (^)(NSArray *p))block;
 {
-  foreach_path_to_node(self, root, NULL, block);
+  foreach_path_to_node(self, root, true, NULL, block);
 }
 
 - (void)foreachNode:(void (^)(MgNode *node))block
