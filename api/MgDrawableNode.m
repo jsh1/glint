@@ -150,6 +150,26 @@
     block(anim);
 }
 
+- (CFTimeInterval)renderInContext:(CGContextRef)ctx
+{
+  return [self renderInContext:ctx atTime:CACurrentMediaTime()];
+}
+
+- (CFTimeInterval)renderInContext:(CGContextRef)ctx atTime:(CFTimeInterval)t
+{
+  MgDrawableRenderState rs;
+  rs.ctx = ctx;
+  rs.t = t;
+  rs.tnext = HUGE_VAL;
+  rs.bounds = CGRectNull;
+  rs.cornerRadius = 0;
+  rs.alpha = 1;
+
+  [self renderWithState:&rs];
+
+  return rs.tnext;
+}
+
 - (void)renderWithState:(MgDrawableRenderState *)rs
 {
 }

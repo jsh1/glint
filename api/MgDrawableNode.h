@@ -40,4 +40,9 @@
 - (void)addAnimation:(MgAnimationNode *)anim;
 - (void)removeAnimation:(MgAnimationNode *)anim;
 
+/* Rendering to a CGContext. What can possibly go wrong? */
+
+- (CFTimeInterval)renderInContext:(CGContextRef)ctx;
+- (CFTimeInterval)renderInContext:(CGContextRef)ctx atTime:(CFTimeInterval)t;
+
 @end
