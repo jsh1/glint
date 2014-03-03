@@ -28,12 +28,14 @@
 @interface NSCoder (MgCoderExtensions)
 
 - (void)mg_encodeCGPoint:(CGPoint)p forKey:(NSString *)key;
+- (void)mg_encodeCGSize:(CGSize)s forKey:(NSString *)key;
 - (void)mg_encodeCGRect:(CGRect)r forKey:(NSString *)key;
 - (void)mg_encodeCGAffineTransform:(CGAffineTransform)m forKey:(NSString *)key;
 - (void)mg_encodeCGColor:(CGColorRef)c forKey:(NSString *)key;
 - (void)mg_encodeCGPath:(CGPathRef)p forKey:(NSString *)key;
 
 - (CGPoint)mg_decodeCGPointForKey:(NSString *)key;
+- (CGSize)mg_decodeCGSizeForKey:(NSString *)key;
 - (CGRect)mg_decodeCGRectForKey:(NSString *)key;
 - (CGAffineTransform)mg_decodeCGAffineTransformForKey:(NSString *)key;
 - (CGColorRef)mg_decodeCGColorForKey:(NSString *)key;

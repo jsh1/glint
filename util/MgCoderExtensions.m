@@ -33,6 +33,11 @@
   [self encodeObject:[NSValue valueWithBytes:&p objCType:@encode(CGPoint)] forKey:key];
 }
 
+- (void)mg_encodeCGSize:(CGSize)s forKey:(NSString *)key
+{
+  [self encodeObject:[NSValue valueWithBytes:&s objCType:@encode(CGSize)] forKey:key];
+}
+
 - (void)mg_encodeCGRect:(CGRect)r forKey:(NSString *)key
 {
   [self encodeObject:[NSValue valueWithBytes:&r objCType:@encode(CGRect)] forKey:key];
@@ -70,6 +75,15 @@ decodeType(NSCoder *c, NSString *key, const char *type, void *ptr)
     return p;
   else
     return CGPointZero;
+}
+
+- (CGSize)mg_decodeCGSizeForKey:(NSString *)key
+{
+  CGSize s;
+  if (decodeType(self, key, @encode(CGSize), &s))
+    return s;
+  else
+    return CGSizeZero;
 }
 
 - (CGRect)mg_decodeCGRectForKey:(NSString *)key
