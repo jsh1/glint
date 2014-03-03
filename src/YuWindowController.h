@@ -24,9 +24,16 @@
 
 #import "YuBase.h"
 
-@interface YuDocument : NSDocument
-    <NSKeyedArchiverDelegate, NSKeyedUnarchiverDelegate>
+@interface YuWindowController : NSWindowController <NSSplitViewDelegate>
 
-@property(nonatomic, readonly, retain) YuWindowController *controller;
+@property(nonatomic, weak, readonly) YuDocument *document;
+
+- (YuViewController *)viewControllerWithClass:(Class)cls;
+
+- (void)addSplitView:(YuSplitView *)view identifier:(NSString *)ident;
+- (void)removeSplitView:(YuSplitView *)view identifier:(NSString *)ident;
+
+- (void)saveWindowState;
+- (void)applySavedWindowState;
 
 @end

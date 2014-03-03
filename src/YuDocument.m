@@ -24,16 +24,37 @@
 
 #import "YuDocument.h"
 
-@implementation YuDocument
+#import "YuWindowController.h"
 
-- (NSString *)windowNibName
+@implementation YuDocument
 {
-  return @"YuDocument";
+  YuWindowController *_controller;
+  MgDrawableNode *_rootNode;
 }
 
-- (void)windowControllerDidLoadNib:(NSWindowController *)aController
+@synthesize controller = _controller;
+
+- (id)init
 {
-  [super windowControllerDidLoadNib:aController];
+  self = [super init];
+  if (self == nil)
+    return nil;
+
+  _controller = [[YuWindowController alloc] init];
+
+  MgLayerNode *node = [MgLayerNode node];
+  node.bounds = CGRectMake(0, 0, 1024, 768);
+  node.position = CGPointMake(512, 384);
+  node.group = YES;
+
+  _rootNode = node;
+
+  return self;
+}
+
+- (void)makeWindowControllers
+{
+  [self addWindowController:_controller];
 }
 
 + (BOOL)autosavesInPlace
@@ -43,13 +64,40 @@
 
 - (NSData *)dataOfType:(NSString *)type error:(NSError **)err
 {
-  return nil;
+  if ([type isEqualToString:@"org.unfactored.mg-archive"])
+    {
+      NSMutableData *data = [NSMutableData data];
+
+      NSKeyedArchiver *archiver
+	= [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
+
+      [archiver setDelegate:self];
+      [archiver encodeObject:_rootNode forKey:@"rootNode"];
+      [archiver finishEncoding];
+
+      return data;
+    }
+  else
+    return nil;
 }
 
 - (BOOL)readFromData:(NSData *)data ofType:(NSString *)type
     error:(NSError **)err
 {
-  return YES;
+  if ([type isEqualToString:@"org.unfactored.mg-archive"])
+    {
+      NSKeyedUnarchiver *unarchiver
+        = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
+
+      [unarchiver setDelegate:self];
+
+      _rootNode = [unarchiver decodeObjectOfClass:
+		   [MgDrawableNode class] forKey:@"rootNode"];
+
+      [unarchiver finishDecoding];
+    }
+
+  return NO;
 }
 
 @end

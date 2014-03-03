@@ -1,6 +1,6 @@
 /* -*- c-style: gnu -*-
 
-   Copyright (c) 2014 John Harper <jsh@unfactored.org>
+   Copyright (c) 2013 John Harper <jsh@unfactored.org>
 
    Permission is hereby granted, free of charge, to any person
    obtaining a copy of this software and associated documentation files
@@ -22,11 +22,34 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "YuBase.h"
+#import "YuAppDelegate.h"
 
-@interface YuDocument : NSDocument
-    <NSKeyedArchiverDelegate, NSKeyedUnarchiverDelegate>
+@implementation YuAppDelegate
 
-@property(nonatomic, readonly, retain) YuWindowController *controller;
+- (void)applicationDidFinishLaunching:(NSNotification *)aNotification
+{
+  NSString *path = [[NSBundle mainBundle]
+		    pathForResource:@"defaults" ofType:@"plist"];
+  if (path != nil)
+    {
+      NSData *data = [NSData dataWithContentsOfFile:path];
+
+      if (data != nil)
+	{
+	  NSDictionary *dict = [NSPropertyListSerialization
+				propertyListWithData:data options:
+				NSPropertyListImmutable format:nil
+				error:nil];
+	  if (dict != nil)
+	    [[NSUserDefaults standardUserDefaults] registerDefaults:dict];
+	}
+    }
+}
+
+/** NSMenuDelegate methods. **/
+
+- (void)menuNeedsUpdate:(NSMenu *)menu
+{
+}
 
 @end

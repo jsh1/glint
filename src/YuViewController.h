@@ -24,9 +24,46 @@
 
 #import "YuBase.h"
 
-@interface YuDocument : NSDocument
-    <NSKeyedArchiverDelegate, NSKeyedUnarchiverDelegate>
+@class YuWindowController;
 
-@property(nonatomic, readonly, retain) YuWindowController *controller;
+@interface YuViewController : NSViewController
+
++ (NSString *)viewNibName;
+
+- (NSString *)identifier;
+
+@property(nonatomic, copy) NSString *identifierSuffix;
+
+- (id)initWithController:(YuWindowController *)controller;
+
+@property(nonatomic, assign, readonly) BOOL viewHasBeenLoaded;
+
+- (void)viewDidLoad;
+
+- (void)viewWillAppear;
+- (void)viewDidAppear;
+
+- (void)viewWillDisappear;
+- (void)viewDidDisappear;
+
+@property(nonatomic, weak, readonly) YuWindowController *controller;
+
+- (YuViewController *)viewControllerWithClass:(Class)cls;
+
+@property(nonatomic, weak, readonly) YuViewController *superviewController;
+@property(nonatomic, copy) NSArray *subviewControllers;
+
+- (void)addSubviewController:(YuViewController *)controller;
+- (void)addSubviewController:(YuViewController *)controller
+    after:(YuViewController *)pred;
+- (void)removeSubviewController:(YuViewController *)controller;
+
+@property(nonatomic, weak, readonly) NSView *initialFirstResponder;
+
+- (void)addSavedViewState:(NSMutableDictionary *)dict;
+- (void)applySavedViewState:(NSDictionary *)dict;
+
+- (void)addToContainerView:(NSView *)view;
+- (void)removeFromContainer;
 
 @end

@@ -22,11 +22,17 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "YuBase.h"
+#ifndef YU_BASE_H
+#define YU_BASE_H
 
-@interface YuDocument : NSDocument
-    <NSKeyedArchiverDelegate, NSKeyedUnarchiverDelegate>
+#include "Magnesium.h"
 
-@property(nonatomic, readonly, retain) YuWindowController *controller;
+#ifdef __OBJC__
+#import <AppKit/AppKit.h>
+#endif
 
-@end
+#ifdef __OBJC__
+@class YuDocument, YuSplitView, YuViewController, YuWindowController;
+#endif
+
+#endif /* YU_BASE_H */

@@ -24,9 +24,5 @@
 
 #import "YuBase.h"
 
-@interface YuDocument : NSDocument
-    <NSKeyedArchiverDelegate, NSKeyedUnarchiverDelegate>
-
-@property(nonatomic, readonly, retain) YuWindowController *controller;
-
+@interface YuAppDelegate : NSObject <NSApplicationDelegate, NSMenuDelegate>
 @end

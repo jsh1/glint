@@ -24,9 +24,28 @@
 
 #import "YuBase.h"
 
-@interface YuDocument : NSDocument
-    <NSKeyedArchiverDelegate, NSKeyedUnarchiverDelegate>
+@interface YuSplitView : NSSplitView
+{
+@private
+  NSInteger _indexOfResizableSubview;
+  NSView *_collapsingSubview;
+}
 
-@property(nonatomic, readonly, retain) YuWindowController *controller;
+@property(nonatomic) NSInteger indexOfResizableSubview;
+
+- (NSDictionary *)savedViewState;
+- (void)applySavedViewState:(NSDictionary *)dict;
+
+- (void)setSubview:(NSView *)subview collapsed:(BOOL)flag;
+
+- (BOOL)shouldAdjustSizeOfSubview:(NSView *)subview;
+
+- (CGFloat)minimumSizeOfSubview:(NSView *)subview;
+
+@end
+
+@interface NSView (YuSplitView)
+
+- (CGFloat)minSize;
 
 @end
