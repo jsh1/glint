@@ -33,9 +33,13 @@
 @property(nonatomic, assign) CGPoint anchor;
 @property(nonatomic, assign) CGRect bounds;
 @property(nonatomic, assign) CGFloat cornerRadius;
-@property(nonatomic, assign) CGAffineTransform affineTransform;
 
-@property(nonatomic, readonly) CGAffineTransform frameAffineTransform;
+@property(nonatomic, assign) CGFloat scale;
+@property(nonatomic, assign) CGFloat squeeze;
+@property(nonatomic, assign) CGFloat skew;
+@property(nonatomic, assign) double rotation;
+
+@property(nonatomic, readonly) CGAffineTransform parentTransform;
 
 /** Compositing properties. **/
 

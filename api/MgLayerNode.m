@@ -36,7 +36,10 @@
   CGPoint _anchor;
   CGRect _bounds;
   CGFloat _cornerRadius;
-  CGAffineTransform _affineTransform;
+  CGFloat _scale;
+  CGFloat _squeeze;
+  CGFloat _skew;
+  double _rotation;
   BOOL _group;
   float _alpha;
   CGBlendMode _blendMode;
@@ -53,7 +56,8 @@
 
   _anchor = CGPointMake((CGFloat).5, (CGFloat).5);
   _bounds = CGRectNull;
-  _affineTransform = CGAffineTransformIdentity;
+  _scale = 1;
+  _squeeze = 1;
   _alpha = 1;
   _blendMode = kCGBlendModeNormal;
 
@@ -153,41 +157,164 @@
     }
 }
 
-+ (BOOL)automaticallyNotifiesObserversOfAffineTransform
++ (BOOL)automaticallyNotifiesObserversOfScale
 {
   return NO;
 }
 
-- (CGAffineTransform)affineTransform
+- (CGFloat)scale
 {
-  return _affineTransform;
+  return _scale;
 }
 
-- (void)setAffineTransform:(CGAffineTransform)m
+- (void)setScale:(CGFloat)x
 {
-  if (!CGAffineTransformEqualToTransform(_affineTransform, m))
+  if (_scale != x)
     {
-      [self willChangeValueForKey:@"affineTransform"];
-      _affineTransform = m;
+      [self willChangeValueForKey:@"scale"];
+      _scale = x;
       [self incrementVersion];
-      [self didChangeValueForKey:@"affineTransform"];
+      [self didChangeValueForKey:@"scale"];
     }
 }
 
-- (CGAffineTransform)frameAffineTransform
++ (BOOL)automaticallyNotifiesObserversOfSqueeze
 {
-  const CGPoint *position = &_position;
-  const CGPoint *anchor = &_anchor;
-  const CGRect *bounds = &_bounds;
+  return NO;
+}
 
-  CGFloat ax = bounds->origin.x + anchor->x * bounds->size.width;
-  CGFloat ay = bounds->origin.y + anchor->y * bounds->size.height;
+- (CGFloat)squeeze
+{
+  return _squeeze;
+}
 
-  CGAffineTransform m = CGAffineTransformTranslate(_affineTransform, -ax, -ay);
-  m.tx += position->x;
-  m.ty += position->y;
+- (void)setSqueeze:(CGFloat)x
+{
+  if (_squeeze != x)
+    {
+      [self willChangeValueForKey:@"squeeze"];
+      _squeeze = x;
+      [self incrementVersion];
+      [self didChangeValueForKey:@"squeeze"];
+    }
+}
 
-  return m;
++ (BOOL)automaticallyNotifiesObserversOfSkew
+{
+  return NO;
+}
+
+- (CGFloat)skew
+{
+  return _skew;
+}
+
+- (void)setSkew:(CGFloat)x
+{
+  if (_skew != x)
+    {
+      [self willChangeValueForKey:@"skew"];
+      _skew = x;
+      [self incrementVersion];
+      [self didChangeValueForKey:@"skew"];
+    }
+}
+
++ (BOOL)automaticallyNotifiesObserversOfRotation
+{
+  return NO;
+}
+
+- (double)rotation
+{
+  return _rotation;
+}
+
+- (void)setRotation:(double)x
+{
+  if (_rotation != x)
+    {
+      [self willChangeValueForKey:@"rotation"];
+      _rotation = x;
+      [self incrementVersion];
+      [self didChangeValueForKey:@"rotation"];
+    }
+}
+
+- (CGAffineTransform)parentTransform
+{
+  /* Letting Maxima do my dirty work for me:
+
+	(%i45) scale;
+	                                  [ sc  0  ]
+	(%o45)                            [        ]
+	                                  [ 0   sc ]
+	(%i46) squeeze;
+	                                   [ sq  0 ]
+	(%o46)                             [       ]
+	                                   [ 0   1 ]
+	(%i47) skew;
+	                                   [ 1  sk ]
+	(%o47)                             [       ]
+	                                   [ 0  1  ]
+	(%i48) scale . squeeze . skew;
+	                              [ sc sq  sc sk sq ]
+	(%o48)                        [                 ]
+	                              [   0       sc    ]
+	(%i49) 
+	
+	(%i50) rotate;
+	                                 [ cs  - sn ]
+	(%o50)                           [          ]
+	                                 [ sn   cs  ]
+	(%i51) scale . squeeze . skew . rotate;
+	                  [ sc (sk sn + cs) sq  sc (cs sk - sn) sq ]
+	(%o51)            [                                        ]
+	                  [       sc sn               cs sc        ]
+	
+     of course that might be backwards. */
+
+  double m22 = _scale;
+  double m21 = 0;
+  double m11 = m22 * _squeeze;
+  double m12 = m11 * _skew;
+
+  if (_rotation != 0)
+    {
+      double sn = sin(_rotation);
+      double cs = cos(_rotation);
+
+      double m11_ = m11 * cs  + m12 * sn;
+      double m12_ = m11 * -sn + m12 * cs;
+      double m21_ = m21 * cs  + m22 * sn;
+      double m22_ = m21 * -sn + m22 * cs;
+
+      m11 = m11_;
+      m12 = m12_;
+      m21 = m21_;
+      m22 = m22_;
+    }
+
+  /* For m' = translation(-ax, -ay) . m:
+
+	(%i52) matrix([1, 0, 0], [0, 1, 0], [-ax, -ay, 1])
+		. matrix([ma, mb, 0], [mc, md, 0], [0, 0, 1]);
+
+	                    [       ma               mb         0 ]
+	                    [                                     ]
+	(%o52)              [       mc               md         0 ]
+	                    [                                     ]
+	                    [ - ay mc - ax ma  - ay md - ax mb  1 ]
+
+     and the easy one: m' = m . translation(position.x, position.y). */
+
+  double ax = _bounds.origin.x + _anchor.x * _bounds.size.width;
+  double ay = _bounds.origin.y + _anchor.y * _bounds.size.height;
+
+  double tx = m11 * -ax + m21 * -ay + _position.x;
+  double ty = m12 * -ax + m22 * -ay + _position.y;
+
+  return CGAffineTransformMake(m11, m12, m21, m22, tx, ty);
 }
 
 + (BOOL)automaticallyNotifiesObserversOfGroup
@@ -389,7 +516,7 @@
 {
   /* Map point into our coordinate space. */
 
-  CGAffineTransform m = CGAffineTransformInvert([self frameAffineTransform]);
+  CGAffineTransform m = CGAffineTransformInvert([self parentTransform]);
   
   CGPoint lp = CGPointApplyAffineTransform(p, m);
 
@@ -414,7 +541,7 @@
 {
   /* Map point into our coordinate space. */
 
-  CGAffineTransform m = CGAffineTransformInvert([self frameAffineTransform]);
+  CGAffineTransform m = CGAffineTransformInvert([self parentTransform]);
   
   CGPoint lp = CGPointApplyAffineTransform(p, m);
 
@@ -446,7 +573,7 @@
   if ([self.contentNodes count] == 0)
     return;
 
-  CGAffineTransform m = [self frameAffineTransform];
+  CGAffineTransform m = [self parentTransform];
   BOOL group = self.group;
 
   MgDrawableRenderState r = *rs;
@@ -502,7 +629,10 @@
   copy->_anchor = _anchor;
   copy->_bounds = _bounds;
   copy->_cornerRadius = _cornerRadius;
-  copy->_affineTransform = _affineTransform;
+  copy->_scale = _scale;
+  copy->_squeeze = _squeeze;
+  copy->_skew = _skew;
+  copy->_rotation = _rotation;
   copy->_group = _group;
   copy->_alpha = _alpha;
   copy->_blendMode = _blendMode;
@@ -538,8 +668,17 @@
   if (_cornerRadius != 0)
     [c encodeDouble:_cornerRadius forKey:@"cornerRadius"];
 
-  if (!CGAffineTransformIsIdentity(_affineTransform))
-    [c mg_encodeCGAffineTransform:_affineTransform forKey:@"affineTransform"];
+  if (_scale != 1)
+    [c encodeDouble:_scale forKey:@"scale"];
+
+  if (_squeeze != 1)
+    [c encodeDouble:_squeeze forKey:@"squeeze"];
+
+  if (_skew != 0)
+    [c encodeDouble:_skew forKey:@"skew"];
+
+  if (_rotation != 0)
+    [c encodeDouble:_rotation forKey:@"rotation"];
 
   if (_group)
     [c encodeBool:_group forKey:@"group"];
@@ -582,10 +721,23 @@
   if ([c containsValueForKey:@"cornerRadius"])
     _cornerRadius = [c decodeDoubleForKey:@"cornerRadius"];
 
-  if ([c containsValueForKey:@"affineTransform"])
-    _affineTransform = [c mg_decodeCGAffineTransformForKey:@"affineTransform"];
+  if ([c containsValueForKey:@"scale"])
+    _scale = [c decodeDoubleForKey:@"scale"];
   else
-    _affineTransform = CGAffineTransformIdentity;
+    _scale = 1;
+
+  if ([c containsValueForKey:@"squeeze"])
+    _squeeze = [c decodeDoubleForKey:@"squeeze"];
+  else
+    _squeeze = 1;
+
+  if ([c containsValueForKey:@"skew"])
+    _skew = [c decodeDoubleForKey:@"skew"];
+  else
+    _skew = 1;
+
+  if ([c containsValueForKey:@"rotation"])
+    _rotation = [c decodeDoubleForKey:@"rotation"];
 
   if ([c containsValueForKey:@"group"])
     _group = [c decodeBoolForKey:@"group"];
