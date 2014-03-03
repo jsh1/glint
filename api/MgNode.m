@@ -38,6 +38,16 @@ static NSUInteger version_counter;
   uint32_t _mark;			/* for graph traversal */
 }
 
++ (instancetype)node
+{
+  return [[self alloc] init];
+}
+
+- (id)init
+{
+  return [super init];
+}
+
 - (void)incrementVersion
 {
 #if NSUIntegerMax == UINT64_MAX

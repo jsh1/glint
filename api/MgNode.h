@@ -26,6 +26,12 @@
 
 @interface MgNode : NSObject <NSCopying, NSSecureCoding>
 
++ (instancetype)node;
+
+/* Designated initializer. */
+
+- (id)init;
+
 /* Value that increments whenever this node changes (or a node that it
    transitively refers to changes). */
 
