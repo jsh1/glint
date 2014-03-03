@@ -70,13 +70,9 @@ static NSUInteger version_counter;
     }
 }
 
-- (void)incrementVersion
++ (BOOL)automaticallyNotifiesObserversOfVersion
 {
-#if NSUIntegerMax == UINT64_MAX
-  self.version = OSAtomicIncrement64((int64_t *)&version_counter);
-#else
-  self.version = OSAtomicIncrement32((int32_t *)&version_counter);
-#endif
+  return NO;
 }
 
 - (NSUInteger)version
@@ -88,11 +84,22 @@ static NSUInteger version_counter;
 {
   if (_version < x)
     {
+      [self willChangeValueForKey:@"version"];
       _version = x;
+      [self didChangeValueForKey:@"version"];
 
       for (MgNode *ref in _references)
 	ref.version = x;
     }
+}
+
+- (void)incrementVersion
+{
+#if NSUIntegerMax == UINT64_MAX
+  self.version = OSAtomicIncrement64((int64_t *)&version_counter);
+#else
+  self.version = OSAtomicIncrement32((int32_t *)&version_counter);
+#endif
 }
 
 + (BOOL)automaticallyNotifiesObserversOfReferences
