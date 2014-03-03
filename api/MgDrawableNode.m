@@ -150,14 +150,28 @@
     block(anim);
 }
 
-- (NSArray *)nodesContainingPoint:(CGPoint)p
+- (BOOL)containsPoint:(CGPoint)p
 {
-  return [self nodesContainingPoint:p layerBounds:CGRectNull];
+  return [self containsPoint:p layerBounds:CGRectNull];
 }
 
-- (NSArray *)nodesContainingPoint:(CGPoint)p layerBounds:(CGRect)r
+- (BOOL)containsPoint:(CGPoint)p layerBounds:(CGRect)r
 {
-  return [NSArray array];
+  return NO;
+}
+
+- (NSSet *)nodesContainingPoint:(CGPoint)p
+{
+  NSMutableSet *set = [[NSMutableSet alloc] init];
+  [self addNodesContainingPoint:p toSet:set layerBounds:CGRectNull];
+  return set;
+}
+
+- (void)addNodesContainingPoint:(CGPoint)p toSet:(NSMutableSet *)set
+    layerBounds:(CGRect)r
+{
+  if (![set containsObject:self] && [self containsPoint:p layerBounds:r])
+    [set addObject:self];
 }
 
 - (CFTimeInterval)renderInContext:(CGContextRef)ctx

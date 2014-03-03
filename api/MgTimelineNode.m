@@ -264,9 +264,15 @@
     block(_node);
 }
 
-- (NSArray *)nodesContainingPoint:(CGPoint)p layerBounds:(CGRect)r
+- (BOOL)containsPoint:(CGPoint)p layerBounds:(CGRect)r
 {
-  return [_node nodesContainingPoint:p layerBounds:r];
+  return [_node containsPoint:p layerBounds:r];
+}
+
+- (void)addNodesContainingPoint:(CGPoint)p toSet:(NSMutableSet *)set
+    layerBounds:(CGRect)r
+{
+  [_node addNodesContainingPoint:p toSet:set layerBounds:r];
 }
 
 - (void)renderWithState:(MgDrawableRenderState *)rs

@@ -42,11 +42,14 @@
 
 /* Hit-testing. */
 
-- (NSArray *)nodesContainingPoint:(CGPoint)p;
+- (BOOL)containsPoint:(CGPoint)p;
+- (NSSet *)nodesContainingPoint:(CGPoint)p;
 
 /* For subclasses to override. */
 
-- (NSArray *)nodesContainingPoint:(CGPoint)p layerBounds:(CGRect)r;
+- (BOOL)containsPoint:(CGPoint)p layerBounds:(CGRect)r;
+- (void)addNodesContainingPoint:(CGPoint)p toSet:(NSMutableSet *)set
+    layerBounds:(CGRect)r;
 
 /* Rendering to a CGContext. What can possibly go wrong? */
 

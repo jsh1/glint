@@ -137,14 +137,9 @@
     }
 }
 
-- (NSArray *)nodesContainingPoint:(CGPoint)p layerBounds:(CGRect)r
+- (BOOL)containsPoint:(CGPoint)p layerBounds:(CGRect)r
 {
-  /* FIXME: honour stroke shape? */
-
-  if (CGRectContainsPoint(r, p))
-    return [NSArray arrayWithObject:self];
-  else
-    return [NSArray array];
+  return CGRectContainsPoint(r, p);
 }
 
 - (void)renderWithState:(MgDrawableRenderState *)rs

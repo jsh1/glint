@@ -385,7 +385,7 @@
     block(_maskNode);
 }
 
-- (NSArray *)nodesContainingPoint:(CGPoint)p layerBounds:(CGRect)r
+- (BOOL)containsPoint:(CGPoint)p layerBounds:(CGRect)r
 {
   /* Map point into our coordinate space. */
 
@@ -394,29 +394,41 @@
   CGPoint lp = CGPointApplyAffineTransform(p, m);
 
   if (self.masksToBounds && !CGRectContainsPoint(self.bounds, lp))
-    return [NSArray array];
+    return NO;
 
   MgDrawableNode *mask = self.maskNode;
-  if (mask != nil && [[mask nodesContainingPoint:p layerBounds:r] count] == 0)
-    return [NSArray array];
-
-  NSMutableArray *nodes = nil;
+  if (mask != nil && ![mask containsPoint:p layerBounds:r])
+    return NO;
 
   for (MgDrawableNode *node in self.contentNodes)
     {
-      NSArray *array = [node nodesContainingPoint:lp layerBounds:self.bounds];
-      if ([array count] != 0)
-	{
-	  if (nodes == nil)
-	    nodes = [[NSMutableArray alloc] init];
-
-	  /* FIXME: don't add dups. */
-
-	  [nodes addObjectsFromArray:array];
-	}
+      if ([node containsPoint:lp layerBounds:self.bounds])
+	return YES;
     }
 
-  return nodes != nil ? nodes : [NSArray array];
+  return NO;
+}
+
+- (void)addNodesContainingPoint:(CGPoint)p toSet:(NSMutableSet *)set
+    layerBounds:(CGRect)r;
+{
+  /* Map point into our coordinate space. */
+
+  CGAffineTransform m = CGAffineTransformInvert([self frameAffineTransform]);
+  
+  CGPoint lp = CGPointApplyAffineTransform(p, m);
+
+  if (self.masksToBounds && !CGRectContainsPoint(self.bounds, lp))
+    return;
+
+  MgDrawableNode *mask = self.maskNode;
+  if (mask != nil && ![mask containsPoint:p layerBounds:r])
+    return;
+
+  for (MgDrawableNode *node in self.contentNodes)
+    {
+      [node addNodesContainingPoint:lp toSet:set layerBounds:self.bounds];
+    }
 }
 
 /** Rendering. **/

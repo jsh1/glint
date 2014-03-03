@@ -272,11 +272,11 @@
     }
 }
 
-- (NSArray *)nodesContainingPoint:(CGPoint)p layerBounds:(CGRect)r
+- (BOOL)containsPoint:(CGPoint)p layerBounds:(CGRect)r
 {
   CGPathRef path = self.path;
   if (path == NULL)
-    return [NSArray array];
+    return NO;
 
   CGPathDrawingMode mode = self.drawingMode;
 
@@ -285,21 +285,15 @@
     case kCGPathFill:
     case kCGPathFillStroke:
     case kCGPathStroke:			/* FIXME: incorrect */
-      if (CGPathContainsPoint(path, NULL, p, false))
-	return [NSArray arrayWithObject:self];
-      break;
+      return CGPathContainsPoint(path, NULL, p, false);
 
     case kCGPathEOFill:
     case kCGPathEOFillStroke:
-      if (CGPathContainsPoint(path, NULL, p, true))
-	return [NSArray arrayWithObject:self];
-      break;
+      return CGPathContainsPoint(path, NULL, p, true);
 
     default:
-      break;
+      return NO;
     }
-
-  return [NSArray array];
 }
 
 - (void)renderWithState:(MgDrawableRenderState *)rs

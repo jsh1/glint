@@ -238,11 +238,11 @@
     }
 }
 
-- (NSArray *)nodesContainingPoint:(CGPoint)p layerBounds:(CGRect)r
+- (BOOL)containsPoint:(CGPoint)p layerBounds:(CGRect)r
 {
   /* FIXME: implement this. */
 
-  return [NSArray array];
+  return NO;
 }
 
 - (void)renderWithState:(MgDrawableRenderState *)rs
