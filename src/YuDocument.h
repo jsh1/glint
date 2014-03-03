@@ -29,4 +29,7 @@
 
 @property(nonatomic, readonly, retain) YuWindowController *controller;
 
+@property(nonatomic, assign) CGSize documentSize;
+@property(nonatomic, retain) MgDrawableNode *rootNode;
+
 @end

@@ -41,6 +41,7 @@
 		57E776B818BD348D007CD31F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57E776B718BD348D007CD31F /* CoreGraphics.framework */; };
 		57E776B918BD3493007CD31F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5714A8B818BD322900ED67EE /* Foundation.framework */; };
 		57E776BB18BD3498007CD31F /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57E776BA18BD3498007CD31F /* CoreFoundation.framework */; };
+		57FB21DC18C5181100B4BF6C /* MgLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 57FB21DB18C5181100B4BF6C /* MgLayer.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -111,6 +112,8 @@
 		57E776B518BD3487007CD31F /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		57E776B718BD348D007CD31F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		57E776BA18BD3498007CD31F /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		57FB21DA18C5181100B4BF6C /* MgLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgLayer.h; sourceTree = "<group>"; };
+		57FB21DB18C5181100B4BF6C /* MgLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgLayer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -193,6 +196,8 @@
 				575F56E418C357080034B28C /* MgImageNode.m */,
 				579CAFD318C38B9C0051454F /* MgImageProvider.h */,
 				579CAFD418C38B9C0051454F /* MgImageProvider.m */,
+				57FB21DA18C5181100B4BF6C /* MgLayer.h */,
+				57FB21DB18C5181100B4BF6C /* MgLayer.m */,
 				575F56E518C357080034B28C /* MgLayerNode.h */,
 				575F56E618C357080034B28C /* MgLayerNode.m */,
 				575F56E718C357080034B28C /* MgNode.h */,
@@ -348,6 +353,7 @@
 				575F56FA18C357080034B28C /* MgBezierTimingFunction.mm in Sources */,
 				579CAFD118C381BD0051454F /* MgCoreGraphics.c in Sources */,
 				572A5B1F18C4CD4100AB8086 /* YuViewController.m in Sources */,
+				57FB21DC18C5181100B4BF6C /* MgLayer.m in Sources */,
 				575F56F918C357080034B28C /* MgBasicAnimationNode.m in Sources */,
 				572A5B2318C4CE2000AB8086 /* YuAppDelegate.m in Sources */,
 				5714A8C718BD322900ED67EE /* YuDocument.m in Sources */,

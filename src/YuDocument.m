@@ -26,9 +26,12 @@
 
 #import "YuWindowController.h"
 
+#import "MgCoderExtensions.h"
+
 @implementation YuDocument
 {
   YuWindowController *_controller;
+  CGSize _documentSize;
   MgDrawableNode *_rootNode;
 }
 
@@ -42,12 +45,19 @@
 
   _controller = [[YuWindowController alloc] init];
 
-  MgLayerNode *node = [MgLayerNode node];
-  node.bounds = CGRectMake(0, 0, 1024, 768);
-  node.position = CGPointMake(512, 384);
-  node.group = YES;
+  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
-  _rootNode = node;
+  CGFloat width = [defaults doubleForKey:@"YuDefaultDocumentWidth"];
+  CGFloat height = [defaults doubleForKey:@"YuDefaultDocumentHeight"];
+
+  MgLayerNode *node = [MgLayerNode node];
+
+  node.name = @"Root Layer";
+  node.bounds = CGRectMake(0, 0, width, height);
+  node.position = CGPointMake(width * .5, height * .5);
+
+  self.documentSize = CGSizeMake(width, height);
+  self.rootNode = node;
 
   return self;
 }
@@ -55,6 +65,32 @@
 - (void)makeWindowControllers
 {
   [self addWindowController:_controller];
+}
+
+- (CGSize)documentSize
+{
+  return _documentSize;
+}
+
+- (void)setDocumentSize:(CGSize)s
+{
+  if (!CGSizeEqualToSize(_documentSize, s))
+    {
+      _documentSize = s;
+    }
+}
+
+- (MgDrawableNode *)rootNode
+{
+  return _rootNode;
+}
+
+- (void)setRootNode:(MgDrawableNode *)node
+{
+  if (_rootNode != node)
+    {
+      _rootNode = node;
+    }
 }
 
 + (BOOL)autosavesInPlace
@@ -72,6 +108,7 @@
 	= [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
 
       [archiver setDelegate:self];
+      [archiver mg_encodeCGSize:_documentSize forKey:@"documentSize"];
       [archiver encodeObject:_rootNode forKey:@"rootNode"];
       [archiver finishEncoding];
 
@@ -91,6 +128,7 @@
 
       [unarchiver setDelegate:self];
 
+      _documentSize = [unarchiver mg_decodeCGSizeForKey:@"documentSize"];
       _rootNode = [unarchiver decodeObjectOfClass:
 		   [MgDrawableNode class] forKey:@"rootNode"];
 
