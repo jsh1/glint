@@ -152,6 +152,11 @@
 
 - (NSArray *)nodesContainingPoint:(CGPoint)p
 {
+  return [self nodesContainingPoint:p layerBounds:CGRectNull];
+}
+
+- (NSArray *)nodesContainingPoint:(CGPoint)p layerBounds:(CGRect)r
+{
   return [NSArray array];
 }
 

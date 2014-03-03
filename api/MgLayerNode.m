@@ -385,7 +385,7 @@
     block(_maskNode);
 }
 
-- (NSArray *)nodesContainingPoint:(CGPoint)p
+- (NSArray *)nodesContainingPoint:(CGPoint)p layerBounds:(CGRect)r
 {
   /* Map point into our coordinate space. */
 
@@ -397,18 +397,21 @@
     return [NSArray array];
 
   MgDrawableNode *mask = self.maskNode;
-  if (mask != nil && [[mask nodesContainingPoint:p] count] == 0)
+  if (mask != nil && [[mask nodesContainingPoint:p layerBounds:r] count] == 0)
     return [NSArray array];
 
   NSMutableArray *nodes = nil;
 
   for (MgDrawableNode *node in self.contentNodes)
     {
-      NSArray *array = [node nodesContainingPoint:lp];
+      NSArray *array = [node nodesContainingPoint:lp layerBounds:self.bounds];
       if ([array count] != 0)
 	{
 	  if (nodes == nil)
 	    nodes = [[NSMutableArray alloc] init];
+
+	  /* FIXME: don't add dups. */
+
 	  [nodes addObjectsFromArray:array];
 	}
     }

@@ -238,7 +238,7 @@
     }
 }
 
-- (NSArray *)nodesContainingPoint:(CGPoint)p
+- (NSArray *)nodesContainingPoint:(CGPoint)p layerBounds:(CGRect)r
 {
   /* FIXME: implement this. */
 

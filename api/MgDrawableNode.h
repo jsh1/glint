@@ -44,6 +44,10 @@
 
 - (NSArray *)nodesContainingPoint:(CGPoint)p;
 
+/* For subclasses to override. */
+
+- (NSArray *)nodesContainingPoint:(CGPoint)p layerBounds:(CGRect)r;
+
 /* Rendering to a CGContext. What can possibly go wrong? */
 
 - (CFTimeInterval)renderInContext:(CGContextRef)ctx;

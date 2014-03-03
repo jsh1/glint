@@ -272,7 +272,7 @@
     }
 }
 
-- (NSArray *)nodesContainingPoint:(CGPoint)p
+- (NSArray *)nodesContainingPoint:(CGPoint)p layerBounds:(CGRect)r
 {
   CGPathRef path = self.path;
   if (path == NULL)
