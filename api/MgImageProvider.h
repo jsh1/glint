@@ -35,18 +35,17 @@
 
 - (CGImageRef)mg_providedImage;
 
-@optional
-
-/* May be called to obtain the original (i.e. possibly compressed)
-   image data. */
-
-- (NSData *)mg_providedImageData;
-
 @end
 
 @interface MgImageProvider : NSObject <MgImageProvider, NSSecureCoding>
 
 + (instancetype)imageProviderWithImage:(CGImageRef)image;
 + (instancetype)imageProviderWithURL:(NSURL *)url;
+
+/* These all return nil if result is not immediately available. */
+
+@property(nonatomic, assign, readonly) CGImageRef image;
+@property(nonatomic, copy, readonly) NSURL *URL;
+@property(nonatomic, copy, readonly) NSData *imageData;
 
 @end

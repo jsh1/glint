@@ -83,12 +83,20 @@
   return NULL;
 }
 
-- (NSData *)mg_providedImageData
+- (CGImageRef)image
+{
+  return (__bridge CGImageRef)_image;
+}
+
+- (NSURL *)URL
+{
+  return _url;
+}
+
+- (NSData *)imageData
 {
   if (_data != nil)
     return _data;
-  else if (_url != nil)
-    return [NSData dataWithContentsOfURL:_url];
   else
     return nil;
 }
