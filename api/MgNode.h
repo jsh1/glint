@@ -32,6 +32,8 @@
 
 - (id)init;
 
+@property(nonatomic, copy) NSString *name;
+
 /* Value that increments whenever this node changes (or a node that it
    transitively refers to changes). */
 

@@ -33,6 +33,7 @@ static NSUInteger version_counter;
 
 @implementation MgNode
 {
+  NSString *_name;
   NSPointerArray *_references;
   NSUInteger _version;
   uint32_t _mark;			/* for graph traversal */
@@ -46,6 +47,27 @@ static NSUInteger version_counter;
 - (id)init
 {
   return [super init];
+}
+
++ (BOOL)automaticallyNotifiesObserversOfName
+{
+  return NO;
+}
+
+- (NSString *)name
+{
+  return _name;
+}
+
+- (void)setName:(NSString *)str
+{
+  if (![_name isEqual:str])
+    {
+      [self willChangeValueForKey:@"name"];
+      _name = [str copy];
+      [self incrementVersion];
+      [self didChangeValueForKey:@"name"];
+    }
 }
 
 - (void)incrementVersion
