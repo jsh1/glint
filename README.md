@@ -72,9 +72,10 @@ MgLayerNode : MgDrawableNode
   CGPoint anchor
   CGRect bounds
   CGFloat cornerRadius
-  CGAffineTransform affineTransform
+  CGFloat scale, squeeze, skew
+  double rotation
   BOOL group
-  float alpha			-- these two should be on node?
+  float alpha
   CGBlendMode blendMode
   BOOL masksToBounds
   MgDrawableNode *maskNode
