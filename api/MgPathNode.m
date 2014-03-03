@@ -272,6 +272,36 @@
     }
 }
 
+- (NSArray *)nodesContainingPoint:(CGPoint)p
+{
+  CGPathRef path = self.path;
+  if (path == NULL)
+    return [NSArray array];
+
+  CGPathDrawingMode mode = self.drawingMode;
+
+  switch (mode)
+    {
+    case kCGPathFill:
+    case kCGPathFillStroke:
+    case kCGPathStroke:			/* FIXME: incorrect */
+      if (CGPathContainsPoint(path, NULL, p, false))
+	return [NSArray arrayWithObject:self];
+      break;
+
+    case kCGPathEOFill:
+    case kCGPathEOFillStroke:
+      if (CGPathContainsPoint(path, NULL, p, true))
+	return [NSArray arrayWithObject:self];
+      break;
+
+    default:
+      break;
+    }
+
+  return [NSArray array];
+}
+
 - (void)renderWithState:(MgDrawableRenderState *)rs
 {
   if (self.hidden)

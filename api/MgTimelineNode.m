@@ -264,6 +264,11 @@
     block(_node);
 }
 
+- (NSArray *)nodesContainingPoint:(CGPoint)p
+{
+  return [_node nodesContainingPoint:p];
+}
+
 - (void)renderWithState:(MgDrawableRenderState *)rs
 {
   if (self.hidden || _node == nil)

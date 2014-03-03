@@ -385,6 +385,37 @@
     block(_maskNode);
 }
 
+- (NSArray *)nodesContainingPoint:(CGPoint)p
+{
+  /* Map point into our coordinate space. */
+
+  CGAffineTransform m = CGAffineTransformInvert([self frameAffineTransform]);
+  
+  CGPoint lp = CGPointApplyAffineTransform(p, m);
+
+  if (self.masksToBounds && !CGRectContainsPoint(self.bounds, lp))
+    return [NSArray array];
+
+  MgDrawableNode *mask = self.maskNode;
+  if (mask != nil && [[mask nodesContainingPoint:p] count] == 0)
+    return [NSArray array];
+
+  NSMutableArray *nodes = nil;
+
+  for (MgDrawableNode *node in self.contentNodes)
+    {
+      NSArray *array = [node nodesContainingPoint:lp];
+      if ([array count] != 0)
+	{
+	  if (nodes == nil)
+	    nodes = [[NSMutableArray alloc] init];
+	  [nodes addObjectsFromArray:array];
+	}
+    }
+
+  return nodes != nil ? nodes : [NSArray array];
+}
+
 /** Rendering. **/
 
 - (void)renderWithState:(MgDrawableRenderState *)rs

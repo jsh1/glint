@@ -238,6 +238,13 @@
     }
 }
 
+- (NSArray *)nodesContainingPoint:(CGPoint)p
+{
+  /* FIXME: implement this. */
+
+  return [NSArray array];
+}
+
 - (void)renderWithState:(MgDrawableRenderState *)rs
 {
   if (self.hidden)

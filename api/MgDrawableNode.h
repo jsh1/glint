@@ -40,6 +40,10 @@
 - (void)addAnimation:(MgAnimationNode *)anim;
 - (void)removeAnimation:(MgAnimationNode *)anim;
 
+/* Hit-testing. */
+
+- (NSArray *)nodesContainingPoint:(CGPoint)p;
+
 /* Rendering to a CGContext. What can possibly go wrong? */
 
 - (CFTimeInterval)renderInContext:(CGContextRef)ctx;

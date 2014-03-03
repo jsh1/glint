@@ -145,6 +145,13 @@ static NSMutableSet *image_provider_classes;
     }
 }
 
+- (NSArray *)nodesContainingPoint:(CGPoint)p
+{
+  /* FIXME: need rect.. */
+
+  return [NSArray array];
+}
+
 - (void)renderWithState:(MgDrawableRenderState *)rs
 {
   if (self.hidden)

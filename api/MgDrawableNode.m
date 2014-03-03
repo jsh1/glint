@@ -150,6 +150,11 @@
     block(anim);
 }
 
+- (NSArray *)nodesContainingPoint:(CGPoint)p
+{
+  return [NSArray array];
+}
+
 - (CFTimeInterval)renderInContext:(CGContextRef)ctx
 {
   return [self renderInContext:ctx atTime:CACurrentMediaTime()];
