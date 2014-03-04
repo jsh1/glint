@@ -564,7 +564,6 @@
   if ([self.contentNodes count] == 0)
     return;
 
-  CGAffineTransform m = [self parentTransform];
   BOOL group = self.group;
 
   MgDrawableRenderState r = *rs;
@@ -573,7 +572,7 @@
   r.alpha = group ? 1 : alpha;
 
   CGContextSaveGState(r.ctx);
-  CGContextConcatCTM(r.ctx, m);
+  CGContextConcatCTM(r.ctx, [self parentTransform]);
   CGContextSetAlpha(r.ctx, alpha);
   CGContextSetBlendMode(r.ctx, self.blendMode);
 

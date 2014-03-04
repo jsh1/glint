@@ -29,6 +29,10 @@
 
 #import "MgMacros.h"
 
+#if !__has_feature(objc_arc)
+# error Requires Objective C ARC enabled.
+#endif
+
 static NSUInteger version_counter;
 
 @implementation MgNode

@@ -42,6 +42,8 @@ filters suck" problem. Support N-input filters, e.g. either a filter
 attached to a layer that takes another drawable node as input, or make
 filters be drawable nodes themselves.
 
+- Coordinate space is relative to top-left corner, on both Mac and iOS.
+
 
 ## Class Hierarchy (work in progress)
 

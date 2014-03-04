@@ -171,9 +171,18 @@ static NSMutableSet *image_provider_classes;
 
   if (im != NULL)
     {
+      /* We're assuming top-left geometry, so flip images to keep them
+	 oriented the right way vertically. */
+
+      CGContextSaveGState(rs->ctx);
+      CGContextTranslateCTM(rs->ctx, 0, rs->layer.bounds.size.height);
+      CGContextScaleCTM(rs->ctx, 1, -1);
+
       /* FIXME: implement 9-part and tiling. */
 
       CGContextDrawImage(rs->ctx, rs->layer.bounds, im);
+
+      CGContextRestoreGState(rs->ctx);
 
       if (release_im)
 	CGImageRelease(im);
@@ -221,6 +230,9 @@ static NSMutableSet *image_provider_classes;
   self = [super initWithCoder:c];
   if (self == nil)
     return nil;
+
+  if (image_provider_classes == nil)
+    [MgImageNode registerImageProviderClass:[MgImageProvider class]];
 
   if (image_provider_classes != nil
       && [c containsValueForKey:@"imageProvider"])

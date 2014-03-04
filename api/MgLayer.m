@@ -1,4 +1,4 @@
-    /* -*- c-style: gnu -*-
+/* -*- c-style: gnu -*-
 
    Copyright (c) 2014 John Harper <jsh@unfactored.org>
 
@@ -99,25 +99,27 @@
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
      change:(NSDictionary *)dict context:(void *)ctx
 {
-  if ([NSThread isMainThread])
+  if ([keyPath isEqualToString:@"version"])
     {
       if (_rootNode != nil && _rootNode.version != _lastVersion)
 	[self setNeedsDisplay];
-    }
-  else
-    {
-      dispatch_async(dispatch_get_main_queue(), ^
-	{
-	  if (_rootNode != nil && _rootNode.version != _lastVersion)
-	    [self setNeedsDisplay];
-	});
     }
 }
 
 - (void)drawInContext:(CGContextRef)ctx
 {
+#if !TARGET_OS_IPHONE
+  CGContextSaveGState(ctx);
+  CGContextTranslateCTM(ctx, 0, self.bounds.size.height);
+  CGContextScaleCTM(ctx, 1, -1);
+#endif
+
   [_rootNode renderInContext:ctx]; 
   _lastVersion = _rootNode.version;
+
+#if !TARGET_OS_IPHONE
+  CGContextRestoreGState(ctx);
+#endif
 }
 
 @end
