@@ -38,8 +38,8 @@
 - (void)viewDidLoad
 {
   [[NSNotificationCenter defaultCenter]
-   addObserver:self selector:@selector(documentRootNodeChanged:)
-   name:YuDocumentRootNodeDidChange object:self.controller.document];
+   addObserver:self selector:@selector(documentNodeChanged:)
+   name:YuDocumentNodeDidChange object:self.controller.document];
 
   [[NSNotificationCenter defaultCenter]
    addObserver:self selector:@selector(documentSizeChanged:)
@@ -51,7 +51,7 @@
 
 }
 
-- (void)documentRootNodeChanged:(NSNotification *)note
+- (void)documentNodeChanged:(NSNotification *)note
 {
   [self.contentView setNeedsUpdate];
 }

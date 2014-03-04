@@ -24,7 +24,7 @@
 
 #import "YuBase.h"
 
-extern NSString *const YuDocumentRootNodeDidChange;
+extern NSString *const YuDocumentNodeDidChange;
 extern NSString *const YuDocumentSizeDidChange;
 
 @interface YuDocument : NSDocument
@@ -33,6 +33,6 @@ extern NSString *const YuDocumentSizeDidChange;
 @property(nonatomic, readonly, retain) YuWindowController *controller;
 
 @property(nonatomic, assign) CGSize documentSize;
-@property(nonatomic, retain) MgDrawableNode *rootNode;
+@property(nonatomic, retain) MgDrawableNode *documentNode;
 
 @end

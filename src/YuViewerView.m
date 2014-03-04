@@ -35,6 +35,7 @@
 @implementation YuViewerView
 {
   MgLayer *_nodeLayer;
+  MgLayerNode *_rootNode;
   CGPoint _viewCenter;
   CGFloat _viewScale;
 }
@@ -135,17 +136,22 @@
       [layer addSublayer:_nodeLayer];
     }
 
+  if (_rootNode == nil)
+    {
+      _rootNode = [MgLayerNode node];
+      _nodeLayer.rootNode = _rootNode;
+    }
+
   YuDocument *document = self.controller.document;
-
-  _nodeLayer.rootNode = document.rootNode;
-
-  CGFloat scale = self.viewScale;
-  _nodeLayer.affineTransform = CGAffineTransformMakeScale(scale, scale);
-
   CGSize size = document.documentSize;
-  _nodeLayer.bounds = CGRectMake(0, 0, size.width, size.height);
 
-  _nodeLayer.position = self.viewCenter;
+  _nodeLayer.frame = [layer bounds];
+  _nodeLayer.contentsScale = [[self window] backingScaleFactor];
+
+  _rootNode.scale = self.viewScale;
+  _rootNode.position = self.viewCenter;
+  _rootNode.bounds = CGRectMake(0, 0, size.width, size.height);
+  _rootNode.contentNodes = @[document.documentNode];
 }
 
 - (void)setNeedsUpdate
@@ -154,6 +160,11 @@
 }
 
 - (BOOL)isFlipped
+{
+  return NO;
+}
+
+- (BOOL)isOpaque
 {
   return YES;
 }

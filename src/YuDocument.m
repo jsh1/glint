@@ -28,14 +28,14 @@
 
 #import "MgCoderExtensions.h"
 
-NSString *const YuDocumentRootNodeDidChange = @"YuDocumentRootNodeDidChange";
+NSString *const YuDocumentNodeDidChange = @"YuDocumentNodeDidChange";
 NSString *const YuDocumentSizeDidChange = @"YuDocumentSizeDidChange";
 
 @implementation YuDocument
 {
   YuWindowController *_controller;
   CGSize _documentSize;
-  MgDrawableNode *_rootNode;
+  MgDrawableNode *_documentNode;
 }
 
 @synthesize controller = _controller;
@@ -60,19 +60,33 @@ NSString *const YuDocumentSizeDidChange = @"YuDocumentSizeDidChange";
   node.position = CGPointMake(width * .5, height * .5);
 
   self.documentSize = CGSizeMake(width, height);
-  self.rootNode = node;
+  self.documentNode = node;
 
 #if 1
-  MgRectNode *node4 = [MgRectNode node];
-  node4.fillColor = [[NSColor lightGrayColor] CGColor];
-  [node addContentNode:node4];
-  MgLayerNode *node2 = [MgLayerNode node];
-  node2.position = CGPointMake(200, 200);
-  node2.bounds = CGRectMake(0, 0, 100, 100);
-  [node addContentNode:node2];
-  MgRectNode *node3 = [MgRectNode node];
-  node3.fillColor = [[NSColor blueColor] CGColor];
-  [node2 addContentNode:node3];
+  MgRectNode *bg_rect = [MgRectNode node];
+  bg_rect.fillColor = [[NSColor lightGrayColor] CGColor];
+  [node addContentNode:bg_rect];
+
+  MgLayerNode *image_layer = [MgLayerNode node];
+  image_layer.position = CGPointMake(700, 400);
+  image_layer.bounds = CGRectMake(0, 0, 512, 512);
+  image_layer.rotation = -10 * (M_PI / 180);
+  [node addContentNode:image_layer];
+  MgImageNode *image_node = [MgImageNode node];
+  image_node.imageProvider = [MgImageProvider imageProviderWithURL:
+			      [NSURL fileURLWithPath:
+			       @"/Library/User Pictures/Animals/Parrot.tif"]];
+  [image_layer addContentNode:image_node];
+
+  MgLayerNode *rect_layer = [MgLayerNode node];
+  rect_layer.position = CGPointMake(350, 300);
+  rect_layer.bounds = CGRectMake(0, 0, 400, 250);
+  rect_layer.cornerRadius = 8;
+  rect_layer.alpha = .5;
+  [node addContentNode:rect_layer];
+  MgRectNode *rect_node = [MgRectNode node];
+  rect_node.fillColor = [[NSColor blueColor] CGColor];
+  [rect_layer addContentNode:rect_node];
 #endif
 
   return self;
@@ -99,19 +113,19 @@ NSString *const YuDocumentSizeDidChange = @"YuDocumentSizeDidChange";
     }
 }
 
-- (MgDrawableNode *)rootNode
+- (MgDrawableNode *)documentNode
 {
-  return _rootNode;
+  return _documentNode;
 }
 
-- (void)setRootNode:(MgDrawableNode *)node
+- (void)setDocumentNode:(MgDrawableNode *)node
 {
-  if (_rootNode != node)
+  if (_documentNode != node)
     {
-      _rootNode = node;
+      _documentNode = node;
 
       [[NSNotificationCenter defaultCenter]
-       postNotificationName:YuDocumentRootNodeDidChange object:self];
+       postNotificationName:YuDocumentNodeDidChange object:self];
     }
 }
 
@@ -131,7 +145,7 @@ NSString *const YuDocumentSizeDidChange = @"YuDocumentSizeDidChange";
 
       [archiver setDelegate:self];
       [archiver mg_encodeCGSize:_documentSize forKey:@"documentSize"];
-      [archiver encodeObject:_rootNode forKey:@"rootNode"];
+      [archiver encodeObject:_documentNode forKey:@"documentNode"];
       [archiver finishEncoding];
 
       return data;
@@ -151,8 +165,8 @@ NSString *const YuDocumentSizeDidChange = @"YuDocumentSizeDidChange";
       [unarchiver setDelegate:self];
 
       _documentSize = [unarchiver mg_decodeCGSizeForKey:@"documentSize"];
-      _rootNode = [unarchiver decodeObjectOfClass:
-		   [MgDrawableNode class] forKey:@"rootNode"];
+      _documentNode = [unarchiver decodeObjectOfClass:
+		       [MgDrawableNode class] forKey:@"documentNode"];
 
       [unarchiver finishDecoding];
 
