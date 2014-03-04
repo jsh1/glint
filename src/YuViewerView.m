@@ -29,9 +29,14 @@
 
 #import "MgLayer.h"
 
+#define MIN_SCALE (1. / 32)
+#define MAX_SCALE 32
+
 @implementation YuViewerView
 {
   MgLayer *_nodeLayer;
+  CGPoint _viewCenter;
+  CGFloat _viewScale;
 }
 
 - (id)initWithFrame:(NSRect)r
@@ -43,6 +48,73 @@
   _viewScale = 1;
 
   return self;
+}
+
++ (BOOL)automaticallyNotifiesObserversOfViewCenter
+{
+  return NO;
+}
+
+- (CGPoint)viewCenter
+{
+  return _viewCenter;
+}
+
+- (void)setViewCenter:(CGPoint)p
+{
+  if (!CGPointEqualToPoint(_viewCenter, p))
+    {
+      [self willChangeValueForKey:@"viewCenter"];
+      _viewCenter = p;
+      [self didChangeValueForKey:@"viewCenter"];
+      [self setNeedsUpdate];
+    }
+}
+
++ (BOOL)automaticallyNotifiesObserversOfViewScale
+{
+  return NO;
+}
+
+- (CGFloat)viewScale
+{
+  return _viewScale;
+}
+
+- (void)setViewScale:(CGFloat)s
+{
+  s = fmin(s, MAX_SCALE);
+  s = fmax(s, MIN_SCALE);
+
+  if (_viewScale != s)
+    {
+      [self willChangeValueForKey:@"viewScale"];
+      _viewScale = s;
+      [self didChangeValueForKey:@"viewScale"];
+      [self setNeedsUpdate];
+    }
+}
+
+- (CGFloat)zoomToFitScale
+{
+  CGSize view_size = [self bounds].size;
+  CGSize doc_size = self.controller.document.documentSize;
+
+  CGFloat sx = view_size.width / doc_size.width;
+  CGFloat sy = view_size.height / doc_size.height;
+
+  return fmin(sx, sy);
+}
+
+- (CGFloat)zoomToFillScale
+{
+  CGSize view_size = [self bounds].size;
+  CGSize doc_size = self.controller.document.documentSize;
+
+  CGFloat sx = view_size.width / doc_size.width;
+  CGFloat sy = view_size.height / doc_size.height;
+
+  return fmax(sx, sy);
 }
 
 - (BOOL)wantsUpdateLayer
@@ -60,19 +132,20 @@
     {
       _nodeLayer = [MgLayer layer];
       _nodeLayer.delegate = [NSApp delegate];
-      _nodeLayer.anchorPoint = CGPointZero;
       [layer addSublayer:_nodeLayer];
     }
 
   YuDocument *document = self.controller.document;
-  CGSize doc_size = document.documentSize;
-  CGPoint origin = self.viewOrigin;
-  CGFloat scale = self.viewScale;
 
   _nodeLayer.rootNode = document.rootNode;
+
+  CGFloat scale = self.viewScale;
   _nodeLayer.affineTransform = CGAffineTransformMakeScale(scale, scale);
-  _nodeLayer.bounds = CGRectMake(0, 0, doc_size.width, doc_size.height);
-  _nodeLayer.position = origin;
+
+  CGSize size = document.documentSize;
+  _nodeLayer.bounds = CGRectMake(0, 0, size.width, size.height);
+
+  _nodeLayer.position = self.viewCenter;
 }
 
 - (void)setNeedsUpdate
@@ -83,6 +156,31 @@
 - (BOOL)isFlipped
 {
   return YES;
+}
+
+- (void)mouseDown:(NSEvent *)e
+{
+}
+
+- (void)mouseDragged:(NSEvent *)e
+{
+}
+
+- (void)scrollWheel:(NSEvent *)e
+{
+  CGPoint o = self.viewCenter;
+  o.x += [e scrollingDeltaX];
+  o.y += [e scrollingDeltaY];
+  self.viewCenter = o;
+}
+
+- (void)magnifyWithEvent:(NSEvent *)e
+{
+  CGFloat s = self.viewScale;
+  s = s + [e magnification];
+  s = fmin(s, MAX_SCALE);
+  s = fmax(s, MIN_SCALE);
+  self.viewScale = s;
 }
 
 @end

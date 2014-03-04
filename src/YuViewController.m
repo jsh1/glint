@@ -94,6 +94,16 @@
   return nil;
 }
 
+- (void)foreachViewControllerWithClass:(Class)cls
+    handler:(void (^)(id obj))block
+{
+  if ([self isKindOfClass:cls])
+    block(self);
+
+  for (YuViewController *obj in _subviewControllers)
+    [obj foreachViewControllerWithClass:cls handler:block];
+}
+
 - (NSArray *)subviewControllers
 {
   return _subviewControllers;

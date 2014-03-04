@@ -28,8 +28,11 @@
 
 @property(nonatomic, weak) IBOutlet YuViewerViewController *controller;
 
-@property(nonatomic, assign) CGPoint viewOrigin;
+@property(nonatomic, assign) CGPoint viewCenter;
 @property(nonatomic, assign) CGFloat viewScale;
+
+- (CGFloat)zoomToFitScale;
+- (CGFloat)zoomToFillScale;
 
 - (void)setNeedsUpdate;
 

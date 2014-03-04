@@ -36,4 +36,10 @@
 - (void)saveWindowState;
 - (void)applySavedWindowState;
 
+- (IBAction)zoomInAction:(id)sender;
+- (IBAction)zoomOutAction:(id)sender;
+- (IBAction)zoomToAction:(id)sender;	/* zoom(2^[sender tag]) */
+- (IBAction)zoomToFitAction:(id)sender;
+- (IBAction)zoomToFillAction:(id)sender;
+
 @end

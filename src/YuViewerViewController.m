@@ -44,6 +44,11 @@
   [[NSNotificationCenter defaultCenter]
    addObserver:self selector:@selector(documentSizeChanged:)
    name:YuDocumentSizeDidChange object:self.controller.document];
+
+  CGRect bounds = [self.contentView bounds];
+  self.contentView.viewCenter = CGPointMake(CGRectGetMidX(bounds),
+					    CGRectGetMidY(bounds));
+
 }
 
 - (void)documentRootNodeChanged:(NSNotification *)note

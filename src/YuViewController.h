@@ -48,6 +48,8 @@
 @property(nonatomic, weak, readonly) YuDocument *document;
 
 - (YuViewController *)viewControllerWithClass:(Class)cls;
+- (void)foreachViewControllerWithClass:(Class)cls
+    handler:(void (^)(id obj))block;
 
 @property(nonatomic, weak, readonly) YuViewController *superviewController;
 @property(nonatomic, copy) NSArray *subviewControllers;

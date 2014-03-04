@@ -371,12 +371,14 @@
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="5gT-KC-WSO"/>
-                                        <menuItem title="Bigger" tag="3" keyEquivalent="+" id="Ptp-SP-VEL">
+                                        <menuItem title="Bigger" tag="3" id="Ptp-SP-VEL">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="modifyFont:" target="YLy-65-1bz" id="Uc7-di-UnL"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Smaller" tag="4" keyEquivalent="-" id="i1d-Er-qST">
+                                        <menuItem title="Smaller" tag="4" id="i1d-Er-qST">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="modifyFont:" target="YLy-65-1bz" id="HcX-Lf-eNd"/>
                                             </connections>
@@ -608,6 +610,64 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="View" id="HyV-fh-RgO">
                         <items>
+                            <menuItem title="Zoom In" keyEquivalent="=" id="2CS-ci-bqb">
+                                <connections>
+                                    <action selector="zoomInAction:" target="-1" id="CNb-yj-qh6"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Zoom Out" keyEquivalent="-" id="KZM-u9-gj0">
+                                <connections>
+                                    <action selector="zoomOutAction:" target="-1" id="hSB-Yf-GIZ"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Zoom To" id="e0H-4b-j0m">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="Zoom To" id="ELF-Bl-Wer">
+                                    <items>
+                                        <menuItem title="Fit" keyEquivalent="+" id="lNP-YT-Yys">
+                                            <connections>
+                                                <action selector="zoomToFitAction:" target="-1" id="DIg-aZ-FJj"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Fill" keyEquivalent="_" id="B0C-2j-i4U">
+                                            <connections>
+                                                <action selector="zoomToFillAction:" target="-1" id="iGg-Lf-dah"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="4Sk-yW-8tc"/>
+                                        <menuItem title="25%" tag="-2" id="FAQ-Rb-1PB">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="zoomToAction:" target="-1" id="naM-GN-lrv"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="50%" tag="-1" id="jMV-It-Iof">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="zoomToAction:" target="-1" id="oqp-oc-EBS"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="100%" keyEquivalent="0" id="GLZ-Cy-z40">
+                                            <connections>
+                                                <action selector="zoomToAction:" target="-1" id="rHU-KP-xwN"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="200%" tag="1" id="a4V-eA-JI6">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="zoomToAction:" target="-1" id="bxT-6l-T2I"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="400%" tag="1" id="wiM-5e-0at">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="zoomToAction:" target="-1" id="pMI-mm-3FU"/>
+                                            </connections>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="2U9-cf-kyj"/>
                             <menuItem title="Show Toolbar" keyEquivalent="t" id="snW-S8-Cw5">
                                 <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
                                 <connections>

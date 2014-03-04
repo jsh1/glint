@@ -28,6 +28,7 @@
 #import "YuDocument.h"
 #import "YuSplitView.h"
 #import "YuViewController.h"
+#import "YuViewerView.h"
 #import "YuViewerViewController.h"
 
 @implementation YuWindowController
@@ -106,6 +107,13 @@
   return nil;
 }
 
+- (void)foreachViewControllerWithClass:(Class)cls
+    handler:(void (^)(id obj))block
+{
+  for (YuViewController *obj in _viewControllers)
+    [obj foreachViewControllerWithClass:cls handler:block];
+}
+
 - (void)addSplitView:(YuSplitView *)view identifier:(NSString *)ident
 {
   [view setDelegate:self];
@@ -170,6 +178,58 @@
       if (sub != nil)
 	[view applySavedViewState:sub];
     }
+}
+
+- (IBAction)zoomInAction:(id)sender
+{
+  [self foreachViewControllerWithClass:[YuViewerViewController class]
+   handler:^(id obj)
+    {
+      YuViewerView *view = ((YuViewerViewController *)obj).contentView;
+      view.viewScale *= 2;
+    }];
+}
+
+- (IBAction)zoomOutAction:(id)sender
+{
+  [self foreachViewControllerWithClass:[YuViewerViewController class]
+   handler:^(id obj)
+    {
+      YuViewerView *view = ((YuViewerViewController *)obj).contentView;
+      view.viewScale *= .5;
+    }];
+}
+
+- (IBAction)zoomToAction:(id)sender
+{
+  CGFloat scale = pow(2, [sender tag]);
+
+  [self foreachViewControllerWithClass:[YuViewerViewController class]
+   handler:^(id obj)
+    {
+      YuViewerView *view = ((YuViewerViewController *)obj).contentView;
+      view.viewScale = scale;
+    }];
+}
+
+- (IBAction)zoomToFitAction:(id)sender
+{
+  [self foreachViewControllerWithClass:[YuViewerViewController class]
+   handler:^(id obj)
+    {
+      YuViewerView *view = ((YuViewerViewController *)obj).contentView;
+      view.viewScale = view.zoomToFitScale;
+    }];
+}
+
+- (IBAction)zoomToFillAction:(id)sender
+{
+  [self foreachViewControllerWithClass:[YuViewerViewController class]
+   handler:^(id obj)
+    {
+      YuViewerView *view = ((YuViewerViewController *)obj).contentView;
+      view.viewScale = view.zoomToFillScale;
+    }];
 }
 
 @end
