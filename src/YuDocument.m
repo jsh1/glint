@@ -155,6 +155,8 @@ NSString *const YuDocumentSizeDidChange = @"YuDocumentSizeDidChange";
 		   [MgDrawableNode class] forKey:@"rootNode"];
 
       [unarchiver finishDecoding];
+
+      return YES;
     }
 
   return NO;

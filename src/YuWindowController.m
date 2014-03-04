@@ -31,10 +31,15 @@
 #import "YuViewerView.h"
 #import "YuViewerViewController.h"
 
+#import "FoundationExtensions.h"
+
+NSString *const YuWindowControllerSelectionDidChange = @"YuWindowControllerSelectionDidChange";
+
 @implementation YuWindowController
 {
   NSMutableArray *_viewControllers;
   NSMutableDictionary *_splitViews;
+  NSSet *_selectedNodes;
 }
 
 - (id)init
@@ -180,6 +185,37 @@
     }
 }
 
++ (BOOL)automaticallyNotifiesObserversOfSelectedNodes
+{
+  return NO;
+}
+
+- (NSSet *)selectedNodes
+{
+  return _selectedNodes;
+}
+
+- (void)setSelectedNodes:(NSSet *)set
+{
+  if (![_selectedNodes isEqual:set])
+    {
+      [self willChangeValueForKey:@"selectedNodes"];
+      _selectedNodes = [set copy];
+      [self didChangeValueForKey:@"selectedNodes"];
+
+      [[NSNotificationCenter defaultCenter]
+       postNotificationName:YuWindowControllerSelectionDidChange object:self];
+    }
+}
+
+- (NSSet *)selectedLayerNodes
+{
+  return [_selectedNodes filteredSet:^BOOL (id obj)
+    {
+      return [obj isKindOfClass:[MgLayerNode class]];
+    }];
+}
+
 - (IBAction)zoomInAction:(id)sender
 {
   [self foreachViewControllerWithClass:[YuViewerViewController class]
@@ -208,7 +244,14 @@
    handler:^(id obj)
     {
       YuViewerView *view = ((YuViewerViewController *)obj).contentView;
-      view.viewScale = scale;
+      if (view.viewScale != scale)
+	view.viewScale = scale;
+      else
+	{
+	  CGRect bounds = [view bounds];
+	  view.viewCenter = CGPointMake(CGRectGetMidX(bounds),
+					CGRectGetMidY(bounds));
+	}
     }];
 }
 

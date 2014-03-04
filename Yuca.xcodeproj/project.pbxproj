@@ -12,6 +12,7 @@
 		5714A8C718BD322900ED67EE /* YuDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 5714A8C618BD322900ED67EE /* YuDocument.m */; };
 		5714A8CD18BD322900ED67EE /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5714A8CB18BD322900ED67EE /* MainMenu.xib */; };
 		5714A8CF18BD322900ED67EE /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5714A8CE18BD322900ED67EE /* Images.xcassets */; };
+		5721E87118C6212D000DA2C3 /* FoundationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5721E87018C6212D000DA2C3 /* FoundationExtensions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		572A5B1E18C4CD4100AB8086 /* YuSplitView.m in Sources */ = {isa = PBXBuildFile; fileRef = 572A5B1918C4CD4100AB8086 /* YuSplitView.m */; };
 		572A5B1F18C4CD4100AB8086 /* YuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 572A5B1B18C4CD4100AB8086 /* YuViewController.m */; };
 		572A5B2018C4CD4100AB8086 /* YuWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 572A5B1D18C4CD4100AB8086 /* YuWindowController.m */; };
@@ -60,6 +61,8 @@
 		5714A8C618BD322900ED67EE /* YuDocument.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = YuDocument.m; path = src/YuDocument.m; sourceTree = "<group>"; };
 		5714A8CC18BD322900ED67EE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		5714A8CE18BD322900ED67EE /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = resources/Images.xcassets; sourceTree = "<group>"; };
+		5721E86F18C6212D000DA2C3 /* FoundationExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FoundationExtensions.h; path = src/FoundationExtensions.h; sourceTree = "<group>"; };
+		5721E87018C6212D000DA2C3 /* FoundationExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FoundationExtensions.m; path = src/FoundationExtensions.m; sourceTree = "<group>"; };
 		572A5B1718C4CD4100AB8086 /* YuBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YuBase.h; path = src/YuBase.h; sourceTree = "<group>"; };
 		572A5B1818C4CD4100AB8086 /* YuSplitView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YuSplitView.h; path = src/YuSplitView.h; sourceTree = "<group>"; };
 		572A5B1918C4CD4100AB8086 /* YuSplitView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YuSplitView.m; path = src/YuSplitView.m; sourceTree = "<group>"; };
@@ -263,6 +266,8 @@
 				572A5B1D18C4CD4100AB8086 /* YuWindowController.m */,
 				57618DBC18C5D538004108D8 /* CoreAnimationExtensions.h */,
 				57618DBD18C5D538004108D8 /* CoreAnimationExtensions.m */,
+				5721E86F18C6212D000DA2C3 /* FoundationExtensions.h */,
+				5721E87018C6212D000DA2C3 /* FoundationExtensions.m */,
 				5714A8C118BD322900ED67EE /* Yuca-Prefix.pch */,
 				5714A8BF18BD322900ED67EE /* main.m */,
 			);
@@ -367,6 +372,7 @@
 				575F570318C357080034B28C /* MgRectNode.m in Sources */,
 				575F570218C357080034B28C /* MgPathNode.m in Sources */,
 				575F570618C357080034B28C /* MgTimingStorage.m in Sources */,
+				5721E87118C6212D000DA2C3 /* FoundationExtensions.m in Sources */,
 				575F570018C357080034B28C /* MgLayerNode.m in Sources */,
 				572A5B2018C4CD4100AB8086 /* YuWindowController.m in Sources */,
 				575F56FA18C357080034B28C /* MgBezierTimingFunction.mm in Sources */,

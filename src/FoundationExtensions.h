@@ -1,6 +1,6 @@
 /* -*- c-style: gnu -*-
 
-   Copyright (c) 2014 John Harper <jsh@unfactored.org>
+   Copyright (c) 2013 John Harper <jsh@unfactored.org>
 
    Permission is hereby granted, free of charge, to any person
    obtaining a copy of this software and associated documentation files
@@ -22,30 +22,44 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "YuBase.h"
+#import <Foundation/Foundation.h>
 
-extern NSString *const YuWindowControllerSelectionDidChange;
+@interface NSObject (FoundationExtensions)
 
-@interface YuWindowController : NSWindowController <NSSplitViewDelegate>
+/* Using this to avoid ARC warnings when calling -performSelector:. */
 
-@property(nonatomic, weak, readonly) YuDocument *document;
+- (void)performVoidSelector:(SEL)sel withObject:(id)arg;
 
-- (id)viewControllerWithClass:(Class)cls;
+@end
 
-- (void)addSplitView:(YuSplitView *)view identifier:(NSString *)ident;
-- (void)removeSplitView:(YuSplitView *)view identifier:(NSString *)ident;
+@interface NSString (FoundationExtensions)
 
-- (void)saveWindowState;
-- (void)applySavedWindowState;
+- (BOOL)isEqualToString:(NSString *)str caseInsensitive:(BOOL)flag;
 
-@property(nonatomic, copy) NSSet *selectedNodes;
+- (BOOL)hasPrefix:(NSString *)path caseInsensitive:(BOOL)flag;
 
-- (NSSet *)selectedLayerNodes;
+- (BOOL)hasPathPrefix:(NSString *)path;
+- (BOOL)hasPathPrefix:(NSString *)path caseInsensitive:(BOOL)flag;
 
-- (IBAction)zoomInAction:(id)sender;
-- (IBAction)zoomOutAction:(id)sender;
-- (IBAction)zoomToAction:(id)sender;	/* zoom(2^[sender tag]) */
-- (IBAction)zoomToFitAction:(id)sender;
-- (IBAction)zoomToFillAction:(id)sender;
+- (NSString *)stringByRemovingPathPrefix:(NSString *)path;
+- (NSString *)stringByRemovingPathPrefix:(NSString *)path
+    caseInsensitive:(BOOL)flag;
+  
+@end
+
+@interface NSArray (FoundationExtensions)
+
+- (NSArray *)mappedArray:(id (^)(id))f;
+- (NSArray *)filteredArray:(BOOL (^)(id))f;
+
+- (NSInteger)indexOfString:(NSString *)str caseInsensitive:(BOOL)flag;
+- (BOOL)containsString:(NSString *)str caseInsensitive:(BOOL)flag;
+
+@end
+
+@interface NSSet (FoundationExtensions)
+
+- (NSSet *)mappedSet:(id (^)(id))f;
+- (NSSet *)filteredSet:(BOOL (^)(id))f;
 
 @end
