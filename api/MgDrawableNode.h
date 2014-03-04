@@ -47,9 +47,9 @@
 
 /* For subclasses to override. */
 
-- (BOOL)containsPoint:(CGPoint)p layerBounds:(CGRect)r;
+- (BOOL)containsPoint:(CGPoint)p layerNode:(MgLayerNode *)node;
 - (void)addNodesContainingPoint:(CGPoint)p toSet:(NSMutableSet *)set
-    layerBounds:(CGRect)r;
+    layerNode:(MgLayerNode *)node;
 
 /* Rendering to a CGContext. What can possibly go wrong? */
 

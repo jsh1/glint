@@ -31,8 +31,7 @@ struct MgDrawableRenderState
   CGContextRef ctx;
   CFTimeInterval t;
   CFTimeInterval tnext;
-  CGRect bounds;
-  CGFloat cornerRadius;
+  __unsafe_unretained MgLayerNode *layer;
   float alpha;
 };
 

@@ -152,10 +152,10 @@
 
 - (BOOL)containsPoint:(CGPoint)p
 {
-  return [self containsPoint:p layerBounds:CGRectNull];
+  return [self containsPoint:p layerNode:nil];
 }
 
-- (BOOL)containsPoint:(CGPoint)p layerBounds:(CGRect)r
+- (BOOL)containsPoint:(CGPoint)p layerNode:(MgLayerNode *)node
 {
   return NO;
 }
@@ -163,14 +163,14 @@
 - (NSSet *)nodesContainingPoint:(CGPoint)p
 {
   NSMutableSet *set = [[NSMutableSet alloc] init];
-  [self addNodesContainingPoint:p toSet:set layerBounds:CGRectNull];
+  [self addNodesContainingPoint:p toSet:set layerNode:nil];
   return set;
 }
 
 - (void)addNodesContainingPoint:(CGPoint)p toSet:(NSMutableSet *)set
-    layerBounds:(CGRect)r
+    layerNode:(MgLayerNode *)node
 {
-  if (![set containsObject:self] && [self containsPoint:p layerBounds:r])
+  if (![set containsObject:self] && [self containsPoint:p layerNode:node])
     [set addObject:self];
 }
 
@@ -185,8 +185,7 @@
   rs.ctx = ctx;
   rs.t = t;
   rs.tnext = HUGE_VAL;
-  rs.bounds = CGRectNull;
-  rs.cornerRadius = 0;
+  rs.layer = nil;
   rs.alpha = 1;
 
   [self renderWithState:&rs];

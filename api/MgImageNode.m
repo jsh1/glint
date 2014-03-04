@@ -27,6 +27,7 @@
 #import "MgCoderExtensions.h"
 #import "MgDrawableNodeInternal.h"
 #import "MgImageProvider.h"
+#import "MgLayerNode.h"
 #import "MgNodeInternal.h"
 
 #import <Foundation/Foundation.h>
@@ -145,9 +146,9 @@ static NSMutableSet *image_provider_classes;
     }
 }
 
-- (NSArray *)nodesContainingPoint:(CGPoint)p layerBounds:(CGRect)r
+- (NSArray *)nodesContainingPoint:(CGPoint)p layerNode:(MgLayerNode *)node
 {
-  if (CGRectContainsPoint(r, p))
+  if (node != nil && CGRectContainsPoint(node.bounds, p))
     return [NSArray arrayWithObject:self];
   else
     return [NSArray array];
@@ -155,7 +156,7 @@ static NSMutableSet *image_provider_classes;
 
 - (void)renderWithState:(MgDrawableRenderState *)rs
 {
-  if (self.hidden)
+  if (self.hidden || rs->layer == nil)
     return;
 
   CGImageRef im = [self.imageProvider mg_providedImage];
@@ -172,7 +173,7 @@ static NSMutableSet *image_provider_classes;
     {
       /* FIXME: implement 9-part and tiling. */
 
-      CGContextDrawImage(rs->ctx, rs->bounds, im);
+      CGContextDrawImage(rs->ctx, rs->layer.bounds, im);
 
       if (release_im)
 	CGImageRelease(im);

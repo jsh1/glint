@@ -238,7 +238,7 @@
     }
 }
 
-- (BOOL)containsPoint:(CGPoint)p layerBounds:(CGRect)r
+- (BOOL)containsPoint:(CGPoint)p layerNode:(MgLayerNode *)node
 {
   /* FIXME: implement this. */
 

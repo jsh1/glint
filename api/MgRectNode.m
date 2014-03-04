@@ -27,6 +27,7 @@
 #import "MgCoderExtensions.h"
 #import "MgCoreGraphics.h"
 #import "MgDrawableNodeInternal.h"
+#import "MgLayerNode.h"
 #import "MgNodeInternal.h"
 
 #import <Foundation/Foundation.h>
@@ -137,39 +138,51 @@
     }
 }
 
-- (BOOL)containsPoint:(CGPoint)p layerBounds:(CGRect)r
+- (BOOL)containsPoint:(CGPoint)p layerNode:(MgLayerNode *)node
 {
-  return CGRectContainsPoint(r, p);
+  /* FIXME: rounded corners. */
+
+  return node != nil && CGRectContainsPoint(node.bounds, p);
 }
 
 - (void)renderWithState:(MgDrawableRenderState *)rs
 {
-  if (self.hidden)
+  if (self.hidden || rs->layer == nil)
     return;
 
   CGContextSaveGState(rs->ctx);
 
-  switch (self.drawingMode)
+  CGFloat radius = rs->layer.cornerRadius;
+  CGPathDrawingMode mode = self.drawingMode;
+
+  if (radius == 0 && (mode == kCGPathFill || mode == kCGPathEOFill))
     {
-    case kCGPathFill:
-    case kCGPathEOFill:
       CGContextSetFillColorWithColor(rs->ctx, self.fillColor);
-      CGContextFillRect(rs->ctx, rs->bounds);
-      break;
-
-    case kCGPathStroke:
+      CGContextFillRect(rs->ctx, rs->layer.bounds);
+    }
+  else if (radius == 0 && mode == kCGPathStroke)
+    {
       CGContextSetStrokeColorWithColor(rs->ctx, self.strokeColor);
-      CGContextStrokeRectWithWidth(rs->ctx, rs->bounds, self.lineWidth);
-      break;
-
-    default:
+      CGContextStrokeRectWithWidth(rs->ctx, rs->layer.bounds, self.lineWidth);
+    }
+  else
+    {
       CGContextSetFillColorWithColor(rs->ctx, self.fillColor);
       CGContextSetStrokeColorWithColor(rs->ctx, self.strokeColor);
       CGContextSetLineWidth(rs->ctx, self.lineWidth);
+
       CGContextBeginPath(rs->ctx);
-      CGContextAddRect(rs->ctx, rs->bounds);
+      if (radius == 0)
+	CGContextAddRect(rs->ctx, rs->layer.bounds);
+      else
+	{
+	  CGPathRef p = CGPathCreateWithRoundedRect(rs->layer.bounds,
+						    radius, radius, NULL);
+	  CGContextAddPath(rs->ctx, p);
+	  CGPathRelease(p);
+	}
+
       CGContextDrawPath(rs->ctx, self.drawingMode);
-      break;
     }
 
   CGContextRestoreGState(rs->ctx);

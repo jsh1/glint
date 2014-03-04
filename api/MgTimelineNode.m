@@ -264,15 +264,15 @@
     block(_node);
 }
 
-- (BOOL)containsPoint:(CGPoint)p layerBounds:(CGRect)r
+- (BOOL)containsPoint:(CGPoint)p layerNode:(MgLayerNode *)node
 {
-  return [_node containsPoint:p layerBounds:r];
+  return [_node containsPoint:p layerNode:node];
 }
 
 - (void)addNodesContainingPoint:(CGPoint)p toSet:(NSMutableSet *)set
-    layerBounds:(CGRect)r
+    layerNode:(MgLayerNode *)node
 {
-  [_node addNodesContainingPoint:p toSet:set layerBounds:r];
+  [_node addNodesContainingPoint:p toSet:set layerNode:node];
 }
 
 - (void)renderWithState:(MgDrawableRenderState *)rs

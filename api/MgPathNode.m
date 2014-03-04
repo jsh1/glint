@@ -272,7 +272,7 @@
     }
 }
 
-- (BOOL)containsPoint:(CGPoint)p layerBounds:(CGRect)r
+- (BOOL)containsPoint:(CGPoint)p layerNode:(MgLayerNode *)node
 {
   CGPathRef path = self.path;
   if (path == NULL)
@@ -327,7 +327,7 @@
       MgContextSetLineDash(rs->ctx, (__bridge CFArrayRef)self.lineDashPattern,
 			   self.lineDashPhase);
       CGContextBeginPath(rs->ctx);
-      CGContextAddRect(rs->ctx, rs->bounds);
+      CGContextAddPath(rs->ctx, self.path);
       CGContextDrawPath(rs->ctx, self.drawingMode);
       break;
     }

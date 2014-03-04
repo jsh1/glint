@@ -512,7 +512,7 @@
     block(_maskNode);
 }
 
-- (BOOL)containsPoint:(CGPoint)p layerBounds:(CGRect)r
+- (BOOL)containsPoint:(CGPoint)p layerNode:(MgLayerNode *)node
 {
   /* Map point into our coordinate space. */
 
@@ -524,12 +524,12 @@
     return NO;
 
   MgDrawableNode *mask = self.maskNode;
-  if (mask != nil && ![mask containsPoint:p layerBounds:r])
+  if (mask != nil && ![mask containsPoint:p layerNode:node])
     return NO;
 
   for (MgDrawableNode *node in self.contentNodes)
     {
-      if ([node containsPoint:lp layerBounds:self.bounds])
+      if ([node containsPoint:lp layerNode:self])
 	return YES;
     }
 
@@ -537,7 +537,7 @@
 }
 
 - (void)addNodesContainingPoint:(CGPoint)p toSet:(NSMutableSet *)set
-    layerBounds:(CGRect)r;
+    layerNode:(MgLayerNode *)node
 {
   /* Map point into our coordinate space. */
 
@@ -549,12 +549,12 @@
     return;
 
   MgDrawableNode *mask = self.maskNode;
-  if (mask != nil && ![mask containsPoint:p layerBounds:r])
+  if (mask != nil && ![mask containsPoint:p layerNode:node])
     return;
 
   for (MgDrawableNode *node in self.contentNodes)
     {
-      [node addNodesContainingPoint:lp toSet:set layerBounds:self.bounds];
+      [node addNodesContainingPoint:lp toSet:set layerNode:self];
     }
 }
 
@@ -578,8 +578,7 @@
 
   MgDrawableRenderState r = *rs;
   r.tnext = HUGE_VAL;
-  r.bounds = self.bounds;
-  r.cornerRadius = self.cornerRadius;
+  r.layer = self;
   r.alpha = group ? 1 : alpha;
 
   CGContextSaveGState(r.ctx);
@@ -589,12 +588,13 @@
 
   if (self.masksToBounds)
     {
-      if (r.cornerRadius == 0)
-	CGContextClipToRect(r.ctx, r.bounds);
+      CGFloat radius = self.cornerRadius;
+      if (radius == 0)
+	CGContextClipToRect(r.ctx, self.bounds);
       else
 	{
-	  CGPathRef p = CGPathCreateWithRoundedRect(r.bounds, r.cornerRadius,
-						    r.cornerRadius, NULL);
+	  CGPathRef p = CGPathCreateWithRoundedRect(self.bounds,
+						    radius, radius, NULL);
 	  CGContextBeginPath(r.ctx);
 	  CGContextAddPath(r.ctx, p);
 	  CGPathRelease(p);
