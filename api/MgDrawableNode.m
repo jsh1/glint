@@ -35,12 +35,6 @@
   NSMutableArray *_animations;
 }
 
-- (void)dealloc
-{
-  for (MgAnimationNode *anim in _animations)
-    [anim removeReference:self];
-}
-
 + (BOOL)automaticallyNotifiesObserversOfHidden
 {
   return NO;

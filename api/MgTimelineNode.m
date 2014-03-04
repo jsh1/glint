@@ -36,11 +36,6 @@
   MgDrawableNode *_node;
 }
 
-- (void)dealloc
-{
-  [_node removeReference:self];
-}
-
 + (BOOL)automaticallyNotifiesObserversOfBegin
 {
   return NO;

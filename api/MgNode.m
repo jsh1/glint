@@ -117,6 +117,8 @@ static NSUInteger version_counter;
   NSPointerArray *array = _references;
   if (array == nil)
     array = _references = [NSPointerArray weakObjectsPointerArray];
+  else
+    [array compact];
 
   [self willChangeValueForKey:@"references"];
 
@@ -134,8 +136,6 @@ static NSUInteger version_counter;
 {
   NSPointerArray *array = _references;
 
-  assert (array != nil);
-
   NSInteger idx = 0;
   for (id ptr in array)
     {
@@ -144,13 +144,12 @@ static NSUInteger version_counter;
       idx++;
     }
 
-  assert (idx < [array count]);
-
-  [self willChangeValueForKey:@"references"];
-
-  [array removePointerAtIndex:idx];
-
-  [self didChangeValueForKey:@"references"];
+  if (idx < [array count])
+    {
+      [self willChangeValueForKey:@"references"];
+      [array removePointerAtIndex:idx];
+      [self didChangeValueForKey:@"references"];
+    }
 }
 
 struct foreach_node
@@ -239,11 +238,20 @@ foreach_path_to_node(MgNode *node, MgNode *root, bool reversed,
 
 - (void)encodeWithCoder:(NSCoder *)c
 {
+  if (_name != nil)
+    [c encodeObject:_name forKey:@"name"];
 }
 
 - (id)initWithCoder:(NSCoder *)c
 {
-  return [self init];
+  self = [self init];
+  if (self == nil)
+    return nil;
+
+  if ([c containsValueForKey:@"name"])
+    _name = [[c decodeObjectOfClass:[NSString class] forKey:@"name"] copy];
+
+  return self;
 }
 
 @end

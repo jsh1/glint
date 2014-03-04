@@ -64,15 +64,6 @@
   return self;
 }
 
-- (void)dealloc
-{
-  for (MgDrawableNode *node in _contentNodes)
-    [node removeReference:self];
-
-  if (_maskNode != nil)
-    [_maskNode removeReference:self];
-}
-
 + (BOOL)automaticallyNotifiesObserversOfPosition
 {
   return NO;
@@ -733,8 +724,6 @@
 
   if ([c containsValueForKey:@"skew"])
     _skew = [c decodeDoubleForKey:@"skew"];
-  else
-    _skew = 1;
 
   if ([c containsValueForKey:@"rotation"])
     _rotation = [c decodeDoubleForKey:@"rotation"];

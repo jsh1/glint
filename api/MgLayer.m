@@ -64,9 +64,7 @@
 - (void)dealloc
 {
   if ([self modelLayer] == self)
-    {
-      [_rootNode removeObserver:self forKeyPath:@"version"];
-    }
+    [_rootNode removeObserver:self forKeyPath:@"version"];
 }
 
 + (BOOL)automaticallyNotifiesObserversOfRootNode

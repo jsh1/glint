@@ -48,9 +48,17 @@
   [self encodeObject:[NSValue valueWithBytes:&m objCType:@encode(CGAffineTransform)] forKey:key];
 }
 
+struct mgColorComponents
+{
+  CGFloat rgba[4];
+};
+
 - (void)mg_encodeCGColor:(CGColorRef)c forKey:(NSString *)key
 {
-  /* FIXME: implement this. */
+  /* Need an intermediary that can serialize the color. CIColor
+     doesn't handle pattern colors, but should be okay otherwise. */
+
+  [self encodeObject:[CIColor colorWithCGColor:c] forKey:key];
 }
 
 - (void)mg_encodeCGPath:(CGPathRef)p forKey:(NSString *)key
@@ -106,9 +114,11 @@ decodeType(NSCoder *c, NSString *key, const char *type, void *ptr)
 
 - (CGColorRef)mg_decodeCGColorForKey:(NSString *)key
 {
-  /* FIXME: implement this. */
-
-  return NULL;
+  CIColor *tem = [self decodeObjectOfClass:[CIColor class] forKey:key];
+  if (tem != nil)
+    return CGColorCreate([tem colorSpace], [tem components]);
+  else
+    return NULL;
 }
 
 - (CGPathRef)mg_decodeCGPathForKey:(NSString *)key
