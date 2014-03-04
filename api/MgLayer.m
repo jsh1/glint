@@ -1,4 +1,4 @@
-/* -*- c-style: gnu -*-
+    /* -*- c-style: gnu -*-
 
    Copyright (c) 2014 John Harper <jsh@unfactored.org>
 
@@ -45,10 +45,6 @@
     return @YES;
   else if ([key isEqualToString:@"drawsAsynchronously"])
     return @YES;
-#if !TARGET_OS_IPHONE
-  else if ([key isEqualToString:@"geometryFlipped"])
-    return @YES;
-#endif
   else
     return [super defaultValueForKey:key];
 }
