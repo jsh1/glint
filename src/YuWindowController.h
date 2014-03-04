@@ -28,7 +28,7 @@
 
 @property(nonatomic, weak, readonly) YuDocument *document;
 
-- (YuViewController *)viewControllerWithClass:(Class)cls;
+- (id)viewControllerWithClass:(Class)cls;
 
 - (void)addSplitView:(YuSplitView *)view identifier:(NSString *)ident;
 - (void)removeSplitView:(YuSplitView *)view identifier:(NSString *)ident;

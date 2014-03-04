@@ -1,6 +1,6 @@
 /* -*- c-style: gnu -*-
 
-   Copyright (c) 2014 John Harper <jsh@unfactored.org>
+   Copyright (c) 2013 John Harper <jsh@unfactored.org>
 
    Permission is hereby granted, free of charge, to any person
    obtaining a copy of this software and associated documentation files
@@ -22,17 +22,19 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "YuBase.h"
+#import <QuartzCore/CoreAnimation.h>
 
-extern NSString *const YuDocumentRootNodeDidChange;
-extern NSString *const YuDocumentSizeDidChange;
+@interface CATransaction (CoreAnimationExtensions)
 
-@interface YuDocument : NSDocument
-    <NSKeyedArchiverDelegate, NSKeyedUnarchiverDelegate>
+/* Block-based implicit animation enable. Implicit animations are
+   disabled by default, and still cancelled by the CATransaction
+   disableActions property. */
 
-@property(nonatomic, readonly, retain) YuWindowController *controller;
++ (void)animationBlock:(void (^)())thunk;
++ (void)animationProperties:(NSDictionary *)dict block:(void (^)())thunk;
 
-@property(nonatomic, assign) CGSize documentSize;
-@property(nonatomic, retain) MgDrawableNode *rootNode;
+/* Call this from each layer's delegate method. */
+
++ (id)actionForLayer:(CALayer *)layer forKey:(NSString *)key;
 
 @end

@@ -32,7 +32,8 @@
 #endif
 
 #ifdef __OBJC__
-@class YuDocument, YuSplitView, YuViewController, YuWindowController;
+@class YuDocument, YuSplitView, YuViewController, YuWindowController,
+    YuViewerView, YuViewerViewController;
 #endif
 
 #endif /* YU_BASE_H */

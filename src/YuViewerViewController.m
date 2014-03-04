@@ -22,17 +22,38 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "YuBase.h"
+#import "YuViewerViewController.h"
 
-extern NSString *const YuDocumentRootNodeDidChange;
-extern NSString *const YuDocumentSizeDidChange;
+#import "YuDocument.h"
+#import "YuViewerView.h"
+#import "YuWindowController.h"
 
-@interface YuDocument : NSDocument
-    <NSKeyedArchiverDelegate, NSKeyedUnarchiverDelegate>
+@implementation YuViewerViewController
 
-@property(nonatomic, readonly, retain) YuWindowController *controller;
+- (NSString *)viewNibName
+{
+  return @"YuViewerView";
+}
 
-@property(nonatomic, assign) CGSize documentSize;
-@property(nonatomic, retain) MgDrawableNode *rootNode;
+- (void)viewDidLoad
+{
+  [[NSNotificationCenter defaultCenter]
+   addObserver:self selector:@selector(documentRootNodeChanged:)
+   name:YuDocumentRootNodeDidChange object:self.controller.document];
+
+  [[NSNotificationCenter defaultCenter]
+   addObserver:self selector:@selector(documentSizeChanged:)
+   name:YuDocumentSizeDidChange object:self.controller.document];
+}
+
+- (void)documentRootNodeChanged:(NSNotification *)note
+{
+  [self.contentView setNeedsUpdate];
+}
+
+- (void)documentSizeChanged:(NSNotification *)note
+{
+  [self.contentView setNeedsUpdate];
+}
 
 @end

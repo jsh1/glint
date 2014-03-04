@@ -32,6 +32,10 @@
 		575F570418C357080034B28C /* MgTimelineNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 575F56EF18C357080034B28C /* MgTimelineNode.m */; };
 		575F570518C357080034B28C /* MgTimingFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 575F56F218C357080034B28C /* MgTimingFunction.m */; };
 		575F570618C357080034B28C /* MgTimingStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 575F56F418C357080034B28C /* MgTimingStorage.m */; };
+		57618DB718C5D1B6004108D8 /* YuViewerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 57618DB418C5D1B6004108D8 /* YuViewerView.m */; };
+		57618DB818C5D1B6004108D8 /* YuViewerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 57618DB618C5D1B6004108D8 /* YuViewerViewController.m */; };
+		57618DBB18C5D1F5004108D8 /* YuViewerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 57618DB918C5D1F5004108D8 /* YuViewerView.xib */; };
+		57618DBE18C5D538004108D8 /* CoreAnimationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 57618DBD18C5D538004108D8 /* CoreAnimationExtensions.m */; };
 		579CAFD118C381BD0051454F /* MgCoreGraphics.c in Sources */ = {isa = PBXBuildFile; fileRef = 579CAFCF18C381BD0051454F /* MgCoreGraphics.c */; };
 		579CAFD518C38B9C0051454F /* MgImageProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 579CAFD418C38B9C0051454F /* MgImageProvider.m */; };
 		579CAFD918C3F63A0051454F /* MgCoderExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 579CAFD818C3F63A0051454F /* MgCoderExtensions.m */; };
@@ -99,6 +103,13 @@
 		575F56F318C357080034B28C /* MgTimingStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgTimingStorage.h; sourceTree = "<group>"; };
 		575F56F418C357080034B28C /* MgTimingStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgTimingStorage.m; sourceTree = "<group>"; };
 		575F56F718C357080034B28C /* MgUnitBezier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgUnitBezier.h; sourceTree = "<group>"; };
+		57618DB318C5D1B6004108D8 /* YuViewerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YuViewerView.h; path = src/YuViewerView.h; sourceTree = "<group>"; };
+		57618DB418C5D1B6004108D8 /* YuViewerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YuViewerView.m; path = src/YuViewerView.m; sourceTree = "<group>"; };
+		57618DB518C5D1B6004108D8 /* YuViewerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YuViewerViewController.h; path = src/YuViewerViewController.h; sourceTree = "<group>"; };
+		57618DB618C5D1B6004108D8 /* YuViewerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YuViewerViewController.m; path = src/YuViewerViewController.m; sourceTree = "<group>"; };
+		57618DBA18C5D1F5004108D8 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = resources/en.lproj/YuViewerView.xib; sourceTree = "<group>"; };
+		57618DBC18C5D538004108D8 /* CoreAnimationExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CoreAnimationExtensions.h; path = src/CoreAnimationExtensions.h; sourceTree = "<group>"; };
+		57618DBD18C5D538004108D8 /* CoreAnimationExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CoreAnimationExtensions.m; path = src/CoreAnimationExtensions.m; sourceTree = "<group>"; };
 		579CAFCB18C377F90051454F /* MgDrawableNodeInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgDrawableNodeInternal.h; sourceTree = "<group>"; };
 		579CAFCF18C381BD0051454F /* MgCoreGraphics.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = MgCoreGraphics.c; path = magnesium/util/MgCoreGraphics.c; sourceTree = SOURCE_ROOT; };
 		579CAFD018C381BD0051454F /* MgCoreGraphics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MgCoreGraphics.h; path = magnesium/util/MgCoreGraphics.h; sourceTree = SOURCE_ROOT; };
@@ -244,8 +255,14 @@
 				572A5B1918C4CD4100AB8086 /* YuSplitView.m */,
 				572A5B1A18C4CD4100AB8086 /* YuViewController.h */,
 				572A5B1B18C4CD4100AB8086 /* YuViewController.m */,
+				57618DB318C5D1B6004108D8 /* YuViewerView.h */,
+				57618DB418C5D1B6004108D8 /* YuViewerView.m */,
+				57618DB518C5D1B6004108D8 /* YuViewerViewController.h */,
+				57618DB618C5D1B6004108D8 /* YuViewerViewController.m */,
 				572A5B1C18C4CD4100AB8086 /* YuWindowController.h */,
 				572A5B1D18C4CD4100AB8086 /* YuWindowController.m */,
+				57618DBC18C5D538004108D8 /* CoreAnimationExtensions.h */,
+				57618DBD18C5D538004108D8 /* CoreAnimationExtensions.m */,
 				5714A8C118BD322900ED67EE /* Yuca-Prefix.pch */,
 				5714A8BF18BD322900ED67EE /* main.m */,
 			);
@@ -257,6 +274,7 @@
 			children = (
 				5714A8CB18BD322900ED67EE /* MainMenu.xib */,
 				572A5B2618C4CF6200AB8086 /* YuWindow.xib */,
+				57618DB918C5D1F5004108D8 /* YuViewerView.xib */,
 			);
 			name = Nibs;
 			sourceTree = "<group>";
@@ -327,6 +345,7 @@
 			files = (
 				572A5B2818C4CF6200AB8086 /* YuWindow.xib in Resources */,
 				5714A8CF18BD322900ED67EE /* Images.xcassets in Resources */,
+				57618DBB18C5D1F5004108D8 /* YuViewerView.xib in Resources */,
 				572A5B2518C4CEE700AB8086 /* defaults.plist in Resources */,
 				5714A8BE18BD322900ED67EE /* InfoPlist.strings in Resources */,
 				5714A8CD18BD322900ED67EE /* MainMenu.xib in Resources */,
@@ -353,14 +372,17 @@
 				575F56FA18C357080034B28C /* MgBezierTimingFunction.mm in Sources */,
 				579CAFD118C381BD0051454F /* MgCoreGraphics.c in Sources */,
 				572A5B1F18C4CD4100AB8086 /* YuViewController.m in Sources */,
+				57618DBE18C5D538004108D8 /* CoreAnimationExtensions.m in Sources */,
 				57FB21DC18C5181100B4BF6C /* MgLayer.m in Sources */,
 				575F56F918C357080034B28C /* MgBasicAnimationNode.m in Sources */,
 				572A5B2318C4CE2000AB8086 /* YuAppDelegate.m in Sources */,
 				5714A8C718BD322900ED67EE /* YuDocument.m in Sources */,
 				572A5B1E18C4CD4100AB8086 /* YuSplitView.m in Sources */,
 				575F56FF18C357080034B28C /* MgImageNode.m in Sources */,
+				57618DB718C5D1B6004108D8 /* YuViewerView.m in Sources */,
 				575F56FC18C357080034B28C /* MgDrawableNode.m in Sources */,
 				5714A8C018BD322900ED67EE /* main.m in Sources */,
+				57618DB818C5D1B6004108D8 /* YuViewerViewController.m in Sources */,
 				575F56FE18C357080034B28C /* MgGradientNode.m in Sources */,
 				575F570418C357080034B28C /* MgTimelineNode.m in Sources */,
 				575F570518C357080034B28C /* MgTimingFunction.m in Sources */,
@@ -394,6 +416,14 @@
 				572A5B2718C4CF6200AB8086 /* en */,
 			);
 			name = YuWindow.xib;
+			sourceTree = "<group>";
+		};
+		57618DB918C5D1F5004108D8 /* YuViewerView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				57618DBA18C5D1F5004108D8 /* en */,
+			);
+			name = YuViewerView.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

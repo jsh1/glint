@@ -24,8 +24,6 @@
 
 #import "YuBase.h"
 
-@class YuWindowController;
-
 @interface YuViewController : NSViewController
 
 + (NSString *)viewNibName;
@@ -47,6 +45,7 @@
 - (void)viewDidDisappear;
 
 @property(nonatomic, weak, readonly) YuWindowController *controller;
+@property(nonatomic, weak, readonly) YuDocument *document;
 
 - (YuViewController *)viewControllerWithClass:(Class)cls;
 

@@ -22,17 +22,67 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "YuBase.h"
+#import "YuViewerView.h"
 
-extern NSString *const YuDocumentRootNodeDidChange;
-extern NSString *const YuDocumentSizeDidChange;
+#import "YuDocument.h"
+#import "YuViewerViewController.h"
 
-@interface YuDocument : NSDocument
-    <NSKeyedArchiverDelegate, NSKeyedUnarchiverDelegate>
+#import "MgLayer.h"
 
-@property(nonatomic, readonly, retain) YuWindowController *controller;
+@implementation YuViewerView
+{
+  MgLayer *_nodeLayer;
+}
 
-@property(nonatomic, assign) CGSize documentSize;
-@property(nonatomic, retain) MgDrawableNode *rootNode;
+- (id)initWithFrame:(NSRect)r
+{
+  self = [super initWithFrame:r];
+  if (self == nil)
+    return nil;
+
+  _viewScale = 1;
+
+  return self;
+}
+
+- (BOOL)wantsUpdateLayer
+{
+  return YES;
+}
+
+- (void)updateLayer
+{
+  CALayer *layer = [self layer];
+
+  layer.backgroundColor = [[NSColor darkGrayColor] CGColor];
+
+  if (_nodeLayer == nil)
+    {
+      _nodeLayer = [MgLayer layer];
+      _nodeLayer.delegate = [NSApp delegate];
+      _nodeLayer.anchorPoint = CGPointZero;
+      [layer addSublayer:_nodeLayer];
+    }
+
+  YuDocument *document = self.controller.document;
+  CGSize doc_size = document.documentSize;
+  CGPoint origin = self.viewOrigin;
+  CGFloat scale = self.viewScale;
+
+  _nodeLayer.rootNode = document.rootNode;
+  _nodeLayer.affineTransform = CGAffineTransformMakeScale(scale, scale);
+  _nodeLayer.bounds = CGRectMake(0, 0, doc_size.width, doc_size.height);
+  _nodeLayer.position = origin;
+}
+
+- (void)setNeedsUpdate
+{
+  [self setNeedsDisplay:YES];
+}
+
+- (BOOL)isFlipped
+{
+  return YES;
+}
 
 @end

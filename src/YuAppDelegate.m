@@ -24,10 +24,16 @@
 
 #import "YuAppDelegate.h"
 
+#import "CoreAnimationExtensions.h"
+
 @implementation YuAppDelegate
 
-- (void)applicationDidFinishLaunching:(NSNotification *)aNotification
+- (id)init
 {
+  self = [super init];
+  if (self == nil)
+    return nil;
+
   NSString *path = [[NSBundle mainBundle]
 		    pathForResource:@"defaults" ofType:@"plist"];
   if (path != nil)
@@ -44,6 +50,15 @@
 	    [[NSUserDefaults standardUserDefaults] registerDefaults:dict];
 	}
     }
+
+  return self;
+}
+
+/** CALayer delegate methods. **/
+
+- (id<CAAction>)actionForLayer:(CALayer *)layer forKey:(NSString *)key
+{
+  return [CATransaction actionForLayer:layer forKey:key];
 }
 
 /** NSMenuDelegate methods. **/

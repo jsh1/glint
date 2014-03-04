@@ -28,6 +28,9 @@
 
 #import "MgCoderExtensions.h"
 
+NSString *const YuDocumentRootNodeDidChange = @"YuDocumentRootNodeDidChange";
+NSString *const YuDocumentSizeDidChange = @"YuDocumentSizeDidChange";
+
 @implementation YuDocument
 {
   YuWindowController *_controller;
@@ -59,6 +62,19 @@
   self.documentSize = CGSizeMake(width, height);
   self.rootNode = node;
 
+#if 1
+  MgRectNode *node4 = [MgRectNode node];
+  node4.fillColor = [[NSColor lightGrayColor] CGColor];
+  [node addContentNode:node4];
+  MgLayerNode *node2 = [MgLayerNode node];
+  node2.position = CGPointMake(200, 200);
+  node2.bounds = CGRectMake(0, 0, 100, 100);
+  [node addContentNode:node2];
+  MgRectNode *node3 = [MgRectNode node];
+  node3.fillColor = [[NSColor blueColor] CGColor];
+  [node2 addContentNode:node3];
+#endif
+
   return self;
 }
 
@@ -77,6 +93,9 @@
   if (!CGSizeEqualToSize(_documentSize, s))
     {
       _documentSize = s;
+
+      [[NSNotificationCenter defaultCenter]
+       postNotificationName:YuDocumentSizeDidChange object:self];
     }
 }
 
@@ -90,6 +109,9 @@
   if (_rootNode != node)
     {
       _rootNode = node;
+
+      [[NSNotificationCenter defaultCenter]
+       postNotificationName:YuDocumentRootNodeDidChange object:self];
     }
 }
 

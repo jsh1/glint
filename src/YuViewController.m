@@ -58,6 +58,17 @@
   return self;
 }
 
+- (void)dealloc
+{
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+  [NSRunLoop cancelPreviousPerformRequestsWithTarget:self];
+}
+
+- (YuDocument *)document
+{
+  return _controller.document;
+}
+
 - (NSString *)identifier
 {
   NSString *ident = NSStringFromClass([self class]);

@@ -28,6 +28,7 @@
 #import "YuDocument.h"
 #import "YuSplitView.h"
 #import "YuViewController.h"
+#import "YuViewerViewController.h"
 
 @implementation YuWindowController
 {
@@ -67,18 +68,33 @@
 {
   NSWindow *window = [self window];
 
+  [self addViewController:[YuViewerViewController class]];
+
   [self applySavedWindowState];
 
-#if 0
-  [window setInitialFirstResponder:
-   [[self viewControllerWithClass:[YuCanvasViewController class]]
-    initialFirstResponder]];
-#endif
+  YuViewerViewController *viewer
+    = [self viewControllerWithClass:[YuViewerViewController class]];
+
+  /* FIXME: replace by something else. */
+
+  [window setContentView:[viewer view]];
+
+  [window setInitialFirstResponder:[viewer initialFirstResponder]];
 
   [window makeFirstResponder:[window initialFirstResponder]];
 }
 
-- (YuViewController *)viewControllerWithClass:(Class)cls
+- (id)addViewController:(Class)cls
+{
+  YuViewController *obj = [[cls alloc] initWithController:self];
+
+  if (obj != nil)
+    [_viewControllers addObject:obj];
+
+  return obj;
+}
+
+- (id)viewControllerWithClass:(Class)cls
 {
   for (YuViewController *obj in _viewControllers)
     {

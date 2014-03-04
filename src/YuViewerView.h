@@ -24,15 +24,13 @@
 
 #import "YuBase.h"
 
-extern NSString *const YuDocumentRootNodeDidChange;
-extern NSString *const YuDocumentSizeDidChange;
+@interface YuViewerView : NSView
 
-@interface YuDocument : NSDocument
-    <NSKeyedArchiverDelegate, NSKeyedUnarchiverDelegate>
+@property(nonatomic, weak) IBOutlet YuViewerViewController *controller;
 
-@property(nonatomic, readonly, retain) YuWindowController *controller;
+@property(nonatomic, assign) CGPoint viewOrigin;
+@property(nonatomic, assign) CGFloat viewScale;
 
-@property(nonatomic, assign) CGSize documentSize;
-@property(nonatomic, retain) MgDrawableNode *rootNode;
+- (void)setNeedsUpdate;
 
 @end

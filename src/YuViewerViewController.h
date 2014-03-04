@@ -22,17 +22,10 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "YuBase.h"
+#import "YuViewController.h"
 
-extern NSString *const YuDocumentRootNodeDidChange;
-extern NSString *const YuDocumentSizeDidChange;
+@interface YuViewerViewController : YuViewController
 
-@interface YuDocument : NSDocument
-    <NSKeyedArchiverDelegate, NSKeyedUnarchiverDelegate>
-
-@property(nonatomic, readonly, retain) YuWindowController *controller;
-
-@property(nonatomic, assign) CGSize documentSize;
-@property(nonatomic, retain) MgDrawableNode *rootNode;
+@property(nonatomic, weak) IBOutlet YuViewerView *contentView;
 
 @end
