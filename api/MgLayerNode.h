@@ -23,7 +23,6 @@
    SOFTWARE. */
 
 #import "MgDrawableNode.h"
-#import "MgTiming.h"
 
 @interface MgLayerNode : MgDrawableNode
 
@@ -43,7 +42,7 @@
 
 /** Compositing properties. **/
 
-@property(nonatomic, assign, getter=isGroup) BOOL group;
+@property(nonatomic, assign, getter=isIsolated) BOOL isolated;
 @property(nonatomic, assign) float alpha;
 @property(nonatomic, assign) CGBlendMode blendMode;
 @property(nonatomic, retain) MgDrawableNode *mask;

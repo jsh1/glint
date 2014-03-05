@@ -40,7 +40,7 @@
   CGFloat _squeeze;
   CGFloat _skew;
   double _rotation;
-  BOOL _group;
+  BOOL _isolated;
   float _alpha;
   CGBlendMode _blendMode;
   MgDrawableNode *_mask;
@@ -307,24 +307,24 @@
   return CGAffineTransformMake(m11, m12, m21, m22, tx, ty);
 }
 
-+ (BOOL)automaticallyNotifiesObserversOfGroup
++ (BOOL)automaticallyNotifiesObserversOfIsolated
 {
   return NO;
 }
 
-- (BOOL)group
+- (BOOL)isolated
 {
-  return _group;
+  return _isolated;
 }
 
-- (void)setGroup:(BOOL)flag
+- (void)setIsolated:(BOOL)flag
 {
-  if (_group != flag)
+  if (_isolated != flag)
     {
-      [self willChangeValueForKey:@"group"];
-      _group = flag;
+      [self willChangeValueForKey:@"isolated"];
+      _isolated = flag;
       [self incrementVersion];
-      [self didChangeValueForKey:@"group"];
+      [self didChangeValueForKey:@"isolated"];
     }
 }
 
@@ -533,12 +533,12 @@
   if ([self.contents count] == 0)
     return;
 
-  BOOL group = self.group;
+  BOOL isolated = self.isolated;
 
   MgDrawableRenderState r = *rs;
   r.tnext = HUGE_VAL;
   r.layer = self;
-  r.alpha = group ? 1 : alpha;
+  r.alpha = isolated ? 1 : alpha;
 
   CGContextSaveGState(r.ctx);
   CGContextConcatCTM(r.ctx, [self parentTransform]);
@@ -550,7 +550,7 @@
   CGContextSetAlpha(r.ctx, alpha);
   CGContextSetBlendMode(r.ctx, self.blendMode);
 
-  if (group)
+  if (isolated)
     CGContextBeginTransparencyLayer(r.ctx, NULL);
 
   for (MgDrawableNode *node in self.contents)
@@ -559,7 +559,7 @@
 	[node _renderWithState:&r];
     }
 
-  if (group)
+  if (isolated)
     CGContextEndTransparencyLayer(r.ctx);
 
   CGContextRestoreGState(r.ctx);
@@ -588,7 +588,7 @@
   copy->_squeeze = _squeeze;
   copy->_skew = _skew;
   copy->_rotation = _rotation;
-  copy->_group = _group;
+  copy->_isolated = _isolated;
   copy->_alpha = _alpha;
   copy->_blendMode = _blendMode;
   copy->_mask = _mask;
@@ -634,8 +634,8 @@
   if (_rotation != 0)
     [c encodeDouble:_rotation forKey:@"rotation"];
 
-  if (_group)
-    [c encodeBool:_group forKey:@"group"];
+  if (_isolated)
+    [c encodeBool:_isolated forKey:@"isolated"];
 
   if (_alpha != 1)
     [c encodeFloat:_alpha forKey:@"alpha"];
@@ -688,8 +688,8 @@
   if ([c containsValueForKey:@"rotation"])
     _rotation = [c decodeDoubleForKey:@"rotation"];
 
-  if ([c containsValueForKey:@"group"])
-    _group = [c decodeBoolForKey:@"group"];
+  if ([c containsValueForKey:@"isolated"])
+    _isolated = [c decodeBoolForKey:@"isolated"];
 
   if ([c containsValueForKey:@"alpha"])
     _alpha = [c decodeFloatForKey:@"alpha"];

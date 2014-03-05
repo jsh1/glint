@@ -9,6 +9,12 @@ Issues
   MgDrawableNode? I'm conflicted about this, but will keep the current
   scheme for now.
 
+  Alternatively: move "contents" from MgLayerNode into a new subclass
+  (MgGroupNode?), with the drawing nodes subclasses of MgLayerNode.
+  This would mean they have geometry but still only draw one thing.
+  Question then is, do we also move the timing properties into
+  MgLayerNode and eliminate MgDrawableNode entirely?
+
 2. Should content nodes have alpha and blendMode properties?
 
   The simplest method would be push the properties up to

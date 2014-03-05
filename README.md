@@ -78,7 +78,7 @@ MgLayerNode : MgDrawableNode
   CGFloat cornerRadius
   CGFloat scale, squeeze, skew
   double rotation
-  BOOL group
+  BOOL isolated
   float alpha
   CGBlendMode blendMode
   MgDrawableNode *mask
