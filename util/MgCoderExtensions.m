@@ -116,7 +116,10 @@ decodeType(NSCoder *c, NSString *key, const char *type, void *ptr)
 {
   CIColor *tem = [self decodeObjectOfClass:[CIColor class] forKey:key];
   if (tem != nil)
-    return CGColorCreate([tem colorSpace], [tem components]);
+    {
+      CGColorRef c = CGColorCreate([tem colorSpace], [tem components]);
+      return c != NULL ? (CGColorRef)CFAutorelease(c) : NULL;
+    }
   else
     return NULL;
 }
