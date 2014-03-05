@@ -50,7 +50,7 @@ filters be drawable nodes themselves.
 <pre>
 MgNode : NSObject
 
- -- stores a "version" of this node and all children
+ -- stores the version number of this node and its children
  -- internally caches an array of supernodes ("references")
  -- abstract child traversal (with optional de-dup'ing)
 
@@ -60,7 +60,7 @@ MgDrawableNode : MgNode
   NSArray<MgAnimationNode> *animations
 
   -- abstract class representing a color source that can be drawn
-  through a matrix and clip. Visitor pattern for drawing, etc
+  through a matrix and clip.
 
 MgTimelineNode : MgDrawableNode
 
@@ -79,9 +79,8 @@ MgLayerNode : MgDrawableNode
   BOOL group
   float alpha
   CGBlendMode blendMode
-  BOOL masksToBounds
-  MgDrawableNode *maskNode
-  NSArray<MgDrawableNode> *contentNodes
+  MgDrawableNode *mask
+  NSArray<MgDrawableNode> *contents
 
 MgRectNode : MgDrawableNode
 
@@ -90,7 +89,7 @@ MgRectNode : MgDrawableNode
   CGColorRef strokeColor
   CGFloat lineWidth
 
-  Draws into bounds rect of containing frame.
+  Draws into bounds rect of containing layer.
 
 MgImageNode : MgDrawableNode
 
@@ -99,7 +98,7 @@ MgImageNode : MgDrawableNode
   CGRect centerRect		-- in image pixels
   BOOL repeats
 
-  Draws into bounds rect of containing frame.
+  Draws into bounds rect of containing layer.
 
 MgPathNode : MgDrawableNode
 

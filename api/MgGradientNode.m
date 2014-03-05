@@ -245,7 +245,7 @@
   return NO;
 }
 
-- (void)renderWithState:(MgDrawableRenderState *)rs
+- (void)_renderWithState:(MgDrawableRenderState *)rs
 {
   if (self.hidden)
     return;
@@ -279,6 +279,8 @@
 				  self.endRadius, options);
     }
 }
+
+/* FIXME: implement _renderMaskWithState: */
 
 /** NSCopying methods. **/
 

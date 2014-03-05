@@ -270,7 +270,7 @@
   [_node addNodesContainingPoint:p toSet:set layerNode:node];
 }
 
-- (void)renderWithState:(MgDrawableRenderState *)rs
+- (void)_renderWithState:(MgDrawableRenderState *)rs
 {
   if (self.hidden || _node == nil)
     return;
@@ -279,7 +279,22 @@
   r.t = _timing != nil ? [_timing applyToTime:rs->t] : rs->t;
   r.tnext = HUGE_VAL;
 
-  [_node renderWithState:&r];
+  [_node _renderWithState:&r];
+
+  if (r.tnext < rs->tnext)
+    rs->tnext = r.tnext;
+}
+
+- (void)_renderMaskWithState:(MgDrawableRenderState *)rs
+{
+  if (self.hidden || _node == nil)
+    return;
+
+  MgDrawableRenderState r = *rs;
+  r.t = _timing != nil ? [_timing applyToTime:rs->t] : rs->t;
+  r.tnext = HUGE_VAL;
+
+  [_node _renderMaskWithState:&r];
 
   if (r.tnext < rs->tnext)
     rs->tnext = r.tnext;

@@ -37,6 +37,7 @@ struct MgDrawableRenderState
 
 @interface MgDrawableNode ()
 
-- (void)renderWithState:(MgDrawableRenderState *)rs;
+- (void)_renderWithState:(MgDrawableRenderState *)rs;
+- (void)_renderMaskWithState:(MgDrawableRenderState *)rs;
 
 @end

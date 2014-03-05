@@ -182,12 +182,16 @@
   rs.layer = nil;
   rs.alpha = 1;
 
-  [self renderWithState:&rs];
+  [self _renderWithState:&rs];
 
   return rs.tnext;
 }
 
-- (void)renderWithState:(MgDrawableRenderState *)rs
+- (void)_renderWithState:(MgDrawableRenderState *)rs
+{
+}
+
+- (void)_renderMaskWithState:(MgDrawableRenderState *)rs
 {
 }
 

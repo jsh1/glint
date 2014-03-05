@@ -154,7 +154,7 @@ static NSMutableSet *image_provider_classes;
     return [NSArray array];
 }
 
-- (void)renderWithState:(MgDrawableRenderState *)rs
+- (void)_renderWithState:(MgDrawableRenderState *)rs
 {
   if (self.hidden || rs->layer == nil)
     return;
@@ -187,6 +187,14 @@ static NSMutableSet *image_provider_classes;
       if (release_im)
 	CGImageRelease(im);
     }
+}
+
+- (void)_renderMaskWithState:(MgDrawableRenderState *)rs
+{
+  /* FIXME: incorrect, assumes image is opaque. Could just call
+     CGContextClipToMask() and hope it does the right thing? */
+
+  CGContextClipToRect(rs->ctx, rs->layer.bounds);
 }
 
 /** NSCopying methods. **/

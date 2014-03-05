@@ -46,17 +46,16 @@
 @property(nonatomic, assign, getter=isGroup) BOOL group;
 @property(nonatomic, assign) float alpha;
 @property(nonatomic, assign) CGBlendMode blendMode;
-@property(nonatomic, assign) BOOL masksToBounds;
-@property(nonatomic, retain) MgDrawableNode *maskNode;
+@property(nonatomic, retain) MgDrawableNode *mask;
 
 /** Content nodes. **/
 
-@property(nonatomic, copy) NSArray *contentNodes;
+@property(nonatomic, copy) NSArray *contents;
 
-- (void)addContentNode:(MgDrawableNode *)node;
-- (void)removeContentNode:(MgDrawableNode *)node;
+- (void)addContent:(MgDrawableNode *)node;
+- (void)removeContent:(MgDrawableNode *)node;
 
-- (void)insertContentNode:(MgDrawableNode *)node atIndex:(NSInteger)idx;
-- (void)removeContentNodeAtIndex:(NSInteger)idx;
+- (void)insertContent:(MgDrawableNode *)node atIndex:(NSInteger)idx;
+- (void)removeContentAtIndex:(NSInteger)idx;
 
 @end

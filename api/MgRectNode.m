@@ -145,7 +145,7 @@
   return node != nil && CGRectContainsPoint(node.bounds, p);
 }
 
-- (void)renderWithState:(MgDrawableRenderState *)rs
+- (void)_renderWithState:(MgDrawableRenderState *)rs
 {
   if (self.hidden || rs->layer == nil)
     return;
@@ -186,6 +186,46 @@
     }
 
   CGContextRestoreGState(rs->ctx);
+}
+
+- (void)_renderMaskWithState:(MgDrawableRenderState *)rs
+{
+  CGPathDrawingMode mode = self.drawingMode;
+
+  if ((mode != kCGPathStroke
+       && CGColorGetAlpha(self.fillColor) < 1)
+      || (mode != kCGPathFill && mode != kCGPathEOFill
+	  && CGColorGetAlpha(self.strokeColor) < 1))
+    {
+      [super _renderMaskWithState:rs];
+      return;
+    }
+
+  CGFloat radius = rs->layer.cornerRadius;
+
+  if (radius == 0 && (mode == kCGPathFill || mode == kCGPathEOFill))
+    {
+      CGContextClipToRect(rs->ctx, rs->layer.bounds);
+      return;
+    }
+
+  CGPathRef p = CGPathCreateWithRoundedRect(rs->layer.bounds,
+					    radius, radius, NULL);
+  CGPathRef sp = NULL;
+  if (mode != kCGPathFill && mode != kCGPathEOFill)
+    {
+      sp = CGPathCreateCopyByStrokingPath(p, NULL, self.lineWidth,
+					kCGLineCapButt, kCGLineJoinMiter, 10);
+    }
+
+  CGContextBeginPath(rs->ctx);
+  CGContextAddPath(rs->ctx, p);
+  if (sp != NULL)
+    CGContextAddPath(rs->ctx, sp);
+  CGContextClip(rs->ctx);
+
+  CGPathRelease(sp);
+  CGPathRelease(p);
 }
 
 /** NSCopying methods. **/

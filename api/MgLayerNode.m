@@ -43,9 +43,8 @@
   BOOL _group;
   float _alpha;
   CGBlendMode _blendMode;
-  BOOL _masksToBounds;
-  MgDrawableNode *_maskNode;
-  NSMutableArray *_contentNodes;
+  MgDrawableNode *_mask;
+  NSMutableArray *_contents;
 }
 
 - (id)init
@@ -371,124 +370,103 @@
     }
 }
 
-+ (BOOL)automaticallyNotifiesObserversOfMasksToBounds
++ (BOOL)automaticallyNotifiesObserversOfMask
 {
   return NO;
 }
 
-- (BOOL)masksToBounds
+- (MgDrawableNode *)mask
 {
-  return _masksToBounds;
+  return _mask;
 }
 
-- (void)setMasksToBounds:(BOOL)flag
+- (void)setMask:(MgDrawableNode *)node
 {
-  if (_masksToBounds != flag)
+  if (_mask != node)
     {
-      [self willChangeValueForKey:@"masksToBounds"];
-      _masksToBounds = flag;
+      [self willChangeValueForKey:@"mask"];
+      [_mask removeReference:self];
+      _mask = node;
+      [_mask addReference:self];
       [self incrementVersion];
-      [self didChangeValueForKey:@"masksToBounds"];
+      [self didChangeValueForKey:@"mask"];
     }
 }
 
-+ (BOOL)automaticallyNotifiesObserversOfMaskNode
++ (BOOL)automaticallyNotifiesObserversOfContents
 {
   return NO;
 }
 
-- (MgDrawableNode *)maskNode
+- (NSArray *)contents
 {
-  return _maskNode;
+  return _contents != nil ? _contents : [NSArray array];
 }
 
-- (void)setMaskNode:(MgDrawableNode *)node
+- (void)setContents:(NSArray *)array
 {
-  if (_maskNode != node)
+  if (_contents != array && ![_contents isEqual:array])
     {
-      [self willChangeValueForKey:@"maskNode"];
-      [_maskNode removeReference:self];
-      _maskNode = node;
-      [_maskNode addReference:self];
-      [self incrementVersion];
-      [self didChangeValueForKey:@"maskNode"];
-    }
-}
+      [self willChangeValueForKey:@"contents"];
 
-+ (BOOL)automaticallyNotifiesObserversOfContentNodes
-{
-  return NO;
-}
-
-- (NSArray *)contentNodes
-{
-  return _contentNodes != nil ? _contentNodes : [NSArray array];
-}
-
-- (void)setContentNodes:(NSArray *)array
-{
-  if (_contentNodes != array && ![_contentNodes isEqual:array])
-    {
-      [self willChangeValueForKey:@"contentNodes"];
-
-      for (MgDrawableNode *node in _contentNodes)
+      for (MgDrawableNode *node in _contents)
 	[node removeReference:self];
 
-      _contentNodes = [array copy];
+      _contents = [array copy];
 
-      for (MgDrawableNode *node in _contentNodes)
+      for (MgDrawableNode *node in _contents)
 	[node addReference:self];
 
       [self incrementVersion];
-      [self didChangeValueForKey:@"contentNodes"];
+      [self didChangeValueForKey:@"contents"];
     }
 }
 
-- (void)addContentNode:(MgDrawableNode *)node
+- (void)addContent:(MgDrawableNode *)node
 {
-  [self insertContentNode:node atIndex:NSIntegerMax];
+  [self insertContent:node atIndex:NSIntegerMax];
 }
 
-- (void)removeContentNode:(MgDrawableNode *)node
+- (void)removeContent:(MgDrawableNode *)node
 {
   while (true)
     {
-      NSInteger idx = [_contentNodes indexOfObjectIdenticalTo:node];
+      NSInteger idx = [_contents indexOfObjectIdenticalTo:node];
       if (idx == NSNotFound)
 	break;
 
-      [self removeContentNodeAtIndex:idx];
+      [self removeContentAtIndex:idx];
     }
 }
 
-- (void)insertContentNode:(MgDrawableNode *)node atIndex:(NSInteger)idx
+- (void)insertContent:(MgDrawableNode *)node atIndex:(NSInteger)idx
 {
-  if (_contentNodes == nil)
-    _contentNodes = [[NSMutableArray alloc] init];
+  if (_contents == nil)
+    _contents = [[NSMutableArray alloc] init];
 
-  if (idx > [_contentNodes count])
-    idx = [_contentNodes count];
+  if (idx > [_contents count])
+    idx = [_contents count];
 
-  [self willChangeValueForKey:@"contentNodes"];
+  [self willChangeValueForKey:@"contents"];
 
-  [_contentNodes insertObject:node atIndex:idx];
+  [_contents insertObject:node atIndex:idx];
   [node addReference:self];
 
   [self incrementVersion];
-  [self didChangeValueForKey:@"contentNodes"];
+  [self didChangeValueForKey:@"contents"];
 }
 
-- (void)removeContentNodeAtIndex:(NSInteger)idx
+- (void)removeContentAtIndex:(NSInteger)idx
 {
-  if (idx < [_contentNodes count])
+  if (idx < [_contents count])
     {
-      [self willChangeValueForKey:@"contentNodes"];
+      [self willChangeValueForKey:@"contents"];
 
-      [_contentNodes[idx] removeReference:self];
-      [_contentNodes removeObjectAtIndex:idx];
+      [_contents[idx] removeReference:self];
+      [_contents removeObjectAtIndex:idx];
 
       [self incrementVersion];
-      [self didChangeValueForKey:@"contentNodes"];
+      [self didChangeValueForKey:@"contents"];
     }
 }
 
@@ -496,11 +474,11 @@
 {
   [super foreachNode:block];
 
-  for (MgDrawableNode *node in _contentNodes)
+  for (MgDrawableNode *node in _contents)
     block(node);
 
-  if (_maskNode != nil)
-    block(_maskNode);
+  if (_mask != nil)
+    block(_mask);
 }
 
 - (BOOL)containsPoint:(CGPoint)p layerNode:(MgLayerNode *)node
@@ -511,14 +489,11 @@
   
   CGPoint lp = CGPointApplyAffineTransform(p, m);
 
-  if (self.masksToBounds && !CGRectContainsPoint(self.bounds, lp))
-    return NO;
-
-  MgDrawableNode *mask = self.maskNode;
+  MgDrawableNode *mask = self.mask;
   if (mask != nil && ![mask containsPoint:p layerNode:node])
     return NO;
 
-  for (MgDrawableNode *node in self.contentNodes)
+  for (MgDrawableNode *node in self.contents)
     {
       if ([node containsPoint:lp layerNode:self])
 	return YES;
@@ -536,14 +511,11 @@
   
   CGPoint lp = CGPointApplyAffineTransform(p, m);
 
-  if (self.masksToBounds && !CGRectContainsPoint(self.bounds, lp))
-    return;
-
-  MgDrawableNode *mask = self.maskNode;
+  MgDrawableNode *mask = self.mask;
   if (mask != nil && ![mask containsPoint:p layerNode:node])
     return;
 
-  for (MgDrawableNode *node in self.contentNodes)
+  for (MgDrawableNode *node in self.contents)
     {
       [node addNodesContainingPoint:lp toSet:set layerNode:self];
     }
@@ -551,7 +523,7 @@
 
 /** Rendering. **/
 
-- (void)renderWithState:(MgDrawableRenderState *)rs
+- (void)_renderWithState:(MgDrawableRenderState *)rs
 {
   if (self.hidden)
     return;
@@ -561,7 +533,7 @@
   if (!(alpha > 0))
     return;
 
-  if ([self.contentNodes count] == 0)
+  if ([self.contents count] == 0)
     return;
 
   BOOL group = self.group;
@@ -573,32 +545,17 @@
 
   CGContextSaveGState(r.ctx);
   CGContextConcatCTM(r.ctx, [self parentTransform]);
+
+  [self.mask _renderMaskWithState:rs];
+
   CGContextSetAlpha(r.ctx, alpha);
   CGContextSetBlendMode(r.ctx, self.blendMode);
-
-  if (self.masksToBounds)
-    {
-      CGFloat radius = self.cornerRadius;
-      if (radius == 0)
-	CGContextClipToRect(r.ctx, self.bounds);
-      else
-	{
-	  CGPathRef p = CGPathCreateWithRoundedRect(self.bounds,
-						    radius, radius, NULL);
-	  CGContextBeginPath(r.ctx);
-	  CGContextAddPath(r.ctx, p);
-	  CGPathRelease(p);
-	  CGContextClip(r.ctx);
-	}
-    }
-
-  /* FIXME: ignoring maskNode. */
 
   if (group)
     CGContextBeginTransparencyLayer(r.ctx, NULL);
 
-  for (MgDrawableNode *node in self.contentNodes)
-    [node renderWithState:&r];
+  for (MgDrawableNode *node in self.contents)
+    [node _renderWithState:&r];
 
   if (group)
     CGContextEndTransparencyLayer(r.ctx);
@@ -607,6 +564,12 @@
 
   if (r.tnext < rs->tnext)
     rs->tnext = r.tnext;
+}
+
+- (void)_renderMaskWithState:(MgDrawableRenderState *)rs
+{
+  /* FIXME: implement this. No good options, so will have to rasterize
+     an image mask using the CGBitmapContext? */
 }
 
 /** NSCopying methods. **/
@@ -626,15 +589,14 @@
   copy->_group = _group;
   copy->_alpha = _alpha;
   copy->_blendMode = _blendMode;
-  copy->_masksToBounds = _masksToBounds;
-  copy->_maskNode = _maskNode;
+  copy->_mask = _mask;
 
-  if ([_contentNodes count] != 0)
+  if ([_contents count] != 0)
     {
-      for (MgDrawableNode *node in _contentNodes)
+      for (MgDrawableNode *node in _contents)
 	[node addReference:copy];
 
-      copy->_contentNodes = [_contentNodes copy];
+      copy->_contents = [_contents copy];
     }
 
   return copy;
@@ -679,14 +641,11 @@
   if (_blendMode != kCGBlendModeNormal)
     [c encodeInt:_blendMode forKey:@"blendMode"];
 
-  if (_masksToBounds)
-    [c encodeBool:_masksToBounds forKey:@"masksToBounds"];
+  if (_mask != nil)
+    [c encodeObject:_mask forKey:@"mask"];
 
-  if (_maskNode != nil)
-    [c encodeObject:_maskNode forKey:@"maskNode"];
-
-  if ([_contentNodes count] != 0)
-    [c encodeObject:_contentNodes forKey:@"contentNodes"];
+  if ([_contents count] != 0)
+    [c encodeObject:_contents forKey:@"contents"];
 }
 
 - (id)initWithCoder:(NSCoder *)c
@@ -740,20 +699,16 @@
   else
     _blendMode = kCGBlendModeNormal;
 
-  if ([c containsValueForKey:@"masksToBounds"])
-    _masksToBounds = [c decodeBoolForKey:@"maskNode"];
-
-  if ([c containsValueForKey:@"maskNode"])
+  if ([c containsValueForKey:@"mask"])
     {
-      _maskNode = [c decodeObjectOfClass:[MgDrawableNode class]
-		   forKey:@"maskNode"];
-      [_maskNode addReference:self];
+      _mask = [c decodeObjectOfClass:[MgDrawableNode class] forKey:@"mask"];
+      [_mask addReference:self];
     }
 
-  if ([c containsValueForKey:@"contentNodes"])
+  if ([c containsValueForKey:@"contents"])
     {
       NSArray *array = [c decodeObjectOfClass:[NSArray class]
-			forKey:@"contentNodes"];
+			forKey:@"contents"];
 
       BOOL valid = YES;
       for (id obj in array)
@@ -767,9 +722,9 @@
 
       if (valid)
 	{
-	  _contentNodes = [array copy];
+	  _contents = [array copy];
 
-	  for (MgDrawableNode *node in _contentNodes)
+	  for (MgDrawableNode *node in _contents)
 	    [node addReference:self];
 	}
     }
