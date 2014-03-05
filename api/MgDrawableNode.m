@@ -31,29 +31,7 @@
 
 @implementation MgDrawableNode
 {
-  BOOL _hidden;
   NSMutableArray *_animations;
-}
-
-+ (BOOL)automaticallyNotifiesObserversOfHidden
-{
-  return NO;
-}
-
-- (BOOL)hidden
-{
-  return _hidden;
-}
-
-- (void)setHidden:(BOOL)flag
-{
-  if (_hidden != flag)
-    {
-      [self willChangeValueForKey:@"hidden"];
-      _hidden = flag;
-      [self incrementVersion];
-      [self didChangeValueForKey:@"hidden"];
-    }
 }
 
 + (BOOL)automaticallyNotifiesObserversOfAnimations
@@ -138,10 +116,10 @@
 
 - (void)foreachNode:(void (^)(MgNode *node))block
 {
-  [super foreachNode:block];
-
   for (MgAnimationNode *anim in _animations)
     block(anim);
+
+  [super foreachNode:block];
 }
 
 - (BOOL)containsPoint:(CGPoint)p
@@ -201,8 +179,6 @@
 {
   MgDrawableNode *copy = [super copyWithZone:zone];
 
-  copy->_hidden = _hidden;
-
   for (MgAnimationNode *anim in self.animations)
     [copy addAnimation:[anim copyWithZone:zone]];
 
@@ -215,9 +191,6 @@
 {
   [super encodeWithCoder:c];
 
-  if (_hidden)
-    [c encodeBool:_hidden forKey:@"hidden"];
-
   if (_animations != nil)
     [c encodeObject:_animations forKey:@"animations"];
 }
@@ -227,9 +200,6 @@
   self = [super initWithCoder:c];
   if (self == nil)
     return nil;
-
-  if ([c containsValueForKey:@"hidden"])
-    _hidden = [c decodeBoolForKey:@"hidden"];
 
   if ([c containsValueForKey:@"animations"])
     {

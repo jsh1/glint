@@ -247,9 +247,6 @@
 
 - (void)_renderWithState:(MgDrawableRenderState *)rs
 {
-  if (self.hidden)
-    return;
-
   if (_gradient == nil)
     {
       CGGradientRef g = MgCreateGradient((__bridge CFArrayRef)self.colors,

@@ -253,10 +253,10 @@
 
 - (void)foreachNode:(void (^)(MgNode *node))block
 {
-  [super foreachNode:block];
-
   if (_node != nil)
     block(_node);
+
+  [super foreachNode:block];
 }
 
 - (BOOL)containsPoint:(CGPoint)p layerNode:(MgLayerNode *)node
@@ -272,7 +272,7 @@
 
 - (void)_renderWithState:(MgDrawableRenderState *)rs
 {
-  if (self.hidden || _node == nil)
+  if (_node == nil)
     return;
 
   MgDrawableRenderState r = *rs;
@@ -287,9 +287,6 @@
 
 - (void)_renderMaskWithState:(MgDrawableRenderState *)rs
 {
-  if (self.hidden || _node == nil)
-    return;
-
   MgDrawableRenderState r = *rs;
   r.t = _timing != nil ? [_timing applyToTime:rs->t] : rs->t;
   r.tnext = HUGE_VAL;

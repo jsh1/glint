@@ -54,7 +54,7 @@
     return nil;
 
   _anchor = CGPointMake((CGFloat).5, (CGFloat).5);
-  _bounds = CGRectNull;
+  _bounds = CGRectZero;
   _scale = 1;
   _squeeze = 1;
   _alpha = 1;
@@ -472,13 +472,13 @@
 
 - (void)foreachNode:(void (^)(MgNode *node))block
 {
-  [super foreachNode:block];
-
   for (MgDrawableNode *node in _contents)
     block(node);
 
   if (_mask != nil)
     block(_mask);
+
+  [super foreachNode:block];
 }
 
 - (BOOL)containsPoint:(CGPoint)p layerNode:(MgLayerNode *)node
@@ -525,9 +525,6 @@
 
 - (void)_renderWithState:(MgDrawableRenderState *)rs
 {
-  if (self.hidden)
-    return;
-
   float alpha = rs->alpha * fmin(self.alpha, 1);
 
   if (!(alpha > 0))
@@ -546,7 +543,9 @@
   CGContextSaveGState(r.ctx);
   CGContextConcatCTM(r.ctx, [self parentTransform]);
 
-  [self.mask _renderMaskWithState:rs];
+  MgDrawableNode *mask = self.mask;
+  if (mask != nil && mask.enabled)
+    [mask _renderMaskWithState:rs];
 
   CGContextSetAlpha(r.ctx, alpha);
   CGContextSetBlendMode(r.ctx, self.blendMode);
@@ -555,7 +554,10 @@
     CGContextBeginTransparencyLayer(r.ctx, NULL);
 
   for (MgDrawableNode *node in self.contents)
-    [node _renderWithState:&r];
+    {
+      if (node.enabled)
+	[node _renderWithState:&r];
+    }
 
   if (group)
     CGContextEndTransparencyLayer(r.ctx);

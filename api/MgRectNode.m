@@ -147,7 +147,7 @@
 
 - (void)_renderWithState:(MgDrawableRenderState *)rs
 {
-  if (self.hidden || rs->layer == nil)
+  if (rs->layer == nil)
     return;
 
   CGContextSaveGState(rs->ctx);
@@ -190,6 +190,9 @@
 
 - (void)_renderMaskWithState:(MgDrawableRenderState *)rs
 {
+  if (rs->layer == nil)
+    return;
+
   CGPathDrawingMode mode = self.drawingMode;
 
   if ((mode != kCGPathStroke

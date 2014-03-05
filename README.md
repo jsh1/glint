@@ -26,7 +26,7 @@ declarative animations.
 content objects (no geometry, only drawing). This simplifies the base
 layer class.
 
-- Hidden property is not animatable. This allows hidden subtrees to be
+- Enabled property is not animatable. This allows hidden subtrees to be
 pruned before they get to the render tree.
 
 - No transactions or built-in thread safety. Callers will modify the
@@ -54,9 +54,11 @@ MgNode : NSObject
  -- internally caches an array of supernodes ("references")
  -- abstract child traversal (with optional de-dup'ing)
 
+  BOOL enabled
+  NSString *name
+
 MgDrawableNode : MgNode
 
-  BOOL hidden;
   NSArray<MgAnimationNode> *animations
 
   -- abstract class representing a color source that can be drawn
@@ -66,7 +68,7 @@ MgTimelineNode : MgDrawableNode
 
   double begin, duration, speed, offset, repeat
   bool autoreverses, holdsBeforeStart, holdsAfterEnd
-  MgDrawableNode *node;
+  MgDrawableNode *node
 
 MgLayerNode : MgDrawableNode
 

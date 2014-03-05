@@ -26,10 +26,6 @@
 
 @interface MgDrawableNode : MgNode
 
-/* When true node is not drawn. This property is NOT animatable. */
-
-@property(nonatomic, assign, getter=isHidden) BOOL hidden;
-
 /* Array of animations attached to this node. */
 
 @property(nonatomic, copy) NSArray *animations;

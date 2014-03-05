@@ -41,6 +41,7 @@ static NSUInteger version_counter;
   NSPointerArray *_references;
   NSUInteger _version;
   uint32_t _mark;			/* for graph traversal */
+  BOOL _enabled;
 }
 
 + (instancetype)node
@@ -50,7 +51,34 @@ static NSUInteger version_counter;
 
 - (id)init
 {
-  return [super init];
+  self = [super init];
+  if (self == nil)
+    return nil;
+
+  _enabled = YES;
+
+  return self;
+}
+
++ (BOOL)automaticallyNotifiesObserversOfEnabled
+{
+  return NO;
+}
+
+- (BOOL)enabled
+{
+  return _enabled;
+}
+
+- (void)setEnabled:(BOOL)flag
+{
+  if (_enabled != flag)
+    {
+      [self willChangeValueForKey:@"enabled"];
+      _enabled = flag;
+      [self incrementVersion];
+      [self didChangeValueForKey:@"enabled"];
+    }
 }
 
 + (BOOL)automaticallyNotifiesObserversOfName
@@ -230,7 +258,11 @@ foreach_path_to_node(MgNode *node, MgNode *root, bool reversed,
 
 - (id)copyWithZone:(NSZone *)zone
 {
-  return [[[self class] alloc] init];
+  MgNode *copy = [[[self class] alloc] init];
+
+  copy->_enabled = _enabled;
+
+  return copy;
 }
 
 /** NSSecureCoding methods. **/
@@ -242,6 +274,9 @@ foreach_path_to_node(MgNode *node, MgNode *root, bool reversed,
 
 - (void)encodeWithCoder:(NSCoder *)c
 {
+  if (!_enabled)
+    [c encodeBool:_enabled forKey:@"enabled"];
+
   if (_name != nil)
     [c encodeObject:_name forKey:@"name"];
 }
@@ -251,6 +286,11 @@ foreach_path_to_node(MgNode *node, MgNode *root, bool reversed,
   self = [self init];
   if (self == nil)
     return nil;
+
+  if ([c containsValueForKey:@"enabled"])
+    _enabled = [c decodeBoolForKey:@"enabled"];
+  else
+    _enabled = YES;
 
   if ([c containsValueForKey:@"name"])
     _name = [[c decodeObjectOfClass:[NSString class] forKey:@"name"] copy];

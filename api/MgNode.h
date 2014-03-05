@@ -32,6 +32,10 @@
 
 - (id)init;
 
+/* This property is never animatable. */
+
+@property(nonatomic, assign, getter=isEnabled) BOOL enabled;
+
 @property(nonatomic, copy) NSString *name;
 
 /* Value that increments whenever this node changes (or a node that it

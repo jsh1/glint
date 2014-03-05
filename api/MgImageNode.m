@@ -156,7 +156,7 @@ static NSMutableSet *image_provider_classes;
 
 - (void)_renderWithState:(MgDrawableRenderState *)rs
 {
-  if (self.hidden || rs->layer == nil)
+  if (rs->layer == nil)
     return;
 
   CGImageRef im = [self.imageProvider mg_providedImage];
@@ -191,6 +191,9 @@ static NSMutableSet *image_provider_classes;
 
 - (void)_renderMaskWithState:(MgDrawableRenderState *)rs
 {
+  if (rs->layer == nil)
+    return;
+
   /* FIXME: incorrect, assumes image is opaque. Could just call
      CGContextClipToMask() and hope it does the right thing? */
 

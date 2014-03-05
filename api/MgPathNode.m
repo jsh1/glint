@@ -298,9 +298,6 @@
 
 - (void)_renderWithState:(MgDrawableRenderState *)rs
 {
-  if (self.hidden)
-    return;
-
   CGPathRef path = self.path;
   if (path == NULL)
     return;
