@@ -63,7 +63,7 @@
 
 - (NSArray *)animations
 {
-  return _animations != nil ? _animations : [NSArray array];
+  return _animations != nil ? _animations : @[];
 }
 
 - (void)setAnimations:(NSArray *)array

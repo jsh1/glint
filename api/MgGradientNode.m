@@ -54,7 +54,7 @@
 
 - (NSArray *)colors
 {
-  return _colors != nil ? _colors : [NSArray array];
+  return _colors != nil ? _colors : @[];
 }
 
 - (void)setColors:(NSArray *)array
@@ -76,7 +76,7 @@
 
 - (NSArray *)locations
 {
-  return _locations != nil ? _locations : [NSArray array];
+  return _locations != nil ? _locations : @[];
 }
 
 - (void)setLocations:(NSArray *)array

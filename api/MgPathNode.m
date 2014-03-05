@@ -258,7 +258,7 @@
 
 - (NSArray *)lineDashPattern
 {
-  return _lineDashPattern != nil ? _lineDashPattern : [NSArray array];
+  return _lineDashPattern != nil ? _lineDashPattern : @[];
 }
 
 - (void)setLineDashPattern:(NSArray *)array

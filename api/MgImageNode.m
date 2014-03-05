@@ -151,7 +151,7 @@ static NSMutableSet *image_provider_classes;
   if (node != nil && CGRectContainsPoint(node.bounds, p))
     return [NSArray arrayWithObject:self];
   else
-    return [NSArray array];
+    return @[];
 }
 
 - (void)_renderWithState:(MgDrawableRenderState *)rs

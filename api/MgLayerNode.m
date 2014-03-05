@@ -400,7 +400,7 @@
 
 - (NSArray *)contents
 {
-  return _contents != nil ? _contents : [NSArray array];
+  return _contents != nil ? _contents : @[];
 }
 
 - (void)setContents:(NSArray *)array
