@@ -82,4 +82,20 @@
   return [self.children count] == 0;
 }
 
+- (BOOL)foreachNode:(void (^)(YuTreeNode *node, BOOL *stop))thunk
+{
+  BOOL stop = NO;
+  thunk(self, &stop);
+  if (stop)
+    return NO;
+
+  for (YuTreeNode *node in self.children)
+    {
+      if (![node foreachNode:thunk])
+	return NO;
+    }
+
+  return YES;
+}
+
 @end

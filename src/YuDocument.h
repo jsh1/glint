@@ -24,9 +24,6 @@
 
 #import "YuBase.h"
 
-extern NSString *const YuDocumentNodeDidChange;
-extern NSString *const YuDocumentSizeDidChange;
-
 @interface YuDocument : NSDocument
     <NSKeyedArchiverDelegate, NSKeyedUnarchiverDelegate>
 

@@ -34,6 +34,8 @@
 
 - (id)initWithController:(YuWindowController *)controller;
 
+- (void)invalidate;
+
 @property(nonatomic, assign, readonly) BOOL viewHasBeenLoaded;
 
 - (void)viewDidLoad;

@@ -37,27 +37,32 @@
 
 - (void)viewDidLoad
 {
-  [[NSNotificationCenter defaultCenter]
-   addObserver:self selector:@selector(documentNodeChanged:)
-   name:YuDocumentNodeDidChange object:self.controller.document];
-
-  [[NSNotificationCenter defaultCenter]
-   addObserver:self selector:@selector(documentSizeChanged:)
-   name:YuDocumentSizeDidChange object:self.controller.document];
+  [self.controller.document addObserver:self forKeyPath:@"documentNode"
+   options:0 context:NULL];
+  [self.controller.document addObserver:self forKeyPath:@"documentSize"
+   options:0 context:NULL];
 
   CGRect bounds = [self.contentView bounds];
   self.contentView.viewCenter = CGPointMake(CGRectGetMidX(bounds),
 					    CGRectGetMidY(bounds));
 }
 
-- (void)documentNodeChanged:(NSNotification *)note
+- (void)invalidate
 {
-  [self.contentView setNeedsUpdate];
+  [self.controller.document removeObserver:self forKeyPath:@"documentNode"];
+  [self.controller.document removeObserver:self forKeyPath:@"documentSize"];
+
+  [super invalidate];
 }
 
-- (void)documentSizeChanged:(NSNotification *)note
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
+    change:(NSDictionary *)change context:(void *)context
 {
-  [self.contentView setNeedsUpdate];
+  if ([keyPath isEqualToString:@"documentNode"]
+      || [keyPath isEqualToString:@"documentSize"])
+    {
+      [self.contentView setNeedsUpdate];
+    }
 }
 
 @end

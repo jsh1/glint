@@ -39,35 +39,52 @@
 
 - (void)viewDidLoad
 {
-  [[NSNotificationCenter defaultCenter]
-   addObserver:self selector:@selector(documentNodeChanged:)
-   name:YuDocumentNodeDidChange object:self.controller.document];
+  [self.controller.document addObserver:self forKeyPath:@"documentNode"
+   options:0 context:NULL];
 
-  [[NSNotificationCenter defaultCenter]
-   addObserver:self selector:@selector(selectionChanged:)
-   name:YuWindowControllerSelectionDidChange object:self.controller];
+  [self.controller addObserver:self forKeyPath:@"selection" options:0
+   context:NULL];
 
   for (NSTableColumn *col in [self.outlineView tableColumns])
     [[col dataCell] setVerticallyCentered:YES];
 
-  [self documentNodeChanged:nil];
+  [self updateDocumentNode];
+  [self updateSelection];
 
   [self.outlineView reloadData];
   [self.outlineView expandItem:nil expandChildren:YES];
 }
 
-- (void)documentNodeChanged:(NSNotification *)note
+- (void)invalidate
 {
-  MgNode *rootNode = self.controller.document.documentNode;
+  [self.controller.document removeObserver:self forKeyPath:@"documentNode"];
+  [self.controller removeObserver:self forKeyPath:@"selection"];
 
-  _tree = [[YuTreeNode alloc] initWithNode:rootNode parent:nil];
+  [super invalidate];
+}
 
+- (void)updateDocumentNode
+{
   [self.outlineView reloadData];
   [self.outlineView expandItem:nil expandChildren:YES];
 }
 
-- (void)selectionChanged:(NSNotification *)note
+- (void)updateSelection
 {
+  [self.outlineView setSelectedItems:[self.controller.selection allObjects]];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
+    change:(NSDictionary *)change context:(void *)context
+{
+  if ([keyPath isEqualToString:@"documentNode"])
+    {
+      [self updateDocumentNode];
+    }
+  else if ([keyPath isEqualToString:@"selection"])
+    {
+      [self updateSelection];
+    }
 }
 
 /** NSOutlineViewDataSource methods. **/
@@ -83,7 +100,7 @@
 - (id)outlineView:(NSOutlineView *)ov child:(NSInteger)idx ofItem:(id)item
 {
   if (item == nil)
-    return _tree;
+    return self.controller.tree;
   else
     return ((YuTreeNode *)item).children[idx];
 }
@@ -105,6 +122,8 @@
 
 - (void)outlineViewSelectionDidChange:(NSNotification *)notification
 {
+  self.controller.selection
+    = [NSSet setWithArray:[self.outlineView selectedItems]];
 }
 
 @end

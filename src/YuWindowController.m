@@ -28,6 +28,7 @@
 #import "YuColor.h"
 #import "YuDocument.h"
 #import "YuSplitViewController.h"
+#import "YuTreeNode.h"
 #import "YuTreeViewController.h"
 #import "YuViewController.h"
 #import "YuViewerView.h"
@@ -35,23 +36,39 @@
 
 #import "FoundationExtensions.h"
 
-NSString *const YuWindowControllerSelectionDidChange = @"YuWindowControllerSelectionDidChange";
-
 @implementation YuWindowController
 {
   YuViewController *_viewController;
-  NSSet *_selectedNodes;
+  YuTreeNode *_tree;
+  NSSet *_selection;
+}
+
+- (void)invalidate
+{
+  [_viewController invalidate];
+
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+  [NSRunLoop cancelPreviousPerformRequestsWithTarget:self];
 }
 
 - (void)dealloc
 {
-  [[NSNotificationCenter defaultCenter] removeObserver:self];
-  [NSRunLoop cancelPreviousPerformRequestsWithTarget:self];
+  [self invalidate];
 }
 
 - (YuDocument *)document
 {
   return [super document];
+}
+
+- (YuTreeNode *)tree
+{
+  MgNode *rootNode = self.document.documentNode;
+
+  if (_tree == nil || _tree.node != rootNode)
+    _tree = [[YuTreeNode alloc] initWithNode:rootNode parent:nil];
+
+  return _tree;
 }
 
 - (NSString *)windowNibName
@@ -138,40 +155,28 @@ NSString *const YuWindowControllerSelectionDidChange = @"YuWindowControllerSelec
 
 - (void)windowWillClose:(NSNotification *)note
 {
-  [[NSNotificationCenter defaultCenter] removeObserver:self];
-
   [self saveWindowState];
+  [self invalidate];
 }
 
-+ (BOOL)automaticallyNotifiesObserversOfSelectedNodes
++ (BOOL)automaticallyNotifiesObserversOfSelection
 {
   return NO;
 }
 
-- (NSSet *)selectedNodes
+- (NSSet *)selection
 {
-  return _selectedNodes;
+  return _selection;
 }
 
-- (void)setSelectedNodes:(NSSet *)set
+- (void)setSelection:(NSSet *)set
 {
-  if (![_selectedNodes isEqual:set])
+  if (![_selection isEqual:set])
     {
-      [self willChangeValueForKey:@"selectedNodes"];
-      _selectedNodes = [set copy];
-      [self didChangeValueForKey:@"selectedNodes"];
-
-      [[NSNotificationCenter defaultCenter]
-       postNotificationName:YuWindowControllerSelectionDidChange object:self];
+      [self willChangeValueForKey:@"selection"];
+      _selection = [set copy];
+      [self didChangeValueForKey:@"selection"];
     }
-}
-
-- (NSSet *)selectedLayerNodes
-{
-  return [_selectedNodes filteredSet:^BOOL (id obj)
-    {
-      return [obj isKindOfClass:[MgLayerNode class]];
-    }];
 }
 
 - (IBAction)zoomInAction:(id)sender

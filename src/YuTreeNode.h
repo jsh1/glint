@@ -38,4 +38,8 @@
 
 @property(nonatomic, assign, readonly, getter=isLeaf) BOOL leaf;
 
+/* Returns YES if all nodes were iterated over. */
+
+- (BOOL)foreachNode:(void (^)(YuTreeNode *node, BOOL *stop))thunk;
+
 @end

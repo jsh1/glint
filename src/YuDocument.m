@@ -28,9 +28,6 @@
 
 #import "MgCoderExtensions.h"
 
-NSString *const YuDocumentNodeDidChange = @"YuDocumentNodeDidChange";
-NSString *const YuDocumentSizeDidChange = @"YuDocumentSizeDidChange";
-
 @implementation YuDocument
 {
   YuWindowController *_controller;
@@ -112,6 +109,11 @@ NSString *const YuDocumentSizeDidChange = @"YuDocumentSizeDidChange";
   [self addWindowController:_controller];
 }
 
++ (BOOL)automaticallyNotifiesObserversOfDocumentSize
+{
+  return NO;
+}
+
 - (CGSize)documentSize
 {
   return _documentSize;
@@ -121,11 +123,15 @@ NSString *const YuDocumentSizeDidChange = @"YuDocumentSizeDidChange";
 {
   if (!CGSizeEqualToSize(_documentSize, s))
     {
+      [self willChangeValueForKey:@"documentSize"];
       _documentSize = s;
-
-      [[NSNotificationCenter defaultCenter]
-       postNotificationName:YuDocumentSizeDidChange object:self];
+      [self didChangeValueForKey:@"documentSize"];
     }
+}
+
++ (BOOL)automaticallyNotifiesObserversOfDocumentNode
+{
+  return NO;
 }
 
 - (MgDrawableNode *)documentNode
@@ -137,10 +143,9 @@ NSString *const YuDocumentSizeDidChange = @"YuDocumentSizeDidChange";
 {
   if (_documentNode != node)
     {
+      [self willChangeValueForKey:@"documentNode"];
       _documentNode = node;
-
-      [[NSNotificationCenter defaultCenter]
-       postNotificationName:YuDocumentNodeDidChange object:self];
+      [self didChangeValueForKey:@"documentNode"];
     }
 }
 
@@ -179,9 +184,9 @@ NSString *const YuDocumentSizeDidChange = @"YuDocumentSizeDidChange";
 
       [unarchiver setDelegate:self];
 
-      _documentSize = [unarchiver mg_decodeCGSizeForKey:@"documentSize"];
-      _documentNode = [unarchiver decodeObjectOfClass:
-		       [MgDrawableNode class] forKey:@"documentNode"];
+      self.documentSize = [unarchiver mg_decodeCGSizeForKey:@"documentSize"];
+      self.documentNode = [unarchiver decodeObjectOfClass:
+			   [MgDrawableNode class] forKey:@"documentNode"];
 
       [unarchiver finishDecoding];
 

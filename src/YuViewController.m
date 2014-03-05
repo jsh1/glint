@@ -58,10 +58,15 @@
   return self;
 }
 
-- (void)dealloc
+- (void)invalidate
 {
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   [NSRunLoop cancelPreviousPerformRequestsWithTarget:self];
+}
+
+- (void)dealloc
+{
+  [self invalidate];
 }
 
 - (YuDocument *)document
