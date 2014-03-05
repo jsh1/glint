@@ -56,6 +56,7 @@ static NSUInteger version_counter;
     return nil;
 
   _enabled = YES;
+  _version = 1;
 
   return self;
 }
