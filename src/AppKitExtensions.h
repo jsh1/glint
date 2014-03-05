@@ -1,6 +1,6 @@
 /* -*- c-style: gnu -*-
 
-   Copyright (c) 2014 John Harper <jsh@unfactored.org>
+   Copyright (c) 2013 John Harper <jsh@unfactored.org>
 
    Permission is hereby granted, free of charge, to any person
    obtaining a copy of this software and associated documentation files
@@ -22,20 +22,39 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#ifndef YU_BASE_H
-#define YU_BASE_H
-
-#include "Magnesium.h"
-
-#ifdef __OBJC__
 #import <AppKit/AppKit.h>
-#endif
 
-#ifdef __OBJC__
-@class YuAppDelegate, YuDocument, YuOutlineView, YuSplitView,
-    YuSplitViewController, YuTreeViewController, YuTreeNode,
-    YuViewController, YuViewerView, YuViewerViewController,
-    YuWindowController;
-#endif
+@interface NSView (AppKitExtensions)
 
-#endif /* YU_BASE_H */
+- (void)scrollRectToVisible:(NSRect)rect animated:(BOOL)flag;
+
+- (void)flashScrollersIfNeeded;
+
+@end
+
+
+@interface NSCell (AppKitExtensions)
+
+@property(getter=isVerticallyCentered) BOOL verticallyCentered;
+  
+@end
+
+
+@interface NSTableView (AppKitExtensions)
+
+- (void)reloadDataForRow:(NSInteger)row;
+
+@end
+
+@interface NSOutlineView (AppKitExtensions)
+
+- (NSArray *)selectedItems;
+- (void)setSelectedItems:(NSArray *)array;
+
+- (void)setSelectedRow:(NSInteger)row;
+
+- (void)callPreservingSelectedRows:(void (^)(void))thunk;
+
+- (void)reloadDataPreservingSelectedRows;
+
+@end

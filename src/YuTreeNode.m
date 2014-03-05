@@ -22,20 +22,64 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#ifndef YU_BASE_H
-#define YU_BASE_H
+#import "YuTreeNode.h"
 
-#include "Magnesium.h"
+@implementation YuTreeNode
+{
+  MgNode *_node;
+  __weak YuTreeNode *_parent;
+  NSArray *_children;
+  NSInteger _childrenVersion;
+}
 
-#ifdef __OBJC__
-#import <AppKit/AppKit.h>
-#endif
+- (id)initWithNode:(MgNode *)node parent:(YuTreeNode *)parent
+{
+  self = [super init];
+  if (self == nil)
+    return nil;
 
-#ifdef __OBJC__
-@class YuAppDelegate, YuDocument, YuOutlineView, YuSplitView,
-    YuSplitViewController, YuTreeViewController, YuTreeNode,
-    YuViewController, YuViewerView, YuViewerViewController,
-    YuWindowController;
-#endif
+  _node = node;
+  _parent = parent;
 
-#endif /* YU_BASE_H */
+  return self;
+}
+
+- (NSArray *)children
+{
+  if (_childrenVersion != _node.version)
+    {
+      NSMutableArray *children = [NSMutableArray array];
+
+      NSMapTable *map = nil;
+      if (_children != nil)
+	{
+	  map = [NSMapTable strongToStrongObjectsMapTable];
+	  for (YuTreeNode *node in _children)
+	    [map setObject:node forKey:node->_node];
+	}
+
+      [_node foreachNode:^(MgNode *child)
+        {
+	  YuTreeNode *node = [map objectForKey:child];
+
+	  if (node != nil)
+	    [map removeObjectForKey:child];
+	  else
+	    node = [[YuTreeNode alloc] initWithNode:child parent:node];
+
+	  [children addObject:node];
+	}];
+
+      _children = children;
+      _childrenVersion = _node.version;
+    }
+
+  return _children != nil ? _children : @[];
+}
+
+- (BOOL)isLeaf
+{
+  return [self.children count] == 0;
+}
+
+@end

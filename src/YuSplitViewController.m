@@ -47,6 +47,7 @@
 
   [view setVertical:self.vertical];
   [view setDividerStyle:NSSplitViewDividerStyleThin];
+  [view setAutoresizingMask:NSViewWidthSizable|NSViewHeightSizable];
   [view setDelegate:self];
 
   [self setView:view];
@@ -56,7 +57,7 @@
 {
   YuSplitView *view = (YuSplitView *)[self view];
 
-  [view setSubviews:[NSArray array]];
+  [view setSubviews:@[]];
 
   for (YuViewController *c in self.subviewControllers)
     {

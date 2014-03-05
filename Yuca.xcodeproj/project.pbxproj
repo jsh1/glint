@@ -24,6 +24,8 @@
 		572A5B2318C4CE2000AB8086 /* YuAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 572A5B2218C4CE2000AB8086 /* YuAppDelegate.m */; };
 		572A5B2518C4CEE700AB8086 /* defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 572A5B2418C4CEE700AB8086 /* defaults.plist */; };
 		572A5B2818C4CF6200AB8086 /* YuWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 572A5B2618C4CF6200AB8086 /* YuWindow.xib */; };
+		5738567818C746D80010CFB7 /* YuTreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 5738567718C746D80010CFB7 /* YuTreeNode.m */; };
+		5738567B18C74CCC0010CFB7 /* AppKitExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5738567A18C74CCC0010CFB7 /* AppKitExtensions.m */; };
 		575F56F818C357080034B28C /* MgAnimationNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 575F56D518C357080034B28C /* MgAnimationNode.m */; };
 		575F56F918C357080034B28C /* MgBasicAnimationNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 575F56D818C357080034B28C /* MgBasicAnimationNode.m */; };
 		575F56FA18C357080034B28C /* MgBezierTimingFunction.mm in Sources */ = {isa = PBXBuildFile; fileRef = 575F56DA18C357080034B28C /* MgBezierTimingFunction.mm */; };
@@ -88,6 +90,10 @@
 		572A5B2218C4CE2000AB8086 /* YuAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YuAppDelegate.m; path = src/YuAppDelegate.m; sourceTree = "<group>"; };
 		572A5B2418C4CEE700AB8086 /* defaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = defaults.plist; path = resources/defaults.plist; sourceTree = "<group>"; };
 		572A5B2718C4CF6200AB8086 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = resources/en.lproj/YuWindow.xib; sourceTree = "<group>"; };
+		5738567618C746D80010CFB7 /* YuTreeNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YuTreeNode.h; path = src/YuTreeNode.h; sourceTree = "<group>"; };
+		5738567718C746D80010CFB7 /* YuTreeNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YuTreeNode.m; path = src/YuTreeNode.m; sourceTree = "<group>"; };
+		5738567918C74CCC0010CFB7 /* AppKitExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppKitExtensions.h; path = src/AppKitExtensions.h; sourceTree = "<group>"; };
+		5738567A18C74CCC0010CFB7 /* AppKitExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppKitExtensions.m; path = src/AppKitExtensions.m; sourceTree = "<group>"; };
 		575F56D318C357080034B28C /* Magnesium.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Magnesium.h; sourceTree = "<group>"; };
 		575F56D418C357080034B28C /* MgAnimationNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgAnimationNode.h; sourceTree = "<group>"; };
 		575F56D518C357080034B28C /* MgAnimationNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgAnimationNode.m; sourceTree = "<group>"; };
@@ -276,6 +282,8 @@
 				572A5B1918C4CD4100AB8086 /* YuSplitView.m */,
 				5721E87E18C6A2DF000DA2C3 /* YuSplitViewController.h */,
 				5721E87F18C6A2DF000DA2C3 /* YuSplitViewController.m */,
+				5738567618C746D80010CFB7 /* YuTreeNode.h */,
+				5738567718C746D80010CFB7 /* YuTreeNode.m */,
 				5721E87218C67439000DA2C3 /* YuTreeViewController.h */,
 				5721E87318C67439000DA2C3 /* YuTreeViewController.m */,
 				572A5B1A18C4CD4100AB8086 /* YuViewController.h */,
@@ -286,6 +294,8 @@
 				57618DB618C5D1B6004108D8 /* YuViewerViewController.m */,
 				572A5B1C18C4CD4100AB8086 /* YuWindowController.h */,
 				572A5B1D18C4CD4100AB8086 /* YuWindowController.m */,
+				5738567918C74CCC0010CFB7 /* AppKitExtensions.h */,
+				5738567A18C74CCC0010CFB7 /* AppKitExtensions.m */,
 				57618DBC18C5D538004108D8 /* CoreAnimationExtensions.h */,
 				57618DBD18C5D538004108D8 /* CoreAnimationExtensions.m */,
 				5721E86F18C6212D000DA2C3 /* FoundationExtensions.h */,
@@ -410,11 +420,13 @@
 				572A5B2318C4CE2000AB8086 /* YuAppDelegate.m in Sources */,
 				5714A8C718BD322900ED67EE /* YuDocument.m in Sources */,
 				5721E87A18C69363000DA2C3 /* YuColor.m in Sources */,
+				5738567818C746D80010CFB7 /* YuTreeNode.m in Sources */,
 				572A5B1E18C4CD4100AB8086 /* YuSplitView.m in Sources */,
 				575F56FF18C357080034B28C /* MgImageNode.m in Sources */,
 				57618DB718C5D1B6004108D8 /* YuViewerView.m in Sources */,
 				575F56FC18C357080034B28C /* MgDrawableNode.m in Sources */,
 				5714A8C018BD322900ED67EE /* main.m in Sources */,
+				5738567B18C74CCC0010CFB7 /* AppKitExtensions.m in Sources */,
 				57618DB818C5D1B6004108D8 /* YuViewerViewController.m in Sources */,
 				575F56FE18C357080034B28C /* MgGradientNode.m in Sources */,
 				575F570418C357080034B28C /* MgTimelineNode.m in Sources */,

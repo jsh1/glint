@@ -29,4 +29,6 @@
 
 @property(nonatomic, weak) IBOutlet NSOutlineView *outlineView;
 
+@property(nonatomic, retain) YuTreeNode *tree;
+
 @end

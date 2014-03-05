@@ -22,20 +22,20 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#ifndef YU_BASE_H
-#define YU_BASE_H
+#import "YuBase.h"
 
-#include "Magnesium.h"
+@protocol YuTreeNodeOwner;
 
-#ifdef __OBJC__
-#import <AppKit/AppKit.h>
-#endif
+@interface YuTreeNode : NSObject
 
-#ifdef __OBJC__
-@class YuAppDelegate, YuDocument, YuOutlineView, YuSplitView,
-    YuSplitViewController, YuTreeViewController, YuTreeNode,
-    YuViewController, YuViewerView, YuViewerViewController,
-    YuWindowController;
-#endif
+- (id)initWithNode:(MgNode *)node parent:(YuTreeNode *)parent;
 
-#endif /* YU_BASE_H */
+@property(nonatomic, retain, readonly) MgNode *node;
+
+@property(nonatomic, weak, readonly) YuTreeNode *parent;
+
+@property(nonatomic, readonly) NSArray *children;
+
+@property(nonatomic, assign, readonly, getter=isLeaf) BOOL leaf;
+
+@end

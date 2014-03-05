@@ -109,7 +109,7 @@
 {
   NSInteger count = [self count];
   if (count == 0)
-    return [NSArray array];
+    return @[];
 
   __unsafe_unretained id *objects = STACK_ALLOC(id, count);
 
@@ -128,7 +128,7 @@
 {
   NSInteger count = [self count];
   if (count == 0)
-    return [NSArray array];
+    return @[];
   
   __unsafe_unretained id *objects = STACK_ALLOC(id, count);
 
@@ -141,7 +141,7 @@
 
   NSArray *ret;
   if (idx == 0)
-    ret = [NSArray array];
+    ret = @[];
   else
     ret = [NSArray arrayWithObjects:objects count:idx];
 

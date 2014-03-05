@@ -25,7 +25,10 @@
 #import "YuTreeViewController.h"
 
 #import "YuDocument.h"
+#import "YuTreeNode.h"
 #import "YuWindowController.h"
+
+#import "AppKitExtensions.h"
 
 @implementation YuTreeViewController
 
@@ -43,10 +46,24 @@
   [[NSNotificationCenter defaultCenter]
    addObserver:self selector:@selector(selectionChanged:)
    name:YuWindowControllerSelectionDidChange object:self.controller];
+
+  for (NSTableColumn *col in [self.outlineView tableColumns])
+    [[col dataCell] setVerticallyCentered:YES];
+
+  [self documentNodeChanged:nil];
+
+  [self.outlineView reloadData];
+  [self.outlineView expandItem:nil expandChildren:YES];
 }
 
 - (void)documentNodeChanged:(NSNotification *)note
 {
+  MgNode *rootNode = self.controller.document.documentNode;
+
+  _tree = [[YuTreeNode alloc] initWithNode:rootNode parent:nil];
+
+  [self.outlineView reloadData];
+  [self.outlineView expandItem:nil expandChildren:YES];
 }
 
 - (void)selectionChanged:(NSNotification *)note
@@ -57,23 +74,31 @@
 
 - (NSInteger)outlineView:(NSOutlineView *)ov numberOfChildrenOfItem:(id)item
 {
-  return 0;
+  if (item == nil)
+    return 1;
+  else
+    return [((YuTreeNode *)item).children count];
 }
 
-- (id)outlineView:(NSOutlineView *)ov child:(NSInteger)index ofItem:(id)item
+- (id)outlineView:(NSOutlineView *)ov child:(NSInteger)idx ofItem:(id)item
 {
-  return nil;
+  if (item == nil)
+    return _tree;
+  else
+    return ((YuTreeNode *)item).children[idx];
 }
 
 - (BOOL)outlineView:(NSOutlineView *)ov isItemExpandable:(id)item
 {
-  return NO;
+  return !((YuTreeNode *)item).leaf;
 }
 
 - (id)outlineView:(NSOutlineView *)ov objectValueForTableColumn:
     (NSTableColumn *)col byItem:(id)item
 {
-  return nil;
+  NSString *ident = [col identifier];
+
+  return [((YuTreeNode *)item).node valueForKey:ident];
 }
 
 /** NSOutlineViewDelegate methods. **/

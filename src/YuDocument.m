@@ -65,28 +65,43 @@ NSString *const YuDocumentSizeDidChange = @"YuDocumentSizeDidChange";
 #if 1
   MgRectNode *bg_rect = [MgRectNode node];
   bg_rect.fillColor = [[NSColor lightGrayColor] CGColor];
-  [node addContentNode:bg_rect];
+  bg_rect.name = @"BG Fill";
+  [node addContent:bg_rect];
 
   MgLayerNode *image_layer = [MgLayerNode node];
   image_layer.position = CGPointMake(700, 400);
   image_layer.bounds = CGRectMake(0, 0, 512, 512);
   image_layer.rotation = -10 * (M_PI / 180);
-  [node addContentNode:image_layer];
+  image_layer.name = @"Image Layer";
+  [node addContent:image_layer];
   MgImageNode *image_node = [MgImageNode node];
   image_node.imageProvider = [MgImageProvider imageProviderWithURL:
 			      [NSURL fileURLWithPath:
 			       @"/Library/User Pictures/Animals/Parrot.tif"]];
-  [image_layer addContentNode:image_node];
+  image_node.name = @"Image";
+  [image_layer addContent:image_node];
 
   MgLayerNode *rect_layer = [MgLayerNode node];
   rect_layer.position = CGPointMake(350, 300);
   rect_layer.bounds = CGRectMake(0, 0, 400, 250);
   rect_layer.cornerRadius = 8;
   rect_layer.alpha = .5;
-  [node addContentNode:rect_layer];
+  rect_layer.name = @"Rect Layer";
+  [node addContent:rect_layer];
   MgRectNode *rect_node = [MgRectNode node];
   rect_node.fillColor = [[NSColor blueColor] CGColor];
-  [rect_layer addContentNode:rect_node];
+  rect_node.name = @"Rect Fill";
+  [rect_layer addContent:rect_node];
+
+#if 1
+  MgLayerNode *image_layer2 = [MgLayerNode node];
+  image_layer2.position = CGPointMake(-200, 300);
+  image_layer2.bounds = CGRectMake(0, 0, 512, 512);
+  image_layer2.alpha = .25;
+  image_layer2.name = @"Image Link";
+  [image_layer2 addContent:image_layer];
+  [node addContent:image_layer2];
+#endif
 #endif
 
   return self;

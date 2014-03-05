@@ -152,7 +152,7 @@
   _rootNode.scale = self.viewScale;
   _rootNode.position = self.viewCenter;
   _rootNode.bounds = CGRectMake(0, 0, size.width, size.height);
-  _rootNode.contentNodes = @[document.documentNode];
+  _rootNode.contents = @[document.documentNode];
 }
 
 - (void)setNeedsUpdate
