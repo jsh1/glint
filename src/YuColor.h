@@ -24,27 +24,12 @@
 
 #import "YuBase.h"
 
-extern NSString *const YuWindowControllerSelectionDidChange;
+@interface YuColor : NSColor
 
-@interface YuWindowController : NSWindowController <NSSplitViewDelegate>
++ (NSColor *)windowBackgroundColor;
 
-@property(nonatomic, weak) IBOutlet NSView *mainView;
++ (NSArray *)controlAlternatingRowBackgroundColors;
 
-@property(nonatomic, weak, readonly) YuDocument *document;
-
-- (id)viewControllerWithClass:(Class)cls;
-
-- (void)saveWindowState;
-- (void)applySavedWindowState;
-
-@property(nonatomic, copy) NSSet *selectedNodes;
-
-- (NSSet *)selectedLayerNodes;
-
-- (IBAction)zoomInAction:(id)sender;
-- (IBAction)zoomOutAction:(id)sender;
-- (IBAction)zoomToAction:(id)sender;	/* zoom(2^[sender tag]) */
-- (IBAction)zoomToFitAction:(id)sender;
-- (IBAction)zoomToFillAction:(id)sender;
++ (NSColor *)viewerBackgroundColor;
 
 @end

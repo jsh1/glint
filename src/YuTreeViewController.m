@@ -22,17 +22,16 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "YuViewerViewController.h"
+#import "YuTreeViewController.h"
 
 #import "YuDocument.h"
-#import "YuViewerView.h"
 #import "YuWindowController.h"
 
-@implementation YuViewerViewController
+@implementation YuTreeViewController
 
 + (NSString *)viewNibName
 {
-  return @"YuViewerView";
+  return @"YuTreeView";
 }
 
 - (void)viewDidLoad
@@ -42,22 +41,45 @@
    name:YuDocumentNodeDidChange object:self.controller.document];
 
   [[NSNotificationCenter defaultCenter]
-   addObserver:self selector:@selector(documentSizeChanged:)
-   name:YuDocumentSizeDidChange object:self.controller.document];
-
-  CGRect bounds = [self.contentView bounds];
-  self.contentView.viewCenter = CGPointMake(CGRectGetMidX(bounds),
-					    CGRectGetMidY(bounds));
+   addObserver:self selector:@selector(selectionChanged:)
+   name:YuWindowControllerSelectionDidChange object:self.controller];
 }
 
 - (void)documentNodeChanged:(NSNotification *)note
 {
-  [self.contentView setNeedsUpdate];
 }
 
-- (void)documentSizeChanged:(NSNotification *)note
+- (void)selectionChanged:(NSNotification *)note
 {
-  [self.contentView setNeedsUpdate];
+}
+
+/** NSOutlineViewDataSource methods. **/
+
+- (NSInteger)outlineView:(NSOutlineView *)ov numberOfChildrenOfItem:(id)item
+{
+  return 0;
+}
+
+- (id)outlineView:(NSOutlineView *)ov child:(NSInteger)index ofItem:(id)item
+{
+  return nil;
+}
+
+- (BOOL)outlineView:(NSOutlineView *)ov isItemExpandable:(id)item
+{
+  return NO;
+}
+
+- (id)outlineView:(NSOutlineView *)ov objectValueForTableColumn:
+    (NSTableColumn *)col byItem:(id)item
+{
+  return nil;
+}
+
+/** NSOutlineViewDelegate methods. **/
+
+- (void)outlineViewSelectionDidChange:(NSNotification *)notification
+{
 }
 
 @end

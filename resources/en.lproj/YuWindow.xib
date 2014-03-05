@@ -6,6 +6,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="YuWindowController">
             <connections>
+                <outlet property="mainView" destination="vFk-Br-q0h" id="XQm-ms-Eff"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="mFj-O0-cuE"/>
             </connections>
         </customObject>
@@ -19,6 +20,12 @@
             <view key="contentView" wantsLayer="YES" id="EiT-Mj-1SZ">
                 <rect key="frame" x="0.0" y="0.0" width="965" height="661"/>
                 <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <customView id="vFk-Br-q0h">
+                        <rect key="frame" x="2" y="2" width="961" height="657"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    </customView>
+                </subviews>
             </view>
         </window>
     </objects>

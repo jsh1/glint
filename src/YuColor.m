@@ -22,29 +22,38 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "YuBase.h"
+#import "YuColor.h"
 
-extern NSString *const YuWindowControllerSelectionDidChange;
+@implementation YuColor
 
-@interface YuWindowController : NSWindowController <NSSplitViewDelegate>
++ (NSColor *)windowBackgroundColor
+{
+  return [NSColor colorWithCalibratedWhite:.9 alpha:1];
+}
 
-@property(nonatomic, weak) IBOutlet NSView *mainView;
++ (NSArray *)controlAlternatingRowBackgroundColors
+{
+  static NSArray *colors;
 
-@property(nonatomic, weak, readonly) YuDocument *document;
+  if (colors == nil)
+    {
+      colors = @[
+	[self colorWithCalibratedWhite:.85 alpha:1],
+	[self colorWithCalibratedWhite:.8 alpha:1],
+      ];
+    }
 
-- (id)viewControllerWithClass:(Class)cls;
+  return colors;
+}
 
-- (void)saveWindowState;
-- (void)applySavedWindowState;
++ (NSColor *)viewerBackgroundColor
+{
+  static NSColor *color;
 
-@property(nonatomic, copy) NSSet *selectedNodes;
+  if (color == nil)
+    color = [NSColor colorWithCalibratedWhite:.4 alpha:1];
 
-- (NSSet *)selectedLayerNodes;
-
-- (IBAction)zoomInAction:(id)sender;
-- (IBAction)zoomOutAction:(id)sender;
-- (IBAction)zoomToAction:(id)sender;	/* zoom(2^[sender tag]) */
-- (IBAction)zoomToFitAction:(id)sender;
-- (IBAction)zoomToFillAction:(id)sender;
+  return color;
+}
 
 @end

@@ -50,6 +50,17 @@
   return self;
 }
 
+- (CGFloat)dividerThickness
+{
+  return 2;
+}
+
+- (void)drawDividerInRect:(NSRect)rect
+{
+  [[[self window] backgroundColor] setFill];
+  [NSBezierPath fillRect:rect];
+}
+
 - (NSDictionary *)savedViewState
 {
   NSArray *subviews = [self subviews];

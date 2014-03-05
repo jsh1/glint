@@ -59,6 +59,10 @@
     after:(YuViewController *)pred;
 - (void)removeSubviewController:(YuViewController *)controller;
 
+- (void)showSubviewController:(YuViewController *)controller;
+- (void)hideSubviewController:(YuViewController *)controller;
+- (void)toggleSubviewController:(YuViewController *)controller;
+
 @property(nonatomic, weak, readonly) NSView *initialFirstResponder;
 
 - (void)addSavedViewState:(NSMutableDictionary *)dict;
@@ -66,5 +70,12 @@
 
 - (void)addToContainerView:(NSView *)view;
 - (void)removeFromContainer;
+
+/* For containers to implement, given an immediately sub-controller. */
+
+- (BOOL)_isSubviewControllerVisible:(YuViewController *)controller;
+- (void)_showSubviewController:(YuViewController *)controller;
++ (BOOL)_canHideSubviewControllers;
+- (void)_hideSubviewController:(YuViewController *)controller;
 
 @end

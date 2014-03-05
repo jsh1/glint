@@ -24,27 +24,5 @@
 
 #import "YuBase.h"
 
-extern NSString *const YuWindowControllerSelectionDidChange;
-
-@interface YuWindowController : NSWindowController <NSSplitViewDelegate>
-
-@property(nonatomic, weak) IBOutlet NSView *mainView;
-
-@property(nonatomic, weak, readonly) YuDocument *document;
-
-- (id)viewControllerWithClass:(Class)cls;
-
-- (void)saveWindowState;
-- (void)applySavedWindowState;
-
-@property(nonatomic, copy) NSSet *selectedNodes;
-
-- (NSSet *)selectedLayerNodes;
-
-- (IBAction)zoomInAction:(id)sender;
-- (IBAction)zoomOutAction:(id)sender;
-- (IBAction)zoomToAction:(id)sender;	/* zoom(2^[sender tag]) */
-- (IBAction)zoomToFitAction:(id)sender;
-- (IBAction)zoomToFillAction:(id)sender;
-
+@interface YuOutlineView : NSOutlineView
 @end

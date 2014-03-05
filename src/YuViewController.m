@@ -150,6 +150,60 @@
     }
 }
 
+- (void)showSubviewController:(YuViewController *)controller
+{
+  while (controller != nil && controller != self)
+    {
+      YuViewController *parent = controller->_superviewController;
+      [parent _showSubviewController:controller];
+      controller = parent;
+    }
+}
+
+- (void)hideSubviewController:(YuViewController *)controller
+{
+  while (controller != nil && controller != self)
+    {
+      YuViewController *parent = controller->_superviewController;
+      if ([[parent class] _canHideSubviewControllers])
+	{
+	  [parent _hideSubviewController:controller];
+	  break;
+	}
+      controller = parent;
+    }
+}
+
+- (void)toggleSubviewController:(YuViewController *)controller
+{
+  YuViewController *parent = controller->_superviewController;
+  if (parent == nil)
+    return;
+
+  if (![parent _isSubviewControllerVisible:controller])
+    [self showSubviewController:controller];
+  else
+    [self hideSubviewController:controller];
+}
+
+- (BOOL)_isSubviewControllerVisible:(YuViewController *)controller
+{
+  return YES;
+}
+
+- (void)_showSubviewController:(YuViewController *)controller
+{
+}
+
++ (BOOL)_canHideSubviewControllers
+{
+  return NO;
+}
+
+- (void)_hideSubviewController:(YuViewController *)controller
+{
+}
+
 - (NSView *)initialFirstResponder
 {
   return nil;
@@ -171,18 +225,26 @@
 
 - (void)viewWillAppear
 {
+  for (YuViewController *c in _subviewControllers)
+    [c viewWillAppear];
 }
 
 - (void)viewDidAppear
 {
+  for (YuViewController *c in _subviewControllers)
+    [c viewDidAppear];
 }
 
 - (void)viewWillDisappear
 {
+  for (YuViewController *c in _subviewControllers)
+    [c viewWillDisappear];
 }
 
 - (void)viewDidDisappear
 {
+  for (YuViewController *c in _subviewControllers)
+    [c viewDidDisappear];
 }
 
 - (void)addSavedViewState:(NSMutableDictionary *)dict

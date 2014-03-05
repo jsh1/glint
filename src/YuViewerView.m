@@ -24,6 +24,7 @@
 
 #import "YuViewerView.h"
 
+#import "YuColor.h"
 #import "YuDocument.h"
 #import "YuViewerViewController.h"
 
@@ -127,7 +128,7 @@
 {
   CALayer *layer = [self layer];
 
-  layer.backgroundColor = [[NSColor darkGrayColor] CGColor];
+  layer.backgroundColor = [[YuColor viewerBackgroundColor] CGColor];
 
   if (_nodeLayer == nil)
     {

@@ -13,6 +13,11 @@
 		5714A8CD18BD322900ED67EE /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5714A8CB18BD322900ED67EE /* MainMenu.xib */; };
 		5714A8CF18BD322900ED67EE /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5714A8CE18BD322900ED67EE /* Images.xcassets */; };
 		5721E87118C6212D000DA2C3 /* FoundationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5721E87018C6212D000DA2C3 /* FoundationExtensions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		5721E87418C67439000DA2C3 /* YuTreeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5721E87318C67439000DA2C3 /* YuTreeViewController.m */; };
+		5721E87718C6745A000DA2C3 /* YuTreeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5721E87518C6745A000DA2C3 /* YuTreeView.xib */; };
+		5721E87A18C69363000DA2C3 /* YuColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 5721E87918C69363000DA2C3 /* YuColor.m */; };
+		5721E87D18C693E4000DA2C3 /* YuOutlineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5721E87C18C693E4000DA2C3 /* YuOutlineView.m */; };
+		5721E88018C6A2DF000DA2C3 /* YuSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5721E87F18C6A2DF000DA2C3 /* YuSplitViewController.m */; };
 		572A5B1E18C4CD4100AB8086 /* YuSplitView.m in Sources */ = {isa = PBXBuildFile; fileRef = 572A5B1918C4CD4100AB8086 /* YuSplitView.m */; };
 		572A5B1F18C4CD4100AB8086 /* YuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 572A5B1B18C4CD4100AB8086 /* YuViewController.m */; };
 		572A5B2018C4CD4100AB8086 /* YuWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 572A5B1D18C4CD4100AB8086 /* YuWindowController.m */; };
@@ -63,6 +68,15 @@
 		5714A8CE18BD322900ED67EE /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = resources/Images.xcassets; sourceTree = "<group>"; };
 		5721E86F18C6212D000DA2C3 /* FoundationExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FoundationExtensions.h; path = src/FoundationExtensions.h; sourceTree = "<group>"; };
 		5721E87018C6212D000DA2C3 /* FoundationExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FoundationExtensions.m; path = src/FoundationExtensions.m; sourceTree = "<group>"; };
+		5721E87218C67439000DA2C3 /* YuTreeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YuTreeViewController.h; path = src/YuTreeViewController.h; sourceTree = "<group>"; };
+		5721E87318C67439000DA2C3 /* YuTreeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YuTreeViewController.m; path = src/YuTreeViewController.m; sourceTree = "<group>"; };
+		5721E87618C6745A000DA2C3 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = resources/en.lproj/YuTreeView.xib; sourceTree = "<group>"; };
+		5721E87818C69362000DA2C3 /* YuColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YuColor.h; path = src/YuColor.h; sourceTree = "<group>"; };
+		5721E87918C69363000DA2C3 /* YuColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YuColor.m; path = src/YuColor.m; sourceTree = "<group>"; };
+		5721E87B18C693E4000DA2C3 /* YuOutlineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YuOutlineView.h; path = src/YuOutlineView.h; sourceTree = "<group>"; };
+		5721E87C18C693E4000DA2C3 /* YuOutlineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YuOutlineView.m; path = src/YuOutlineView.m; sourceTree = "<group>"; };
+		5721E87E18C6A2DF000DA2C3 /* YuSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YuSplitViewController.h; path = src/YuSplitViewController.h; sourceTree = "<group>"; };
+		5721E87F18C6A2DF000DA2C3 /* YuSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YuSplitViewController.m; path = src/YuSplitViewController.m; sourceTree = "<group>"; };
 		572A5B1718C4CD4100AB8086 /* YuBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YuBase.h; path = src/YuBase.h; sourceTree = "<group>"; };
 		572A5B1818C4CD4100AB8086 /* YuSplitView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YuSplitView.h; path = src/YuSplitView.h; sourceTree = "<group>"; };
 		572A5B1918C4CD4100AB8086 /* YuSplitView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YuSplitView.m; path = src/YuSplitView.m; sourceTree = "<group>"; };
@@ -252,10 +266,18 @@
 				572A5B2118C4CE2000AB8086 /* YuAppDelegate.h */,
 				572A5B2218C4CE2000AB8086 /* YuAppDelegate.m */,
 				572A5B1718C4CD4100AB8086 /* YuBase.h */,
+				5721E87818C69362000DA2C3 /* YuColor.h */,
+				5721E87918C69363000DA2C3 /* YuColor.m */,
 				5714A8C518BD322900ED67EE /* YuDocument.h */,
 				5714A8C618BD322900ED67EE /* YuDocument.m */,
+				5721E87B18C693E4000DA2C3 /* YuOutlineView.h */,
+				5721E87C18C693E4000DA2C3 /* YuOutlineView.m */,
 				572A5B1818C4CD4100AB8086 /* YuSplitView.h */,
 				572A5B1918C4CD4100AB8086 /* YuSplitView.m */,
+				5721E87E18C6A2DF000DA2C3 /* YuSplitViewController.h */,
+				5721E87F18C6A2DF000DA2C3 /* YuSplitViewController.m */,
+				5721E87218C67439000DA2C3 /* YuTreeViewController.h */,
+				5721E87318C67439000DA2C3 /* YuTreeViewController.m */,
 				572A5B1A18C4CD4100AB8086 /* YuViewController.h */,
 				572A5B1B18C4CD4100AB8086 /* YuViewController.m */,
 				57618DB318C5D1B6004108D8 /* YuViewerView.h */,
@@ -278,8 +300,9 @@
 			isa = PBXGroup;
 			children = (
 				5714A8CB18BD322900ED67EE /* MainMenu.xib */,
-				572A5B2618C4CF6200AB8086 /* YuWindow.xib */,
+				5721E87518C6745A000DA2C3 /* YuTreeView.xib */,
 				57618DB918C5D1F5004108D8 /* YuViewerView.xib */,
+				572A5B2618C4CF6200AB8086 /* YuWindow.xib */,
 			);
 			name = Nibs;
 			sourceTree = "<group>";
@@ -348,6 +371,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5721E87718C6745A000DA2C3 /* YuTreeView.xib in Resources */,
 				572A5B2818C4CF6200AB8086 /* YuWindow.xib in Resources */,
 				5714A8CF18BD322900ED67EE /* Images.xcassets in Resources */,
 				57618DBB18C5D1F5004108D8 /* YuViewerView.xib in Resources */,
@@ -370,10 +394,12 @@
 				579CAFD518C38B9C0051454F /* MgImageProvider.m in Sources */,
 				575F56FD18C357080034B28C /* MgFunction.m in Sources */,
 				575F570318C357080034B28C /* MgRectNode.m in Sources */,
+				5721E87D18C693E4000DA2C3 /* YuOutlineView.m in Sources */,
 				575F570218C357080034B28C /* MgPathNode.m in Sources */,
 				575F570618C357080034B28C /* MgTimingStorage.m in Sources */,
 				5721E87118C6212D000DA2C3 /* FoundationExtensions.m in Sources */,
 				575F570018C357080034B28C /* MgLayerNode.m in Sources */,
+				5721E88018C6A2DF000DA2C3 /* YuSplitViewController.m in Sources */,
 				572A5B2018C4CD4100AB8086 /* YuWindowController.m in Sources */,
 				575F56FA18C357080034B28C /* MgBezierTimingFunction.mm in Sources */,
 				579CAFD118C381BD0051454F /* MgCoreGraphics.c in Sources */,
@@ -383,6 +409,7 @@
 				575F56F918C357080034B28C /* MgBasicAnimationNode.m in Sources */,
 				572A5B2318C4CE2000AB8086 /* YuAppDelegate.m in Sources */,
 				5714A8C718BD322900ED67EE /* YuDocument.m in Sources */,
+				5721E87A18C69363000DA2C3 /* YuColor.m in Sources */,
 				572A5B1E18C4CD4100AB8086 /* YuSplitView.m in Sources */,
 				575F56FF18C357080034B28C /* MgImageNode.m in Sources */,
 				57618DB718C5D1B6004108D8 /* YuViewerView.m in Sources */,
@@ -391,6 +418,7 @@
 				57618DB818C5D1B6004108D8 /* YuViewerViewController.m in Sources */,
 				575F56FE18C357080034B28C /* MgGradientNode.m in Sources */,
 				575F570418C357080034B28C /* MgTimelineNode.m in Sources */,
+				5721E87418C67439000DA2C3 /* YuTreeViewController.m in Sources */,
 				575F570518C357080034B28C /* MgTimingFunction.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -414,6 +442,14 @@
 			);
 			name = MainMenu.xib;
 			path = ../yuca/resources;
+			sourceTree = "<group>";
+		};
+		5721E87518C6745A000DA2C3 /* YuTreeView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5721E87618C6745A000DA2C3 /* en */,
+			);
+			name = YuTreeView.xib;
 			sourceTree = "<group>";
 		};
 		572A5B2618C4CF6200AB8086 /* YuWindow.xib */ = {

@@ -22,29 +22,15 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "YuBase.h"
+#import "YuOutlineView.h"
 
-extern NSString *const YuWindowControllerSelectionDidChange;
+#import "YuColor.h"
 
-@interface YuWindowController : NSWindowController <NSSplitViewDelegate>
+@implementation YuOutlineView
 
-@property(nonatomic, weak) IBOutlet NSView *mainView;
-
-@property(nonatomic, weak, readonly) YuDocument *document;
-
-- (id)viewControllerWithClass:(Class)cls;
-
-- (void)saveWindowState;
-- (void)applySavedWindowState;
-
-@property(nonatomic, copy) NSSet *selectedNodes;
-
-- (NSSet *)selectedLayerNodes;
-
-- (IBAction)zoomInAction:(id)sender;
-- (IBAction)zoomOutAction:(id)sender;
-- (IBAction)zoomToAction:(id)sender;	/* zoom(2^[sender tag]) */
-- (IBAction)zoomToFitAction:(id)sender;
-- (IBAction)zoomToFillAction:(id)sender;
+- (NSArray *)_alternatingRowBackgroundColors
+{
+  return [YuColor controlAlternatingRowBackgroundColors];
+}
 
 @end

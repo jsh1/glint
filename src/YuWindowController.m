@@ -25,8 +25,10 @@
 #import "YuWindowController.h"
 
 #import "YuAppDelegate.h"
+#import "YuColor.h"
 #import "YuDocument.h"
-#import "YuSplitView.h"
+#import "YuSplitViewController.h"
+#import "YuTreeViewController.h"
 #import "YuViewController.h"
 #import "YuViewerView.h"
 #import "YuViewerViewController.h"
@@ -37,21 +39,8 @@ NSString *const YuWindowControllerSelectionDidChange = @"YuWindowControllerSelec
 
 @implementation YuWindowController
 {
-  NSMutableArray *_viewControllers;
-  NSMutableDictionary *_splitViews;
+  YuViewController *_viewController;
   NSSet *_selectedNodes;
-}
-
-- (id)init
-{
-  self = [super initWithWindow:nil];
-  if (self == nil)
-    return nil;
-
-  _viewControllers = [[NSMutableArray alloc] init];
-  _splitViews = [[NSMutableDictionary alloc] init];
-
-  return self;
 }
 
 - (void)dealloc
@@ -74,61 +63,48 @@ NSString *const YuWindowControllerSelectionDidChange = @"YuWindowControllerSelec
 {
   NSWindow *window = [self window];
 
-  [self addViewController:[YuViewerViewController class]];
+  [[NSNotificationCenter defaultCenter]
+   addObserver:self selector:@selector(windowWillClose:)
+   name:NSWindowWillCloseNotification object:window];
 
-  [self applySavedWindowState];
-
-  YuViewerViewController *viewer
-    = [self viewControllerWithClass:[YuViewerViewController class]];
+  [window setBackgroundColor:[YuColor windowBackgroundColor]];
 
   /* FIXME: replace by something else. */
 
-  [window setContentView:[viewer view]];
+  YuSplitViewController *split = [[YuSplitViewController alloc]
+				  initWithController:self];
+  YuTreeViewController *tree = [[YuTreeViewController alloc]
+				initWithController:self];
+  YuViewerViewController *viewer = [[YuViewerViewController alloc]
+				    initWithController:self];
+
+  split.vertical = YES;
+  split.indexOfResizableSubview = 1;
+  split.identifierSuffix = @".main";
+
+  [split addSubviewController:tree];
+  [split addSubviewController:viewer];
+
+  [split addToContainerView:self.mainView];
+
+  _viewController = split;
+
+  [self applySavedWindowState];
 
   [window setInitialFirstResponder:[viewer initialFirstResponder]];
 
   [window makeFirstResponder:[window initialFirstResponder]];
 }
 
-- (id)addViewController:(Class)cls
-{
-  YuViewController *obj = [[cls alloc] initWithController:self];
-
-  if (obj != nil)
-    [_viewControllers addObject:obj];
-
-  return obj;
-}
-
 - (id)viewControllerWithClass:(Class)cls
 {
-  for (YuViewController *obj in _viewControllers)
-    {
-      YuViewController *sub = [obj viewControllerWithClass:cls];
-      if (sub != nil)
-	return sub;
-    }
-
-  return nil;
+  return [_viewController viewControllerWithClass:cls];
 }
 
 - (void)foreachViewControllerWithClass:(Class)cls
     handler:(void (^)(id obj))block
 {
-  for (YuViewController *obj in _viewControllers)
-    [obj foreachViewControllerWithClass:cls handler:block];
-}
-
-- (void)addSplitView:(YuSplitView *)view identifier:(NSString *)ident
-{
-  [view setDelegate:self];
-  _splitViews[ident] = view;
-}
-
-- (void)removeSplitView:(YuSplitView *)view identifier:(NSString *)ident
-{
-  [_splitViews removeObjectForKey:ident];
-  [view setDelegate:nil];
+  [_viewController foreachViewControllerWithClass:cls handler:block];
 }
 
 - (void)saveWindowState
@@ -138,22 +114,10 @@ NSString *const YuWindowControllerSelectionDidChange = @"YuWindowControllerSelec
 
   NSMutableDictionary *controllers = [NSMutableDictionary dictionary];
 
-  for (YuViewController *controller in _viewControllers)
-    [controller addSavedViewState:controllers];
-
-  NSMutableDictionary *split = [NSMutableDictionary dictionary];
-
-  for (NSString *ident in _splitViews)
-    {
-      YuSplitView *view = _splitViews[ident];
-      NSDictionary *sub = [view savedViewState];
-      if ([sub count] != 0)
-	split[ident] = sub;
-    }
+  [_viewController addSavedViewState:controllers];
 
   NSDictionary *dict = @{
     @"YuViewControllers": controllers,
-    @"YuSplitViews": split,
   };
 
   [[NSUserDefaults standardUserDefaults]
@@ -169,20 +133,14 @@ NSString *const YuWindowControllerSelectionDidChange = @"YuWindowControllerSelec
 
   NSDictionary *controllers = [state objectForKey:@"YuViewControllers"];
 
-  for (YuViewController *controller in _viewControllers)
-    [controller applySavedViewState:controllers];
+  [_viewController applySavedViewState:controllers];
+}
 
-  NSDictionary *split = [state objectForKey:@"YuSplitViews"];
-  NSArray *split_keys = [[_splitViews allKeys] sortedArrayUsingSelector:
-			 @selector(caseInsensitiveCompare:)];
+- (void)windowWillClose:(NSNotification *)note
+{
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
 
-  for (NSString *ident in split_keys)
-    {
-      YuSplitView *view = _splitViews[ident];
-      NSDictionary *sub = split[ident];
-      if (sub != nil)
-	[view applySavedViewState:sub];
-    }
+  [self saveWindowState];
 }
 
 + (BOOL)automaticallyNotifiesObserversOfSelectedNodes
