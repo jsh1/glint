@@ -144,3 +144,23 @@ MgCreateGradient(CFArrayRef colors, CFArrayRef locations)
 
   return grad;
 }
+
+bool
+MgAffineTransformIsRectilinear(const CGAffineTransform *m)
+{
+  if (m->a == 0 && m->d == 0)
+    return true;
+  else if (m->b == 0 && m->c == 0)
+    return true;
+  else
+    return false;
+}
+
+void
+MgRectGetCorners(CGRect r, CGPoint p[4])
+{
+  p[0] = r.origin;
+  p[1] = CGPointMake(p[0].x + r.size.width, p[0].y);
+  p[2] = CGPointMake(p[1].x, p[0].y + r.size.height);
+  p[3] = CGPointMake(p[0].x, p[2].y);
+}

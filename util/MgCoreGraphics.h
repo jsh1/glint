@@ -40,4 +40,8 @@ MG_EXTERN void MgContextSetLineDash(CGContextRef ctx, CFArrayRef pattern,
 MG_EXTERN CGGradientRef MgCreateGradient(CFArrayRef colors,
     CFArrayRef locations) CF_RETURNS_RETAINED;
 
+MG_EXTERN bool MgAffineTransformIsRectilinear(const CGAffineTransform *m);
+
+MG_EXTERN void MgRectGetCorners(CGRect r, CGPoint p[4]);
+
 MG_EXTERN_C_END
