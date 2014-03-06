@@ -26,7 +26,7 @@
 
 @interface MgBasicAnimationNode : MgAnimationNode
 
-@property(nonatomic, retain) id<NSSecureCoding> fromValue;
-@property(nonatomic, retain) id<NSSecureCoding> toValue;
+@property(nonatomic, strong) id<NSSecureCoding> fromValue;
+@property(nonatomic, strong) id<NSSecureCoding> toValue;
 
 @end

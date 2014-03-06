@@ -28,7 +28,7 @@
 
 + (void)registerImageProviderClass:(Class)cls;
 
-@property(nonatomic, retain) id<MgImageProvider> imageProvider;
+@property(nonatomic, strong) id<MgImageProvider> imageProvider;
 
 @property(nonatomic, assign) CGRect cropRect;
 @property(nonatomic, assign) CGRect centerRect;

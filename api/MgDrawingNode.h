@@ -42,7 +42,7 @@
 @protocol MgDrawingState
 
 @property(nonatomic, assign, readonly) CGContextRef context;
-@property(nonatomic, retain, readonly) MgLayerNode *layer;
+@property(nonatomic, strong, readonly) MgLayerNode *layer;
 
 @property(nonatomic, assign, readonly) CFTimeInterval currentTime;
 @property(nonatomic, assign, readwrite) CFTimeInterval nextTime;

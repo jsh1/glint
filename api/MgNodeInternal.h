@@ -28,6 +28,8 @@
 
 @property(nonatomic, readwrite) NSUInteger version;
 
+/* Bump the version of this node (and implicitly of all its ancestors). */
+
 - (void)incrementVersion;
 
 /* Array of MgNode objects referring to this one. */

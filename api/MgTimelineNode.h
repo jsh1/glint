@@ -27,6 +27,6 @@
 
 @interface MgTimelineNode : MgDrawableNode <MgTiming>
 
-@property(nonatomic, retain) MgDrawableNode *node;
+@property(nonatomic, strong) MgDrawableNode *node;
 
 @end

@@ -45,7 +45,7 @@
 @property(nonatomic, assign, getter=isIsolated) BOOL isolated;
 @property(nonatomic, assign) float alpha;
 @property(nonatomic, assign) CGBlendMode blendMode;
-@property(nonatomic, retain) MgDrawableNode *mask;
+@property(nonatomic, strong) MgDrawableNode *mask;
 
 /** Content nodes. **/
 

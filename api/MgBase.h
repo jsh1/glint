@@ -72,6 +72,11 @@
 #endif
 
 #ifdef __OBJC__
+
+# ifndef MG_HIDDEN_CLASS
+#  define MG_HIDDEN_CLASS MG_HIDDEN
+# endif
+
 @class NSArray, NSMutableArray, NSData, NSMutableData, NSDictionary,
     NSMutableDictionary, NSSet, NSMutableSet, NSIndexSet, NSMutableIndexSet,
     NSPointerArray, NSURL;
@@ -79,7 +84,8 @@
     MgDrawableNode, MgDrawingNode, MgLayerNode, MgFunction, MgGradientNode,
     MgImageNode, MgImageProvider, MgNode, MgPathNode, MgRectNode,
     MgTimelineNode, MgTimingFunction;
-@protocol MgImageProvider;
-#endif
 
+@protocol MgImageProvider;
+
+#endif /* __OBJC__ */
 #endif /* MG_BASE_H */
