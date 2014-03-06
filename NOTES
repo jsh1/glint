@@ -33,3 +33,17 @@ Issues
 
   RESOLVED: deleted.
 
+4. Add MgStateMachineNode. Or however states end up being modelled.
+
+5. Add MgSwitchNode? Would select between multiple sub-nodes
+
+  MgSwitchNode : MgDrawableNode
+    NSInteger index
+    NSArray<MgDrawableNode> *nodes
+
+  "index" would not be animatable, but could be modified by the state
+  machine.
+
+  But this is equivalent to toggling "enabled" on the relevant nodes,
+  so I'm not sure it's useful enough.
+

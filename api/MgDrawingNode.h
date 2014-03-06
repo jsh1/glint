@@ -22,28 +22,29 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#ifndef MAGNESIUM_H
-#define MAGNESIUM_H
+#import "MgDrawableNode.h"
 
-#include "MgBase.h"
+@protocol MgDrawingState;
 
-#ifdef __OBJC__
-# import "MgAnimationNode.h"
-# import "MgBasicAnimationNode.h"
-# import "MgBezierTimingFunction.h"
-# import "MgDrawableNode.h"
-# import "MgDrawingNode.h"
-# import "MgFunction.h"
-# import "MgGradientNode.h"
-# import "MgImageNode.h"
-# import "MgImageProvider.h"
-# import "MgLayerNode.h"
-# import "MgNode.h"
-# import "MgPathNode.h"
-# import "MgRectNode.h"
-# import "MgTimelineNode.h"
-# import "MgTiming.h"
-# import "MgTimingFunction.h"
-#endif
+/* Note: this may not be (fully?) supported if and when a non-CGContext
+   based MgLayer is added. */
 
-#endif /* MAGNESIUM_H */
+@interface MgDrawingNode : MgDrawableNode
+
+- (void)setNeedsDisplay;
+
+- (void)drawWithState:(id<MgDrawingState>)obj;
+
+- (void)clipWithState:(id<MgDrawingState>)obj;
+
+@end
+
+@protocol MgDrawingState
+
+@property(nonatomic, assign, readonly) CGContextRef context;
+@property(nonatomic, retain, readonly) MgLayerNode *layer;
+
+@property(nonatomic, assign, readonly) CFTimeInterval currentTime;
+@property(nonatomic, assign, readwrite) CFTimeInterval nextTime;
+
+@end
