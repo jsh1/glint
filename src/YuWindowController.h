@@ -30,11 +30,11 @@
 
 @property(nonatomic, weak, readonly) YuDocument *document;
 
-@property(nonatomic, retain, readonly) YuTreeNode *tree;
+@property(nonatomic, strong, readonly) YuTreeNode *tree;
 
 /* Selected YuTreeNode references. */
 
-@property(nonatomic, copy) NSSet *selection;
+@property(nonatomic, copy) NSArray *selection;
 
 - (id)viewControllerWithClass:(Class)cls;
 

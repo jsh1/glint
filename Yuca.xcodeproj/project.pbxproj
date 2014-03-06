@@ -39,11 +39,13 @@
 		575F570318C357080034B28C /* MgRectNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 575F56ED18C357080034B28C /* MgRectNode.m */; };
 		575F570418C357080034B28C /* MgTimelineNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 575F56EF18C357080034B28C /* MgTimelineNode.m */; };
 		575F570518C357080034B28C /* MgTimingFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 575F56F218C357080034B28C /* MgTimingFunction.m */; };
-		575F570618C357080034B28C /* MgTimingStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 575F56F418C357080034B28C /* MgTimingStorage.m */; };
 		57618DB718C5D1B6004108D8 /* YuViewerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 57618DB418C5D1B6004108D8 /* YuViewerView.m */; };
 		57618DB818C5D1B6004108D8 /* YuViewerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 57618DB618C5D1B6004108D8 /* YuViewerViewController.m */; };
 		57618DBB18C5D1F5004108D8 /* YuViewerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 57618DB918C5D1F5004108D8 /* YuViewerView.xib */; };
 		57618DBE18C5D538004108D8 /* CoreAnimationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 57618DBD18C5D538004108D8 /* CoreAnimationExtensions.m */; };
+		578A328618C87AC10000ADC4 /* MgDrawingNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 578A328518C87AC10000ADC4 /* MgDrawingNode.m */; };
+		578A328918C87EA80000ADC4 /* YuViewerOverlayNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 578A328818C87EA80000ADC4 /* YuViewerOverlayNode.m */; };
+		578A328D18C881050000ADC4 /* MgTimingStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 578A328C18C881050000ADC4 /* MgTimingStorage.m */; };
 		579CAFD118C381BD0051454F /* MgCoreGraphics.c in Sources */ = {isa = PBXBuildFile; fileRef = 579CAFCF18C381BD0051454F /* MgCoreGraphics.c */; };
 		579CAFD518C38B9C0051454F /* MgImageProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 579CAFD418C38B9C0051454F /* MgImageProvider.m */; };
 		579CAFD918C3F63A0051454F /* MgCoderExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 579CAFD818C3F63A0051454F /* MgCoderExtensions.m */; };
@@ -123,8 +125,6 @@
 		575F56F018C357080034B28C /* MgTiming.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgTiming.h; sourceTree = "<group>"; };
 		575F56F118C357080034B28C /* MgTimingFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgTimingFunction.h; sourceTree = "<group>"; };
 		575F56F218C357080034B28C /* MgTimingFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgTimingFunction.m; sourceTree = "<group>"; };
-		575F56F318C357080034B28C /* MgTimingStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgTimingStorage.h; sourceTree = "<group>"; };
-		575F56F418C357080034B28C /* MgTimingStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgTimingStorage.m; sourceTree = "<group>"; };
 		575F56F718C357080034B28C /* MgUnitBezier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgUnitBezier.h; sourceTree = "<group>"; };
 		57618DB318C5D1B6004108D8 /* YuViewerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YuViewerView.h; path = src/YuViewerView.h; sourceTree = "<group>"; };
 		57618DB418C5D1B6004108D8 /* YuViewerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YuViewerView.m; path = src/YuViewerView.m; sourceTree = "<group>"; };
@@ -133,13 +133,19 @@
 		57618DBA18C5D1F5004108D8 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = resources/en.lproj/YuViewerView.xib; sourceTree = "<group>"; };
 		57618DBC18C5D538004108D8 /* CoreAnimationExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CoreAnimationExtensions.h; path = src/CoreAnimationExtensions.h; sourceTree = "<group>"; };
 		57618DBD18C5D538004108D8 /* CoreAnimationExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CoreAnimationExtensions.m; path = src/CoreAnimationExtensions.m; sourceTree = "<group>"; };
+		578A328418C87AC10000ADC4 /* MgDrawingNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgDrawingNode.h; sourceTree = "<group>"; };
+		578A328518C87AC10000ADC4 /* MgDrawingNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgDrawingNode.m; sourceTree = "<group>"; };
+		578A328718C87EA80000ADC4 /* YuViewerOverlayNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YuViewerOverlayNode.h; path = src/YuViewerOverlayNode.h; sourceTree = "<group>"; };
+		578A328818C87EA80000ADC4 /* YuViewerOverlayNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YuViewerOverlayNode.m; path = src/YuViewerOverlayNode.m; sourceTree = "<group>"; };
+		578A328A18C880D60000ADC4 /* MgBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgBase.h; sourceTree = "<group>"; };
+		578A328B18C881050000ADC4 /* MgTimingStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgTimingStorage.h; sourceTree = "<group>"; };
+		578A328C18C881050000ADC4 /* MgTimingStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgTimingStorage.m; sourceTree = "<group>"; };
 		579CAFCB18C377F90051454F /* MgDrawableNodeInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgDrawableNodeInternal.h; sourceTree = "<group>"; };
 		579CAFCF18C381BD0051454F /* MgCoreGraphics.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = MgCoreGraphics.c; path = magnesium/util/MgCoreGraphics.c; sourceTree = SOURCE_ROOT; };
 		579CAFD018C381BD0051454F /* MgCoreGraphics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MgCoreGraphics.h; path = magnesium/util/MgCoreGraphics.h; sourceTree = SOURCE_ROOT; };
 		579CAFD218C385310051454F /* MgMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgMacros.h; sourceTree = "<group>"; };
 		579CAFD318C38B9C0051454F /* MgImageProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgImageProvider.h; sourceTree = "<group>"; };
 		579CAFD418C38B9C0051454F /* MgImageProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgImageProvider.m; sourceTree = "<group>"; };
-		579CAFD618C391BD0051454F /* MgBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgBase.h; sourceTree = "<group>"; };
 		579CAFD718C3F63A0051454F /* MgCoderExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgCoderExtensions.h; sourceTree = "<group>"; };
 		579CAFD818C3F63A0051454F /* MgCoderExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgCoderExtensions.m; sourceTree = "<group>"; };
 		57E776B218BD3478007CD31F /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = System/Library/Frameworks/Quartz.framework; sourceTree = SDKROOT; };
@@ -215,6 +221,7 @@
 				575F56D318C357080034B28C /* Magnesium.h */,
 				575F56D418C357080034B28C /* MgAnimationNode.h */,
 				575F56D518C357080034B28C /* MgAnimationNode.m */,
+				578A328A18C880D60000ADC4 /* MgBase.h */,
 				575F56D718C357080034B28C /* MgBasicAnimationNode.h */,
 				575F56D818C357080034B28C /* MgBasicAnimationNode.m */,
 				575F56D918C357080034B28C /* MgBezierTimingFunction.h */,
@@ -222,6 +229,8 @@
 				575F56DD18C357080034B28C /* MgDrawableNode.h */,
 				575F56DE18C357080034B28C /* MgDrawableNode.m */,
 				579CAFCB18C377F90051454F /* MgDrawableNodeInternal.h */,
+				578A328418C87AC10000ADC4 /* MgDrawingNode.h */,
+				578A328518C87AC10000ADC4 /* MgDrawingNode.m */,
 				575F56DF18C357080034B28C /* MgFunction.h */,
 				575F56E018C357080034B28C /* MgFunction.m */,
 				575F56E118C357080034B28C /* MgGradientNode.h */,
@@ -246,8 +255,6 @@
 				575F56F018C357080034B28C /* MgTiming.h */,
 				575F56F118C357080034B28C /* MgTimingFunction.h */,
 				575F56F218C357080034B28C /* MgTimingFunction.m */,
-				575F56F318C357080034B28C /* MgTimingStorage.h */,
-				575F56F418C357080034B28C /* MgTimingStorage.m */,
 			);
 			path = api;
 			sourceTree = "<group>";
@@ -255,12 +262,13 @@
 		575F56F618C357080034B28C /* util */ = {
 			isa = PBXGroup;
 			children = (
-				579CAFD618C391BD0051454F /* MgBase.h */,
 				579CAFD718C3F63A0051454F /* MgCoderExtensions.h */,
 				579CAFD818C3F63A0051454F /* MgCoderExtensions.m */,
 				579CAFCF18C381BD0051454F /* MgCoreGraphics.c */,
 				579CAFD018C381BD0051454F /* MgCoreGraphics.h */,
 				579CAFD218C385310051454F /* MgMacros.h */,
+				578A328B18C881050000ADC4 /* MgTimingStorage.h */,
+				578A328C18C881050000ADC4 /* MgTimingStorage.m */,
 				575F56F718C357080034B28C /* MgUnitBezier.h */,
 			);
 			path = util;
@@ -288,6 +296,8 @@
 				5721E87318C67439000DA2C3 /* YuTreeViewController.m */,
 				572A5B1A18C4CD4100AB8086 /* YuViewController.h */,
 				572A5B1B18C4CD4100AB8086 /* YuViewController.m */,
+				578A328718C87EA80000ADC4 /* YuViewerOverlayNode.h */,
+				578A328818C87EA80000ADC4 /* YuViewerOverlayNode.m */,
 				57618DB318C5D1B6004108D8 /* YuViewerView.h */,
 				57618DB418C5D1B6004108D8 /* YuViewerView.m */,
 				57618DB518C5D1B6004108D8 /* YuViewerViewController.h */,
@@ -406,18 +416,20 @@
 				575F570318C357080034B28C /* MgRectNode.m in Sources */,
 				5721E87D18C693E4000DA2C3 /* YuOutlineView.m in Sources */,
 				575F570218C357080034B28C /* MgPathNode.m in Sources */,
-				575F570618C357080034B28C /* MgTimingStorage.m in Sources */,
 				5721E87118C6212D000DA2C3 /* FoundationExtensions.m in Sources */,
 				575F570018C357080034B28C /* MgLayerNode.m in Sources */,
 				5721E88018C6A2DF000DA2C3 /* YuSplitViewController.m in Sources */,
+				578A328918C87EA80000ADC4 /* YuViewerOverlayNode.m in Sources */,
 				572A5B2018C4CD4100AB8086 /* YuWindowController.m in Sources */,
 				575F56FA18C357080034B28C /* MgBezierTimingFunction.mm in Sources */,
 				579CAFD118C381BD0051454F /* MgCoreGraphics.c in Sources */,
 				572A5B1F18C4CD4100AB8086 /* YuViewController.m in Sources */,
 				57618DBE18C5D538004108D8 /* CoreAnimationExtensions.m in Sources */,
+				578A328618C87AC10000ADC4 /* MgDrawingNode.m in Sources */,
 				57FB21DC18C5181100B4BF6C /* MgLayer.m in Sources */,
 				575F56F918C357080034B28C /* MgBasicAnimationNode.m in Sources */,
 				572A5B2318C4CE2000AB8086 /* YuAppDelegate.m in Sources */,
+				578A328D18C881050000ADC4 /* MgTimingStorage.m in Sources */,
 				5714A8C718BD322900ED67EE /* YuDocument.m in Sources */,
 				5721E87A18C69363000DA2C3 /* YuColor.m in Sources */,
 				5738567818C746D80010CFB7 /* YuTreeNode.m in Sources */,

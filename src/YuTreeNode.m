@@ -65,7 +65,7 @@
 	  if (node != nil)
 	    [map removeObjectForKey:child];
 	  else
-	    node = [[YuTreeNode alloc] initWithNode:child parent:node];
+	    node = [[YuTreeNode alloc] initWithNode:child parent:self];
 
 	  [children addObject:node];
 	}];

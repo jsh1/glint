@@ -71,7 +71,7 @@
 
 - (void)updateSelection
 {
-  [self.outlineView setSelectedItems:[self.controller.selection allObjects]];
+  [self.outlineView setSelectedItems:self.controller.selection];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
@@ -122,8 +122,7 @@
 
 - (void)outlineViewSelectionDidChange:(NSNotification *)notification
 {
-  self.controller.selection
-    = [NSSet setWithArray:[self.outlineView selectedItems]];
+  self.controller.selection = [self.outlineView selectedItems];
 }
 
 @end

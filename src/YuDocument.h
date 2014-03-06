@@ -27,9 +27,9 @@
 @interface YuDocument : NSDocument
     <NSKeyedArchiverDelegate, NSKeyedUnarchiverDelegate>
 
-@property(nonatomic, readonly, retain) YuWindowController *controller;
+@property(nonatomic, readonly, strong) YuWindowController *controller;
 
 @property(nonatomic, assign) CGSize documentSize;
-@property(nonatomic, retain) MgDrawableNode *documentNode;
+@property(nonatomic, strong) MgDrawableNode *documentNode;
 
 @end

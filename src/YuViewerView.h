@@ -31,6 +31,8 @@
 @property(nonatomic, assign) CGPoint viewCenter;
 @property(nonatomic, assign) CGFloat viewScale;
 
+- (CGAffineTransform)viewTransform;
+
 - (CGFloat)zoomToFitScale;
 - (CGFloat)zoomToFillScale;
 

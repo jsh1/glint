@@ -26,6 +26,7 @@
 
 #import "YuColor.h"
 #import "YuDocument.h"
+#import "YuViewerOverlayNode.h"
 #import "YuViewerViewController.h"
 
 #import "MgLayer.h"
@@ -37,6 +38,8 @@
 {
   MgLayer *_nodeLayer;
   MgLayerNode *_rootNode;
+  MgLayerNode *_documentContainer;
+  YuViewerOverlayNode *_overlayNode;
   CGPoint _viewCenter;
   CGFloat _viewScale;
 }
@@ -97,6 +100,18 @@
     }
 }
 
+- (CGAffineTransform)viewTransform
+{
+  YuDocument *document = self.controller.document;
+  CGSize size = document.documentSize;
+
+  CGFloat ax = size.width * (CGFloat).5;
+  CGFloat ay = size.height * (CGFloat).5;
+  CGFloat s = _viewScale;
+
+  return CGAffineTransformMake(s, 0, 0, s, s * -ax + _viewCenter.x, s * -ay + _viewCenter.y);
+}
+
 - (CGFloat)zoomToFitScale
 {
   CGSize view_size = [self bounds].size;
@@ -140,19 +155,38 @@
   if (_rootNode == nil)
     {
       _rootNode = [MgLayerNode node];
+      _rootNode.anchor = CGPointZero;
       _nodeLayer.rootNode = _rootNode;
+    }
+
+  if (_documentContainer == nil)
+    {
+      _documentContainer = [MgLayerNode node];
+      [_rootNode addContent:_documentContainer];
+    }
+
+  if (_overlayNode == nil)
+    {
+      _overlayNode = [YuViewerOverlayNode node];
+      _overlayNode.view = self;
+      [_rootNode addContent:_overlayNode];
     }
 
   YuDocument *document = self.controller.document;
   CGSize size = document.documentSize;
+  CGRect bounds = [layer bounds];
 
-  _nodeLayer.frame = [layer bounds];
+  _nodeLayer.frame = bounds;
   _nodeLayer.contentsScale = [[self window] backingScaleFactor];
 
-  _rootNode.scale = self.viewScale;
-  _rootNode.position = self.viewCenter;
-  _rootNode.bounds = CGRectMake(0, 0, size.width, size.height);
-  _rootNode.contents = @[document.documentNode];
+  _rootNode.bounds = bounds;
+
+  _documentContainer.scale = self.viewScale;
+  _documentContainer.position = self.viewCenter;
+  _documentContainer.bounds = CGRectMake(0, 0, size.width, size.height);
+  _documentContainer.contents = @[document.documentNode];
+
+  [_overlayNode update];
 }
 
 - (void)setNeedsUpdate

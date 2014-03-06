@@ -40,7 +40,7 @@
 {
   YuViewController *_viewController;
   YuTreeNode *_tree;
-  NSSet *_selection;
+  NSArray *_selection;
 }
 
 - (void)invalidate
@@ -164,17 +164,17 @@
   return NO;
 }
 
-- (NSSet *)selection
+- (NSArray *)selection
 {
   return _selection;
 }
 
-- (void)setSelection:(NSSet *)set
+- (void)setSelection:(NSArray *)array
 {
-  if (![_selection isEqual:set])
+  if (![_selection isEqual:array])
     {
       [self willChangeValueForKey:@"selection"];
-      _selection = [set copy];
+      _selection = [array copy];
       [self didChangeValueForKey:@"selection"];
     }
 }
