@@ -78,6 +78,16 @@
   image_node.name = @"Image";
   [image_layer addContent:image_node];
 
+#if 1
+  MgLayerNode *image_layer2 = [MgLayerNode node];
+  image_layer2.position = CGPointMake(-200, 300);
+  image_layer2.bounds = CGRectMake(0, 0, 512, 512);
+  image_layer2.alpha = .25;
+  image_layer2.name = @"Image Link";
+  [image_layer2 addContent:image_layer];
+  [node addContent:image_layer2];
+#endif
+
   MgLayerNode *rect_layer = [MgLayerNode node];
   rect_layer.position = CGPointMake(350, 300);
   rect_layer.bounds = CGRectMake(0, 0, 400, 250);
@@ -89,16 +99,6 @@
   rect_node.fillColor = [[NSColor blueColor] CGColor];
   rect_node.name = @"Rect Fill";
   [rect_layer addContent:rect_node];
-
-#if 1
-  MgLayerNode *image_layer2 = [MgLayerNode node];
-  image_layer2.position = CGPointMake(-200, 300);
-  image_layer2.bounds = CGRectMake(0, 0, 512, 512);
-  image_layer2.alpha = .25;
-  image_layer2.name = @"Image Link";
-  [image_layer2 addContent:image_layer];
-  [node addContent:image_layer2];
-#endif
 #endif
 
   return self;

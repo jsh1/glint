@@ -26,8 +26,10 @@
 
 #import "YuColor.h"
 #import "YuDocument.h"
+#import "YuTreeNode.h"
 #import "YuViewerOverlayNode.h"
 #import "YuViewerViewController.h"
+#import "YuWindowController.h"
 
 #import "MgLayer.h"
 
@@ -109,7 +111,9 @@
   CGFloat ay = size.height * (CGFloat).5;
   CGFloat s = _viewScale;
 
-  return CGAffineTransformMake(s, 0, 0, s, s * -ax + _viewCenter.x, s * -ay + _viewCenter.y);
+  return CGAffineTransformMake(s, 0, 0, s,
+			       s * -ax + _viewCenter.x,
+			       s * -ay + _viewCenter.y);
 }
 
 - (CGFloat)zoomToFitScale
@@ -204,12 +208,204 @@
   return YES;
 }
 
-- (void)mouseDown:(NSEvent *)e
+- (CGPoint)convertPointToDocument:(NSPoint)p
 {
+  CGAffineTransform m = CGAffineTransformInvert([self viewTransform]);
+
+  /* There's an implicit y-flip between view coordinates and the root
+     of the Mg viewer. */
+
+  NSRect bounds = [self bounds];
+
+  m = CGAffineTransformTranslate(m, 0, bounds.size.height);
+  m = CGAffineTransformScale(m, 1, -1);
+
+  return CGPointApplyAffineTransform(NSPointToCGPoint(p), m);
 }
 
-- (void)mouseDragged:(NSEvent *)e
+- (BOOL)selectionContainsPoint:(CGPoint)p
 {
+  YuWindowController *controller = self.controller.controller;
+
+  for (YuTreeNode *node in controller.selection)
+    {
+      YuTreeNode *parent = node.parent;
+      CGPoint lp = p;
+      if (parent != nil)
+	lp = [parent convertPointFromRoot:p];
+      if ([node containsPoint:lp])
+	return YES;
+    }
+
+  return NO;
+}
+
+- (BOOL)dragSelectionWithEvent:(NSEvent *)e
+{
+  YuWindowController *controller = self.controller.controller;
+
+  NSMutableArray *nodes = [NSMutableArray array];
+  NSMutableSet *layers = [NSMutableSet set];
+
+  for (YuTreeNode *node in controller.selection)
+    {
+      MgLayerNode *layer = (MgLayerNode *)node.node;
+      if (![layer isKindOfClass:[MgLayerNode class]])
+	continue;
+      if ([layers containsObject:layer])
+	continue;
+      [nodes addObject:node];
+      [layers addObject:layer];
+    }
+
+  NSInteger count = [nodes count];
+  if (count == 0)
+    return NO;
+
+  CGPoint old_positions[count];
+  for (NSInteger i = 0; i < count; i++)
+    {
+      YuTreeNode *node = nodes[i];
+      MgLayerNode *layer = (MgLayerNode *)node.node;
+      old_positions[i] = layer.position;
+    }
+
+  NSPoint p0 = [self convertPoint:[e locationInWindow] fromView:nil];
+
+  BOOL dragging = NO;
+
+  while (1)
+    {
+      [CATransaction flush];
+
+      e = [[self window] nextEventMatchingMask:
+	   NSLeftMouseDraggedMask | NSLeftMouseUpMask];
+      if ([e type] != NSLeftMouseDragged)
+	break;
+
+      NSPoint p1 = [self convertPoint:[e locationInWindow] fromView:nil];
+
+      if (!dragging && (fabs(p1.x - p0.x) > 2 || fabs(p1.y - p0.y) > 2))
+	dragging = YES;
+
+      if (!dragging)
+	continue;
+
+      for (NSInteger i = 0; i < count; i++)
+	{
+	  YuTreeNode *node = nodes[i];
+	  MgLayerNode *layer = (MgLayerNode *)node.node;
+
+	  CGPoint p = old_positions[i];
+	  p = [node convertPointToRoot:p];
+	  p.x += p1.x - p0.x;
+	  p.y -= p1.y - p0.y;
+	  p = [node convertPointFromRoot:p];
+
+	  /* FIXME: whatever undo/update machinery YuDocument implements
+	     needs to be invoked here. */
+
+	  layer.position = p;
+	}
+    }
+
+  return dragging;
+}
+
+- (void)modifySelectionForNode:(YuTreeNode *)node withEvent:(NSEvent *)e
+{
+  YuWindowController *controller = self.controller.controller;
+
+  BOOL extend = ([e modifierFlags] & NSShiftKeyMask) != 0;
+  BOOL toggle = ([e modifierFlags] & NSCommandKeyMask) != 0;
+
+  NSMutableArray *selection = [controller.selection mutableCopy];
+
+  if (!extend && !toggle)
+    [selection removeAllObjects];
+
+  if (node != nil)
+    {
+      NSInteger node_idx = [selection indexOfObjectIdenticalTo:node];
+
+      if (node_idx == NSNotFound)
+	[selection addObject:node];
+      else if (toggle)
+	[selection removeObjectAtIndex:node_idx];
+    }
+
+  controller.selection = selection;
+}
+
+- (void)mouseDown:(NSEvent *)e
+{
+  YuWindowController *controller = self.controller.controller;
+
+  NSPoint p = [self convertPoint:[e locationInWindow] fromView:nil];
+
+  /* Get location relative to the root of the document. */
+
+  CGPoint dp = [self convertPointToDocument:p];
+
+  BOOL inside = [self selectionContainsPoint:dp];
+
+  YuTreeNode *node = [controller.tree hitTest:dp];
+
+  BOOL toggle = ([e modifierFlags] & NSCommandKeyMask) != 0;
+  BOOL deep = ([e modifierFlags] & NSAlternateKeyMask) != 0;
+
+  if (node != nil && !deep)
+    {
+      /* Find the closest ancestor of the hit node that's a sibling
+	 of something in the selection (if clicking inside the
+	 selection and Command isn't held down) or a sibling of an
+	 ancestor of something in the selection otherwise. */
+
+      NSMutableSet *set = [NSMutableSet set];
+
+      NSArray *selection = controller.selection;
+
+      if ([selection count] != 0)
+	{
+	  for (YuTreeNode *tn in controller.selection)
+	    {
+	      if (inside && !toggle)
+		[set addObject:tn];
+	      for (YuTreeNode *pn = tn.parent; pn != nil; pn = pn.parent)
+		[set addObject:pn];
+	    }
+	}
+      else
+	{
+	  [set addObject:controller.tree];
+	}
+
+      while (node != nil)
+	{
+	  YuTreeNode *parent = node.parent;
+	  if (parent == nil)
+	    break;
+	  if ([set containsObject:parent])
+	    break;
+	  node = parent;
+	}
+    }
+
+  /* If we clicked outside the selection, update the selection state
+     immediately to reflect what was clicked (even if that's nothing). */
+
+  if (!inside)
+    [self modifySelectionForNode:node withEvent:e];
+
+  /* Then try to drag the (possibly modified) selection. */
+
+  BOOL dragged = [self dragSelectionWithEvent:e];
+
+  /* If no drag happened, and we clicked on something inside the
+     selection, update the selection for that node. */
+
+  if (!dragged && inside && node != nil)
+    [self modifySelectionForNode:node withEvent:e];
 }
 
 - (void)scrollWheel:(NSEvent *)e

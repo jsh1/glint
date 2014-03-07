@@ -66,14 +66,6 @@
 
   m = CGAffineTransformConcat(m, [self.view viewTransform]);
 
-  CGContextRef ctx = st.context;
-
-  CGColorRef color = [(container == tn.node
-		       ? [YuColor viewerLayerOverlayColor]
-		       : [YuColor viewerNodeOverlayColor]) CGColor];
-
-  CGContextSetStrokeColorWithColor(ctx, color);
-
   CGPoint p[4];
   MgRectGetCorners(container.bounds, p);
 
@@ -90,6 +82,18 @@
   l[4] = p[2]; l[5] = p[3];
   l[6] = p[3]; l[7] = p[0];
 
+  CGContextRef ctx = st.context;
+
+  /* Use dashed outline for non-layer [drawable] nodes. */
+
+  if (container == tn.node)
+    CGContextSetLineDash(ctx, 0, NULL, 0);
+  else
+    {
+      CGFloat dash[2] = {10, 5};
+      CGContextSetLineDash(ctx, 0, dash, 2);
+    }
+
   /* Line width of 1 for non-rectilinear lines looks too thin and ropey.
      So fatten up those lines a touch. */
 
@@ -105,7 +109,8 @@
   CGContextRef ctx = st.context;
 
   CGContextSaveGState(ctx);
-  CGContextSetLineWidth(ctx, 1);
+
+  CGContextSetStrokeColorWithColor(ctx, [[YuColor viewerOverlayColor] CGColor]);
 
   for (YuTreeNode *tn in _selection)
     [self drawNode:tn withState:st];

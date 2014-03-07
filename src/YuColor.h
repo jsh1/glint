@@ -32,7 +32,6 @@
 
 + (NSColor *)viewerBackgroundColor;
 
-+ (NSColor *)viewerLayerOverlayColor;
-+ (NSColor *)viewerNodeOverlayColor;
++ (NSColor *)viewerOverlayColor;
 
 @end

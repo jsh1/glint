@@ -42,4 +42,12 @@
 
 - (BOOL)foreachNode:(void (^)(YuTreeNode *node, BOOL *stop))thunk;
 
+- (YuTreeNode *)containingLayer;
+
+- (CGPoint)convertPointToRoot:(CGPoint)p;
+- (CGPoint)convertPointFromRoot:(CGPoint)p;
+
+- (BOOL)containsPoint:(CGPoint)p;
+- (YuTreeNode *)hitTest:(CGPoint)p;
+
 @end

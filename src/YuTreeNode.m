@@ -98,4 +98,82 @@
   return YES;
 }
 
+- (YuTreeNode *)containingLayer
+{
+  for (YuTreeNode *n = self.parent; n != nil; n = n.parent)
+    {
+      if ([n.node isKindOfClass:[MgLayerNode class]])
+	return n;
+    }
+
+  return nil;
+}
+
+- (CGAffineTransform)rootTransform
+{
+  CGAffineTransform m = CGAffineTransformIdentity;
+
+  for (YuTreeNode *n = self; n != nil; n = n.parent)
+    {
+      MgLayerNode *layer = (MgLayerNode *)n.node;
+
+      if ([layer isKindOfClass:[MgLayerNode class]])
+	m = CGAffineTransformConcat(m, [layer parentTransform]);
+    }
+
+  return m;
+}
+
+- (CGPoint)convertPointToRoot:(CGPoint)p
+{
+  CGAffineTransform m = [self rootTransform];
+  return CGPointApplyAffineTransform(p, m);
+}
+
+- (CGPoint)convertPointFromRoot:(CGPoint)p
+{
+  CGAffineTransform m = [self rootTransform];
+  return CGPointApplyAffineTransform(p, CGAffineTransformInvert(m));
+}
+
+- (BOOL)containsPoint:(CGPoint)p
+{
+  YuTreeNode *layer = [self containingLayer];
+
+  return [(MgDrawableNode *)_node containsPoint:p layerNode:(MgLayerNode *)layer.node];
+}
+
+- (YuTreeNode *)hitTest:(CGPoint)p
+{
+  return [self hitTest:p layer:nil];
+}
+
+- (YuTreeNode *)hitTest:(CGPoint)p layer:(YuTreeNode *)layer
+{
+  if (![_node isKindOfClass:[MgDrawableNode class]])
+    return nil;
+
+  MgDrawableNode *drawable = (MgDrawableNode *)_node;
+
+  CGPoint node_p = [drawable convertPointFromParent:p];
+  YuTreeNode *node_layer = ([drawable isKindOfClass:[MgLayerNode class]]
+			    ? self : layer);
+
+  NSArray *children = self.children;
+  NSInteger count = [children count];
+
+  for (NSInteger i = count - 1; i >= 0; i--)
+    {
+      YuTreeNode *node = children[i];
+      YuTreeNode *hit = [node hitTest:node_p layer:node_layer];
+      if (hit != nil)
+	return hit;
+    }
+
+  if ([drawable containsPoint:p layerNode:(MgLayerNode *)layer.node])
+    return self;
+
+  return nil;
+}
+
 @end

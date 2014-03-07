@@ -166,7 +166,7 @@
 
 - (NSArray *)selection
 {
-  return _selection;
+  return _selection != nil ? _selection : @[];
 }
 
 - (void)setSelection:(NSArray *)array
