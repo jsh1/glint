@@ -349,6 +349,33 @@
                         </items>
                     </menu>
                 </menuItem>
+                <menuItem title="Object" id="O0G-ax-Ebk">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <menu key="submenu" title="Object" id="GTL-ta-mVl">
+                        <items>
+                            <menuItem title="Parent Object" keyEquivalent="" id="FhE-LI-y9i">
+                                <connections>
+                                    <action selector="parentNodeAction:" target="-1" id="pQh-gv-4QF"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Child Object" keyEquivalent="" id="83A-aO-VZB">
+                                <connections>
+                                    <action selector="childNodeAction:" target="-1" id="Bmp-Yj-KJT"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Next Object" keyEquivalent="" id="8HW-aB-IN5">
+                                <connections>
+                                    <action selector="nextNodeAction:" target="-1" id="aHr-iU-rCI"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Previous Object" keyEquivalent="" id="TvO-VC-N0w">
+                                <connections>
+                                    <action selector="previousNodeAction:" target="-1" id="iJv-d1-g6p"/>
+                                </connections>
+                            </menuItem>
+                        </items>
+                    </menu>
+                </menuItem>
                 <menuItem title="Format" id="jxT-CU-nIS">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Format" id="GEO-Iw-cKr">

@@ -179,6 +179,132 @@
     }
 }
 
+- (IBAction)nextNodeAction:(id)sender
+{
+  NSMutableSet *set = [NSMutableSet set];
+
+  for (YuTreeNode *node in self.selection)
+    {
+      NSArray *node_children = node.children;
+      if ([node_children count] != 0)
+	{
+	  [set addObject:[node_children firstObject]];
+	  continue;
+	}
+
+      for (YuTreeNode *n = node; n != nil; n = n.parent)
+	{
+	  YuTreeNode *p = n.parent;
+	  if (p == nil)
+	    {
+	      [set addObject:node];
+	      break;
+	    }
+
+	  NSArray *p_children = p.children;
+	  if (p_children == nil)
+	    continue;
+
+	  NSInteger idx = [p_children indexOfObjectIdenticalTo:n];
+	  if (idx == NSNotFound)
+	    continue;
+
+	  if (idx + 1 < [p_children count])
+	    {
+	      [set addObject:p_children[idx + 1]];
+	      break;
+	    }
+	}
+    }
+
+  if ([set count] == 0)
+    [set addObject:self.tree];
+
+  self.selection = [set allObjects];
+}
+
+static YuTreeNode *
+deepestLastChild(YuTreeNode *n)
+{
+  while (1)
+    {
+      NSArray *children = n.children;
+
+      NSInteger count = [children count];
+      if (count == 0)
+	break;
+
+      n = children[count-1];
+    }
+
+  return n;
+}
+
+- (IBAction)previousNodeAction:(id)sender
+{
+  NSMutableSet *set = [NSMutableSet set];
+
+  for (YuTreeNode *node in self.selection)
+    {
+      YuTreeNode *p = node.parent;
+      if (p == nil)
+	{
+	  [set addObject:node];
+	  continue;
+	}
+
+      NSArray *p_children = p.children;
+      if (p_children == nil)
+	continue;
+
+      NSInteger idx = [p_children indexOfObjectIdenticalTo:node];
+      if (idx == NSNotFound)
+	continue;
+
+      if (idx > 0)
+	[set addObject:deepestLastChild(p_children[idx - 1])];
+      else
+	[set addObject:p];
+    }
+
+  if ([set count] == 0)
+    [set addObject:deepestLastChild(self.tree)];
+
+  self.selection = [set allObjects];
+}
+
+- (IBAction)parentNodeAction:(id)sender
+{
+  NSMutableSet *set = [NSMutableSet set];
+
+  for (YuTreeNode *node in self.selection)
+    {
+      YuTreeNode *parent = node.parent;
+      [set addObject:parent != nil ? parent : node];
+    }
+
+  if ([set count] == 0)
+    [set addObject:self.tree];
+
+  self.selection = [set allObjects];
+}
+
+- (IBAction)childNodeAction:(id)sender
+{
+  NSMutableSet *set = [NSMutableSet set];
+
+  for (YuTreeNode *node in self.selection)
+    {
+      YuTreeNode *child = [node.children firstObject];
+      [set addObject:child != nil ? child : node];
+    }
+
+  if ([set count] == 0)
+    [set addObject:self.tree];
+
+  self.selection = [set allObjects];
+}
+
 - (IBAction)zoomInAction:(id)sender
 {
   [self foreachViewControllerWithClass:[YuViewerViewController class]
