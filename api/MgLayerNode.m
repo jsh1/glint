@@ -481,20 +481,35 @@
   [super foreachNode:block];
 }
 
+- (CGPoint)convertPointToParent:(CGPoint)p
+{
+  CGAffineTransform m = [self parentTransform];
+  return CGPointApplyAffineTransform(p, m);
+}
+
+- (CGPoint)convertPointFromParent:(CGPoint)p
+{
+  CGAffineTransform m = CGAffineTransformInvert([self parentTransform]);
+  return CGPointApplyAffineTransform(p, m);
+}
+
 - (BOOL)containsPoint:(CGPoint)p layerNode:(MgLayerNode *)node
 {
-  /* Map point into our coordinate space. */
-
-  CGAffineTransform m = CGAffineTransformInvert([self parentTransform]);
-  
-  CGPoint lp = CGPointApplyAffineTransform(p, m);
+  CGPoint lp = [self convertPointFromParent:p];
 
   MgDrawableNode *mask = self.mask;
-  if (mask != nil && ![mask containsPoint:p layerNode:node])
+  if (mask != nil && [mask hitTest:lp layerNode:node] == nil)
     return NO;
 
-  for (MgDrawableNode *node in self.contents)
+  if (CGRectContainsPoint(self.bounds, lp))
+    return YES;
+
+  NSArray *array = self.contents;
+  NSInteger count = [array count];
+
+  for (NSInteger i = count - 1; i >= 0; i--)
     {
+      MgDrawableNode *node = array[i];
       if ([node containsPoint:lp layerNode:self])
 	return YES;
     }
@@ -502,23 +517,41 @@
   return NO;
 }
 
-- (void)addNodesContainingPoint:(CGPoint)p toSet:(NSMutableSet *)set
-    layerNode:(MgLayerNode *)node
+- (MgDrawableNode *)hitTest:(CGPoint)p layerNode:(MgLayerNode *)node
 {
-  /* Map point into our coordinate space. */
-
-  CGAffineTransform m = CGAffineTransformInvert([self parentTransform]);
-  
-  CGPoint lp = CGPointApplyAffineTransform(p, m);
+  CGPoint lp = [self convertPointFromParent:p];
 
   MgDrawableNode *mask = self.mask;
-  if (mask != nil && ![mask containsPoint:p layerNode:node])
-    return;
+  if (mask != nil && [mask hitTest:lp layerNode:node] == nil)
+    return nil;
 
   for (MgDrawableNode *node in self.contents)
     {
-      [node addNodesContainingPoint:lp toSet:set layerNode:self];
+      MgDrawableNode *hit = [node hitTest:lp layerNode:self];
+      if (hit != nil)
+	return hit;
     }
+
+  if (CGRectContainsPoint(self.bounds, lp))
+    return self;
+
+  return nil;
+}
+
+- (void)addNodesContainingPoint:(CGPoint)p toSet:(NSMutableSet *)set
+    layerNode:(MgLayerNode *)node
+{
+  CGPoint lp = [self convertPointFromParent:p];
+
+  MgDrawableNode *mask = self.mask;
+  if (mask != nil && [mask hitTest:lp layerNode:node] == nil)
+    return;
+
+  if (CGRectContainsPoint(self.bounds, lp))
+    [set addObject:self];
+
+  for (MgDrawableNode *node in self.contents)
+    [node addNodesContainingPoint:lp toSet:set layerNode:self];
 }
 
 /** Rendering. **/

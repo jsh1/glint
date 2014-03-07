@@ -25,6 +25,7 @@
 #import "MgDrawableNodeInternal.h"
 
 #import "MgAnimationNode.h"
+#import "MgLayerNode.h"
 #import "MgNodeInternal.h"
 
 #import <Foundation/Foundation.h>
@@ -122,6 +123,29 @@
   [super foreachNode:block];
 }
 
+- (CGPoint)convertPointToParent:(CGPoint)p
+{
+  return p;
+}
+
+- (CGPoint)convertPointFromParent:(CGPoint)p
+{
+  return p;
+}
+
+- (MgDrawableNode *)hitTest:(CGPoint)p
+{
+  return [self hitTest:p layerNode:nil];
+}
+
+- (MgDrawableNode *)hitTest:(CGPoint)p layerNode:(MgLayerNode *)node
+{
+  if ([self containsPoint:p layerNode:node])
+    return self;
+  else
+    return nil;
+}
+
 - (BOOL)containsPoint:(CGPoint)p
 {
   return [self containsPoint:p layerNode:nil];
@@ -129,7 +153,7 @@
 
 - (BOOL)containsPoint:(CGPoint)p layerNode:(MgLayerNode *)node
 {
-  return NO;
+  return CGRectContainsPoint(node.bounds, p);
 }
 
 - (NSSet *)nodesContainingPoint:(CGPoint)p

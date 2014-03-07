@@ -36,13 +36,35 @@
 - (void)addAnimation:(MgAnimationNode *)anim;
 - (void)removeAnimation:(MgAnimationNode *)anim;
 
-/* Hit-testing. */
+/* Returns the new point created by mapping 'p' either into or out of
+   the coordinate space containing the receiver. */
+
+- (CGPoint)convertPointToParent:(CGPoint)p;
+- (CGPoint)convertPointFromParent:(CGPoint)p;
+
+/* Hit-testing. Does a depth-first search from top-to-bottom finding
+   the deepest node that contains point 'p'. Point 'p' is defined in
+   the coordinate space containing the receiver. */
+
+- (MgDrawableNode *)hitTest:(CGPoint)p;
+
+/* Returns true if the receiver or any of its descendants contain point
+   'p'. Point 'p' is defined in the coordinate space containing the
+   receiver. */
 
 - (BOOL)containsPoint:(CGPoint)p;
+
+/* Returns all nodes in the subgraph defined by the receiver that
+   contain point 'p'. Point 'p' is defined in the coordinate space
+   containing the receiver. */
+
 - (NSSet *)nodesContainingPoint:(CGPoint)p;
 
-/* For subclasses to override. */
+/* Versions that allow the containing layer to be passed in. These are
+   what subclasses should override. The corresponding methods above all
+   call these methods with 'node' as a null pointer. */
 
+- (MgDrawableNode *)hitTest:(CGPoint)p layerNode:(MgLayerNode *)node;
 - (BOOL)containsPoint:(CGPoint)p layerNode:(MgLayerNode *)node;
 - (void)addNodesContainingPoint:(CGPoint)p toSet:(NSMutableSet *)set
     layerNode:(MgLayerNode *)node;

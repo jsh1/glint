@@ -146,14 +146,6 @@ static NSMutableSet *image_provider_classes;
     }
 }
 
-- (NSArray *)nodesContainingPoint:(CGPoint)p layerNode:(MgLayerNode *)node
-{
-  if (node != nil && CGRectContainsPoint(node.bounds, p))
-    return [NSArray arrayWithObject:self];
-  else
-    return @[];
-}
-
 - (void)_renderWithState:(MgDrawableRenderState *)rs
 {
   if (rs->layer == nil)

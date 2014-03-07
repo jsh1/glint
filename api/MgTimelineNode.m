@@ -264,6 +264,11 @@
   return [_node containsPoint:p layerNode:node];
 }
 
+- (MgDrawableNode *)hitTest:(CGPoint)p layerNode:(MgLayerNode *)node
+{
+  return [_node hitTest:p layerNode:node];
+}
+
 - (void)addNodesContainingPoint:(CGPoint)p toSet:(NSMutableSet *)set
     layerNode:(MgLayerNode *)node
 {

@@ -242,7 +242,7 @@
 {
   /* FIXME: implement this. */
 
-  return NO;
+  return YES;
 }
 
 - (void)_renderWithState:(MgDrawableRenderState *)rs
