@@ -71,4 +71,11 @@
       free(ptr);				\
   } while (0)
 
+/* Note BOX(x) appears to returns something incompatible with KVC for
+   numeric types, so use @(x) instead. */
+
+#ifdef __OBJC__
+# define BOX(x) [NSValue valueWithBytes:&(x) objCType:@encode(__typeof__(x))]
+#endif
+
 #endif /* MG_MACROS_H */
