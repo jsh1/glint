@@ -44,4 +44,7 @@ MG_EXTERN bool MgAffineTransformIsRectilinear(const CGAffineTransform *m);
 
 MG_EXTERN void MgRectGetCorners(CGRect r, CGPoint p[4]);
 
+MG_EXTERN CGPathRef MgPathCreateWithRoundRect(CGRect rect, CGFloat radius)
+    CF_RETURNS_RETAINED;
+
 MG_EXTERN_C_END

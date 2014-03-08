@@ -176,8 +176,7 @@
 	CGContextAddRect(rs->ctx, rs->layer.bounds);
       else
 	{
-	  CGPathRef p = CGPathCreateWithRoundedRect(rs->layer.bounds,
-						    radius, radius, NULL);
+	  CGPathRef p = MgPathCreateWithRoundRect(rs->layer.bounds, radius);
 	  CGContextAddPath(rs->ctx, p);
 	  CGPathRelease(p);
 	}
@@ -212,8 +211,7 @@
       return;
     }
 
-  CGPathRef p = CGPathCreateWithRoundedRect(rs->layer.bounds,
-					    radius, radius, NULL);
+  CGPathRef p = MgPathCreateWithRoundRect(rs->layer.bounds, radius);
   CGPathRef sp = NULL;
   if (mode != kCGPathFill && mode != kCGPathEOFill)
     {

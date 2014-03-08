@@ -164,3 +164,20 @@ MgRectGetCorners(CGRect r, CGPoint p[4])
   p[2] = CGPointMake(p[1].x, p[0].y + r.size.height);
   p[3] = CGPointMake(p[0].x, p[2].y);
 }
+
+CGPathRef
+MgPathCreateWithRoundRect(CGRect rect, CGFloat radius)
+{
+  /* Avoid these assertions:
+
+	corner_height >= 0 && 2 * corner_height <= CGRectGetHeight(rect)
+	corner_width >= 0 && 2 * corner_width <= CGRectGetWidth(rect)
+
+     I can't believe I'm still dealing with this crap. */
+
+  radius = fmax(0, radius);
+  radius = fmin(radius, CGRectGetWidth(rect) * (CGFloat).5 - 1e-3);
+  radius = fmin(radius, CGRectGetHeight(rect) * (CGFloat).5 - 1e-3);
+
+  return CGPathCreateWithRoundedRect(rect, radius, radius, NULL);
+}
