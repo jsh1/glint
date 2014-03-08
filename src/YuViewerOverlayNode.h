@@ -24,10 +24,54 @@
 
 #import "YuBase.h"
 
+typedef NS_ENUM(NSInteger, YuViewerAdornment)
+{
+  YuViewerAdornmentCornerRadius,
+  YuViewerAdornmentResizeTopLeft,
+  YuViewerAdornmentResizeTop,
+  YuViewerAdornmentResizeTopRight,
+  YuViewerAdornmentResizeBottomLeft,
+  YuViewerAdornmentResizeBottom,
+  YuViewerAdornmentResizeBottomRight,
+  YuViewerAdornmentResizeLeft,
+  YuViewerAdornmentResizeRight,
+  YuViewerAdornmentAnchor,
+  YuViewerAdornmentRotate,
+  YuViewerAdornmentScale,
+  YuViewerAdornmentSqueeze,
+  YuViewerAdornmentSkew,
+};
+
+enum
+{
+  YuViewerAdornmentCount = YuViewerAdornmentSkew + 1,
+};
+
+typedef NS_OPTIONS(NSUInteger, YuViewerAdornmentMask)
+{
+  YuViewerAdornmentMaskResizeTopLeft = 1U << YuViewerAdornmentResizeTopLeft,
+  YuViewerAdornmentMaskResizeTop = 1U << YuViewerAdornmentResizeTop,
+  YuViewerAdornmentMaskResizeTopRight = 1U << YuViewerAdornmentResizeTopRight,
+  YuViewerAdornmentMaskResizeBottomLeft = 1U << YuViewerAdornmentResizeBottomLeft,
+  YuViewerAdornmentMaskResizeBottom = 1U << YuViewerAdornmentResizeBottom,
+  YuViewerAdornmentMaskResizeBottomRight = 1U << YuViewerAdornmentResizeBottomRight,
+  YuViewerAdornmentMaskResizeLeft = 1U << YuViewerAdornmentResizeLeft,
+  YuViewerAdornmentMaskResizeRight = 1U << YuViewerAdornmentResizeRight,
+  YuViewerAdornmentMaskAnchor = 1U << YuViewerAdornmentAnchor,
+  YuViewerAdornmentMaskRotate = 1U << YuViewerAdornmentRotate,
+  YuViewerAdornmentMaskScale = 1U << YuViewerAdornmentScale,
+  YuViewerAdornmentMaskSqueeze = 1U << YuViewerAdornmentSqueeze,
+  YuViewerAdornmentMaskSkew = 1U << YuViewerAdornmentSkew,
+};
+
 @interface YuViewerOverlayNode : MgDrawingNode
 
 @property(nonatomic, weak) YuViewerView *view;
 
+@property(nonatomic, assign) YuViewerAdornmentMask adornmentMask;
+
 - (void)update;
+
+- (NSInteger)hitTest:(CGPoint)p inAdornmentsOfNode:(YuTreeNode *)node;
 
 @end

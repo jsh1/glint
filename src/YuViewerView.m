@@ -36,6 +36,11 @@
 #define MIN_SCALE (1. / 32)
 #define MAX_SCALE 32
 
+#define DRAG_MASK (NSLeftMouseDownMask | NSLeftMouseUpMask \
+  | NSRightMouseDownMask | NSRightMouseUpMask | NSMouseMovedMask \
+  | NSLeftMouseDraggedMask | NSRightMouseDraggedMask \
+  | NSOtherMouseDownMask | NSOtherMouseUpMask | NSOtherMouseDraggedMask)
+
 @implementation YuViewerView
 {
   MgLayer *_nodeLayer;
@@ -44,6 +49,7 @@
   YuViewerOverlayNode *_overlayNode;
   CGPoint _viewCenter;
   CGFloat _viewScale;
+  NSTrackingArea *_trackingArea;
 }
 
 - (id)initWithFrame:(NSRect)r
@@ -191,6 +197,21 @@
   _documentContainer.contents = @[document.documentNode];
 
   [_overlayNode update];
+
+  if (_trackingArea == nil
+      || !NSEqualRects(NSRectFromCGRect(bounds), [_trackingArea rect]))
+    {
+      if (_trackingArea != nil)
+	[self removeTrackingArea:_trackingArea];
+
+      _trackingArea = [[NSTrackingArea alloc]
+		       initWithRect:NSRectFromCGRect(bounds)
+		       options:(NSTrackingMouseEnteredAndExited
+				| NSTrackingMouseMoved
+				| NSTrackingActiveInKeyWindow)
+		       owner:self userInfo:nil];
+      [self addTrackingArea:_trackingArea];
+    }
 }
 
 - (void)setNeedsUpdate
@@ -223,7 +244,7 @@
   return CGPointApplyAffineTransform(NSPointToCGPoint(p), m);
 }
 
-- (BOOL)selectionContainsPoint:(CGPoint)p
+- (YuTreeNode *)selectedNodeContainingPoint:(CGPoint)p
 {
   YuWindowController *controller = self.controller.controller;
 
@@ -234,10 +255,260 @@
       if (parent != nil)
 	lp = [parent convertPointFromRoot:p];
       if ([node containsPoint:lp])
-	return YES;
+	return node;
     }
 
-  return NO;
+  return nil;
+}
+
+- (BOOL)mouseDown:(NSEvent *)e inAdornment:(YuViewerAdornment)adornment
+    ofNode:(YuTreeNode *)node
+{
+  YuWindowController *controller = self.controller.controller;
+
+  NSMutableArray *nodes = [NSMutableArray array];
+  NSMutableSet *layers = [NSMutableSet set];
+  NSInteger node_idx = -1;
+
+  for (YuTreeNode *tn in controller.selection)
+    {
+      MgLayerNode *layer = (MgLayerNode *)tn.node;
+      if (![layer isKindOfClass:[MgLayerNode class]])
+	continue;
+      if ([layers containsObject:layer])
+	continue;
+      [nodes addObject:tn];
+      [layers addObject:layer];
+      if (tn == node)
+	node_idx = [nodes count] - 1;
+    }
+
+  if (node_idx < 0)
+    return NO;
+
+  NSInteger count = [nodes count];
+  if (count == 0)
+    return NO;
+
+  struct layer_state
+    {
+      CGPoint position;
+      CGPoint anchor;
+      CGRect bounds;
+      CGFloat cornerRadius;
+      CGFloat scale;
+      CGFloat squeeze;
+      CGFloat skew;
+      double rotation;
+    };
+  
+  struct layer_state old_state[count];
+  for (NSInteger i = 0; i < count; i++)
+    {
+      YuTreeNode *tn = nodes[i];
+      MgLayerNode *layer = (MgLayerNode *)tn.node;
+      old_state[i].position = layer.position;
+      old_state[i].anchor = layer.anchor;
+      old_state[i].bounds = layer.bounds;
+      old_state[i].cornerRadius = layer.cornerRadius;
+      old_state[i].scale = layer.scale;
+      old_state[i].squeeze = layer.squeeze;
+      old_state[i].skew = layer.skew;
+      old_state[i].rotation = layer.rotation;
+    }
+
+  struct layer_state new_state[count];
+  memcpy(new_state, old_state, count * sizeof(new_state[0]));
+
+  BOOL dragging = NO;
+
+  NSPoint p0 = [self convertPoint:[e locationInWindow] fromView:nil];
+
+  while (1)
+    {
+      [CATransaction flush];
+
+      e = [[self window] nextEventMatchingMask:DRAG_MASK];
+      if ([e type] != NSLeftMouseDragged)
+	break;
+
+      NSPoint p1 = [self convertPoint:[e locationInWindow] fromView:nil];
+
+      CGFloat dx = p1.x - p0.x;
+      CGFloat dy = p0.y - p1.y;
+
+      if (!dragging && (fabs(dx) > 2 || fabs(dy) > 2))
+	dragging = YES;
+
+      if (!dragging)
+	continue;
+
+      double arg = 0;
+
+      switch (adornment)
+	{
+	case YuViewerAdornmentRotate: {
+	  CGPoint np0 = [node convertPointFromRoot:
+			 [self convertPointToDocument:p0]];
+	  CGPoint np1 = [node convertPointFromRoot:
+			 [self convertPointToDocument:p1]];
+	  CGPoint nc;
+	  nc.x = (old_state[node_idx].bounds.origin.x
+		  + old_state[node_idx].bounds.size.width
+		  * old_state[node_idx].anchor.x);
+	  nc.y = (old_state[node_idx].bounds.origin.y
+		  + old_state[node_idx].bounds.size.height
+		  * old_state[node_idx].anchor.y);
+
+	  double ang0 = atan2(np0.y - nc.y, np0.x - nc.x);
+	  double ang1 = atan2(np1.y - nc.y, np1.x - nc.x);
+	  arg = ang1 - ang0;
+	  break; }
+
+	  /* FIXME: skew is not right. But it'll do for now. */
+
+	case YuViewerAdornmentScale:
+	case YuViewerAdornmentSqueeze:
+	case YuViewerAdornmentSkew: {
+	  CGPoint np0 = [node convertPointFromRoot:
+			 [self convertPointToDocument:p0]];
+	  CGPoint np1 = [node convertPointFromRoot:
+			 [self convertPointToDocument:p1]];
+	  CGPoint nc;
+	  nc.x = (old_state[node_idx].bounds.origin.x
+		  + old_state[node_idx].bounds.size.width
+		  * old_state[node_idx].anchor.x);
+	  nc.y = (old_state[node_idx].bounds.origin.y
+		  + old_state[node_idx].bounds.size.height
+		  * old_state[node_idx].anchor.y);
+	  if (adornment == YuViewerAdornmentScale)
+	    arg = fabs((np1.y - nc.y) / (np0.y - nc.y));
+	  else if (adornment == YuViewerAdornmentSqueeze)
+	    arg = fabs((np1.x - nc.x) / (np0.x - nc.x));
+	  else /* if (adornment == YuViewerAdornmentSkew) */
+	    arg = (np1.x - np0.x) / (np0.y - nc.y);
+	  break; }
+
+	default:
+	  break;
+	}
+
+      for (NSInteger i = 0; i < count; i++)
+	{
+	  YuTreeNode *tn = nodes[i];
+	  MgLayerNode *layer = (MgLayerNode *)tn.node;
+
+	  CGPoint np0 = [tn convertPointFromRoot:
+			 [self convertPointToDocument:p0]];
+	  CGPoint np1 = [tn convertPointFromRoot:
+			 [self convertPointToDocument:p1]];
+
+	  CGFloat ndx = np1.x - np0.x;
+	  CGFloat ndy = np1.y - np0.y;
+
+	  struct layer_state *ns = &new_state[i];
+	  memcpy(ns, &old_state[i], sizeof(*ns));
+
+	  if (adornment >= YuViewerAdornmentResizeTopLeft
+	      && adornment <= YuViewerAdornmentResizeRight)
+	    {
+	      ns->position = [layer convertPointFromParent:ns->position];
+
+	      switch (adornment)
+		{
+		case YuViewerAdornmentResizeTopLeft:
+		case YuViewerAdornmentResizeLeft:
+		case YuViewerAdornmentResizeBottomLeft:
+		  ns->bounds.size.width -= ndx;
+		  ns->position.x += ndx * (1 - ns->anchor.x);
+		  break;
+
+		case YuViewerAdornmentResizeTopRight:
+		case YuViewerAdornmentResizeRight:
+		case YuViewerAdornmentResizeBottomRight:
+		  ns->bounds.size.width += ndx;
+		  ns->position.x += ndx * ns->anchor.x;
+		  break;
+
+		default:
+		  break;
+		}
+
+	      switch (adornment)
+		{
+		case YuViewerAdornmentResizeTopLeft:
+		case YuViewerAdornmentResizeTop:
+		case YuViewerAdornmentResizeTopRight:
+		  ns->bounds.size.height -= ndy;
+		  ns->position.y += ndy * ns->anchor.y;
+		  break;
+
+		case YuViewerAdornmentResizeBottomLeft:
+		case YuViewerAdornmentResizeBottom:
+		case YuViewerAdornmentResizeBottomRight:
+		  ns->bounds.size.height += ndy;
+		  ns->position.y += ndy * (1 - ns->anchor.y);
+		  break;
+
+		default:
+		  break;
+		}
+
+	      ns->position = [layer convertPointToParent:ns->position];
+	    }
+	  else
+	    {
+	      switch (adornment)
+		{
+		case YuViewerAdornmentCornerRadius:
+		  ns->cornerRadius = fmax(0, ns->cornerRadius + ndx);
+		  break;
+
+		case YuViewerAdornmentAnchor:
+		  ns->position = [layer convertPointFromParent:ns->position];
+		  ns->anchor.x += ndx / ns->bounds.size.width;
+		  ns->anchor.y += ndy / ns->bounds.size.height;
+		  ns->position.x += ndx;
+		  ns->position.y += ndy;
+		  ns->position = [layer convertPointToParent:ns->position];
+		  break;
+
+		case YuViewerAdornmentRotate:
+		  ns->rotation = fmod(ns->rotation - arg, 2*M_PI);
+		  break;
+
+		case YuViewerAdornmentScale:
+		  ns->scale = fmax(ns->scale * arg, 1e-3);
+		  break;
+
+		case YuViewerAdornmentSqueeze:
+		  ns->squeeze = fmax(ns->squeeze * arg, 1e-3);
+		  break;
+
+		case YuViewerAdornmentSkew:
+		  ns->skew = fmin(ns->skew + arg, 1e3);
+		  break;
+
+		default:
+		  break;
+		}
+	    }
+
+	  /* FIXME: whatever undo/update machinery YuDocument implements
+	     needs to be invoked here. */
+
+	  layer.position = ns->position;
+	  layer.anchor = ns->anchor;
+	  layer.bounds = ns->bounds;
+	  layer.cornerRadius = ns->cornerRadius;
+	  layer.scale = ns->scale;
+	  layer.squeeze = ns->squeeze;
+	  layer.skew = ns->skew;
+	  layer.rotation = ns->rotation;
+	}
+    }
+
+  return dragging;
 }
 
 - (BOOL)dragSelectionWithEvent:(NSEvent *)e
@@ -249,12 +520,15 @@
 
   for (YuTreeNode *node in controller.selection)
     {
-      MgLayerNode *layer = (MgLayerNode *)node.node;
-      if (![layer isKindOfClass:[MgLayerNode class]])
+      YuTreeNode *ln = node;
+      while (ln != nil && ![ln.node isKindOfClass:[MgLayerNode class]])
+	ln = ln.parent;
+      if (ln == nil)
 	continue;
+      MgLayerNode *layer = (MgLayerNode *)ln.node;
       if ([layers containsObject:layer])
 	continue;
-      [nodes addObject:node];
+      [nodes addObject:ln];
       [layers addObject:layer];
     }
 
@@ -278,14 +552,16 @@
     {
       [CATransaction flush];
 
-      e = [[self window] nextEventMatchingMask:
-	   NSLeftMouseDraggedMask | NSLeftMouseUpMask];
+      e = [[self window] nextEventMatchingMask:DRAG_MASK];
       if ([e type] != NSLeftMouseDragged)
 	break;
 
       NSPoint p1 = [self convertPoint:[e locationInWindow] fromView:nil];
 
-      if (!dragging && (fabs(p1.x - p0.x) > 2 || fabs(p1.y - p0.y) > 2))
+      CGFloat dx = p1.x - p0.x;
+      CGFloat dy = p0.y - p1.y;
+
+      if (!dragging && (fabs(dx) > 2 || fabs(dy) > 2))
 	dragging = YES;
 
       if (!dragging)
@@ -297,10 +573,10 @@
 	  MgLayerNode *layer = (MgLayerNode *)node.node;
 
 	  CGPoint p = old_positions[i];
-	  p = [node convertPointToRoot:p];
-	  p.x += p1.x - p0.x;
-	  p.y -= p1.y - p0.y;
-	  p = [node convertPointFromRoot:p];
+	  p = [node.parent convertPointToRoot:p];
+	  p.x += dx;
+	  p.y += dy;
+	  p = [node.parent convertPointFromRoot:p];
 
 	  /* FIXME: whatever undo/update machinery YuDocument implements
 	     needs to be invoked here. */
@@ -347,7 +623,19 @@
 
   CGPoint dp = [self convertPointToDocument:p];
 
-  BOOL inside = [self selectionContainsPoint:dp];
+  for (YuTreeNode *node in controller.selection)
+    {
+      NSInteger a = [_overlayNode hitTest:dp inAdornmentsOfNode:node];
+      if (a != NSNotFound)
+	{
+	  if ([self mouseDown:e inAdornment:a ofNode:node])
+	    return;
+	  else
+	    break;
+	}
+    }
+
+  BOOL inside = [self selectedNodeContainingPoint:dp] != nil;
 
   YuTreeNode *node = [controller.tree hitTest:dp];
 
@@ -406,6 +694,19 @@
 
   if (!dragged && inside && node != nil)
     [self modifySelectionForNode:node withEvent:e];
+}
+
+- (void)mouseMoved:(NSEvent *)e
+{
+#if 0
+  YuWindowController *controller = self.controller.controller;
+
+  NSPoint p = [self convertPoint:[e locationInWindow] fromView:nil];
+
+  /* Get location relative to the root of the document. */
+
+  CGPoint dp = [self convertPointToDocument:p];
+#endif
 }
 
 - (void)scrollWheel:(NSEvent *)e
