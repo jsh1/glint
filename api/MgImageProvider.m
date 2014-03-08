@@ -30,8 +30,8 @@
 @implementation MgImageProvider
 {
   id _image;				/* CGImageRef */
-  NSURL *_url;
   NSData *_data;
+  NSURL *_url;
   id _imageSource;			/* CGImageSourceRef */
 }
 
@@ -42,6 +42,24 @@
 
   MgImageProvider *p = [[self alloc] init];
   p->_image = (__bridge id)image;
+
+  return p;
+}
+
++ (instancetype)imageProviderWithData:(NSData *)data
+{
+  if (data == nil)
+    return nil;
+
+  CGImageSourceRef src
+    = CGImageSourceCreateWithData((__bridge CFDataRef)data, NULL);
+
+  if (src == NULL)
+    return nil;
+
+  MgImageProvider *p = [[self alloc] init];
+  p->_data = [data copy];
+  p->_imageSource = CFBridgingRelease(src);
 
   return p;
 }
@@ -93,7 +111,7 @@
   return _url;
 }
 
-- (NSData *)imageData
+- (NSData *)data
 {
   if (_data != nil)
     return _data;
@@ -132,7 +150,7 @@
     }
 
   if (data != nil)
-    [c encodeObject:data forKey:@"imageData"];
+    [c encodeObject:data forKey:@"data"];
 }
 
 - (id)initWithCoder:(NSCoder *)c
@@ -141,7 +159,7 @@
   if (self == nil)
     return nil;
 
-  NSData *data = [c decodeObjectOfClass:[NSData class] forKey:@"imageData"];
+  NSData *data = [c decodeObjectOfClass:[NSData class] forKey:@"data"];
   if (data == nil)
     return nil;
 

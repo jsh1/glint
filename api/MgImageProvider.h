@@ -40,12 +40,13 @@
 @interface MgImageProvider : NSObject <MgImageProvider, NSSecureCoding>
 
 + (instancetype)imageProviderWithImage:(CGImageRef)image;
++ (instancetype)imageProviderWithData:(NSData *)data;
 + (instancetype)imageProviderWithURL:(NSURL *)url;
 
 /* These all return nil if result is not immediately available. */
 
 @property(nonatomic, assign, readonly) CGImageRef image;
+@property(nonatomic, copy, readonly) NSData *data;
 @property(nonatomic, copy, readonly) NSURL *URL;
-@property(nonatomic, copy, readonly) NSData *imageData;
 
 @end
