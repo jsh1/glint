@@ -248,26 +248,25 @@
 	(%o47)                             [       ]
 	                                   [ 0  1  ]
 	(%i48) scale . squeeze . skew;
-	                              [ sc sq  sc sk sq ]
-	(%o48)                        [                 ]
-	                              [   0       sc    ]
-	(%i49) 
-	
+	                                 [ sc sq  0  ]
+	(%o48)                           [           ]
+	                                 [ sc sk  sc ]
+
 	(%i50) rotate;
 	                                 [ cs  - sn ]
 	(%o50)                           [          ]
 	                                 [ sn   cs  ]
 	(%i51) scale . squeeze . skew . rotate;
-	                  [ sc (sk sn + cs) sq  sc (cs sk - sn) sq ]
-	(%o51)            [                                        ]
-	                  [       sc sn               cs sc        ]
+	                     [    cs sc sq        - sc sn sq    ]
+	(%o51)               [                                  ]
+	                     [ sc (sn + cs sk)  sc (cs - sk sn) ]
 	
      of course that might be backwards. */
 
   double m22 = _scale;
-  double m21 = 0;
   double m11 = m22 * _squeeze;
-  double m12 = m11 * _skew;
+  double m12 = 0;
+  double m21 = m11 * _skew;
 
   if (_rotation != 0)
     {
