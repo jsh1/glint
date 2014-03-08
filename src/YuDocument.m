@@ -24,6 +24,7 @@
 
 #import "YuDocument.h"
 
+#import "YuTreeNode.h"
 #import "YuWindowController.h"
 
 #import "MgCoderExtensions.h"
@@ -33,6 +34,7 @@
   YuWindowController *_controller;
   CGSize _documentSize;
   MgDrawableNode *_documentNode;
+  int _undoDisable;
 }
 
 @synthesize controller = _controller;
@@ -194,6 +196,52 @@
     }
 
   return NO;
+}
+
+- (void)disableUndo
+{
+  _undoDisable++;
+}
+
+- (void)reenableUndo
+{
+  _undoDisable--;
+}
+
+- (BOOL)isUndoEnabled
+{
+  return _undoDisable == 0;
+}
+
+- (void)registerUndo:(void (^)())thunk
+{
+  if (_undoDisable == 0)
+    {
+      [[self undoManager] registerUndoWithTarget:self
+       selector:@selector(_runUndo:) object:[thunk copy]];
+    }
+}
+
+- (void)_runUndo:(void (^)())thunk
+{
+  thunk();
+}
+
+- (void)node:(YuTreeNode *)tn setValue:(id)value forKey:(NSString *)key
+{
+  MgNode *node = tn.node;
+
+  id oldValue = [node valueForKey:key];
+
+  if (oldValue != value && ![oldValue isEqual:value])
+    {
+      [self registerUndo:^
+        {
+	  [self node:tn setValue:oldValue forKey:key];
+	}];
+
+      [node setValue:value forKey:key];
+    }
 }
 
 @end

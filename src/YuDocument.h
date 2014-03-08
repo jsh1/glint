@@ -32,4 +32,13 @@
 @property(nonatomic, assign) CGSize documentSize;
 @property(nonatomic, strong) MgDrawableNode *documentNode;
 
+- (void)disableUndo;
+- (void)reenableUndo;
+
+@property(nonatomic, assign, readonly, getter=isUndoEnabled) BOOL undoEnabled;
+
+- (void)registerUndo:(void (^)())thunk;
+
+- (void)node:(YuTreeNode *)node setValue:(id)obj forKey:(NSString *)key;
+
 @end

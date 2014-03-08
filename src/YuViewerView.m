@@ -32,6 +32,7 @@
 #import "YuWindowController.h"
 
 #import "MgLayer.h"
+#import "MgMacros.h"
 
 #define MIN_SCALE (1. / 32)
 #define MAX_SCALE 32
@@ -508,6 +509,37 @@
 	}
     }
 
+  if (dragging)
+    {
+      YuDocument *document = controller.document;
+
+      for (NSInteger i = 0; i < count; i++)
+	{
+	  YuTreeNode *node = nodes[i];
+	  MgLayerNode *layer = (MgLayerNode *)node.node;
+	  struct layer_state *os = &old_state[i];
+	  struct layer_state *ns = &new_state[i];
+
+	  layer.position = os->position;
+	  layer.anchor = os->anchor;
+	  layer.bounds = os->bounds;
+	  layer.cornerRadius = os->cornerRadius;
+	  layer.scale = os->scale;
+	  layer.squeeze = os->squeeze;
+	  layer.skew = os->skew;
+	  layer.rotation = os->rotation;
+
+	  [document node:node setValue:BOX(ns->position) forKey:@"position"];
+	  [document node:node setValue:BOX(ns->anchor) forKey:@"anchor"];
+	  [document node:node setValue:BOX(ns->bounds) forKey:@"bounds"];
+	  [document node:node setValue:@(ns->cornerRadius) forKey:@"cornerRadius"];
+	  [document node:node setValue:@(ns->scale) forKey:@"scale"];
+	  [document node:node setValue:@(ns->squeeze) forKey:@"squeeze"];
+	  [document node:node setValue:@(ns->skew) forKey:@"skew"];
+	  [document node:node setValue:@(ns->rotation) forKey:@"rotation"];
+	}
+    }
+
   return dragging;
 }
 
@@ -537,11 +569,13 @@
     return NO;
 
   CGPoint old_positions[count];
+  CGPoint new_positions[count];
   for (NSInteger i = 0; i < count; i++)
     {
       YuTreeNode *node = nodes[i];
       MgLayerNode *layer = (MgLayerNode *)node.node;
       old_positions[i] = layer.position;
+      new_positions[i] = old_positions[i];
     }
 
   NSPoint p0 = [self convertPoint:[e locationInWindow] fromView:nil];
@@ -581,7 +615,24 @@
 	  /* FIXME: whatever undo/update machinery YuDocument implements
 	     needs to be invoked here. */
 
+	  new_positions[i] = p;
 	  layer.position = p;
+	}
+    }
+
+  if (dragging)
+    {
+      YuDocument *document = controller.document;
+
+      for (NSInteger i = 0; i < count; i++)
+	{
+	  YuTreeNode *node = nodes[i];
+	  MgLayerNode *layer = (MgLayerNode *)node.node;
+
+	  layer.position = old_positions[i];
+
+	  [document node:node
+	   setValue:BOX(new_positions[i]) forKey:@"position"];
 	}
     }
 

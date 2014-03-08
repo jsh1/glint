@@ -31,11 +31,8 @@
 - (id)initWithNode:(MgNode *)node parent:(YuTreeNode *)parent;
 
 @property(nonatomic, strong, readonly) MgNode *node;
-
 @property(nonatomic, weak, readonly) YuTreeNode *parent;
-
 @property(nonatomic, readonly) NSArray *children;
-
 @property(nonatomic, assign, readonly, getter=isLeaf) BOOL leaf;
 
 /* Returns YES if all nodes were iterated over. */
