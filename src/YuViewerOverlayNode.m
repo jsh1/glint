@@ -80,7 +80,9 @@
 
 static const CGPoint adornmentPositions[] =
 {
-  /* Absolute. */
+  /* Special. */
+  [YuViewerAdornmentCornerRadius] = {0, 0},
+  /* Bounds relative. */
   [YuViewerAdornmentResizeTopLeft] = {0, 0},
   [YuViewerAdornmentResizeTop] = {.5, 0},
   [YuViewerAdornmentResizeTopRight] = {1, 0},
@@ -89,8 +91,6 @@ static const CGPoint adornmentPositions[] =
   [YuViewerAdornmentResizeBottomRight] = {1, 1},
   [YuViewerAdornmentResizeLeft] = {0, .5},
   [YuViewerAdornmentResizeRight] = {1, .5},
-  /* Special. */
-  [YuViewerAdornmentCornerRadius] = {0, 0},
   /* Center relative. */
   [YuViewerAdornmentAnchor] = {0, 0},
   [YuViewerAdornmentRotate] = {1, 0},

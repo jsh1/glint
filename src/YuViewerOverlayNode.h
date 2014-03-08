@@ -49,6 +49,7 @@ enum
 
 typedef NS_OPTIONS(NSUInteger, YuViewerAdornmentMask)
 {
+  YuViewerAdornmentMaskCornerRadius = 1U << YuViewerAdornmentCornerRadius,
   YuViewerAdornmentMaskResizeTopLeft = 1U << YuViewerAdornmentResizeTopLeft,
   YuViewerAdornmentMaskResizeTop = 1U << YuViewerAdornmentResizeTop,
   YuViewerAdornmentMaskResizeTopRight = 1U << YuViewerAdornmentResizeTopRight,
