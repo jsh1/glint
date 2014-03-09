@@ -555,7 +555,7 @@
       YuTreeNode *ln = node;
       while (ln != nil && ![ln.node isKindOfClass:[MgLayerNode class]])
 	ln = ln.parent;
-      if (ln == nil)
+      if (ln.parent == nil)
 	continue;
       MgLayerNode *layer = (MgLayerNode *)ln.node;
       if ([layers containsObject:layer])
