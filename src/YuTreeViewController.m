@@ -39,6 +39,10 @@
 
 - (void)viewDidLoad
 {
+  [[NSNotificationCenter defaultCenter]
+   addObserver:self selector:@selector(documentGraphDidChange:)
+   name:YuDocumentGraphDidChange object:self.controller.document];
+
   [self.controller.document addObserver:self forKeyPath:@"documentNode"
    options:0 context:NULL];
 
@@ -69,9 +73,29 @@
   [self.outlineView expandItem:nil expandChildren:YES];
 }
 
+static void
+expandItem(NSOutlineView *ov, YuTreeNode *tn)
+{
+  if (tn != nil)
+    {
+      expandItem(ov, tn.parent);
+      [ov expandItem:tn];
+    }
+}
+
 - (void)updateSelection
 {
-  [self.outlineView setSelectedItems:self.controller.selection];
+  NSArray *selection = self.controller.selection;
+
+  for (YuTreeNode *tn in selection)
+    expandItem(self.outlineView, tn.parent);
+
+  [self.outlineView setSelectedItems:selection];
+}
+
+- (void)documentGraphDidChange:(NSNotification *)node
+{
+  [self.outlineView reloadData];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object

@@ -29,6 +29,8 @@
 
 #import "MgCoderExtensions.h"
 
+NSString *const YuDocumentGraphDidChange = @"YuDocumentGraphDidChange";
+
 @implementation YuDocument
 {
   YuWindowController *_controller;
@@ -225,6 +227,232 @@
 - (void)_runUndo:(void (^)())thunk
 {
   thunk();
+}
+
+static NSString *
+makeUniqueName(NSArray *nodes, NSString *stem)
+{
+  for (NSInteger i = 1;; i++)
+    {
+      NSString *name = stem;
+      if (i > 1)
+	name = [NSString stringWithFormat:@"%@ %ld", name, (long)i];
+
+      BOOL unique = YES;
+      for (MgNode *node in nodes)
+	{
+	  if ([node.name isEqualToString:name])
+	    {
+	      unique = NO;
+	      break;
+	    }
+	}
+
+      if (unique)
+	return name;
+    }
+}
+
+/* Returns map from YuTreeNode<MgLayerNode> -> @(index-in-parent). */
+
+static NSMapTable *
+findInsertionLayers(YuDocument *self)
+{
+  NSMapTable *layers = [NSMapTable strongToStrongObjectsMapTable];
+
+  for (YuTreeNode *tn in self.controller.selection)
+    {
+      if (![tn.node isKindOfClass:[MgDrawableNode class]])
+	continue;
+
+      YuTreeNode *n = tn;
+      NSInteger idx = NSNotFound;
+      while (n != nil)
+	{
+	  if ([n.node isKindOfClass:[MgLayerNode class]])
+	    break;
+	  YuTreeNode *p = n.parent;
+	  idx = [p.children indexOfObjectIdenticalTo:n];
+	  if (idx != NSNotFound)
+	    idx = idx + 1;
+	  n = p;
+	}
+      if (n != nil)
+	[layers setObject:@(idx) forKey:n];
+    }
+
+  if ([layers count] == 0)
+    [layers setObject:@(NSNotFound) forKey:self.controller.tree];
+
+  return layers;
+}
+
+/* ADDED is map from MgNode -> YuTreeNode<MgLayerNode>. */
+
+static NSArray *
+makeSelectionArray(NSMapTable *added)
+{
+  NSMutableArray *selection = [NSMutableArray array];
+
+  for (MgNode *node in added)
+    {
+      YuTreeNode *parent = [added objectForKey:node];
+
+      for (YuTreeNode *tn in parent.children)
+	{
+	  if (tn.node == node)
+	    [selection addObject:tn];
+	}
+    }
+
+  return selection;
+}
+
+- (IBAction)insertLayer:(id)sender
+{
+  NSMapTable *layers = findInsertionLayers(self);
+
+  NSMapTable *added = [NSMapTable strongToStrongObjectsMapTable];
+
+  for (YuTreeNode *parent in layers)
+    {
+      MgLayerNode *parent_layer = (MgLayerNode *)parent.node;
+      MgLayerNode *layer = [MgLayerNode node];
+      layer.name = makeUniqueName(parent_layer.contents, @"Layer");
+      CGRect bounds = parent_layer.bounds;
+      layer.bounds = bounds;
+      layer.position = CGPointMake(CGRectGetMidX(bounds),
+				   CGRectGetMidY(bounds));
+
+      NSInteger idx = [[layers objectForKey:parent] integerValue];
+      if (idx == NSNotFound)
+	idx = [parent_layer.contents count];
+
+      [self insertContent:layer intoLayer:parent_layer atIndex:idx];
+
+      [added setObject:parent forKey:layer];
+    }
+
+  self.controller.selection = makeSelectionArray(added);
+}
+
+- (IBAction)insertTimeline:(id)sender
+{
+  /* FIXME: implement this. */
+}
+
+- (IBAction)addContent:(id)sender
+{
+  NSMapTable *layers = findInsertionLayers(self);
+  NSInteger tag = [sender tag];
+
+  NSMapTable *added = [NSMapTable strongToStrongObjectsMapTable];
+
+  for (YuTreeNode *parent in layers)
+    {
+      MgLayerNode *parent_layer = (MgLayerNode *)parent.node;
+      
+      MgDrawableNode *node = nil;
+      NSString *name = nil;
+
+      if (tag == 0)
+	{
+	  node = [[MgImageNode alloc] init];
+	  name = @"Image";
+	}
+      else if (tag == 1)
+	{
+	  node = [[MgGradientNode alloc] init];
+	  name = @"Gradient";
+	}
+      else if (tag == 2 || tag == 3)
+	{
+	  node = [[MgRectNode alloc] init];
+	  name = @"Rect";
+	  if (tag == 3)
+	    ((MgRectNode *)node).drawingMode = kCGPathStroke;
+	}
+      else if (tag == 4 || tag == 5)
+	{
+	  node = [[MgPathNode alloc] init];
+	  name = @"Path";
+	  if (tag == 5)
+	    ((MgPathNode *)node).drawingMode = kCGPathStroke;
+	}
+      else
+	return;
+
+      node.name = makeUniqueName(parent_layer.contents, name);
+
+      NSInteger idx = [[layers objectForKey:parent] integerValue];
+      if (idx == NSNotFound)
+	idx = [parent_layer.contents count];
+
+      [self insertContent:node intoLayer:parent_layer atIndex:idx];
+
+      [added setObject:parent forKey:node];
+    }
+
+  self.controller.selection = makeSelectionArray(added);
+}
+
+- (IBAction)addAnimation:(id)sender
+{
+  /* FIXME: implement this. */
+}
+
+- (IBAction)embedInLayer:(id)sender
+{
+  /* FIXME: implement this. */
+}
+
+- (IBAction)unembed:(id)sender
+{
+  /* FIXME: implement this. */
+}
+
+static void
+documentGraphChanged(YuDocument *self)
+{
+  [[NSNotificationCenter defaultCenter]
+   postNotificationName:YuDocumentGraphDidChange object:self];
+}
+
+- (void)insertContent:(MgDrawableNode *)node intoLayer:(MgLayerNode *)parent
+    atIndex:(NSInteger)idx
+{
+  if (idx < 0)
+    return;
+
+  NSInteger count = [parent.contents count];
+  if (idx > count)
+    idx = count;
+
+  [self registerUndo:^
+    {
+      [self removeContentFromLayer:parent atIndex:idx];
+    }];
+
+  [parent insertContent:node atIndex:idx];
+
+  documentGraphChanged(self);
+}
+
+- (void)removeContentFromLayer:(MgLayerNode *)parent atIndex:(NSInteger)idx
+{
+  if (idx < 0 || idx >= [parent.contents count])
+    return;
+
+  MgDrawableNode *node = parent.contents[idx];
+
+  [self registerUndo:^
+    {
+      [self insertContent:node intoLayer:parent atIndex:idx];
+    }];
+
+  [parent removeContentAtIndex:idx];
+
+  documentGraphChanged(self);
 }
 
 - (void)node:(YuTreeNode *)tn setValue:(id)value forKey:(NSString *)key

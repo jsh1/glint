@@ -353,6 +353,82 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Object" id="GTL-ta-mVl">
                         <items>
+                            <menuItem title="Insert Layer" keyEquivalent="L" id="oKg-aW-Ie6">
+                                <connections>
+                                    <action selector="insertLayer:" target="-1" id="eN7-QN-Uep"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Insert Timeline" keyEquivalent="T" id="ac7-KF-ReH">
+                                <connections>
+                                    <action selector="insertTimeline:" target="-1" id="qav-2g-fTo"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Add Content" id="YjA-sH-5v6">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="Add Content" id="gTT-2t-EMV">
+                                    <items>
+                                        <menuItem title="Image" keyEquivalent="I" id="sMD-fn-2yV">
+                                            <connections>
+                                                <action selector="addContent:" target="-1" id="DiF-bh-1bx"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Gradient" tag="1" keyEquivalent="G" id="psD-9R-enJ">
+                                            <connections>
+                                                <action selector="addContent:" target="-1" id="sRo-sr-gae"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Rect" tag="2" keyEquivalent="R" id="svX-S3-dlp">
+                                            <connections>
+                                                <action selector="addContent:" target="-1" id="bBW-eE-Ies"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Stroked Rect" tag="3" id="mr4-Li-kP3">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="addContent:" target="-1" id="isf-Uy-iJ2"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Path" tag="4" id="d3O-JF-tvf">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="addContent:" target="-1" id="xfx-Az-Mzy"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Stroked Path" tag="5" id="cQ6-Hc-u7w">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="addContent:" target="-1" id="DoM-Bn-sjm"/>
+                                            </connections>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </menuItem>
+                            <menuItem title="Add Animation" id="kPH-PW-ZYZ">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="Add Animation" id="LKb-AL-IJ8">
+                                    <items>
+                                        <menuItem title="Basic Animation" keyEquivalent="B" id="d7P-P2-QHG">
+                                            <connections>
+                                                <action selector="addAnimation:" target="-1" id="0Mq-fB-wz9"/>
+                                            </connections>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="CFV-Rl-BbR"/>
+                            <menuItem title="Embed In Layer" keyEquivalent="g" id="84e-Ta-EsS">
+                                <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
+                                <connections>
+                                    <action selector="embedInLayer:" target="-1" id="FVg-Gj-cuh"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Unembed" keyEquivalent="G" id="PYN-r3-c9L">
+                                <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
+                                <connections>
+                                    <action selector="unembed:" target="-1" id="svw-6G-z1a"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="ur5-Hc-eX5"/>
                             <menuItem title="Parent Object" keyEquivalent="" id="FhE-LI-y9i">
                                 <connections>
                                     <action selector="parentNodeAction:" target="-1" id="pQh-gv-4QF"/>

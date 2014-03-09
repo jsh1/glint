@@ -16,15 +16,15 @@
             <rect key="frame" x="0.0" y="0.0" width="367" height="669"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <scrollView autohidesScrollers="YES" horizontalLineScroll="24" horizontalPageScroll="10" verticalLineScroll="24" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="i2s-Q0-X2z">
-                    <rect key="frame" x="0.0" y="20" width="367" height="629"/>
+                <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="24" horizontalPageScroll="10" verticalLineScroll="24" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="i2s-Q0-X2z">
+                    <rect key="frame" x="0.0" y="0.0" width="367" height="669"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <clipView key="contentView" id="yK3-nO-G9M">
-                        <rect key="frame" x="1" y="17" width="365" height="611"/>
+                        <rect key="frame" x="0.0" y="0.0" width="367" height="669"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <outlineView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" autosaveColumns="NO" rowHeight="22" headerView="mrD-xs-sPG" indentationPerLevel="16" outlineTableColumn="Qch-1X-m8f" id="li0-AE-MQv" customClass="YuOutlineView">
-                                <rect key="frame" x="0.0" y="0.0" width="365" height="611"/>
+                            <outlineView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" autosaveColumns="NO" rowHeight="22" indentationPerLevel="16" outlineTableColumn="Qch-1X-m8f" id="li0-AE-MQv" customClass="YuOutlineView">
+                                <rect key="frame" x="0.0" y="0.0" width="367" height="669"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <size key="intercellSpacing" width="3" height="2"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -68,14 +68,10 @@
                         <rect key="frame" x="1" y="612" width="365" height="16"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
-                    <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="aYt-v8-VEI">
+                    <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="aYt-v8-VEI">
                         <rect key="frame" x="-15" y="17" width="16" height="0.0"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
-                    <tableHeaderView key="headerView" id="mrD-xs-sPG">
-                        <rect key="frame" x="0.0" y="0.0" width="365" height="17"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </tableHeaderView>
                 </scrollView>
             </subviews>
         </customView>

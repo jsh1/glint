@@ -273,14 +273,19 @@
 
   for (YuTreeNode *tn in controller.selection)
     {
-      MgLayerNode *layer = (MgLayerNode *)tn.node;
-      if (![layer isKindOfClass:[MgLayerNode class]])
+      YuTreeNode *pn = tn;
+      while (pn != nil && ![pn.node isKindOfClass:[MgLayerNode class]])
+	pn = pn.parent;
+      if (pn == nil)
 	continue;
+      MgLayerNode *layer = (MgLayerNode *)pn.node;
       if ([layers containsObject:layer])
 	continue;
-      [nodes addObject:tn];
+      if (node == nil && pn.parent == nil)
+	continue;
+      [nodes addObject:pn];
       [layers addObject:layer];
-      if (tn == node)
+      if (pn == node)
 	node_idx = [nodes count] - 1;
     }
 

@@ -24,6 +24,8 @@
 
 #import "YuBase.h"
 
+extern NSString *const YuDocumentGraphDidChange;
+
 @interface YuDocument : NSDocument
     <NSKeyedArchiverDelegate, NSKeyedUnarchiverDelegate>
 
@@ -38,6 +40,17 @@
 @property(nonatomic, assign, readonly, getter=isUndoEnabled) BOOL undoEnabled;
 
 - (void)registerUndo:(void (^)())thunk;
+
+- (IBAction)insertLayer:(id)sender;
+- (IBAction)insertTimeline:(id)sender;
+- (IBAction)addContent:(id)sender;
+- (IBAction)addAnimation:(id)sender;
+- (IBAction)embedInLayer:(id)sender;
+- (IBAction)unembed:(id)sender;
+
+- (void)insertContent:(MgDrawableNode *)node intoLayer:(MgLayerNode *)parent
+    atIndex:(NSInteger)idx;
+- (void)removeContentFromLayer:(MgLayerNode *)parent atIndex:(NSInteger)idx;
 
 - (void)node:(YuTreeNode *)node setValue:(id)obj forKey:(NSString *)key;
 

@@ -23,7 +23,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <customView id="vFk-Br-q0h">
-                        <rect key="frame" x="2" y="2" width="961" height="657"/>
+                        <rect key="frame" x="0.0" y="0.0" width="965" height="661"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     </customView>
                 </subviews>
