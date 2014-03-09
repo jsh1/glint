@@ -47,4 +47,7 @@ MG_EXTERN void MgRectGetCorners(CGRect r, CGPoint p[4]);
 MG_EXTERN CGPathRef MgPathCreateWithRoundRect(CGRect rect, CGFloat radius)
     CF_RETURNS_RETAINED;
 
+MG_EXTERN CGImageRef MgImageCreateByDrawing(size_t w, size_t, bool opaque,
+    void (^block)(CGContextRef ctx)) CF_RETURNS_RETAINED;
+
 MG_EXTERN_C_END

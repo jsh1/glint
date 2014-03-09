@@ -181,3 +181,23 @@ MgPathCreateWithRoundRect(CGRect rect, CGFloat radius)
 
   return CGPathCreateWithRoundedRect(rect, radius, radius, NULL);
 }
+
+CGImageRef
+MgImageCreateByDrawing(size_t w, size_t h, bool opaque,
+		       void (^block)(CGContextRef ctx))
+{
+  CGContextRef ctx = CGBitmapContextCreate(NULL, w, h, 8, 0,
+	MgSRGBColorSpace(), (opaque ? kCGImageAlphaNoneSkipFirst
+	: kCGImageAlphaPremultipliedFirst) | kCGBitmapByteOrder32Host);
+
+  if (ctx == NULL)
+    return NULL;
+
+  block(ctx);
+
+  CGImageRef im = CGBitmapContextCreateImage(ctx);
+
+  CGContextRelease(ctx);
+
+  return im;
+}
