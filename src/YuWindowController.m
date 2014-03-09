@@ -84,8 +84,6 @@
    addObserver:self selector:@selector(windowWillClose:)
    name:NSWindowWillCloseNotification object:window];
 
-  [window setBackgroundColor:[YuColor windowBackgroundColor]];
-
   /* FIXME: replace by something else. */
 
   YuSplitViewController *split = [[YuSplitViewController alloc]

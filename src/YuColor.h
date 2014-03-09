@@ -26,8 +26,6 @@
 
 @interface YuColor : NSColor
 
-+ (NSColor *)windowBackgroundColor;
-
 + (NSArray *)controlAlternatingRowBackgroundColors;
 
 + (NSColor *)viewerBackgroundColor;

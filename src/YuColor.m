@@ -26,11 +26,6 @@
 
 @implementation YuColor
 
-+ (NSColor *)windowBackgroundColor
-{
-  return [NSColor colorWithCalibratedWhite:.9 alpha:1];
-}
-
 + (NSArray *)controlAlternatingRowBackgroundColors
 {
   static NSArray *colors;
@@ -38,8 +33,8 @@
   if (colors == nil)
     {
       colors = @[
+	[self colorWithCalibratedWhite:.9 alpha:1],
 	[self colorWithCalibratedWhite:.85 alpha:1],
-	[self colorWithCalibratedWhite:.8 alpha:1],
       ];
     }
 
@@ -51,7 +46,7 @@
   static NSColor *color;
 
   if (color == nil)
-    color = [NSColor colorWithCalibratedWhite:.4 alpha:1];
+    color = [NSColor colorWithCalibratedWhite:.5 alpha:1];
 
   return color;
 }
