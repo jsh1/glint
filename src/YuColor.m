@@ -56,14 +56,4 @@
   return color;
 }
 
-+ (NSColor *)viewerOverlayColor
-{
-  static NSColor *color;
-
-  if (color == nil)
-    color = [NSColor colorWithCalibratedRed:255/255. green:244/255. blue:0/255. alpha:1];
-
-  return color;
-}
-
 @end

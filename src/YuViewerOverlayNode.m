@@ -34,9 +34,9 @@
 #import "MgCoreGraphics.h"
 #import "MgLayerNode.h"
 
-#define ADORNMENT_SIZE 8
+#define ADORNMENT_SIZE 12
 #define INNER_ADORNMENT_RADIUS 50
-#define HIT_THRESH (ADORNMENT_SIZE + 4)
+#define HIT_THRESH ADORNMENT_SIZE
 
 @implementation YuViewerOverlayNode
 {
@@ -44,6 +44,8 @@
   NSInteger _lastVersion;
 
   YuViewerAdornmentMask _adornmentMask;
+
+  id _adornmentImage;			/* CGImageRef */
 }
 
 - (id)init
@@ -127,6 +129,26 @@ getLayerAndTransform(YuTreeNode *node, CGAffineTransform *ret_m)
   return container;
 }
 
+static void
+drawBlackAndWhite(CGContextRef ctx, void (^block)(CGColorRef color))
+{
+  CGContextTranslateCTM(ctx, -.5, .5);
+  block(MgBlackColor());
+  CGContextTranslateCTM(ctx, 1, -1);
+  block(MgWhiteColor());
+  CGContextTranslateCTM(ctx, -.5, .5);
+}
+
+static void
+strokeLineSegments(CGContextRef ctx, const CGPoint lines[], size_t count)
+{
+  drawBlackAndWhite(ctx, ^(CGColorRef color)
+    {
+      CGContextSetStrokeColorWithColor(ctx, color);
+      CGContextStrokeLineSegments(ctx, lines, count);
+    });
+}
+
 - (void)drawNode:(YuTreeNode *)tn withState:(id<MgDrawingState>)st
 {
   /* FIXME: concatenating into one matrix only works because everything
@@ -137,10 +159,11 @@ getLayerAndTransform(YuTreeNode *node, CGAffineTransform *ret_m)
   if (container == nil)
     return;
 
-  m = CGAffineTransformConcat(m, [self.view viewTransform]);
-  bool rectilinear = MgAffineTransformIsRectilinear(&m);
-
   CGContextRef ctx = st.context;
+
+  CGContextSaveGState(ctx);
+  
+  m = CGAffineTransformConcat(m, [self.view viewTransform]);
 
   if (1)
     {
@@ -148,11 +171,7 @@ getLayerAndTransform(YuTreeNode *node, CGAffineTransform *ret_m)
       MgRectGetCorners(container.bounds, p);
 
       for (size_t i = 0; i < 4; i++)
-	{
-	  p[i] = CGPointApplyAffineTransform(p[i], m);
-	  p[i].x = floor(p[i].x) + .5;
-	  p[i].y = floor(p[i].y) + .5;
-	}
+	p[i] = CGPointApplyAffineTransform(p[i], m);
 
       CGPoint l[8];
       l[0] = p[0]; l[1] = p[1];
@@ -172,12 +191,7 @@ getLayerAndTransform(YuTreeNode *node, CGAffineTransform *ret_m)
 	  CGContextSetLineDash(ctx, 0, dash, 2);
 	}
 
-      /* Line width of 1 for non-rectilinear lines looks too thin and
-	 ropey. So fatten those up a touch. */
-
-      CGContextSetLineWidth(ctx, rectilinear ? 1 : M_SQRT2);
-
-      CGContextStrokeLineSegments(ctx, l, 8);
+      strokeLineSegments(ctx, l, 8);
 
       CGContextRestoreGState(ctx);
     }
@@ -189,9 +203,10 @@ getLayerAndTransform(YuTreeNode *node, CGAffineTransform *ret_m)
       CGPoint anchor = container.anchor;
       CGRect bounds = container.bounds;
 
-      CGContextSaveGState(ctx);
+      CGRect rects[YuViewerAdornmentCount];
+      size_t count = 0;
 
-      for (NSInteger i = 0; mask != 0 && i < YuViewerAdornmentCount; i++)
+      for (NSInteger i = YuViewerAdornmentCount; mask != 0 && i >= 0; i--)
 	{
 	  YuViewerAdornmentMask bit = 1U << i;
 
@@ -220,37 +235,53 @@ getLayerAndTransform(YuTreeNode *node, CGAffineTransform *ret_m)
 	  mp.x = round(mp.x);
 	  mp.y = round(mp.y);
 
-	  CGRect r = CGRectMake(mp.x - ADORNMENT_SIZE*.5, mp.y
-			- ADORNMENT_SIZE*.5, ADORNMENT_SIZE, ADORNMENT_SIZE);
-
-	  /* FIXME: draw something better, or at least rotate to match
-	     the layer orientation. Also need a way to differentiate
-	     when flipped or rotated. */
-
-	  CGContextFillRect(ctx, r);
+	  rects[count].origin.x = mp.x - ADORNMENT_SIZE*.5;
+	  rects[count].origin.y = mp.y - ADORNMENT_SIZE*.5;
+	  rects[count].size.width = ADORNMENT_SIZE;
+	  rects[count].size.height = ADORNMENT_SIZE;
+	  count++;
 
 	  mask &= ~bit;
 	}
 
-      CGContextRestoreGState(ctx);
+      if (count != 0)
+	{
+	  CGImageRef im = (__bridge CGImageRef)_adornmentImage;
+
+	  if (im == NULL)
+	    {
+	      size_t w = ADORNMENT_SIZE;
+	      im = MgImageCreateByDrawing(w, w, false, ^(CGContextRef ctx)
+		{
+		  CGFloat c = w * .5;
+		  CGFloat r = (ADORNMENT_SIZE-4)*.5;
+
+		  drawBlackAndWhite(ctx, ^(CGColorRef color)
+		    {
+		      CGContextSetFillColorWithColor(ctx, color);
+		      CGContextBeginPath(ctx);
+		      CGContextAddArc(ctx, c, c, r, 0, 2*M_PI, 0);
+		      CGContextFillPath(ctx);
+		    });
+		});
+
+	      _adornmentImage = CFBridgingRelease(im);
+	    }
+
+	  for (size_t i = 0; i < count; i++)
+	    CGContextDrawImage(ctx, rects[i], im);
+	}
     }
+
+  CGContextRestoreGState(ctx);
 }
 
 - (void)drawWithState:(id<MgDrawingState>)st
 {
   YuWindowController *controller = self.view.controller.controller;
 
-  CGContextRef ctx = st.context;
-
-  CGContextSaveGState(ctx);
-
-  CGContextSetStrokeColorWithColor(ctx, [[YuColor viewerOverlayColor] CGColor]);
-  CGContextSetFillColorWithColor(ctx, [[YuColor viewerOverlayColor] CGColor]);
-
   for (YuTreeNode *tn in _selection)
     [self drawNode:tn withState:st];
-
-  CGContextRestoreGState(ctx);
 
   _lastVersion = controller.document.documentNode.version;
 }
