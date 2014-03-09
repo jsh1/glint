@@ -262,7 +262,7 @@
   return nil;
 }
 
-- (BOOL)mouseDown:(NSEvent *)e inAdornment:(YuViewerAdornment)adornment
+- (BOOL)mouseDown:(NSEvent *)e inAdornment:(NSInteger)adornment
     ofNode:(YuTreeNode *)node
 {
   YuWindowController *controller = self.controller.controller;
@@ -284,7 +284,7 @@
 	node_idx = [nodes count] - 1;
     }
 
-  if (node_idx < 0)
+  if (node != nil && node_idx < 0)
     return NO;
 
   NSInteger count = [nodes count];
@@ -457,7 +457,7 @@
 
 	      ns->position = [layer convertPointToParent:ns->position];
 	    }
-	  else
+	  else if (adornment < YuViewerAdornmentCount)
 	    {
 	      switch (adornment)
 		{
@@ -494,9 +494,15 @@
 		  break;
 		}
 	    }
+	  else
+	    {
+	      /* move. */
 
-	  /* FIXME: whatever undo/update machinery YuDocument implements
-	     needs to be invoked here. */
+	      CGPoint p = [tn.parent convertPointToRoot:ns->position];
+	      p.x += dx;
+	      p.y += dy;
+	      ns->position = [tn.parent convertPointFromRoot:p];
+	    }
 
 	  layer.position = ns->position;
 	  layer.anchor = ns->anchor;
@@ -545,98 +551,7 @@
 
 - (BOOL)dragSelectionWithEvent:(NSEvent *)e
 {
-  YuWindowController *controller = self.controller.controller;
-
-  NSMutableArray *nodes = [NSMutableArray array];
-  NSMutableSet *layers = [NSMutableSet set];
-
-  for (YuTreeNode *node in controller.selection)
-    {
-      YuTreeNode *ln = node;
-      while (ln != nil && ![ln.node isKindOfClass:[MgLayerNode class]])
-	ln = ln.parent;
-      if (ln.parent == nil)
-	continue;
-      MgLayerNode *layer = (MgLayerNode *)ln.node;
-      if ([layers containsObject:layer])
-	continue;
-      [nodes addObject:ln];
-      [layers addObject:layer];
-    }
-
-  NSInteger count = [nodes count];
-  if (count == 0)
-    return NO;
-
-  CGPoint old_positions[count];
-  CGPoint new_positions[count];
-  for (NSInteger i = 0; i < count; i++)
-    {
-      YuTreeNode *node = nodes[i];
-      MgLayerNode *layer = (MgLayerNode *)node.node;
-      old_positions[i] = layer.position;
-      new_positions[i] = old_positions[i];
-    }
-
-  NSPoint p0 = [self convertPoint:[e locationInWindow] fromView:nil];
-
-  BOOL dragging = NO;
-
-  while (1)
-    {
-      [CATransaction flush];
-
-      e = [[self window] nextEventMatchingMask:DRAG_MASK];
-      if ([e type] != NSLeftMouseDragged)
-	break;
-
-      NSPoint p1 = [self convertPoint:[e locationInWindow] fromView:nil];
-
-      CGFloat dx = p1.x - p0.x;
-      CGFloat dy = p0.y - p1.y;
-
-      if (!dragging && (fabs(dx) > 2 || fabs(dy) > 2))
-	dragging = YES;
-
-      if (!dragging)
-	continue;
-
-      for (NSInteger i = 0; i < count; i++)
-	{
-	  YuTreeNode *node = nodes[i];
-	  MgLayerNode *layer = (MgLayerNode *)node.node;
-
-	  CGPoint p = old_positions[i];
-	  p = [node.parent convertPointToRoot:p];
-	  p.x += dx;
-	  p.y += dy;
-	  p = [node.parent convertPointFromRoot:p];
-
-	  /* FIXME: whatever undo/update machinery YuDocument implements
-	     needs to be invoked here. */
-
-	  new_positions[i] = p;
-	  layer.position = p;
-	}
-    }
-
-  if (dragging)
-    {
-      YuDocument *document = controller.document;
-
-      for (NSInteger i = 0; i < count; i++)
-	{
-	  YuTreeNode *node = nodes[i];
-	  MgLayerNode *layer = (MgLayerNode *)node.node;
-
-	  layer.position = old_positions[i];
-
-	  [document node:node
-	   setValue:BOX(new_positions[i]) forKey:@"position"];
-	}
-    }
-
-  return dragging;
+  return [self mouseDown:e inAdornment:YuViewerAdornmentCount ofNode:nil];
 }
 
 - (void)modifySelectionForNode:(YuTreeNode *)node withEvent:(NSEvent *)e
