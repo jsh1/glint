@@ -49,6 +49,8 @@
 		579CAFD118C381BD0051454F /* MgCoreGraphics.c in Sources */ = {isa = PBXBuildFile; fileRef = 579CAFCF18C381BD0051454F /* MgCoreGraphics.c */; };
 		579CAFD518C38B9C0051454F /* MgImageProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 579CAFD418C38B9C0051454F /* MgImageProvider.m */; };
 		579CAFD918C3F63A0051454F /* MgCoderExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 579CAFD818C3F63A0051454F /* MgCoderExtensions.m */; };
+		57DFFD1C18CE5B7800B156A8 /* MgNodePasteboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 57DFFD1B18CE5B7800B156A8 /* MgNodePasteboard.m */; };
+		57DFFD1E18CE637F00B156A8 /* MgLayerNodePasteboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 57DFFD1D18CE637F00B156A8 /* MgLayerNodePasteboard.m */; };
 		57E776B318BD3478007CD31F /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57E776B218BD3478007CD31F /* Quartz.framework */; };
 		57E776B418BD347D007CD31F /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5714A8B618BD322900ED67EE /* AppKit.framework */; };
 		57E776B618BD3488007CD31F /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57E776B518BD3487007CD31F /* ImageIO.framework */; };
@@ -148,6 +150,9 @@
 		579CAFD418C38B9C0051454F /* MgImageProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgImageProvider.m; sourceTree = "<group>"; };
 		579CAFD718C3F63A0051454F /* MgCoderExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgCoderExtensions.h; sourceTree = "<group>"; };
 		579CAFD818C3F63A0051454F /* MgCoderExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgCoderExtensions.m; sourceTree = "<group>"; };
+		57DFFD1A18CE5B7800B156A8 /* MgNodePasteboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgNodePasteboard.h; sourceTree = "<group>"; };
+		57DFFD1B18CE5B7800B156A8 /* MgNodePasteboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgNodePasteboard.m; sourceTree = "<group>"; };
+		57DFFD1D18CE637F00B156A8 /* MgLayerNodePasteboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgLayerNodePasteboard.m; sourceTree = "<group>"; };
 		57E776B218BD3478007CD31F /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = System/Library/Frameworks/Quartz.framework; sourceTree = SDKROOT; };
 		57E776B518BD3487007CD31F /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		57E776B718BD348D007CD31F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -243,9 +248,12 @@
 				57FB21DB18C5181100B4BF6C /* MgLayer.m */,
 				575F56E518C357080034B28C /* MgLayerNode.h */,
 				575F56E618C357080034B28C /* MgLayerNode.m */,
+				57DFFD1D18CE637F00B156A8 /* MgLayerNodePasteboard.m */,
 				575F56E718C357080034B28C /* MgNode.h */,
 				575F56E818C357080034B28C /* MgNode.m */,
 				575F56E918C357080034B28C /* MgNodeInternal.h */,
+				57DFFD1A18CE5B7800B156A8 /* MgNodePasteboard.h */,
+				57DFFD1B18CE5B7800B156A8 /* MgNodePasteboard.m */,
 				575F56EA18C357080034B28C /* MgPathNode.h */,
 				575F56EB18C357080034B28C /* MgPathNode.m */,
 				575F56EC18C357080034B28C /* MgRectNode.h */,
@@ -439,6 +447,8 @@
 				575F56FC18C357080034B28C /* MgDrawableNode.m in Sources */,
 				5714A8C018BD322900ED67EE /* main.m in Sources */,
 				5738567B18C74CCC0010CFB7 /* AppKitExtensions.m in Sources */,
+				57DFFD1C18CE5B7800B156A8 /* MgNodePasteboard.m in Sources */,
+				57DFFD1E18CE637F00B156A8 /* MgLayerNodePasteboard.m in Sources */,
 				57618DB818C5D1B6004108D8 /* GtViewerViewController.m in Sources */,
 				575F56FE18C357080034B28C /* MgGradientNode.m in Sources */,
 				575F570418C357080034B28C /* MgTimelineNode.m in Sources */,

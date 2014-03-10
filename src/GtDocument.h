@@ -41,6 +41,13 @@ extern NSString *const GtDocumentGraphDidChange;
 
 - (void)registerUndo:(void (^)())thunk;
 
+- (IBAction)selectNone:(id)sender;
+- (IBAction)delete:(id)sender;
+- (IBAction)cut:(id)sender;
+- (IBAction)copy:(id)sender;
+- (IBAction)paste:(id)sender;
+- (IBAction)pasteAsImage:(id)sender;
+
 - (IBAction)insertLayer:(id)sender;
 - (IBAction)addContent:(id)sender;
 - (IBAction)addAnimation:(id)sender;

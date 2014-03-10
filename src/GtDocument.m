@@ -29,6 +29,8 @@
 
 #import "MgCoderExtensions.h"
 
+#import "FoundationExtensions.h"
+
 NSString *const GtDocumentGraphDidChange = @"GtDocumentGraphDidChange";
 
 @implementation GtDocument
@@ -169,7 +171,7 @@ NSString *const GtDocumentGraphDidChange = @"GtDocumentGraphDidChange";
 
       [archiver setDelegate:self];
       [archiver mg_encodeCGSize:_documentSize forKey:@"documentSize"];
-      [archiver encodeObject:_documentNode forKey:@"documentNode"];
+      [archiver encodeObject:_documentNode forKey:NSKeyedArchiveRootObjectKey];
       [archiver finishEncoding];
 
       return data;
@@ -190,7 +192,8 @@ NSString *const GtDocumentGraphDidChange = @"GtDocumentGraphDidChange";
 
       self.documentSize = [unarchiver mg_decodeCGSizeForKey:@"documentSize"];
       self.documentNode = [unarchiver decodeObjectOfClass:
-			   [MgDrawableNode class] forKey:@"documentNode"];
+			   [MgDrawableNode class]
+			   forKey:NSKeyedArchiveRootObjectKey];
 
       [unarchiver finishDecoding];
 
@@ -297,6 +300,150 @@ makeSelectionArray(NSMapTable *added)
     }
 
   return selection;
+}
+
+- (IBAction)selectNone:(id)sender
+{
+  self.controller.selection = @[];
+}
+
+- (IBAction)delete:(id)sender
+{
+  NSMutableSet *set = [NSMutableSet set];
+
+  for (GtTreeNode *tn in self.controller.selection)
+    {
+      if ([set containsObject:tn.node])
+	continue;
+      if (tn.parent == nil)
+	continue;
+
+      [self removeTreeNodeFromParent:tn];
+      [set addObject:tn.node];
+    }
+
+  self.controller.selection = @[];
+}
+
+- (IBAction)cut:(id)sender
+{
+  [self copy:sender];
+  [self delete:sender];
+}
+
+- (IBAction)copy:(id)sender
+{
+  NSPasteboard *pboard = [NSPasteboard generalPasteboard];
+
+  [pboard clearContents];
+  [pboard writeObjects:[self.controller.selection mappedArray:
+			^id(id obj) {return ((GtTreeNode *)obj).node;}]];
+}
+
+- (void)pasteObjects:(NSArray *)objects
+{
+  GtTreeNode *parent = nil;
+  for (GtTreeNode *tn in self.controller.selection)
+    {
+      if ([tn.node isKindOfClass:[MgLayerNode class]])
+	{
+	  if (parent == nil)
+	    parent = tn;
+	  else
+	    parent = [parent ancestorSharedWith:tn];
+	}
+    }
+
+  if (parent == nil)
+    parent = self.controller.tree;
+
+  NSMapTable *added = [NSMapTable strongToStrongObjectsMapTable];
+
+  void (^paste_image)(MgImageProvider *) = ^(MgImageProvider *image_provider)
+    {
+      MgImageNode *image = [MgImageNode node];
+      image.imageProvider = image_provider;
+      image.name = @"Pasted Image";
+
+      CGSize size = CGSizeMake(512, 512);
+
+      CGImageRef im = [image_provider mg_providedImage];
+      if (im != NULL)
+	size = CGSizeMake(CGImageGetWidth(im), CGImageGetHeight(im));
+
+      MgLayerNode *layer = [MgLayerNode node];
+      layer.bounds = CGRectMake(0, 0, size.width, size.height);
+      layer.position = CGPointMake(size.width*.5, size.height*.5);
+      layer.name = @"Layer";
+      makeNameUnique(layer, parent.node);
+      [layer addContent:image];
+
+      [self node:parent insertObject:layer atIndex:NSIntegerMax
+       forKey:@"contents"];
+
+      [added setObject:parent forKey:layer];
+    };
+
+  for (id object in objects)
+    {
+      if ([object isKindOfClass:[MgDrawableNode class]])
+	{
+	  [self node:parent insertObject:object atIndex:NSIntegerMax
+	   forKey:@"contents"];
+
+	  [added setObject:parent forKey:object];
+	}
+      else if ([object isKindOfClass:[MgAnimationNode class]])
+	{
+	  [self node:parent insertObject:object atIndex:NSIntegerMax
+	   forKey:@"animations"];
+
+	  [added setObject:parent forKey:object];
+	}
+      else if ([object isKindOfClass:[NSImage class]])
+	{
+	  CGImageRef im = [(NSImage *)object CGImageForProposedRect:NULL
+			   context:nil hints:nil];
+	  if (im != nil)
+	    {
+	      paste_image([MgImageProvider imageProviderWithImage:im]);
+	    }
+	}
+      else if ([object isKindOfClass:[NSURL class]])
+	{
+	  paste_image([MgImageProvider imageProviderWithURL:object]);
+	}
+      else if ([object isKindOfClass:[NSData class]])
+	{
+	  paste_image([MgImageProvider imageProviderWithData:object]);
+	}
+    }
+
+  self.controller.selection = makeSelectionArray(added);
+}
+
+- (IBAction)pasteAsImage:(id)sender
+{
+  NSPasteboard *pboard = [NSPasteboard generalPasteboard];
+
+  NSArray *objects = [pboard readObjectsForClasses:
+		      @[[NSImage class]] options:nil];
+
+  [self pasteObjects:objects];
+}
+
+- (IBAction)paste:(id)sender
+{
+  NSPasteboard *pboard = [NSPasteboard generalPasteboard];
+
+  /* FIXME: shouldn't be using NSImage here (and above)? Reading the
+     data directly would let us avoid recompressing the data when
+     saving the document. */
+
+  NSArray *objects = [pboard readObjectsForClasses:@[[MgNode class],
+		      [NSURL class], [NSImage class]] options:nil];
+
+  [self pasteObjects:objects];
 }
 
 - (void)addLayerContent:(MgDrawableNode *(^)(MgLayerNode *parent_layer))block
