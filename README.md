@@ -1,5 +1,3 @@
 
-# Yuca
-
-This is going to be the test app for the Mg compositing framework.
+This is the design tool for the Mg compositing framework.
 
