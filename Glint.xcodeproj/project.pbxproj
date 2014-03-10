@@ -59,13 +59,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		5714A8B018BD322900ED67EE /* Yuca.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Yuca.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5714A8B018BD322900ED67EE /* Glint.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Glint.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5714A8B618BD322900ED67EE /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		5714A8B818BD322900ED67EE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		5714A8BB18BD322900ED67EE /* Yuca-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Yuca-Info.plist"; path = "resources/Yuca-Info.plist"; sourceTree = "<group>"; };
+		5714A8BB18BD322900ED67EE /* Glint-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Glint-Info.plist"; path = "resources/Glint-Info.plist"; sourceTree = "<group>"; };
 		5714A8BD18BD322900ED67EE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		5714A8BF18BD322900ED67EE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = main.m; path = src/main.m; sourceTree = "<group>"; };
-		5714A8C118BD322900ED67EE /* Yuca-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Yuca-Prefix.pch"; path = "src/Yuca-Prefix.pch"; sourceTree = "<group>"; };
+		5714A8C118BD322900ED67EE /* Glint-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Glint-Prefix.pch"; path = "src/Glint-Prefix.pch"; sourceTree = "<group>"; };
 		5714A8C518BD322900ED67EE /* YuDocument.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = YuDocument.h; path = src/YuDocument.h; sourceTree = SOURCE_ROOT; };
 		5714A8C618BD322900ED67EE /* YuDocument.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = YuDocument.m; path = src/YuDocument.m; sourceTree = "<group>"; };
 		5714A8CC18BD322900ED67EE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
@@ -188,7 +188,7 @@
 		5714A8B118BD322900ED67EE /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				5714A8B018BD322900ED67EE /* Yuca.app */,
+				5714A8B018BD322900ED67EE /* Glint.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -310,7 +310,7 @@
 				57618DBD18C5D538004108D8 /* CoreAnimationExtensions.m */,
 				5721E86F18C6212D000DA2C3 /* FoundationExtensions.h */,
 				5721E87018C6212D000DA2C3 /* FoundationExtensions.m */,
-				5714A8C118BD322900ED67EE /* Yuca-Prefix.pch */,
+				5714A8C118BD322900ED67EE /* Glint-Prefix.pch */,
 				5714A8BF18BD322900ED67EE /* main.m */,
 			);
 			name = Source;
@@ -330,7 +330,7 @@
 		57E776BE18BD3609007CD31F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				5714A8BB18BD322900ED67EE /* Yuca-Info.plist */,
+				5714A8BB18BD322900ED67EE /* Glint-Info.plist */,
 				572A5B2418C4CEE700AB8086 /* defaults.plist */,
 				5714A8CE18BD322900ED67EE /* Images.xcassets */,
 				5714A8BC18BD322900ED67EE /* InfoPlist.strings */,
@@ -341,9 +341,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		5714A8AF18BD322900ED67EE /* Yuca */ = {
+		5714A8AF18BD322900ED67EE /* Glint */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 5714A8E418BD322900ED67EE /* Build configuration list for PBXNativeTarget "Yuca" */;
+			buildConfigurationList = 5714A8E418BD322900ED67EE /* Build configuration list for PBXNativeTarget "Glint" */;
 			buildPhases = (
 				5714A8AC18BD322900ED67EE /* Sources */,
 				5714A8AD18BD322900ED67EE /* Frameworks */,
@@ -353,9 +353,9 @@
 			);
 			dependencies = (
 			);
-			name = Yuca;
-			productName = Yuca;
-			productReference = 5714A8B018BD322900ED67EE /* Yuca.app */;
+			name = Glint;
+			productName = Glint;
+			productReference = 5714A8B018BD322900ED67EE /* Glint.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -368,7 +368,7 @@
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = Unfactored;
 			};
-			buildConfigurationList = 5714A8AB18BD322900ED67EE /* Build configuration list for PBXProject "Yuca" */;
+			buildConfigurationList = 5714A8AB18BD322900ED67EE /* Build configuration list for PBXProject "Glint" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -381,7 +381,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				5714A8AF18BD322900ED67EE /* Yuca */,
+				5714A8AF18BD322900ED67EE /* Glint */,
 			);
 		};
 /* End PBXProject section */
@@ -465,7 +465,7 @@
 				5714A8CC18BD322900ED67EE /* Base */,
 			);
 			name = MainMenu.xib;
-			path = ../yuca/resources;
+			path = resources;
 			sourceTree = "<group>";
 		};
 		5721E87518C6745A000DA2C3 /* YuTreeView.xib */ = {
@@ -547,8 +547,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "src/Yuca-Prefix.pch";
-				INFOPLIST_FILE = "$(SRCROOT)/resources/Yuca-Info.plist";
+				GCC_PREFIX_HEADER = "src/Glint-Prefix.pch";
+				INFOPLIST_FILE = "$(SRCROOT)/resources/Glint-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -560,8 +560,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "src/Yuca-Prefix.pch";
-				INFOPLIST_FILE = "$(SRCROOT)/resources/Yuca-Info.plist";
+				GCC_PREFIX_HEADER = "src/Glint-Prefix.pch";
+				INFOPLIST_FILE = "$(SRCROOT)/resources/Glint-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -570,7 +570,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		5714A8AB18BD322900ED67EE /* Build configuration list for PBXProject "Yuca" */ = {
+		5714A8AB18BD322900ED67EE /* Build configuration list for PBXProject "Glint" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5714A8E218BD322900ED67EE /* Debug */,
@@ -579,7 +579,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		5714A8E418BD322900ED67EE /* Build configuration list for PBXNativeTarget "Yuca" */ = {
+		5714A8E418BD322900ED67EE /* Build configuration list for PBXNativeTarget "Glint" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5714A8E518BD322900ED67EE /* Debug */,
