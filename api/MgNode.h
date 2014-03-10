@@ -54,6 +54,13 @@
 
 - (void)foreachNode:(void (^)(MgNode *node))block;
 
+/* Similar but also tells the caller which property each child node is
+   stored in and, if that property is an array, the index in the array.
+   (If not an array, NSNotFound is passed as 'parentIndex'.) */
+
+- (void)foreachNodeAndAttachmentInfo:(void (^)(MgNode *node,
+    NSString *parentKey, NSInteger parentIndex))block;
+
 /* Calls `block(node)' for each node referred to by the receiver, iff
    their current mark value is not `mark'. Before `block(node)' is
    called, `node' has its mark value set to `mark'. */

@@ -123,6 +123,18 @@
   [super foreachNode:block];
 }
 
+- (void)foreachNodeAndAttachmentInfo:(void (^)(MgNode *node,
+    NSString *parentKey, NSInteger parentIndex))block
+{
+  NSArray *array = _animations;
+  NSInteger count = [array count];
+
+  for (NSInteger i = 0; i < count; i++)
+    block(array[i], @"animations", i);
+
+  [super foreachNodeAndAttachmentInfo:block];
+}
+
 - (CGPoint)convertPointToParent:(CGPoint)p
 {
   return p;

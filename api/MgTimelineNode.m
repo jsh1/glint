@@ -259,6 +259,15 @@
   [super foreachNode:block];
 }
 
+- (void)foreachNodeAndAttachmentInfo:(void (^)(MgNode *node,
+    NSString *parentKey, NSInteger parentIndex))block
+{
+  if (_node != nil)
+    block(_node, @"node", NSNotFound);
+
+  [super foreachNodeAndAttachmentInfo:block];
+}
+
 - (BOOL)containsPoint:(CGPoint)p layerNode:(MgLayerNode *)node
 {
   return [_node containsPoint:p layerNode:node];

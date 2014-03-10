@@ -480,6 +480,21 @@
   [super foreachNode:block];
 }
 
+- (void)foreachNodeAndAttachmentInfo:(void (^)(MgNode *node,
+    NSString *parentKey, NSInteger parentIndex))block
+{
+  NSArray *array = _contents;
+  NSInteger count = [array count];
+
+  for (NSInteger i = 0; i < count; i++)
+    block(array[i], @"contents", i);
+
+  if (_mask != nil)
+    block(_mask, @"mask", NSNotFound);
+
+  [super foreachNodeAndAttachmentInfo:block];
+}
+
 - (CGPoint)convertPointToParent:(CGPoint)p
 {
   CGAffineTransform m = [self parentTransform];

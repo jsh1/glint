@@ -239,6 +239,11 @@ foreach_path_to_node(MgNode *node, MgNode *root, bool reversed,
 {
 }
 
+- (void)foreachNodeAndAttachmentInfo:(void (^)(MgNode *node,
+    NSString *parentKey, NSInteger parentIndex))block
+{
+}
+
 - (void)foreachNode:(void (^)(MgNode *node))block mark:(uint32_t)mark
 {
   if (_mark != mark)
