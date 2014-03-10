@@ -24,7 +24,7 @@
 
 #import "MgLayer.h"
 
-#import "MgDrawableNode.h"
+#import "MgLayerNode.h"
 
 #import <Foundation/Foundation.h>
 #import <QuartzCore/QuartzCore.h>
@@ -35,7 +35,7 @@
 
 @implementation MgLayer
 {
-  MgDrawableNode *_rootNode;
+  MgLayerNode *_rootNode;
   NSInteger _lastVersion;
 }
 
@@ -72,12 +72,12 @@
   return NO;
 }
 
-- (MgDrawableNode *)rootNode
+- (MgLayerNode *)rootNode
 {
   return _rootNode;
 }
 
-- (void)setRootNode:(MgDrawableNode *)node
+- (void)setRootNode:(MgLayerNode *)node
 {
   if (_rootNode != node)
     {

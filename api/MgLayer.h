@@ -28,6 +28,6 @@
 
 @interface MgLayer : CALayer
 
-@property(nonatomic, strong) MgDrawableNode *rootNode;
+@property(nonatomic, strong) MgLayerNode *rootNode;
 
 @end
