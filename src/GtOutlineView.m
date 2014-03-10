@@ -22,10 +22,15 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "YuViewController.h"
+#import "GtOutlineView.h"
 
-@interface YuViewerViewController : YuViewController
+#import "GtColor.h"
 
-@property(nonatomic, weak) IBOutlet YuViewerView *contentView;
+@implementation GtOutlineView
+
+- (NSArray *)_alternatingRowBackgroundColors
+{
+  return [GtColor controlAlternatingRowBackgroundColors];
+}
 
 @end

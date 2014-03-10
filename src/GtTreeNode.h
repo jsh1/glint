@@ -22,20 +22,34 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#ifndef YU_BASE_H
-#define YU_BASE_H
+#import "GtBase.h"
 
-#include "Magnesium.h"
+@protocol GtTreeNodeOwner;
 
-#ifdef __OBJC__
-#import <AppKit/AppKit.h>
-#endif
+@interface GtTreeNode : NSObject
 
-#ifdef __OBJC__
-@class YuAppDelegate, YuDocument, YuOutlineView, YuSplitView,
-    YuSplitViewController, YuTreeViewController, YuTreeNode,
-    YuViewController, YuViewerView, YuViewerViewController,
-    YuWindowController;
-#endif
+- (id)initWithNode:(MgNode *)node parent:(GtTreeNode *)parent
+    parentKey:(NSString *)key parentIndex:(NSInteger)idx;
 
-#endif /* YU_BASE_H */
+@property(nonatomic, strong, readonly) MgNode *node;
+@property(nonatomic, weak, readonly) GtTreeNode *parent;
+@property(nonatomic, copy, readonly) NSString *parentKey;
+@property(nonatomic, assign, readonly) NSInteger parentIndex;
+@property(nonatomic, readonly) NSArray *children;
+@property(nonatomic, assign, readonly, getter=isLeaf) BOOL leaf;
+
+/* Returns YES if all nodes were iterated over. */
+
+- (BOOL)foreachNode:(void (^)(GtTreeNode *node, BOOL *stop))thunk;
+
+- (GtTreeNode *)containingLayer;
+
+- (BOOL)isDescendantOf:(GtTreeNode *)tn;
+
+- (CGPoint)convertPointToRoot:(CGPoint)p;
+- (CGPoint)convertPointFromRoot:(CGPoint)p;
+
+- (BOOL)containsPoint:(CGPoint)p;
+- (GtTreeNode *)hitTest:(CGPoint)p;
+
+@end

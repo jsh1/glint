@@ -4,7 +4,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5051"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="YuViewerViewController">
+        <customObject id="-2" userLabel="File's Owner" customClass="GtViewerViewController">
             <connections>
                 <outlet property="contentView" destination="kgX-i0-YsK" id="yml-oG-6Nv"/>
                 <outlet property="view" destination="c22-O7-iKe" id="1Df-LP-Yak"/>
@@ -16,7 +16,7 @@
             <rect key="frame" x="0.0" y="0.0" width="748" height="601"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <customView id="kgX-i0-YsK" customClass="YuViewerView">
+                <customView id="kgX-i0-YsK" customClass="GtViewerView">
                     <rect key="frame" x="0.0" y="0.0" width="748" height="601"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <connections>

@@ -22,18 +22,18 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "YuDocument.h"
+#import "GtDocument.h"
 
-#import "YuTreeNode.h"
-#import "YuWindowController.h"
+#import "GtTreeNode.h"
+#import "GtWindowController.h"
 
 #import "MgCoderExtensions.h"
 
-NSString *const YuDocumentGraphDidChange = @"YuDocumentGraphDidChange";
+NSString *const GtDocumentGraphDidChange = @"GtDocumentGraphDidChange";
 
-@implementation YuDocument
+@implementation GtDocument
 {
-  YuWindowController *_controller;
+  GtWindowController *_controller;
   CGSize _documentSize;
   MgDrawableNode *_documentNode;
   int _undoDisable;
@@ -47,12 +47,12 @@ NSString *const YuDocumentGraphDidChange = @"YuDocumentGraphDidChange";
   if (self == nil)
     return nil;
 
-  _controller = [[YuWindowController alloc] init];
+  _controller = [[GtWindowController alloc] init];
 
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
-  CGFloat width = [defaults doubleForKey:@"YuDefaultDocumentWidth"];
-  CGFloat height = [defaults doubleForKey:@"YuDefaultDocumentHeight"];
+  CGFloat width = [defaults doubleForKey:@"GtDefaultDocumentWidth"];
+  CGFloat height = [defaults doubleForKey:@"GtDefaultDocumentHeight"];
 
   MgLayerNode *node = [MgLayerNode node];
 
@@ -265,11 +265,11 @@ initializeLayerFromContainer(MgLayerNode *layer, MgLayerNode *container)
 }
 
 static NSArray *
-makeSelectionArray1(YuTreeNode *parent, MgNode *node)
+makeSelectionArray1(GtTreeNode *parent, MgNode *node)
 {
   NSMutableArray *selection = [NSMutableArray array];
 
-  for (YuTreeNode *tn in parent.children)
+  for (GtTreeNode *tn in parent.children)
     {
       if (tn.node == node)
 	[selection addObject:tn];
@@ -278,7 +278,7 @@ makeSelectionArray1(YuTreeNode *parent, MgNode *node)
   return selection;
 }
 
-/* ADDED is map from MgNode -> YuTreeNode<MgLayerNode>. */
+/* ADDED is map from MgNode -> GtTreeNode<MgLayerNode>. */
 
 static NSArray *
 makeSelectionArray(NSMapTable *added)
@@ -287,9 +287,9 @@ makeSelectionArray(NSMapTable *added)
 
   for (MgNode *node in added)
     {
-      YuTreeNode *parent = [added objectForKey:node];
+      GtTreeNode *parent = [added objectForKey:node];
 
-      for (YuTreeNode *tn in parent.children)
+      for (GtTreeNode *tn in parent.children)
 	{
 	  if (tn.node == node)
 	    [selection addObject:tn];
@@ -304,18 +304,18 @@ makeSelectionArray(NSMapTable *added)
   NSMapTable *layers = [NSMapTable strongToStrongObjectsMapTable];
   NSMutableSet *nodes = [NSMutableSet set];
 
-  for (YuTreeNode *tn in self.controller.selection)
+  for (GtTreeNode *tn in self.controller.selection)
     {
       if (![tn.node isKindOfClass:[MgDrawableNode class]])
 	continue;
 
-      YuTreeNode *n = tn;
+      GtTreeNode *n = tn;
       NSInteger idx = NSNotFound;
       while (n != nil)
 	{
 	  if ([n.node isKindOfClass:[MgLayerNode class]])
 	    break;
-	  YuTreeNode *p = n.parent;
+	  GtTreeNode *p = n.parent;
 	  if ([n.parentKey isEqualToString:@"contents"])
 	    idx = n.parentIndex;
 	  else
@@ -339,7 +339,7 @@ makeSelectionArray(NSMapTable *added)
 
   NSMapTable *added = [NSMapTable strongToStrongObjectsMapTable];
 
-  for (YuTreeNode *parent in layers)
+  for (GtTreeNode *parent in layers)
     {
       MgLayerNode *parent_layer = (MgLayerNode *)parent.node;
 
@@ -425,9 +425,9 @@ makeSelectionArray(NSMapTable *added)
   NSMutableSet *nodes = [NSMutableSet set];
   NSMapTable *added = [NSMapTable strongToStrongObjectsMapTable];
 
-  for (YuTreeNode *tn in self.controller.selection)
+  for (GtTreeNode *tn in self.controller.selection)
     {
-      YuTreeNode *parent = tn.parent;
+      GtTreeNode *parent = tn.parent;
       if (parent == nil)
 	continue;
       if ([nodes containsObject:tn.node])
@@ -471,12 +471,12 @@ makeSelectionArray(NSMapTable *added)
 
 - (IBAction)group:(id)sender
 {
-  YuTreeNode *master = nil;
+  GtTreeNode *master = nil;
 
   NSMutableArray *group = [NSMutableArray array];
   NSMutableSet *nodes = [NSMutableSet set];
 
-  for (YuTreeNode *tn in self.controller.selection)
+  for (GtTreeNode *tn in self.controller.selection)
     {
       if ([nodes containsObject:tn.node])
 	continue;
@@ -491,7 +491,7 @@ makeSelectionArray(NSMapTable *added)
   if (master == nil)
     return;
 
-  YuTreeNode *container = [master containingLayer];
+  GtTreeNode *container = [master containingLayer];
   if (container == nil)
     return;
 
@@ -504,7 +504,7 @@ makeSelectionArray(NSMapTable *added)
 
   initializeLayerFromContainer(layer, container_layer);
 
-  for (YuTreeNode *tn in group)
+  for (GtTreeNode *tn in group)
     {
       if (tn != master)
 	[self removeTreeNodeFromParent:tn];
@@ -513,7 +513,7 @@ makeSelectionArray(NSMapTable *added)
       [layer addContent:node];
     }
 
-  YuTreeNode *parent = master.parent;
+  GtTreeNode *parent = master.parent;
 
   [self replaceTreeNode:master with:layer];
 
@@ -526,7 +526,7 @@ makeSelectionArray(NSMapTable *added)
 
   NSMapTable *added = [NSMapTable strongToStrongObjectsMapTable];
 
-  for (YuTreeNode *tn in self.controller.selection)
+  for (GtTreeNode *tn in self.controller.selection)
     {
       MgLayerNode *layer = (MgLayerNode *)tn.node;
       if (![layer isKindOfClass:[MgLayerNode class]])
@@ -534,7 +534,7 @@ makeSelectionArray(NSMapTable *added)
       if (layer.mask != nil)
 	continue;
 
-      YuTreeNode *parent = tn.parent;
+      GtTreeNode *parent = tn.parent;
       if (parent == nil)
 	continue;
 
@@ -565,9 +565,9 @@ makeSelectionArray(NSMapTable *added)
   self.controller.selection = makeSelectionArray(added);
 }
 
-- (void)removeTreeNodeFromParent:(YuTreeNode *)tn
+- (void)removeTreeNodeFromParent:(GtTreeNode *)tn
 {
-  YuTreeNode *parent = tn.parent;
+  GtTreeNode *parent = tn.parent;
   if (parent == nil)
     return;
 
@@ -586,9 +586,9 @@ makeSelectionArray(NSMapTable *added)
     }
 }
 
-- (void)replaceTreeNode:(YuTreeNode *)tn with:(MgNode *)node
+- (void)replaceTreeNode:(GtTreeNode *)tn with:(MgNode *)node
 {
-  YuTreeNode *parent = tn.parent;
+  GtTreeNode *parent = tn.parent;
   if (parent == nil)
     return;
 
@@ -608,13 +608,13 @@ makeSelectionArray(NSMapTable *added)
 }
 
 static void
-documentGraphChanged(YuDocument *self)
+documentGraphChanged(GtDocument *self)
 {
   [[NSNotificationCenter defaultCenter]
-   postNotificationName:YuDocumentGraphDidChange object:self];
+   postNotificationName:GtDocumentGraphDidChange object:self];
 }
 
-- (void)node:(YuTreeNode *)tn setValue:(id)value forKey:(NSString *)key
+- (void)node:(GtTreeNode *)tn setValue:(id)value forKey:(NSString *)key
 {
   MgNode *node = tn.node;
 
@@ -639,7 +639,7 @@ documentGraphChanged(YuDocument *self)
     }
 }
 
-- (void)node:(YuTreeNode *)tn insertObject:(id)value atIndex:(NSInteger)idx
+- (void)node:(GtTreeNode *)tn insertObject:(id)value atIndex:(NSInteger)idx
     forKey:(NSString *)key
 {
   assert(value != nil);
@@ -664,7 +664,7 @@ documentGraphChanged(YuDocument *self)
   documentGraphChanged(self);
 }
 
-- (void)node:(YuTreeNode *)tn replaceObjectAtIndex:(NSInteger)idx
+- (void)node:(GtTreeNode *)tn replaceObjectAtIndex:(NSInteger)idx
     withObject:(id)value forKey:(NSString *)key
 {
   assert(value != nil);
@@ -690,7 +690,7 @@ documentGraphChanged(YuDocument *self)
   documentGraphChanged(self);
 }
 
-- (void)node:(YuTreeNode *)tn removeObjectAtIndex:(NSInteger)idx
+- (void)node:(GtTreeNode *)tn removeObjectAtIndex:(NSInteger)idx
     forKey:(NSString *)key
 {
   MgNode *node = tn.node;

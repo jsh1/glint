@@ -22,14 +22,14 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "YuViewerView.h"
+#import "GtViewerView.h"
 
-#import "YuColor.h"
-#import "YuDocument.h"
-#import "YuTreeNode.h"
-#import "YuViewerOverlayNode.h"
-#import "YuViewerViewController.h"
-#import "YuWindowController.h"
+#import "GtColor.h"
+#import "GtDocument.h"
+#import "GtTreeNode.h"
+#import "GtViewerOverlayNode.h"
+#import "GtViewerViewController.h"
+#import "GtWindowController.h"
 
 #import "MgLayer.h"
 #import "MgMacros.h"
@@ -42,12 +42,12 @@
   | NSLeftMouseDraggedMask | NSRightMouseDraggedMask \
   | NSOtherMouseDownMask | NSOtherMouseUpMask | NSOtherMouseDraggedMask)
 
-@implementation YuViewerView
+@implementation GtViewerView
 {
   MgLayer *_nodeLayer;
   MgLayerNode *_rootNode;
   MgLayerNode *_documentContainer;
-  YuViewerOverlayNode *_overlayNode;
+  GtViewerOverlayNode *_overlayNode;
   CGPoint _viewCenter;
   CGFloat _viewScale;
   NSTrackingArea *_trackingArea;
@@ -111,7 +111,7 @@
 
 - (CGAffineTransform)viewTransform
 {
-  YuDocument *document = self.controller.document;
+  GtDocument *document = self.controller.document;
   CGSize size = document.documentSize;
 
   CGFloat ax = size.width * (CGFloat).5;
@@ -154,7 +154,7 @@
 {
   CALayer *layer = [self layer];
 
-  layer.backgroundColor = [[YuColor viewerBackgroundColor] CGColor];
+  layer.backgroundColor = [[GtColor viewerBackgroundColor] CGColor];
 
   if (_nodeLayer == nil)
     {
@@ -178,12 +178,12 @@
 
   if (_overlayNode == nil)
     {
-      _overlayNode = [YuViewerOverlayNode node];
+      _overlayNode = [GtViewerOverlayNode node];
       _overlayNode.view = self;
       [_rootNode addContent:_overlayNode];
     }
 
-  YuDocument *document = self.controller.document;
+  GtDocument *document = self.controller.document;
   CGSize size = document.documentSize;
   CGRect bounds = [layer bounds];
 
@@ -245,13 +245,13 @@
   return CGPointApplyAffineTransform(NSPointToCGPoint(p), m);
 }
 
-- (YuTreeNode *)selectedNodeContainingPoint:(CGPoint)p
+- (GtTreeNode *)selectedNodeContainingPoint:(CGPoint)p
 {
-  YuWindowController *controller = self.controller.controller;
+  GtWindowController *controller = self.controller.controller;
 
-  for (YuTreeNode *node in controller.selection)
+  for (GtTreeNode *node in controller.selection)
     {
-      YuTreeNode *parent = node.parent;
+      GtTreeNode *parent = node.parent;
       CGPoint lp = p;
       if (parent != nil)
 	lp = [parent convertPointFromRoot:p];
@@ -263,17 +263,17 @@
 }
 
 - (BOOL)mouseDown:(NSEvent *)e inAdornment:(NSInteger)adornment
-    ofNode:(YuTreeNode *)node
+    ofNode:(GtTreeNode *)node
 {
-  YuWindowController *controller = self.controller.controller;
+  GtWindowController *controller = self.controller.controller;
 
   NSMutableArray *nodes = [NSMutableArray array];
   NSMutableSet *layers = [NSMutableSet set];
   NSInteger node_idx = -1;
 
-  for (YuTreeNode *tn in controller.selection)
+  for (GtTreeNode *tn in controller.selection)
     {
-      YuTreeNode *pn = tn;
+      GtTreeNode *pn = tn;
       while (pn != nil && ![pn.node isKindOfClass:[MgLayerNode class]])
 	pn = pn.parent;
       if (pn == nil)
@@ -311,7 +311,7 @@
   struct layer_state old_state[count];
   for (NSInteger i = 0; i < count; i++)
     {
-      YuTreeNode *tn = nodes[i];
+      GtTreeNode *tn = nodes[i];
       MgLayerNode *layer = (MgLayerNode *)tn.node;
       old_state[i].position = layer.position;
       old_state[i].anchor = layer.anchor;
@@ -353,7 +353,7 @@
 
       switch (adornment)
 	{
-	case YuViewerAdornmentRotate: {
+	case GtViewerAdornmentRotate: {
 	  CGPoint np0 = [node convertPointFromRoot:
 			 [self convertPointToDocument:p0]];
 	  CGPoint np1 = [node convertPointFromRoot:
@@ -373,9 +373,9 @@
 
 	  /* FIXME: skew is not right. But it'll do for now. */
 
-	case YuViewerAdornmentScale:
-	case YuViewerAdornmentSqueeze:
-	case YuViewerAdornmentSkew: {
+	case GtViewerAdornmentScale:
+	case GtViewerAdornmentSqueeze:
+	case GtViewerAdornmentSkew: {
 	  CGPoint np0 = [node convertPointFromRoot:
 			 [self convertPointToDocument:p0]];
 	  CGPoint np1 = [node convertPointFromRoot:
@@ -387,11 +387,11 @@
 	  nc.y = (old_state[node_idx].bounds.origin.y
 		  + old_state[node_idx].bounds.size.height
 		  * old_state[node_idx].anchor.y);
-	  if (adornment == YuViewerAdornmentScale)
+	  if (adornment == GtViewerAdornmentScale)
 	    arg = fabs((np1.y - nc.y) / (np0.y - nc.y));
-	  else if (adornment == YuViewerAdornmentSqueeze)
+	  else if (adornment == GtViewerAdornmentSqueeze)
 	    arg = fabs((np1.x - nc.x) / (np0.x - nc.x));
-	  else /* if (adornment == YuViewerAdornmentSkew) */
+	  else /* if (adornment == GtViewerAdornmentSkew) */
 	    arg = (np1.x - np0.x) / (np0.y - nc.y);
 	  break; }
 
@@ -401,7 +401,7 @@
 
       for (NSInteger i = 0; i < count; i++)
 	{
-	  YuTreeNode *tn = nodes[i];
+	  GtTreeNode *tn = nodes[i];
 	  MgLayerNode *layer = (MgLayerNode *)tn.node;
 
 	  CGPoint np0 = [tn convertPointFromRoot:
@@ -415,23 +415,23 @@
 	  struct layer_state *ns = &new_state[i];
 	  memcpy(ns, &old_state[i], sizeof(*ns));
 
-	  if (adornment >= YuViewerAdornmentResizeTopLeft
-	      && adornment <= YuViewerAdornmentResizeRight)
+	  if (adornment >= GtViewerAdornmentResizeTopLeft
+	      && adornment <= GtViewerAdornmentResizeRight)
 	    {
 	      ns->position = [layer convertPointFromParent:ns->position];
 
 	      switch (adornment)
 		{
-		case YuViewerAdornmentResizeTopLeft:
-		case YuViewerAdornmentResizeLeft:
-		case YuViewerAdornmentResizeBottomLeft:
+		case GtViewerAdornmentResizeTopLeft:
+		case GtViewerAdornmentResizeLeft:
+		case GtViewerAdornmentResizeBottomLeft:
 		  ns->bounds.size.width -= ndx;
 		  ns->position.x += ndx * (1 - ns->anchor.x);
 		  break;
 
-		case YuViewerAdornmentResizeTopRight:
-		case YuViewerAdornmentResizeRight:
-		case YuViewerAdornmentResizeBottomRight:
+		case GtViewerAdornmentResizeTopRight:
+		case GtViewerAdornmentResizeRight:
+		case GtViewerAdornmentResizeBottomRight:
 		  ns->bounds.size.width += ndx;
 		  ns->position.x += ndx * ns->anchor.x;
 		  break;
@@ -442,16 +442,16 @@
 
 	      switch (adornment)
 		{
-		case YuViewerAdornmentResizeTopLeft:
-		case YuViewerAdornmentResizeTop:
-		case YuViewerAdornmentResizeTopRight:
+		case GtViewerAdornmentResizeTopLeft:
+		case GtViewerAdornmentResizeTop:
+		case GtViewerAdornmentResizeTopRight:
 		  ns->bounds.size.height -= ndy;
 		  ns->position.y += ndy * ns->anchor.y;
 		  break;
 
-		case YuViewerAdornmentResizeBottomLeft:
-		case YuViewerAdornmentResizeBottom:
-		case YuViewerAdornmentResizeBottomRight:
+		case GtViewerAdornmentResizeBottomLeft:
+		case GtViewerAdornmentResizeBottom:
+		case GtViewerAdornmentResizeBottomRight:
 		  ns->bounds.size.height += ndy;
 		  ns->position.y += ndy * (1 - ns->anchor.y);
 		  break;
@@ -462,15 +462,15 @@
 
 	      ns->position = [layer convertPointToParent:ns->position];
 	    }
-	  else if (adornment < YuViewerAdornmentCount)
+	  else if (adornment < GtViewerAdornmentCount)
 	    {
 	      switch (adornment)
 		{
-		case YuViewerAdornmentCornerRadius:
+		case GtViewerAdornmentCornerRadius:
 		  ns->cornerRadius = fmax(0, ns->cornerRadius + ndx);
 		  break;
 
-		case YuViewerAdornmentAnchor:
+		case GtViewerAdornmentAnchor:
 		  ns->position = [layer convertPointFromParent:ns->position];
 		  ns->anchor.x += ndx / ns->bounds.size.width;
 		  ns->anchor.y += ndy / ns->bounds.size.height;
@@ -479,19 +479,19 @@
 		  ns->position = [layer convertPointToParent:ns->position];
 		  break;
 
-		case YuViewerAdornmentRotate:
+		case GtViewerAdornmentRotate:
 		  ns->rotation = fmod(ns->rotation - arg, 2*M_PI);
 		  break;
 
-		case YuViewerAdornmentScale:
+		case GtViewerAdornmentScale:
 		  ns->scale = fmax(ns->scale * arg, 1e-3);
 		  break;
 
-		case YuViewerAdornmentSqueeze:
+		case GtViewerAdornmentSqueeze:
 		  ns->squeeze = fmax(ns->squeeze * arg, 1e-3);
 		  break;
 
-		case YuViewerAdornmentSkew:
+		case GtViewerAdornmentSkew:
 		  ns->skew = fmin(ns->skew + arg, 1e3);
 		  break;
 
@@ -522,11 +522,11 @@
 
   if (dragging)
     {
-      YuDocument *document = controller.document;
+      GtDocument *document = controller.document;
 
       for (NSInteger i = 0; i < count; i++)
 	{
-	  YuTreeNode *node = nodes[i];
+	  GtTreeNode *node = nodes[i];
 	  MgLayerNode *layer = (MgLayerNode *)node.node;
 	  struct layer_state *os = &old_state[i];
 	  struct layer_state *ns = &new_state[i];
@@ -556,12 +556,12 @@
 
 - (BOOL)dragSelectionWithEvent:(NSEvent *)e
 {
-  return [self mouseDown:e inAdornment:YuViewerAdornmentCount ofNode:nil];
+  return [self mouseDown:e inAdornment:GtViewerAdornmentCount ofNode:nil];
 }
 
-- (void)modifySelectionForNode:(YuTreeNode *)node withEvent:(NSEvent *)e
+- (void)modifySelectionForNode:(GtTreeNode *)node withEvent:(NSEvent *)e
 {
-  YuWindowController *controller = self.controller.controller;
+  GtWindowController *controller = self.controller.controller;
 
   BOOL extend = ([e modifierFlags] & NSShiftKeyMask) != 0;
   BOOL toggle = ([e modifierFlags] & NSCommandKeyMask) != 0;
@@ -586,7 +586,7 @@
 
 - (void)mouseDown:(NSEvent *)e
 {
-  YuWindowController *controller = self.controller.controller;
+  GtWindowController *controller = self.controller.controller;
 
   NSPoint p = [self convertPoint:[e locationInWindow] fromView:nil];
 
@@ -594,7 +594,7 @@
 
   CGPoint dp = [self convertPointToDocument:p];
 
-  for (YuTreeNode *node in controller.selection)
+  for (GtTreeNode *node in controller.selection)
     {
       NSInteger a = [_overlayNode hitTest:dp inAdornmentsOfNode:node];
       if (a != NSNotFound)
@@ -608,7 +608,7 @@
 
   BOOL inside = [self selectedNodeContainingPoint:dp] != nil;
 
-  YuTreeNode *node = [controller.tree hitTest:dp];
+  GtTreeNode *node = [controller.tree hitTest:dp];
 
   BOOL toggle = ([e modifierFlags] & NSCommandKeyMask) != 0;
   BOOL deep = ([e modifierFlags] & NSAlternateKeyMask) != 0;
@@ -626,11 +626,11 @@
 
       if ([selection count] != 0)
 	{
-	  for (YuTreeNode *tn in controller.selection)
+	  for (GtTreeNode *tn in controller.selection)
 	    {
 	      if (inside && !toggle)
 		[set addObject:tn];
-	      for (YuTreeNode *pn = tn.parent; pn != nil; pn = pn.parent)
+	      for (GtTreeNode *pn = tn.parent; pn != nil; pn = pn.parent)
 		[set addObject:pn];
 	    }
 	}
@@ -641,7 +641,7 @@
 
       while (node != nil)
 	{
-	  YuTreeNode *parent = node.parent;
+	  GtTreeNode *parent = node.parent;
 	  if (parent == nil)
 	    break;
 	  if ([set containsObject:parent])
@@ -670,7 +670,7 @@
 - (void)mouseMoved:(NSEvent *)e
 {
 #if 0
-  YuWindowController *controller = self.controller.controller;
+  GtWindowController *controller = self.controller.controller;
 
   NSPoint p = [self convertPoint:[e locationInWindow] fromView:nil];
 

@@ -22,15 +22,15 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "YuSplitViewController.h"
+#import "GtSplitViewController.h"
 
-#import "YuSplitView.h"
+#import "GtSplitView.h"
 
 #import "FoundationExtensions.h"
 
-@implementation YuSplitViewController
+@implementation GtSplitViewController
 
-- (id)initWithController:(YuWindowController *)controller
+- (id)initWithController:(GtWindowController *)controller
 {
   self = [super initWithController:controller];
   if (self == nil)
@@ -43,7 +43,7 @@
 
 - (void)loadView
 {
-  YuSplitView *view = [[YuSplitView alloc] initWithFrame:NSZeroRect];
+  GtSplitView *view = [[GtSplitView alloc] initWithFrame:NSZeroRect];
 
   [view setVertical:self.vertical];
   [view setDividerStyle:NSSplitViewDividerStyleThin];
@@ -55,11 +55,11 @@
 
 - (void)viewWillAppear
 {
-  YuSplitView *view = (YuSplitView *)[self view];
+  GtSplitView *view = (GtSplitView *)[self view];
 
   [view setSubviews:@[]];
 
-  for (YuViewController *c in self.subviewControllers)
+  for (GtViewController *c in self.subviewControllers)
     {
       NSView *sub = [c view];
       [sub setFrame:[view bounds]];
@@ -77,7 +77,7 @@
   if (ident == nil)
     return;
 
-  NSDictionary *state = [(YuSplitView *)[self view] savedViewState];
+  NSDictionary *state = [(GtSplitView *)[self view] savedViewState];
   if (state != nil)
     dict[ident] = state;
 }
@@ -90,17 +90,17 @@
 
   NSDictionary *state = dict[ident];
   if (state != nil)
-    [(YuSplitView *)[self view] applySavedViewState:state];
+    [(GtSplitView *)[self view] applySavedViewState:state];
 }
 
-- (BOOL)_isSubviewControllerVisible:(YuViewController *)c
+- (BOOL)_isSubviewControllerVisible:(GtViewController *)c
 {
-  return [(YuSplitView *)[self view] isSubviewCollapsed:[c view]];
+  return [(GtSplitView *)[self view] isSubviewCollapsed:[c view]];
 }
 
-- (void)_showSubviewController:(YuViewController *)c
+- (void)_showSubviewController:(GtViewController *)c
 {
-  [(YuSplitView *)[self view] setSubview:[c view] collapsed:NO];
+  [(GtSplitView *)[self view] setSubview:[c view] collapsed:NO];
 }
 
 + (BOOL)_canHideSubviewControllers;
@@ -108,14 +108,14 @@
   return YES;
 }
 
-- (void)_hideSubviewController:(YuViewController *)c
+- (void)_hideSubviewController:(GtViewController *)c
 {
-  [(YuSplitView *)[self view] setSubview:[c view] collapsed:YES];
+  [(GtSplitView *)[self view] setSubview:[c view] collapsed:YES];
 }
 
 /** NSSplitViewDelegate methods. **/
 
-- (CGFloat)splitView:(YuSplitView *)view minimumSizeOfSubview:(NSView *)subview
+- (CGFloat)splitView:(GtSplitView *)view minimumSizeOfSubview:(NSView *)subview
 {
   return 250;
 }
@@ -140,7 +140,7 @@
     ofSubviewAt:(NSInteger)idx
 {
   NSView *subview = [[view subviews] objectAtIndex:idx];
-  CGFloat min_size = [(YuSplitView *)view minimumSizeOfSubview:subview];
+  CGFloat min_size = [(GtSplitView *)view minimumSizeOfSubview:subview];
 
   return p + min_size;
 }
@@ -149,7 +149,7 @@
     ofSubviewAt:(NSInteger)idx
 {
   NSView *subview = [[view subviews] objectAtIndex:idx+1];
-  CGFloat min_size = [(YuSplitView *)view minimumSizeOfSubview:subview];
+  CGFloat min_size = [(GtSplitView *)view minimumSizeOfSubview:subview];
 
   return p - min_size;
 }
@@ -157,8 +157,8 @@
 - (BOOL)splitView:(NSSplitView *)view
     shouldAdjustSizeOfSubview:(NSView *)subview
 {
-  if ([view isKindOfClass:[YuSplitView class]])
-    return [(YuSplitView *)view shouldAdjustSizeOfSubview:subview];
+  if ([view isKindOfClass:[GtSplitView class]])
+    return [(GtSplitView *)view shouldAdjustSizeOfSubview:subview];
   else
     return YES;
 }

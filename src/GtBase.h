@@ -1,6 +1,6 @@
 /* -*- c-style: gnu -*-
 
-   Copyright (c) 2013 John Harper <jsh@unfactored.org>
+   Copyright (c) 2014 John Harper <jsh@unfactored.org>
 
    Permission is hereby granted, free of charge, to any person
    obtaining a copy of this software and associated documentation files
@@ -22,49 +22,20 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "YuAppDelegate.h"
+#ifndef GT_BASE_H
+#define GT_BASE_H
 
-#import "CoreAnimationExtensions.h"
+#include "Magnesium.h"
 
-@implementation YuAppDelegate
+#ifdef __OBJC__
+#import <AppKit/AppKit.h>
+#endif
 
-- (id)init
-{
-  self = [super init];
-  if (self == nil)
-    return nil;
+#ifdef __OBJC__
+@class GtAppDelegate, GtDocument, GtOutlineView, GtSplitView,
+    GtSplitViewController, GtTreeViewController, GtTreeNode,
+    GtViewController, GtViewerView, GtViewerViewController,
+    GtWindowController;
+#endif
 
-  NSString *path = [[NSBundle mainBundle]
-		    pathForResource:@"defaults" ofType:@"plist"];
-  if (path != nil)
-    {
-      NSData *data = [NSData dataWithContentsOfFile:path];
-
-      if (data != nil)
-	{
-	  NSDictionary *dict = [NSPropertyListSerialization
-				propertyListWithData:data options:
-				NSPropertyListImmutable format:nil
-				error:nil];
-	  if (dict != nil)
-	    [[NSUserDefaults standardUserDefaults] registerDefaults:dict];
-	}
-    }
-
-  return self;
-}
-
-/** CALayer delegate methods. **/
-
-- (id<CAAction>)actionForLayer:(CALayer *)layer forKey:(NSString *)key
-{
-  return [CATransaction actionForLayer:layer forKey:key];
-}
-
-/** NSMenuDelegate methods. **/
-
-- (void)menuNeedsUpdate:(NSMenu *)menu
-{
-}
-
-@end
+#endif /* GT_BASE_H */

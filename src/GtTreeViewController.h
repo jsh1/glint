@@ -22,7 +22,11 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "YuBase.h"
+#import "GtViewController.h"
 
-@interface YuOutlineView : NSOutlineView
+@interface GtTreeViewController : GtViewController
+    <NSOutlineViewDataSource, NSOutlineViewDelegate>
+
+@property(nonatomic, weak) IBOutlet NSOutlineView *outlineView;
+
 @end

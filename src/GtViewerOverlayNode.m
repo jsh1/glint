@@ -22,14 +22,14 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "YuViewerOverlayNode.h"
+#import "GtViewerOverlayNode.h"
 
-#import "YuColor.h"
-#import "YuDocument.h"
-#import "YuTreeNode.h"
-#import "YuViewerView.h"
-#import "YuViewerViewController.h"
-#import "YuWindowController.h"
+#import "GtColor.h"
+#import "GtDocument.h"
+#import "GtTreeNode.h"
+#import "GtViewerView.h"
+#import "GtViewerViewController.h"
+#import "GtWindowController.h"
 
 #import "MgCoreGraphics.h"
 #import "MgLayerNode.h"
@@ -38,12 +38,12 @@
 #define INNER_ADORNMENT_RADIUS 50
 #define HIT_THRESH ADORNMENT_SIZE
 
-@implementation YuViewerOverlayNode
+@implementation GtViewerOverlayNode
 {
-  NSArray *_selection;			/* NSArray<YuTreeNode> */
+  NSArray *_selection;			/* NSArray<GtTreeNode> */
   NSInteger _lastVersion;
 
-  YuViewerAdornmentMask _adornmentMask;
+  GtViewerAdornmentMask _adornmentMask;
 
   id _adornmentImage;			/* CGImageRef */
 }
@@ -54,7 +54,7 @@
   if (self == nil)
     return nil;
 
-  _adornmentMask = (1U << YuViewerAdornmentCount) - 1;
+  _adornmentMask = (1U << GtViewerAdornmentCount) - 1;
 
   return self;
 }
@@ -64,12 +64,12 @@
   return NO;
 }
 
-- (YuViewerAdornmentMask)adornmentMask
+- (GtViewerAdornmentMask)adornmentMask
 {
   return _adornmentMask;
 }
 
-- (void)setAdornmentMask:(YuViewerAdornmentMask)x
+- (void)setAdornmentMask:(GtViewerAdornmentMask)x
 {
   if (_adornmentMask != x)
     {
@@ -83,31 +83,31 @@
 static const CGPoint adornmentPositions[] =
 {
   /* Special. */
-  [YuViewerAdornmentCornerRadius] = {0, 0},
+  [GtViewerAdornmentCornerRadius] = {0, 0},
   /* Bounds relative. */
-  [YuViewerAdornmentResizeTopLeft] = {0, 0},
-  [YuViewerAdornmentResizeTop] = {.5, 0},
-  [YuViewerAdornmentResizeTopRight] = {1, 0},
-  [YuViewerAdornmentResizeBottomLeft] = {0, 1},
-  [YuViewerAdornmentResizeBottom] = {.5, 1},
-  [YuViewerAdornmentResizeBottomRight] = {1, 1},
-  [YuViewerAdornmentResizeLeft] = {0, .5},
-  [YuViewerAdornmentResizeRight] = {1, .5},
+  [GtViewerAdornmentResizeTopLeft] = {0, 0},
+  [GtViewerAdornmentResizeTop] = {.5, 0},
+  [GtViewerAdornmentResizeTopRight] = {1, 0},
+  [GtViewerAdornmentResizeBottomLeft] = {0, 1},
+  [GtViewerAdornmentResizeBottom] = {.5, 1},
+  [GtViewerAdornmentResizeBottomRight] = {1, 1},
+  [GtViewerAdornmentResizeLeft] = {0, .5},
+  [GtViewerAdornmentResizeRight] = {1, .5},
   /* Center relative. */
-  [YuViewerAdornmentAnchor] = {0, 0},
-  [YuViewerAdornmentRotate] = {1, 0},
-  [YuViewerAdornmentScale] = {0, -1},
-  [YuViewerAdornmentSqueeze] = {-1, 0},
-  [YuViewerAdornmentSkew] = {0, 1},
+  [GtViewerAdornmentAnchor] = {0, 0},
+  [GtViewerAdornmentRotate] = {1, 0},
+  [GtViewerAdornmentScale] = {0, -1},
+  [GtViewerAdornmentSqueeze] = {-1, 0},
+  [GtViewerAdornmentSkew] = {0, 1},
 };
 
 static MgLayerNode *
-getLayerAndTransform(YuTreeNode *node, CGAffineTransform *ret_m)
+getLayerAndTransform(GtTreeNode *node, CGAffineTransform *ret_m)
 {
   CGAffineTransform m = CGAffineTransformIdentity;
   MgLayerNode *container = nil;
 
-  for (YuTreeNode *pn = node; pn != nil; pn = pn.parent)
+  for (GtTreeNode *pn = node; pn != nil; pn = pn.parent)
     {
       MgLayerNode *layer = (MgLayerNode *)pn.node;
 
@@ -149,7 +149,7 @@ strokeLineSegments(CGContextRef ctx, const CGPoint lines[], size_t count)
     });
 }
 
-- (void)drawNode:(YuTreeNode *)tn withState:(id<MgDrawingState>)st
+- (void)drawNode:(GtTreeNode *)tn withState:(id<MgDrawingState>)st
 {
   /* FIXME: concatenating into one matrix only works because everything
      is affine, that may change... */
@@ -196,31 +196,31 @@ strokeLineSegments(CGContextRef ctx, const CGPoint lines[], size_t count)
       CGContextRestoreGState(ctx);
     }
 
-  YuViewerAdornmentMask mask = self.adornmentMask;
+  GtViewerAdornmentMask mask = self.adornmentMask;
 
   if (mask != 0 && container == tn.node)
     {
       CGPoint anchor = container.anchor;
       CGRect bounds = container.bounds;
 
-      CGRect rects[YuViewerAdornmentCount];
+      CGRect rects[GtViewerAdornmentCount];
       size_t count = 0;
 
-      for (NSInteger i = YuViewerAdornmentCount; mask != 0 && i >= 0; i--)
+      for (NSInteger i = GtViewerAdornmentCount; mask != 0 && i >= 0; i--)
 	{
-	  YuViewerAdornmentMask bit = 1U << i;
+	  GtViewerAdornmentMask bit = 1U << i;
 
 	  if ((mask & bit) == 0)
 	    continue;
 
 	  CGPoint p = adornmentPositions[i];
 
-	  if (i < YuViewerAdornmentAnchor)
+	  if (i < GtViewerAdornmentAnchor)
 	    {
 	      p.x = p.x * bounds.size.width;
 	      p.y = p.y * bounds.size.height;
 
-	      if (i == YuViewerAdornmentCornerRadius)
+	      if (i == GtViewerAdornmentCornerRadius)
 		p.x += container.cornerRadius;
 	    }
 	  else
@@ -278,43 +278,43 @@ strokeLineSegments(CGContextRef ctx, const CGPoint lines[], size_t count)
 
 - (void)drawWithState:(id<MgDrawingState>)st
 {
-  YuWindowController *controller = self.view.controller.controller;
+  GtWindowController *controller = self.view.controller.controller;
 
-  for (YuTreeNode *tn in _selection)
+  for (GtTreeNode *tn in _selection)
     [self drawNode:tn withState:st];
 
   _lastVersion = controller.document.documentNode.version;
 }
 
-- (NSInteger)hitTest:(CGPoint)point inAdornmentsOfNode:(YuTreeNode *)tn
+- (NSInteger)hitTest:(CGPoint)point inAdornmentsOfNode:(GtTreeNode *)tn
 {
   CGAffineTransform m;
   MgLayerNode *container = getLayerAndTransform(tn, &m);
   if (container == nil || container != tn.node)
     return NSNotFound;
 
-  YuViewerAdornmentMask mask = self.adornmentMask;
+  GtViewerAdornmentMask mask = self.adornmentMask;
   if (mask == 0)
     return NSNotFound;
 
   CGPoint anchor = container.anchor;
   CGRect bounds = container.bounds;
 
-  for (NSInteger i = 0; mask != 0 && i < YuViewerAdornmentCount; i++)
+  for (NSInteger i = 0; mask != 0 && i < GtViewerAdornmentCount; i++)
     {
-      YuViewerAdornmentMask bit = 1U << i;
+      GtViewerAdornmentMask bit = 1U << i;
 
       if ((mask & bit) == 0)
 	continue;
 
       CGPoint p = adornmentPositions[i];
 
-      if (i < YuViewerAdornmentAnchor)
+      if (i < GtViewerAdornmentAnchor)
 	{
 	  p.x = p.x * bounds.size.width;
 	  p.y = p.y * bounds.size.height;
 
-	  if (i == YuViewerAdornmentCornerRadius)
+	  if (i == GtViewerAdornmentCornerRadius)
 	    p.x += container.cornerRadius;
 	}
       else
@@ -341,8 +341,8 @@ strokeLineSegments(CGContextRef ctx, const CGPoint lines[], size_t count)
 
 - (void)updateSelectedNodes
 {
-  YuWindowController *controller = self.view.controller.controller;
-  YuDocument *document = controller.document;
+  GtWindowController *controller = self.view.controller.controller;
+  GtDocument *document = controller.document;
   NSArray *sel = controller.selection;
 
   if (![_selection isEqual:sel])

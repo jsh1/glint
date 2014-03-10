@@ -22,14 +22,14 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "YuBase.h"
+#import "GtBase.h"
 
-extern NSString *const YuDocumentGraphDidChange;
+extern NSString *const GtDocumentGraphDidChange;
 
-@interface YuDocument : NSDocument
+@interface GtDocument : NSDocument
     <NSKeyedArchiverDelegate, NSKeyedUnarchiverDelegate>
 
-@property(nonatomic, readonly, strong) YuWindowController *controller;
+@property(nonatomic, readonly, strong) GtWindowController *controller;
 
 @property(nonatomic, assign) CGSize documentSize;
 @property(nonatomic, strong) MgDrawableNode *documentNode;
@@ -48,15 +48,15 @@ extern NSString *const YuDocumentGraphDidChange;
 - (IBAction)group:(id)sender;
 - (IBAction)ungroup:(id)sender;
 
-- (void)removeTreeNodeFromParent:(YuTreeNode *)tn;
-- (void)replaceTreeNode:(YuTreeNode *)tn with:(MgNode *)node;
+- (void)removeTreeNodeFromParent:(GtTreeNode *)tn;
+- (void)replaceTreeNode:(GtTreeNode *)tn with:(MgNode *)node;
 
-- (void)node:(YuTreeNode *)node setValue:(id)obj forKey:(NSString *)key;
-- (void)node:(YuTreeNode *)tn insertObject:(id)value atIndex:(NSInteger)idx
+- (void)node:(GtTreeNode *)node setValue:(id)obj forKey:(NSString *)key;
+- (void)node:(GtTreeNode *)tn insertObject:(id)value atIndex:(NSInteger)idx
     forKey:(NSString *)key;
-- (void)node:(YuTreeNode *)tn replaceObjectAtIndex:(NSInteger)idx
+- (void)node:(GtTreeNode *)tn replaceObjectAtIndex:(NSInteger)idx
     withObject:(id)value forKey:(NSString *)key;
-- (void)node:(YuTreeNode *)tn removeObjectAtIndex:(NSInteger)idx
+- (void)node:(GtTreeNode *)tn removeObjectAtIndex:(NSInteger)idx
     forKey:(NSString *)key;
 
 @end

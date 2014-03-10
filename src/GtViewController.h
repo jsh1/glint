@@ -22,9 +22,9 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "YuBase.h"
+#import "GtBase.h"
 
-@interface YuViewController : NSViewController
+@interface GtViewController : NSViewController
 
 + (NSString *)viewNibName;
 
@@ -32,7 +32,7 @@
 
 @property(nonatomic, copy) NSString *identifierSuffix;
 
-- (id)initWithController:(YuWindowController *)controller;
+- (id)initWithController:(GtWindowController *)controller;
 
 - (void)invalidate;
 
@@ -46,24 +46,24 @@
 - (void)viewWillDisappear;
 - (void)viewDidDisappear;
 
-@property(nonatomic, weak, readonly) YuWindowController *controller;
-@property(nonatomic, weak, readonly) YuDocument *document;
+@property(nonatomic, weak, readonly) GtWindowController *controller;
+@property(nonatomic, weak, readonly) GtDocument *document;
 
-- (YuViewController *)viewControllerWithClass:(Class)cls;
+- (GtViewController *)viewControllerWithClass:(Class)cls;
 - (void)foreachViewControllerWithClass:(Class)cls
     handler:(void (^)(id obj))block;
 
-@property(nonatomic, weak, readonly) YuViewController *superviewController;
+@property(nonatomic, weak, readonly) GtViewController *superviewController;
 @property(nonatomic, copy) NSArray *subviewControllers;
 
-- (void)addSubviewController:(YuViewController *)controller;
-- (void)addSubviewController:(YuViewController *)controller
-    after:(YuViewController *)pred;
-- (void)removeSubviewController:(YuViewController *)controller;
+- (void)addSubviewController:(GtViewController *)controller;
+- (void)addSubviewController:(GtViewController *)controller
+    after:(GtViewController *)pred;
+- (void)removeSubviewController:(GtViewController *)controller;
 
-- (void)showSubviewController:(YuViewController *)controller;
-- (void)hideSubviewController:(YuViewController *)controller;
-- (void)toggleSubviewController:(YuViewController *)controller;
+- (void)showSubviewController:(GtViewController *)controller;
+- (void)hideSubviewController:(GtViewController *)controller;
+- (void)toggleSubviewController:(GtViewController *)controller;
 
 @property(nonatomic, weak, readonly) NSView *initialFirstResponder;
 
@@ -75,9 +75,9 @@
 
 /* For containers to implement, given an immediately sub-controller. */
 
-- (BOOL)_isSubviewControllerVisible:(YuViewController *)controller;
-- (void)_showSubviewController:(YuViewController *)controller;
+- (BOOL)_isSubviewControllerVisible:(GtViewController *)controller;
+- (void)_showSubviewController:(GtViewController *)controller;
 + (BOOL)_canHideSubviewControllers;
-- (void)_hideSubviewController:(YuViewController *)controller;
+- (void)_hideSubviewController:(GtViewController *)controller;
 
 @end

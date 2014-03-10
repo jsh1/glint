@@ -11,7 +11,7 @@
                 <outlet property="delegate" destination="k3f-FM-D6D" id="wFr-b6-Cs4"/>
             </connections>
         </customObject>
-        <customObject id="k3f-FM-D6D" customClass="YuAppDelegate"/>
+        <customObject id="k3f-FM-D6D" customClass="GtAppDelegate"/>
         <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
         <menu title="Main Menu" systemMenu="main" id="AYu-sK-qS6">
             <items>
@@ -51,7 +51,7 @@
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="kCx-OE-vgT"/>
-                            <menuItem title="Quit Yuca" keyEquivalent="q" id="4sb-4s-VLi">
+                            <menuItem title="Quit Glint" keyEquivalent="q" id="4sb-4s-VLi">
                                 <connections>
                                     <action selector="terminate:" target="-1" id="Te7-pn-YzF"/>
                                 </connections>

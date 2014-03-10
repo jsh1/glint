@@ -22,15 +22,30 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "YuOutlineView.h"
+#import "GtBase.h"
 
-#import "YuColor.h"
-
-@implementation YuOutlineView
-
-- (NSArray *)_alternatingRowBackgroundColors
+@interface GtSplitView : NSSplitView
 {
-  return [YuColor controlAlternatingRowBackgroundColors];
+@private
+  NSInteger _indexOfResizableSubview;
+  NSView *_collapsingSubview;
 }
+
+@property(nonatomic) NSInteger indexOfResizableSubview;
+
+- (NSDictionary *)savedViewState;
+- (void)applySavedViewState:(NSDictionary *)dict;
+
+- (void)setSubview:(NSView *)subview collapsed:(BOOL)flag;
+
+- (BOOL)shouldAdjustSizeOfSubview:(NSView *)subview;
+
+- (CGFloat)minimumSizeOfSubview:(NSView *)subview;
+
+@end
+
+@interface NSView (GtSplitView)
+
+- (CGFloat)minSize;
 
 @end

@@ -22,17 +22,17 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "YuViewerViewController.h"
+#import "GtViewerViewController.h"
 
-#import "YuDocument.h"
-#import "YuViewerView.h"
-#import "YuWindowController.h"
+#import "GtDocument.h"
+#import "GtViewerView.h"
+#import "GtWindowController.h"
 
-@implementation YuViewerViewController
+@implementation GtViewerViewController
 
 + (NSString *)viewNibName
 {
-  return @"YuViewerView";
+  return @"GtViewerView";
 }
 
 - (void)viewDidLoad

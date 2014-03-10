@@ -22,11 +22,7 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "YuViewController.h"
+#import "GtBase.h"
 
-@interface YuSplitViewController : YuViewController <NSSplitViewDelegate>
-
-@property(nonatomic, assign, getter=isVertical) BOOL vertical;
-@property(nonatomic, assign) NSInteger indexOfResizableSubview;
-
+@interface GtOutlineView : NSOutlineView
 @end

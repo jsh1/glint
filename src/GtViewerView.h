@@ -22,36 +22,20 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "YuBase.h"
+#import "GtBase.h"
 
-@interface YuWindowController : NSWindowController <NSSplitViewDelegate>
+@interface GtViewerView : NSView
 
-@property(nonatomic, weak) IBOutlet NSView *mainView;
+@property(nonatomic, weak) IBOutlet GtViewerViewController *controller;
 
-@property(nonatomic, weak, readonly) YuDocument *document;
+@property(nonatomic, assign) CGPoint viewCenter;
+@property(nonatomic, assign) CGFloat viewScale;
 
-@property(nonatomic, strong, readonly) YuTreeNode *tree;
+- (CGAffineTransform)viewTransform;
 
-/* Selected YuTreeNode references. */
+- (CGFloat)zoomToFitScale;
+- (CGFloat)zoomToFillScale;
 
-@property(nonatomic, copy) NSArray *selection;
-
-- (id)viewControllerWithClass:(Class)cls;
-
-- (void)invalidate;
-
-- (void)saveWindowState;
-- (void)applySavedWindowState;
-
-- (IBAction)nextNodeAction:(id)sender;
-- (IBAction)previousNodeAction:(id)sender;
-- (IBAction)parentNodeAction:(id)sender;
-- (IBAction)childNodeAction:(id)sender;
-
-- (IBAction)zoomInAction:(id)sender;
-- (IBAction)zoomOutAction:(id)sender;
-- (IBAction)zoomToAction:(id)sender;	/* zoom(2^[sender tag]) */
-- (IBAction)zoomToFitAction:(id)sender;
-- (IBAction)zoomToFillAction:(id)sender;
+- (void)setNeedsUpdate;
 
 @end

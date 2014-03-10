@@ -4,7 +4,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5051"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="YuTreeViewController">
+        <customObject id="-2" userLabel="File's Owner" customClass="GtTreeViewController">
             <connections>
                 <outlet property="outlineView" destination="li0-AE-MQv" id="Uw4-DK-6wE"/>
                 <outlet property="view" destination="c22-O7-iKe" id="fmW-rj-jjz"/>
@@ -23,7 +23,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="367" height="669"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <outlineView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" autosaveColumns="NO" rowHeight="22" indentationPerLevel="16" outlineTableColumn="Qch-1X-m8f" id="li0-AE-MQv" customClass="YuOutlineView">
+                            <outlineView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" autosaveColumns="NO" rowHeight="22" indentationPerLevel="16" outlineTableColumn="Qch-1X-m8f" id="li0-AE-MQv" customClass="GtOutlineView">
                                 <rect key="frame" x="0.0" y="0.0" width="367" height="669"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <size key="intercellSpacing" width="3" height="2"/>

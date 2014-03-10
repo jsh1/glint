@@ -22,33 +22,10 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "YuColor.h"
+#import "GtViewController.h"
 
-@implementation YuColor
+@interface GtViewerViewController : GtViewController
 
-+ (NSArray *)controlAlternatingRowBackgroundColors
-{
-  static NSArray *colors;
-
-  if (colors == nil)
-    {
-      colors = @[
-	[self colorWithCalibratedWhite:.9 alpha:1],
-	[self colorWithCalibratedWhite:.85 alpha:1],
-      ];
-    }
-
-  return colors;
-}
-
-+ (NSColor *)viewerBackgroundColor
-{
-  static NSColor *color;
-
-  if (color == nil)
-    color = [NSColor colorWithCalibratedWhite:.5 alpha:1];
-
-  return color;
-}
+@property(nonatomic, weak) IBOutlet GtViewerView *contentView;
 
 @end

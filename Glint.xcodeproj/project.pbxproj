@@ -9,22 +9,22 @@
 /* Begin PBXBuildFile section */
 		5714A8BE18BD322900ED67EE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5714A8BC18BD322900ED67EE /* InfoPlist.strings */; };
 		5714A8C018BD322900ED67EE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5714A8BF18BD322900ED67EE /* main.m */; };
-		5714A8C718BD322900ED67EE /* YuDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 5714A8C618BD322900ED67EE /* YuDocument.m */; };
+		5714A8C718BD322900ED67EE /* GtDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 5714A8C618BD322900ED67EE /* GtDocument.m */; };
 		5714A8CD18BD322900ED67EE /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5714A8CB18BD322900ED67EE /* MainMenu.xib */; };
 		5714A8CF18BD322900ED67EE /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5714A8CE18BD322900ED67EE /* Images.xcassets */; };
 		5721E87118C6212D000DA2C3 /* FoundationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5721E87018C6212D000DA2C3 /* FoundationExtensions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		5721E87418C67439000DA2C3 /* YuTreeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5721E87318C67439000DA2C3 /* YuTreeViewController.m */; };
-		5721E87718C6745A000DA2C3 /* YuTreeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5721E87518C6745A000DA2C3 /* YuTreeView.xib */; };
-		5721E87A18C69363000DA2C3 /* YuColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 5721E87918C69363000DA2C3 /* YuColor.m */; };
-		5721E87D18C693E4000DA2C3 /* YuOutlineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5721E87C18C693E4000DA2C3 /* YuOutlineView.m */; };
-		5721E88018C6A2DF000DA2C3 /* YuSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5721E87F18C6A2DF000DA2C3 /* YuSplitViewController.m */; };
-		572A5B1E18C4CD4100AB8086 /* YuSplitView.m in Sources */ = {isa = PBXBuildFile; fileRef = 572A5B1918C4CD4100AB8086 /* YuSplitView.m */; };
-		572A5B1F18C4CD4100AB8086 /* YuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 572A5B1B18C4CD4100AB8086 /* YuViewController.m */; };
-		572A5B2018C4CD4100AB8086 /* YuWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 572A5B1D18C4CD4100AB8086 /* YuWindowController.m */; };
-		572A5B2318C4CE2000AB8086 /* YuAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 572A5B2218C4CE2000AB8086 /* YuAppDelegate.m */; };
+		5721E87418C67439000DA2C3 /* GtTreeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5721E87318C67439000DA2C3 /* GtTreeViewController.m */; };
+		5721E87718C6745A000DA2C3 /* GtTreeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5721E87518C6745A000DA2C3 /* GtTreeView.xib */; };
+		5721E87A18C69363000DA2C3 /* GtColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 5721E87918C69363000DA2C3 /* GtColor.m */; };
+		5721E87D18C693E4000DA2C3 /* GtOutlineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5721E87C18C693E4000DA2C3 /* GtOutlineView.m */; };
+		5721E88018C6A2DF000DA2C3 /* GtSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5721E87F18C6A2DF000DA2C3 /* GtSplitViewController.m */; };
+		572A5B1E18C4CD4100AB8086 /* GtSplitView.m in Sources */ = {isa = PBXBuildFile; fileRef = 572A5B1918C4CD4100AB8086 /* GtSplitView.m */; };
+		572A5B1F18C4CD4100AB8086 /* GtViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 572A5B1B18C4CD4100AB8086 /* GtViewController.m */; };
+		572A5B2018C4CD4100AB8086 /* GtWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 572A5B1D18C4CD4100AB8086 /* GtWindowController.m */; };
+		572A5B2318C4CE2000AB8086 /* GtAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 572A5B2218C4CE2000AB8086 /* GtAppDelegate.m */; };
 		572A5B2518C4CEE700AB8086 /* defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 572A5B2418C4CEE700AB8086 /* defaults.plist */; };
-		572A5B2818C4CF6200AB8086 /* YuWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 572A5B2618C4CF6200AB8086 /* YuWindow.xib */; };
-		5738567818C746D80010CFB7 /* YuTreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 5738567718C746D80010CFB7 /* YuTreeNode.m */; };
+		572A5B2818C4CF6200AB8086 /* GtWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 572A5B2618C4CF6200AB8086 /* GtWindow.xib */; };
+		5738567818C746D80010CFB7 /* GtTreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 5738567718C746D80010CFB7 /* GtTreeNode.m */; };
 		5738567B18C74CCC0010CFB7 /* AppKitExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5738567A18C74CCC0010CFB7 /* AppKitExtensions.m */; };
 		575F56F818C357080034B28C /* MgAnimationNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 575F56D518C357080034B28C /* MgAnimationNode.m */; };
 		575F56F918C357080034B28C /* MgBasicAnimationNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 575F56D818C357080034B28C /* MgBasicAnimationNode.m */; };
@@ -39,12 +39,12 @@
 		575F570318C357080034B28C /* MgRectNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 575F56ED18C357080034B28C /* MgRectNode.m */; };
 		575F570418C357080034B28C /* MgTimelineNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 575F56EF18C357080034B28C /* MgTimelineNode.m */; };
 		575F570518C357080034B28C /* MgTimingFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 575F56F218C357080034B28C /* MgTimingFunction.m */; };
-		57618DB718C5D1B6004108D8 /* YuViewerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 57618DB418C5D1B6004108D8 /* YuViewerView.m */; };
-		57618DB818C5D1B6004108D8 /* YuViewerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 57618DB618C5D1B6004108D8 /* YuViewerViewController.m */; };
-		57618DBB18C5D1F5004108D8 /* YuViewerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 57618DB918C5D1F5004108D8 /* YuViewerView.xib */; };
+		57618DB718C5D1B6004108D8 /* GtViewerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 57618DB418C5D1B6004108D8 /* GtViewerView.m */; };
+		57618DB818C5D1B6004108D8 /* GtViewerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 57618DB618C5D1B6004108D8 /* GtViewerViewController.m */; };
+		57618DBB18C5D1F5004108D8 /* GtViewerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 57618DB918C5D1F5004108D8 /* GtViewerView.xib */; };
 		57618DBE18C5D538004108D8 /* CoreAnimationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 57618DBD18C5D538004108D8 /* CoreAnimationExtensions.m */; };
 		578A328618C87AC10000ADC4 /* MgDrawingNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 578A328518C87AC10000ADC4 /* MgDrawingNode.m */; };
-		578A328918C87EA80000ADC4 /* YuViewerOverlayNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 578A328818C87EA80000ADC4 /* YuViewerOverlayNode.m */; };
+		578A328918C87EA80000ADC4 /* GtViewerOverlayNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 578A328818C87EA80000ADC4 /* GtViewerOverlayNode.m */; };
 		578A328D18C881050000ADC4 /* MgTimingStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 578A328C18C881050000ADC4 /* MgTimingStorage.m */; };
 		579CAFD118C381BD0051454F /* MgCoreGraphics.c in Sources */ = {isa = PBXBuildFile; fileRef = 579CAFCF18C381BD0051454F /* MgCoreGraphics.c */; };
 		579CAFD518C38B9C0051454F /* MgImageProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 579CAFD418C38B9C0051454F /* MgImageProvider.m */; };
@@ -66,34 +66,34 @@
 		5714A8BD18BD322900ED67EE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		5714A8BF18BD322900ED67EE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = main.m; path = src/main.m; sourceTree = "<group>"; };
 		5714A8C118BD322900ED67EE /* Glint-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Glint-Prefix.pch"; path = "src/Glint-Prefix.pch"; sourceTree = "<group>"; };
-		5714A8C518BD322900ED67EE /* YuDocument.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = YuDocument.h; path = src/YuDocument.h; sourceTree = SOURCE_ROOT; };
-		5714A8C618BD322900ED67EE /* YuDocument.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = YuDocument.m; path = src/YuDocument.m; sourceTree = "<group>"; };
+		5714A8C518BD322900ED67EE /* GtDocument.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GtDocument.h; path = src/GtDocument.h; sourceTree = SOURCE_ROOT; };
+		5714A8C618BD322900ED67EE /* GtDocument.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = GtDocument.m; path = src/GtDocument.m; sourceTree = "<group>"; };
 		5714A8CC18BD322900ED67EE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		5714A8CE18BD322900ED67EE /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = resources/Images.xcassets; sourceTree = "<group>"; };
 		5721E86F18C6212D000DA2C3 /* FoundationExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FoundationExtensions.h; path = src/FoundationExtensions.h; sourceTree = "<group>"; };
 		5721E87018C6212D000DA2C3 /* FoundationExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FoundationExtensions.m; path = src/FoundationExtensions.m; sourceTree = "<group>"; };
-		5721E87218C67439000DA2C3 /* YuTreeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YuTreeViewController.h; path = src/YuTreeViewController.h; sourceTree = "<group>"; };
-		5721E87318C67439000DA2C3 /* YuTreeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YuTreeViewController.m; path = src/YuTreeViewController.m; sourceTree = "<group>"; };
-		5721E87618C6745A000DA2C3 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = resources/en.lproj/YuTreeView.xib; sourceTree = "<group>"; };
-		5721E87818C69362000DA2C3 /* YuColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YuColor.h; path = src/YuColor.h; sourceTree = "<group>"; };
-		5721E87918C69363000DA2C3 /* YuColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YuColor.m; path = src/YuColor.m; sourceTree = "<group>"; };
-		5721E87B18C693E4000DA2C3 /* YuOutlineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YuOutlineView.h; path = src/YuOutlineView.h; sourceTree = "<group>"; };
-		5721E87C18C693E4000DA2C3 /* YuOutlineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YuOutlineView.m; path = src/YuOutlineView.m; sourceTree = "<group>"; };
-		5721E87E18C6A2DF000DA2C3 /* YuSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YuSplitViewController.h; path = src/YuSplitViewController.h; sourceTree = "<group>"; };
-		5721E87F18C6A2DF000DA2C3 /* YuSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YuSplitViewController.m; path = src/YuSplitViewController.m; sourceTree = "<group>"; };
-		572A5B1718C4CD4100AB8086 /* YuBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YuBase.h; path = src/YuBase.h; sourceTree = "<group>"; };
-		572A5B1818C4CD4100AB8086 /* YuSplitView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YuSplitView.h; path = src/YuSplitView.h; sourceTree = "<group>"; };
-		572A5B1918C4CD4100AB8086 /* YuSplitView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YuSplitView.m; path = src/YuSplitView.m; sourceTree = "<group>"; };
-		572A5B1A18C4CD4100AB8086 /* YuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YuViewController.h; path = src/YuViewController.h; sourceTree = "<group>"; };
-		572A5B1B18C4CD4100AB8086 /* YuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YuViewController.m; path = src/YuViewController.m; sourceTree = "<group>"; };
-		572A5B1C18C4CD4100AB8086 /* YuWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YuWindowController.h; path = src/YuWindowController.h; sourceTree = "<group>"; };
-		572A5B1D18C4CD4100AB8086 /* YuWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YuWindowController.m; path = src/YuWindowController.m; sourceTree = "<group>"; };
-		572A5B2118C4CE2000AB8086 /* YuAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YuAppDelegate.h; path = src/YuAppDelegate.h; sourceTree = "<group>"; };
-		572A5B2218C4CE2000AB8086 /* YuAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YuAppDelegate.m; path = src/YuAppDelegate.m; sourceTree = "<group>"; };
+		5721E87218C67439000DA2C3 /* GtTreeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtTreeViewController.h; path = src/GtTreeViewController.h; sourceTree = "<group>"; };
+		5721E87318C67439000DA2C3 /* GtTreeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtTreeViewController.m; path = src/GtTreeViewController.m; sourceTree = "<group>"; };
+		5721E87618C6745A000DA2C3 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = resources/en.lproj/GtTreeView.xib; sourceTree = "<group>"; };
+		5721E87818C69362000DA2C3 /* GtColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtColor.h; path = src/GtColor.h; sourceTree = "<group>"; };
+		5721E87918C69363000DA2C3 /* GtColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtColor.m; path = src/GtColor.m; sourceTree = "<group>"; };
+		5721E87B18C693E4000DA2C3 /* GtOutlineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtOutlineView.h; path = src/GtOutlineView.h; sourceTree = "<group>"; };
+		5721E87C18C693E4000DA2C3 /* GtOutlineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtOutlineView.m; path = src/GtOutlineView.m; sourceTree = "<group>"; };
+		5721E87E18C6A2DF000DA2C3 /* GtSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtSplitViewController.h; path = src/GtSplitViewController.h; sourceTree = "<group>"; };
+		5721E87F18C6A2DF000DA2C3 /* GtSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtSplitViewController.m; path = src/GtSplitViewController.m; sourceTree = "<group>"; };
+		572A5B1718C4CD4100AB8086 /* GtBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtBase.h; path = src/GtBase.h; sourceTree = "<group>"; };
+		572A5B1818C4CD4100AB8086 /* GtSplitView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtSplitView.h; path = src/GtSplitView.h; sourceTree = "<group>"; };
+		572A5B1918C4CD4100AB8086 /* GtSplitView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtSplitView.m; path = src/GtSplitView.m; sourceTree = "<group>"; };
+		572A5B1A18C4CD4100AB8086 /* GtViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtViewController.h; path = src/GtViewController.h; sourceTree = "<group>"; };
+		572A5B1B18C4CD4100AB8086 /* GtViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtViewController.m; path = src/GtViewController.m; sourceTree = "<group>"; };
+		572A5B1C18C4CD4100AB8086 /* GtWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtWindowController.h; path = src/GtWindowController.h; sourceTree = "<group>"; };
+		572A5B1D18C4CD4100AB8086 /* GtWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtWindowController.m; path = src/GtWindowController.m; sourceTree = "<group>"; };
+		572A5B2118C4CE2000AB8086 /* GtAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtAppDelegate.h; path = src/GtAppDelegate.h; sourceTree = "<group>"; };
+		572A5B2218C4CE2000AB8086 /* GtAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtAppDelegate.m; path = src/GtAppDelegate.m; sourceTree = "<group>"; };
 		572A5B2418C4CEE700AB8086 /* defaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = defaults.plist; path = resources/defaults.plist; sourceTree = "<group>"; };
-		572A5B2718C4CF6200AB8086 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = resources/en.lproj/YuWindow.xib; sourceTree = "<group>"; };
-		5738567618C746D80010CFB7 /* YuTreeNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YuTreeNode.h; path = src/YuTreeNode.h; sourceTree = "<group>"; };
-		5738567718C746D80010CFB7 /* YuTreeNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YuTreeNode.m; path = src/YuTreeNode.m; sourceTree = "<group>"; };
+		572A5B2718C4CF6200AB8086 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = resources/en.lproj/GtWindow.xib; sourceTree = "<group>"; };
+		5738567618C746D80010CFB7 /* GtTreeNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtTreeNode.h; path = src/GtTreeNode.h; sourceTree = "<group>"; };
+		5738567718C746D80010CFB7 /* GtTreeNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtTreeNode.m; path = src/GtTreeNode.m; sourceTree = "<group>"; };
 		5738567918C74CCC0010CFB7 /* AppKitExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppKitExtensions.h; path = src/AppKitExtensions.h; sourceTree = "<group>"; };
 		5738567A18C74CCC0010CFB7 /* AppKitExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppKitExtensions.m; path = src/AppKitExtensions.m; sourceTree = "<group>"; };
 		575F56D318C357080034B28C /* Magnesium.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Magnesium.h; sourceTree = "<group>"; };
@@ -126,17 +126,17 @@
 		575F56F118C357080034B28C /* MgTimingFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgTimingFunction.h; sourceTree = "<group>"; };
 		575F56F218C357080034B28C /* MgTimingFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgTimingFunction.m; sourceTree = "<group>"; };
 		575F56F718C357080034B28C /* MgUnitBezier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgUnitBezier.h; sourceTree = "<group>"; };
-		57618DB318C5D1B6004108D8 /* YuViewerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YuViewerView.h; path = src/YuViewerView.h; sourceTree = "<group>"; };
-		57618DB418C5D1B6004108D8 /* YuViewerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YuViewerView.m; path = src/YuViewerView.m; sourceTree = "<group>"; };
-		57618DB518C5D1B6004108D8 /* YuViewerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YuViewerViewController.h; path = src/YuViewerViewController.h; sourceTree = "<group>"; };
-		57618DB618C5D1B6004108D8 /* YuViewerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YuViewerViewController.m; path = src/YuViewerViewController.m; sourceTree = "<group>"; };
-		57618DBA18C5D1F5004108D8 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = resources/en.lproj/YuViewerView.xib; sourceTree = "<group>"; };
+		57618DB318C5D1B6004108D8 /* GtViewerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtViewerView.h; path = src/GtViewerView.h; sourceTree = "<group>"; };
+		57618DB418C5D1B6004108D8 /* GtViewerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtViewerView.m; path = src/GtViewerView.m; sourceTree = "<group>"; };
+		57618DB518C5D1B6004108D8 /* GtViewerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtViewerViewController.h; path = src/GtViewerViewController.h; sourceTree = "<group>"; };
+		57618DB618C5D1B6004108D8 /* GtViewerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtViewerViewController.m; path = src/GtViewerViewController.m; sourceTree = "<group>"; };
+		57618DBA18C5D1F5004108D8 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = resources/en.lproj/GtViewerView.xib; sourceTree = "<group>"; };
 		57618DBC18C5D538004108D8 /* CoreAnimationExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CoreAnimationExtensions.h; path = src/CoreAnimationExtensions.h; sourceTree = "<group>"; };
 		57618DBD18C5D538004108D8 /* CoreAnimationExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CoreAnimationExtensions.m; path = src/CoreAnimationExtensions.m; sourceTree = "<group>"; };
 		578A328418C87AC10000ADC4 /* MgDrawingNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgDrawingNode.h; sourceTree = "<group>"; };
 		578A328518C87AC10000ADC4 /* MgDrawingNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgDrawingNode.m; sourceTree = "<group>"; };
-		578A328718C87EA80000ADC4 /* YuViewerOverlayNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YuViewerOverlayNode.h; path = src/YuViewerOverlayNode.h; sourceTree = "<group>"; };
-		578A328818C87EA80000ADC4 /* YuViewerOverlayNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YuViewerOverlayNode.m; path = src/YuViewerOverlayNode.m; sourceTree = "<group>"; };
+		578A328718C87EA80000ADC4 /* GtViewerOverlayNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtViewerOverlayNode.h; path = src/GtViewerOverlayNode.h; sourceTree = "<group>"; };
+		578A328818C87EA80000ADC4 /* GtViewerOverlayNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtViewerOverlayNode.m; path = src/GtViewerOverlayNode.m; sourceTree = "<group>"; };
 		578A328A18C880D60000ADC4 /* MgBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgBase.h; sourceTree = "<group>"; };
 		578A328B18C881050000ADC4 /* MgTimingStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgTimingStorage.h; sourceTree = "<group>"; };
 		578A328C18C881050000ADC4 /* MgTimingStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgTimingStorage.m; sourceTree = "<group>"; };
@@ -277,33 +277,33 @@
 		57E776BC18BD35D0007CD31F /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				572A5B2118C4CE2000AB8086 /* YuAppDelegate.h */,
-				572A5B2218C4CE2000AB8086 /* YuAppDelegate.m */,
-				572A5B1718C4CD4100AB8086 /* YuBase.h */,
-				5721E87818C69362000DA2C3 /* YuColor.h */,
-				5721E87918C69363000DA2C3 /* YuColor.m */,
-				5714A8C518BD322900ED67EE /* YuDocument.h */,
-				5714A8C618BD322900ED67EE /* YuDocument.m */,
-				5721E87B18C693E4000DA2C3 /* YuOutlineView.h */,
-				5721E87C18C693E4000DA2C3 /* YuOutlineView.m */,
-				572A5B1818C4CD4100AB8086 /* YuSplitView.h */,
-				572A5B1918C4CD4100AB8086 /* YuSplitView.m */,
-				5721E87E18C6A2DF000DA2C3 /* YuSplitViewController.h */,
-				5721E87F18C6A2DF000DA2C3 /* YuSplitViewController.m */,
-				5738567618C746D80010CFB7 /* YuTreeNode.h */,
-				5738567718C746D80010CFB7 /* YuTreeNode.m */,
-				5721E87218C67439000DA2C3 /* YuTreeViewController.h */,
-				5721E87318C67439000DA2C3 /* YuTreeViewController.m */,
-				572A5B1A18C4CD4100AB8086 /* YuViewController.h */,
-				572A5B1B18C4CD4100AB8086 /* YuViewController.m */,
-				578A328718C87EA80000ADC4 /* YuViewerOverlayNode.h */,
-				578A328818C87EA80000ADC4 /* YuViewerOverlayNode.m */,
-				57618DB318C5D1B6004108D8 /* YuViewerView.h */,
-				57618DB418C5D1B6004108D8 /* YuViewerView.m */,
-				57618DB518C5D1B6004108D8 /* YuViewerViewController.h */,
-				57618DB618C5D1B6004108D8 /* YuViewerViewController.m */,
-				572A5B1C18C4CD4100AB8086 /* YuWindowController.h */,
-				572A5B1D18C4CD4100AB8086 /* YuWindowController.m */,
+				572A5B2118C4CE2000AB8086 /* GtAppDelegate.h */,
+				572A5B2218C4CE2000AB8086 /* GtAppDelegate.m */,
+				572A5B1718C4CD4100AB8086 /* GtBase.h */,
+				5721E87818C69362000DA2C3 /* GtColor.h */,
+				5721E87918C69363000DA2C3 /* GtColor.m */,
+				5714A8C518BD322900ED67EE /* GtDocument.h */,
+				5714A8C618BD322900ED67EE /* GtDocument.m */,
+				5721E87B18C693E4000DA2C3 /* GtOutlineView.h */,
+				5721E87C18C693E4000DA2C3 /* GtOutlineView.m */,
+				572A5B1818C4CD4100AB8086 /* GtSplitView.h */,
+				572A5B1918C4CD4100AB8086 /* GtSplitView.m */,
+				5721E87E18C6A2DF000DA2C3 /* GtSplitViewController.h */,
+				5721E87F18C6A2DF000DA2C3 /* GtSplitViewController.m */,
+				5738567618C746D80010CFB7 /* GtTreeNode.h */,
+				5738567718C746D80010CFB7 /* GtTreeNode.m */,
+				5721E87218C67439000DA2C3 /* GtTreeViewController.h */,
+				5721E87318C67439000DA2C3 /* GtTreeViewController.m */,
+				572A5B1A18C4CD4100AB8086 /* GtViewController.h */,
+				572A5B1B18C4CD4100AB8086 /* GtViewController.m */,
+				578A328718C87EA80000ADC4 /* GtViewerOverlayNode.h */,
+				578A328818C87EA80000ADC4 /* GtViewerOverlayNode.m */,
+				57618DB318C5D1B6004108D8 /* GtViewerView.h */,
+				57618DB418C5D1B6004108D8 /* GtViewerView.m */,
+				57618DB518C5D1B6004108D8 /* GtViewerViewController.h */,
+				57618DB618C5D1B6004108D8 /* GtViewerViewController.m */,
+				572A5B1C18C4CD4100AB8086 /* GtWindowController.h */,
+				572A5B1D18C4CD4100AB8086 /* GtWindowController.m */,
 				5738567918C74CCC0010CFB7 /* AppKitExtensions.h */,
 				5738567A18C74CCC0010CFB7 /* AppKitExtensions.m */,
 				57618DBC18C5D538004108D8 /* CoreAnimationExtensions.h */,
@@ -320,9 +320,9 @@
 			isa = PBXGroup;
 			children = (
 				5714A8CB18BD322900ED67EE /* MainMenu.xib */,
-				5721E87518C6745A000DA2C3 /* YuTreeView.xib */,
-				57618DB918C5D1F5004108D8 /* YuViewerView.xib */,
-				572A5B2618C4CF6200AB8086 /* YuWindow.xib */,
+				5721E87518C6745A000DA2C3 /* GtTreeView.xib */,
+				57618DB918C5D1F5004108D8 /* GtViewerView.xib */,
+				572A5B2618C4CF6200AB8086 /* GtWindow.xib */,
 			);
 			name = Nibs;
 			sourceTree = "<group>";
@@ -364,7 +364,7 @@
 		5714A8A818BD322900ED67EE /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				CLASSPREFIX = Yu;
+				CLASSPREFIX = Gt;
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = Unfactored;
 			};
@@ -391,10 +391,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5721E87718C6745A000DA2C3 /* YuTreeView.xib in Resources */,
-				572A5B2818C4CF6200AB8086 /* YuWindow.xib in Resources */,
+				5721E87718C6745A000DA2C3 /* GtTreeView.xib in Resources */,
+				572A5B2818C4CF6200AB8086 /* GtWindow.xib in Resources */,
 				5714A8CF18BD322900ED67EE /* Images.xcassets in Resources */,
-				57618DBB18C5D1F5004108D8 /* YuViewerView.xib in Resources */,
+				57618DBB18C5D1F5004108D8 /* GtViewerView.xib in Resources */,
 				572A5B2518C4CEE700AB8086 /* defaults.plist in Resources */,
 				5714A8BE18BD322900ED67EE /* InfoPlist.strings in Resources */,
 				5714A8CD18BD322900ED67EE /* MainMenu.xib in Resources */,
@@ -414,35 +414,35 @@
 				579CAFD518C38B9C0051454F /* MgImageProvider.m in Sources */,
 				575F56FD18C357080034B28C /* MgFunction.m in Sources */,
 				575F570318C357080034B28C /* MgRectNode.m in Sources */,
-				5721E87D18C693E4000DA2C3 /* YuOutlineView.m in Sources */,
+				5721E87D18C693E4000DA2C3 /* GtOutlineView.m in Sources */,
 				575F570218C357080034B28C /* MgPathNode.m in Sources */,
 				5721E87118C6212D000DA2C3 /* FoundationExtensions.m in Sources */,
 				575F570018C357080034B28C /* MgLayerNode.m in Sources */,
-				5721E88018C6A2DF000DA2C3 /* YuSplitViewController.m in Sources */,
-				578A328918C87EA80000ADC4 /* YuViewerOverlayNode.m in Sources */,
-				572A5B2018C4CD4100AB8086 /* YuWindowController.m in Sources */,
+				5721E88018C6A2DF000DA2C3 /* GtSplitViewController.m in Sources */,
+				578A328918C87EA80000ADC4 /* GtViewerOverlayNode.m in Sources */,
+				572A5B2018C4CD4100AB8086 /* GtWindowController.m in Sources */,
 				575F56FA18C357080034B28C /* MgBezierTimingFunction.mm in Sources */,
 				579CAFD118C381BD0051454F /* MgCoreGraphics.c in Sources */,
-				572A5B1F18C4CD4100AB8086 /* YuViewController.m in Sources */,
+				572A5B1F18C4CD4100AB8086 /* GtViewController.m in Sources */,
 				57618DBE18C5D538004108D8 /* CoreAnimationExtensions.m in Sources */,
 				578A328618C87AC10000ADC4 /* MgDrawingNode.m in Sources */,
 				57FB21DC18C5181100B4BF6C /* MgLayer.m in Sources */,
 				575F56F918C357080034B28C /* MgBasicAnimationNode.m in Sources */,
-				572A5B2318C4CE2000AB8086 /* YuAppDelegate.m in Sources */,
+				572A5B2318C4CE2000AB8086 /* GtAppDelegate.m in Sources */,
 				578A328D18C881050000ADC4 /* MgTimingStorage.m in Sources */,
-				5714A8C718BD322900ED67EE /* YuDocument.m in Sources */,
-				5721E87A18C69363000DA2C3 /* YuColor.m in Sources */,
-				5738567818C746D80010CFB7 /* YuTreeNode.m in Sources */,
-				572A5B1E18C4CD4100AB8086 /* YuSplitView.m in Sources */,
+				5714A8C718BD322900ED67EE /* GtDocument.m in Sources */,
+				5721E87A18C69363000DA2C3 /* GtColor.m in Sources */,
+				5738567818C746D80010CFB7 /* GtTreeNode.m in Sources */,
+				572A5B1E18C4CD4100AB8086 /* GtSplitView.m in Sources */,
 				575F56FF18C357080034B28C /* MgImageNode.m in Sources */,
-				57618DB718C5D1B6004108D8 /* YuViewerView.m in Sources */,
+				57618DB718C5D1B6004108D8 /* GtViewerView.m in Sources */,
 				575F56FC18C357080034B28C /* MgDrawableNode.m in Sources */,
 				5714A8C018BD322900ED67EE /* main.m in Sources */,
 				5738567B18C74CCC0010CFB7 /* AppKitExtensions.m in Sources */,
-				57618DB818C5D1B6004108D8 /* YuViewerViewController.m in Sources */,
+				57618DB818C5D1B6004108D8 /* GtViewerViewController.m in Sources */,
 				575F56FE18C357080034B28C /* MgGradientNode.m in Sources */,
 				575F570418C357080034B28C /* MgTimelineNode.m in Sources */,
-				5721E87418C67439000DA2C3 /* YuTreeViewController.m in Sources */,
+				5721E87418C67439000DA2C3 /* GtTreeViewController.m in Sources */,
 				575F570518C357080034B28C /* MgTimingFunction.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -468,28 +468,28 @@
 			path = resources;
 			sourceTree = "<group>";
 		};
-		5721E87518C6745A000DA2C3 /* YuTreeView.xib */ = {
+		5721E87518C6745A000DA2C3 /* GtTreeView.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
 				5721E87618C6745A000DA2C3 /* en */,
 			);
-			name = YuTreeView.xib;
+			name = GtTreeView.xib;
 			sourceTree = "<group>";
 		};
-		572A5B2618C4CF6200AB8086 /* YuWindow.xib */ = {
+		572A5B2618C4CF6200AB8086 /* GtWindow.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
 				572A5B2718C4CF6200AB8086 /* en */,
 			);
-			name = YuWindow.xib;
+			name = GtWindow.xib;
 			sourceTree = "<group>";
 		};
-		57618DB918C5D1F5004108D8 /* YuViewerView.xib */ = {
+		57618DB918C5D1F5004108D8 /* GtViewerView.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
 				57618DBA18C5D1F5004108D8 /* en */,
 			);
-			name = YuViewerView.xib;
+			name = GtViewerView.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

@@ -22,20 +22,12 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "YuBase.h"
+#import "GtBase.h"
 
-@interface YuViewerView : NSView
+@interface GtColor : NSColor
 
-@property(nonatomic, weak) IBOutlet YuViewerViewController *controller;
++ (NSArray *)controlAlternatingRowBackgroundColors;
 
-@property(nonatomic, assign) CGPoint viewCenter;
-@property(nonatomic, assign) CGFloat viewScale;
-
-- (CGAffineTransform)viewTransform;
-
-- (CGFloat)zoomToFitScale;
-- (CGFloat)zoomToFillScale;
-
-- (void)setNeedsUpdate;
++ (NSColor *)viewerBackgroundColor;
 
 @end

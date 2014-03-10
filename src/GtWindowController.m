@@ -22,24 +22,24 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "YuWindowController.h"
+#import "GtWindowController.h"
 
-#import "YuAppDelegate.h"
-#import "YuColor.h"
-#import "YuDocument.h"
-#import "YuSplitViewController.h"
-#import "YuTreeNode.h"
-#import "YuTreeViewController.h"
-#import "YuViewController.h"
-#import "YuViewerView.h"
-#import "YuViewerViewController.h"
+#import "GtAppDelegate.h"
+#import "GtColor.h"
+#import "GtDocument.h"
+#import "GtSplitViewController.h"
+#import "GtTreeNode.h"
+#import "GtTreeViewController.h"
+#import "GtViewController.h"
+#import "GtViewerView.h"
+#import "GtViewerViewController.h"
 
 #import "FoundationExtensions.h"
 
-@implementation YuWindowController
+@implementation GtWindowController
 {
-  YuViewController *_viewController;
-  YuTreeNode *_tree;
+  GtViewController *_viewController;
+  GtTreeNode *_tree;
   NSArray *_selection;
 }
 
@@ -56,18 +56,18 @@
   [self invalidate];
 }
 
-- (YuDocument *)document
+- (GtDocument *)document
 {
   return [super document];
 }
 
-- (YuTreeNode *)tree
+- (GtTreeNode *)tree
 {
   MgNode *rootNode = self.document.documentNode;
 
   if (_tree == nil || _tree.node != rootNode)
     {
-      _tree = [[YuTreeNode alloc] initWithNode:rootNode
+      _tree = [[GtTreeNode alloc] initWithNode:rootNode
 	       parent:nil parentKey:nil parentIndex:NSNotFound];
     }
 
@@ -76,7 +76,7 @@
 
 - (NSString *)windowNibName
 {
-  return @"YuWindow";
+  return @"GtWindow";
 }
 
 - (void)windowDidLoad
@@ -89,11 +89,11 @@
 
   /* FIXME: replace by something else. */
 
-  YuSplitViewController *split = [[YuSplitViewController alloc]
+  GtSplitViewController *split = [[GtSplitViewController alloc]
 				  initWithController:self];
-  YuTreeViewController *tree = [[YuTreeViewController alloc]
+  GtTreeViewController *tree = [[GtTreeViewController alloc]
 				initWithController:self];
-  YuViewerViewController *viewer = [[YuViewerViewController alloc]
+  GtViewerViewController *viewer = [[GtViewerViewController alloc]
 				    initWithController:self];
 
   split.vertical = YES;
@@ -135,21 +135,21 @@
   [_viewController addSavedViewState:controllers];
 
   NSDictionary *dict = @{
-    @"YuViewControllers": controllers,
+    @"GtViewControllers": controllers,
   };
 
   [[NSUserDefaults standardUserDefaults]
-   setObject:dict forKey:@"YuSavedWindowState"];
+   setObject:dict forKey:@"GtSavedWindowState"];
 }
 
 - (void)applySavedWindowState
 {
   NSDictionary *state = [[NSUserDefaults standardUserDefaults]
-			 dictionaryForKey:@"YuSavedWindowState"];
+			 dictionaryForKey:@"GtSavedWindowState"];
   if (state == nil)
     return;
 
-  NSDictionary *controllers = [state objectForKey:@"YuViewControllers"];
+  NSDictionary *controllers = [state objectForKey:@"GtViewControllers"];
 
   [_viewController applySavedViewState:controllers];
 }
@@ -184,7 +184,7 @@
 {
   NSMutableSet *set = [NSMutableSet set];
 
-  for (YuTreeNode *node in self.selection)
+  for (GtTreeNode *node in self.selection)
     {
       NSArray *node_children = node.children;
       if ([node_children count] != 0)
@@ -193,9 +193,9 @@
 	  continue;
 	}
 
-      for (YuTreeNode *n = node; n != nil; n = n.parent)
+      for (GtTreeNode *n = node; n != nil; n = n.parent)
 	{
-	  YuTreeNode *p = n.parent;
+	  GtTreeNode *p = n.parent;
 	  if (p == nil)
 	    {
 	      [set addObject:node];
@@ -224,8 +224,8 @@
   self.selection = [set allObjects];
 }
 
-static YuTreeNode *
-deepestLastChild(YuTreeNode *n)
+static GtTreeNode *
+deepestLastChild(GtTreeNode *n)
 {
   while (1)
     {
@@ -245,9 +245,9 @@ deepestLastChild(YuTreeNode *n)
 {
   NSMutableSet *set = [NSMutableSet set];
 
-  for (YuTreeNode *node in self.selection)
+  for (GtTreeNode *node in self.selection)
     {
-      YuTreeNode *p = node.parent;
+      GtTreeNode *p = node.parent;
       if (p == nil)
 	{
 	  [set addObject:node];
@@ -278,9 +278,9 @@ deepestLastChild(YuTreeNode *n)
 {
   NSMutableSet *set = [NSMutableSet set];
 
-  for (YuTreeNode *node in self.selection)
+  for (GtTreeNode *node in self.selection)
     {
-      YuTreeNode *parent = node.parent;
+      GtTreeNode *parent = node.parent;
       [set addObject:parent != nil ? parent : node];
     }
 
@@ -294,9 +294,9 @@ deepestLastChild(YuTreeNode *n)
 {
   NSMutableSet *set = [NSMutableSet set];
 
-  for (YuTreeNode *node in self.selection)
+  for (GtTreeNode *node in self.selection)
     {
-      YuTreeNode *child = [node.children firstObject];
+      GtTreeNode *child = [node.children firstObject];
       [set addObject:child != nil ? child : node];
     }
 
@@ -308,20 +308,20 @@ deepestLastChild(YuTreeNode *n)
 
 - (IBAction)zoomInAction:(id)sender
 {
-  [self foreachViewControllerWithClass:[YuViewerViewController class]
+  [self foreachViewControllerWithClass:[GtViewerViewController class]
    handler:^(id obj)
     {
-      YuViewerView *view = ((YuViewerViewController *)obj).contentView;
+      GtViewerView *view = ((GtViewerViewController *)obj).contentView;
       view.viewScale *= 2;
     }];
 }
 
 - (IBAction)zoomOutAction:(id)sender
 {
-  [self foreachViewControllerWithClass:[YuViewerViewController class]
+  [self foreachViewControllerWithClass:[GtViewerViewController class]
    handler:^(id obj)
     {
-      YuViewerView *view = ((YuViewerViewController *)obj).contentView;
+      GtViewerView *view = ((GtViewerViewController *)obj).contentView;
       view.viewScale *= .5;
     }];
 }
@@ -330,10 +330,10 @@ deepestLastChild(YuTreeNode *n)
 {
   CGFloat scale = pow(2, [sender tag]);
 
-  [self foreachViewControllerWithClass:[YuViewerViewController class]
+  [self foreachViewControllerWithClass:[GtViewerViewController class]
    handler:^(id obj)
     {
-      YuViewerView *view = ((YuViewerViewController *)obj).contentView;
+      GtViewerView *view = ((GtViewerViewController *)obj).contentView;
       if (view.viewScale != scale)
 	view.viewScale = scale;
       else
@@ -347,20 +347,20 @@ deepestLastChild(YuTreeNode *n)
 
 - (IBAction)zoomToFitAction:(id)sender
 {
-  [self foreachViewControllerWithClass:[YuViewerViewController class]
+  [self foreachViewControllerWithClass:[GtViewerViewController class]
    handler:^(id obj)
     {
-      YuViewerView *view = ((YuViewerViewController *)obj).contentView;
+      GtViewerView *view = ((GtViewerViewController *)obj).contentView;
       view.viewScale = view.zoomToFitScale;
     }];
 }
 
 - (IBAction)zoomToFillAction:(id)sender
 {
-  [self foreachViewControllerWithClass:[YuViewerViewController class]
+  [self foreachViewControllerWithClass:[GtViewerViewController class]
    handler:^(id obj)
     {
-      YuViewerView *view = ((YuViewerViewController *)obj).contentView;
+      GtViewerView *view = ((GtViewerViewController *)obj).contentView;
       view.viewScale = view.zoomToFillScale;
     }];
 }

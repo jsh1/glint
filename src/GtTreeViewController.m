@@ -22,26 +22,26 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "YuTreeViewController.h"
+#import "GtTreeViewController.h"
 
-#import "YuDocument.h"
-#import "YuTreeNode.h"
-#import "YuWindowController.h"
+#import "GtDocument.h"
+#import "GtTreeNode.h"
+#import "GtWindowController.h"
 
 #import "AppKitExtensions.h"
 
-@implementation YuTreeViewController
+@implementation GtTreeViewController
 
 + (NSString *)viewNibName
 {
-  return @"YuTreeView";
+  return @"GtTreeView";
 }
 
 - (void)viewDidLoad
 {
   [[NSNotificationCenter defaultCenter]
    addObserver:self selector:@selector(documentGraphDidChange:)
-   name:YuDocumentGraphDidChange object:self.controller.document];
+   name:GtDocumentGraphDidChange object:self.controller.document];
 
   [self.controller.document addObserver:self forKeyPath:@"documentNode"
    options:0 context:NULL];
@@ -74,7 +74,7 @@
 }
 
 static void
-expandItem(NSOutlineView *ov, YuTreeNode *tn)
+expandItem(NSOutlineView *ov, GtTreeNode *tn)
 {
   if (tn != nil)
     {
@@ -87,7 +87,7 @@ expandItem(NSOutlineView *ov, YuTreeNode *tn)
 {
   NSArray *selection = self.controller.selection;
 
-  for (YuTreeNode *tn in selection)
+  for (GtTreeNode *tn in selection)
     expandItem(self.outlineView, tn.parent);
 
   [self.outlineView setSelectedItems:selection];
@@ -118,7 +118,7 @@ expandItem(NSOutlineView *ov, YuTreeNode *tn)
   if (item == nil)
     return 1;
   else
-    return [((YuTreeNode *)item).children count];
+    return [((GtTreeNode *)item).children count];
 }
 
 - (id)outlineView:(NSOutlineView *)ov child:(NSInteger)idx ofItem:(id)item
@@ -126,12 +126,12 @@ expandItem(NSOutlineView *ov, YuTreeNode *tn)
   if (item == nil)
     return self.controller.tree;
   else
-    return ((YuTreeNode *)item).children[idx];
+    return ((GtTreeNode *)item).children[idx];
 }
 
 - (BOOL)outlineView:(NSOutlineView *)ov isItemExpandable:(id)item
 {
-  return !((YuTreeNode *)item).leaf;
+  return !((GtTreeNode *)item).leaf;
 }
 
 - (id)outlineView:(NSOutlineView *)ov objectValueForTableColumn:
@@ -139,7 +139,7 @@ expandItem(NSOutlineView *ov, YuTreeNode *tn)
 {
   NSString *ident = [col identifier];
 
-  return [((YuTreeNode *)item).node valueForKey:ident];
+  return [((GtTreeNode *)item).node valueForKey:ident];
 }
 
 /** NSOutlineViewDelegate methods. **/

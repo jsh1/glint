@@ -68,7 +68,7 @@
 			<key>LSTypeIsPackage</key>
 			<false/>
 			<key>NSDocumentClass</key>
-			<string>YuDocument</string>
+			<string>GtDocument</string>
 		</dict>
 	</array>
 </dict>

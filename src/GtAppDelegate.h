@@ -22,7 +22,7 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "YuBase.h"
+#import "GtBase.h"
 
-@interface YuAppDelegate : NSObject <NSApplicationDelegate, NSMenuDelegate>
+@interface GtAppDelegate : NSObject <NSApplicationDelegate, NSMenuDelegate>
 @end

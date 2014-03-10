@@ -22,30 +22,36 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "YuBase.h"
+#import "GtBase.h"
 
-@interface YuSplitView : NSSplitView
-{
-@private
-  NSInteger _indexOfResizableSubview;
-  NSView *_collapsingSubview;
-}
+@interface GtWindowController : NSWindowController <NSSplitViewDelegate>
 
-@property(nonatomic) NSInteger indexOfResizableSubview;
+@property(nonatomic, weak) IBOutlet NSView *mainView;
 
-- (NSDictionary *)savedViewState;
-- (void)applySavedViewState:(NSDictionary *)dict;
+@property(nonatomic, weak, readonly) GtDocument *document;
 
-- (void)setSubview:(NSView *)subview collapsed:(BOOL)flag;
+@property(nonatomic, strong, readonly) GtTreeNode *tree;
 
-- (BOOL)shouldAdjustSizeOfSubview:(NSView *)subview;
+/* Selected GtTreeNode references. */
 
-- (CGFloat)minimumSizeOfSubview:(NSView *)subview;
+@property(nonatomic, copy) NSArray *selection;
 
-@end
+- (id)viewControllerWithClass:(Class)cls;
 
-@interface NSView (YuSplitView)
+- (void)invalidate;
 
-- (CGFloat)minSize;
+- (void)saveWindowState;
+- (void)applySavedWindowState;
+
+- (IBAction)nextNodeAction:(id)sender;
+- (IBAction)previousNodeAction:(id)sender;
+- (IBAction)parentNodeAction:(id)sender;
+- (IBAction)childNodeAction:(id)sender;
+
+- (IBAction)zoomInAction:(id)sender;
+- (IBAction)zoomOutAction:(id)sender;
+- (IBAction)zoomToAction:(id)sender;	/* zoom(2^[sender tag]) */
+- (IBAction)zoomToFitAction:(id)sender;
+- (IBAction)zoomToFillAction:(id)sender;
 
 @end

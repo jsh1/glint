@@ -2,9 +2,9 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>YuDefaultDocumentWidth</key>
+	<key>GtDefaultDocumentWidth</key>
 	<real>1024</real>
-	<key>YuDefaultDocumentHeight</key>
+	<key>GtDefaultDocumentHeight</key>
 	<real>768</real>
 </dict>
 </plist>

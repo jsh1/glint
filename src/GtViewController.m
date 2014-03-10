@@ -22,14 +22,14 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "YuViewController.h"
+#import "GtViewController.h"
 
-#import "YuWindowController.h"
+#import "GtWindowController.h"
 
-@implementation YuViewController
+@implementation GtViewController
 {
-  __weak YuWindowController *_controller;
-  __weak YuViewController *_superviewController;
+  __weak GtWindowController *_controller;
+  __weak GtViewController *_superviewController;
   NSMutableArray *_subviewControllers;
   NSString *_identifierSuffix;
   BOOL _viewHasBeenLoaded;
@@ -45,7 +45,7 @@
   return nil;
 }
 
-- (id)initWithController:(YuWindowController *)controller
+- (id)initWithController:(GtWindowController *)controller
 {
   self = [super initWithNibName:[[self class] viewNibName]
 	  bundle:[NSBundle mainBundle]];
@@ -69,7 +69,7 @@
   [self invalidate];
 }
 
-- (YuDocument *)document
+- (GtDocument *)document
 {
   return _controller.document;
 }
@@ -84,14 +84,14 @@
   return ident;
 }
 
-- (YuViewController *)viewControllerWithClass:(Class)cls
+- (GtViewController *)viewControllerWithClass:(Class)cls
 {
   if ([self class] == cls)
     return self;
 
-  for (YuViewController *obj in _subviewControllers)
+  for (GtViewController *obj in _subviewControllers)
     {
-      YuViewController *sub = [obj viewControllerWithClass:cls];
+      GtViewController *sub = [obj viewControllerWithClass:cls];
       if (sub != nil)
 	return sub;
     }
@@ -105,7 +105,7 @@
   if ([self isKindOfClass:cls])
     block(self);
 
-  for (YuViewController *obj in _subviewControllers)
+  for (GtViewController *obj in _subviewControllers)
     [obj foreachViewControllerWithClass:cls handler:block];
 }
 
@@ -116,23 +116,23 @@
 
 - (void)setSubviewControllers:(NSArray *)array
 {
-  for (YuViewController *c in _subviewControllers)
+  for (GtViewController *c in _subviewControllers)
     c->_superviewController = nil;
 
   _subviewControllers = [array mutableCopy];
 
-  for (YuViewController *c in _subviewControllers)
+  for (GtViewController *c in _subviewControllers)
     c->_superviewController = self;
 }
 
-- (void)addSubviewController:(YuViewController *)controller
+- (void)addSubviewController:(GtViewController *)controller
 {
   [_subviewControllers addObject:controller];
   controller->_superviewController = self;
 }
 
-- (void)addSubviewController:(YuViewController *)controller
-    after:(YuViewController *)pred
+- (void)addSubviewController:(GtViewController *)controller
+    after:(GtViewController *)pred
 {
   NSInteger idx = [_subviewControllers indexOfObjectIdenticalTo:pred];
 
@@ -144,7 +144,7 @@
   controller->_superviewController = self;
 }
 
-- (void)removeSubviewController:(YuViewController *)controller
+- (void)removeSubviewController:(GtViewController *)controller
 {
   NSInteger idx = [_subviewControllers indexOfObjectIdenticalTo:controller];
 
@@ -155,21 +155,21 @@
     }
 }
 
-- (void)showSubviewController:(YuViewController *)controller
+- (void)showSubviewController:(GtViewController *)controller
 {
   while (controller != nil && controller != self)
     {
-      YuViewController *parent = controller->_superviewController;
+      GtViewController *parent = controller->_superviewController;
       [parent _showSubviewController:controller];
       controller = parent;
     }
 }
 
-- (void)hideSubviewController:(YuViewController *)controller
+- (void)hideSubviewController:(GtViewController *)controller
 {
   while (controller != nil && controller != self)
     {
-      YuViewController *parent = controller->_superviewController;
+      GtViewController *parent = controller->_superviewController;
       if ([[parent class] _canHideSubviewControllers])
 	{
 	  [parent _hideSubviewController:controller];
@@ -179,9 +179,9 @@
     }
 }
 
-- (void)toggleSubviewController:(YuViewController *)controller
+- (void)toggleSubviewController:(GtViewController *)controller
 {
-  YuViewController *parent = controller->_superviewController;
+  GtViewController *parent = controller->_superviewController;
   if (parent == nil)
     return;
 
@@ -191,12 +191,12 @@
     [self hideSubviewController:controller];
 }
 
-- (BOOL)_isSubviewControllerVisible:(YuViewController *)controller
+- (BOOL)_isSubviewControllerVisible:(GtViewController *)controller
 {
   return YES;
 }
 
-- (void)_showSubviewController:(YuViewController *)controller
+- (void)_showSubviewController:(GtViewController *)controller
 {
 }
 
@@ -205,7 +205,7 @@
   return NO;
 }
 
-- (void)_hideSubviewController:(YuViewController *)controller
+- (void)_hideSubviewController:(GtViewController *)controller
 {
 }
 
@@ -230,37 +230,37 @@
 
 - (void)viewWillAppear
 {
-  for (YuViewController *c in _subviewControllers)
+  for (GtViewController *c in _subviewControllers)
     [c viewWillAppear];
 }
 
 - (void)viewDidAppear
 {
-  for (YuViewController *c in _subviewControllers)
+  for (GtViewController *c in _subviewControllers)
     [c viewDidAppear];
 }
 
 - (void)viewWillDisappear
 {
-  for (YuViewController *c in _subviewControllers)
+  for (GtViewController *c in _subviewControllers)
     [c viewWillDisappear];
 }
 
 - (void)viewDidDisappear
 {
-  for (YuViewController *c in _subviewControllers)
+  for (GtViewController *c in _subviewControllers)
     [c viewDidDisappear];
 }
 
 - (void)addSavedViewState:(NSMutableDictionary *)dict
 {
-  for (YuViewController *controller in _subviewControllers)
+  for (GtViewController *controller in _subviewControllers)
     [controller addSavedViewState:dict];
 }
 
 - (void)applySavedViewState:(NSDictionary *)dict
 {
-  for (YuViewController *controller in _subviewControllers)
+  for (GtViewController *controller in _subviewControllers)
     [controller applySavedViewState:dict];
 }
 

@@ -22,12 +22,12 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "YuTreeNode.h"
+#import "GtTreeNode.h"
 
-@implementation YuTreeNode
+@implementation GtTreeNode
 {
   MgNode *_node;
-  __weak YuTreeNode *_parent;
+  __weak GtTreeNode *_parent;
   NSString *_parentKey;
   NSInteger _parentIndex;
   NSArray *_children;
@@ -39,7 +39,7 @@
 @synthesize parentKey = _parentKey;
 @synthesize parentIndex = _parentIndex;
 
-- (id)initWithNode:(MgNode *)node parent:(YuTreeNode *)parent
+- (id)initWithNode:(MgNode *)node parent:(GtTreeNode *)parent
     parentKey:(NSString *)key parentIndex:(NSInteger)idx
 {
   self = [super init];
@@ -64,14 +64,14 @@
       if (_children != nil)
 	{
 	  map = [NSMapTable strongToStrongObjectsMapTable];
-	  for (YuTreeNode *node in _children)
+	  for (GtTreeNode *node in _children)
 	    [map setObject:node forKey:node->_node];
 	}
 
       [_node foreachNodeAndAttachmentInfo:^
         (MgNode *child, NSString *parentKey, NSInteger parentIndex)
         {
-	  YuTreeNode *node = [map objectForKey:child];
+	  GtTreeNode *node = [map objectForKey:child];
 
 	  if (node != nil
 	      && node.parentIndex == parentIndex
@@ -81,7 +81,7 @@
 	    }
 	  else
 	    {
-	      node = [[YuTreeNode alloc] initWithNode:child parent:self
+	      node = [[GtTreeNode alloc] initWithNode:child parent:self
 		      parentKey:parentKey parentIndex:parentIndex];
 	    }
 
@@ -100,14 +100,14 @@
   return [self.children count] == 0;
 }
 
-- (BOOL)foreachNode:(void (^)(YuTreeNode *node, BOOL *stop))thunk
+- (BOOL)foreachNode:(void (^)(GtTreeNode *node, BOOL *stop))thunk
 {
   BOOL stop = NO;
   thunk(self, &stop);
   if (stop)
     return NO;
 
-  for (YuTreeNode *node in self.children)
+  for (GtTreeNode *node in self.children)
     {
       if (![node foreachNode:thunk])
 	return NO;
@@ -116,9 +116,9 @@
   return YES;
 }
 
-- (YuTreeNode *)containingLayer
+- (GtTreeNode *)containingLayer
 {
-  for (YuTreeNode *n = self.parent; n != nil; n = n.parent)
+  for (GtTreeNode *n = self.parent; n != nil; n = n.parent)
     {
       if ([n.node isKindOfClass:[MgLayerNode class]])
 	return n;
@@ -127,9 +127,9 @@
   return nil;
 }
 
-- (BOOL)isDescendantOf:(YuTreeNode *)tn
+- (BOOL)isDescendantOf:(GtTreeNode *)tn
 {
-  for (YuTreeNode *n = self; n != nil; n = n.parent)
+  for (GtTreeNode *n = self; n != nil; n = n.parent)
     {
       if (n == tn)
 	return YES;
@@ -142,7 +142,7 @@
 {
   CGAffineTransform m = CGAffineTransformIdentity;
 
-  for (YuTreeNode *n = self; n != nil; n = n.parent)
+  for (GtTreeNode *n = self; n != nil; n = n.parent)
     {
       MgLayerNode *layer = (MgLayerNode *)n.node;
 
@@ -167,17 +167,17 @@
 
 - (BOOL)containsPoint:(CGPoint)p
 {
-  YuTreeNode *layer = [self containingLayer];
+  GtTreeNode *layer = [self containingLayer];
 
   return [(MgDrawableNode *)_node containsPoint:p layerNode:(MgLayerNode *)layer.node];
 }
 
-- (YuTreeNode *)hitTest:(CGPoint)p
+- (GtTreeNode *)hitTest:(CGPoint)p
 {
   return [self hitTest:p layer:nil];
 }
 
-- (YuTreeNode *)hitTest:(CGPoint)p layer:(YuTreeNode *)layer
+- (GtTreeNode *)hitTest:(CGPoint)p layer:(GtTreeNode *)layer
 {
   if (![_node isKindOfClass:[MgDrawableNode class]])
     return nil;
@@ -185,7 +185,7 @@
   MgDrawableNode *drawable = (MgDrawableNode *)_node;
 
   CGPoint node_p = [drawable convertPointFromParent:p];
-  YuTreeNode *node_layer = ([drawable isKindOfClass:[MgLayerNode class]]
+  GtTreeNode *node_layer = ([drawable isKindOfClass:[MgLayerNode class]]
 			    ? self : layer);
 
   NSArray *children = self.children;
@@ -193,8 +193,8 @@
 
   for (NSInteger i = count - 1; i >= 0; i--)
     {
-      YuTreeNode *node = children[i];
-      YuTreeNode *hit = [node hitTest:node_p layer:node_layer];
+      GtTreeNode *node = children[i];
+      GtTreeNode *hit = [node hitTest:node_p layer:node_layer];
       if (hit != nil)
 	return hit;
     }

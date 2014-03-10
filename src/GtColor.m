@@ -22,34 +22,33 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "YuBase.h"
+#import "GtColor.h"
 
-@protocol YuTreeNodeOwner;
+@implementation GtColor
 
-@interface YuTreeNode : NSObject
++ (NSArray *)controlAlternatingRowBackgroundColors
+{
+  static NSArray *colors;
 
-- (id)initWithNode:(MgNode *)node parent:(YuTreeNode *)parent
-    parentKey:(NSString *)key parentIndex:(NSInteger)idx;
+  if (colors == nil)
+    {
+      colors = @[
+	[self colorWithCalibratedWhite:.9 alpha:1],
+	[self colorWithCalibratedWhite:.85 alpha:1],
+      ];
+    }
 
-@property(nonatomic, strong, readonly) MgNode *node;
-@property(nonatomic, weak, readonly) YuTreeNode *parent;
-@property(nonatomic, copy, readonly) NSString *parentKey;
-@property(nonatomic, assign, readonly) NSInteger parentIndex;
-@property(nonatomic, readonly) NSArray *children;
-@property(nonatomic, assign, readonly, getter=isLeaf) BOOL leaf;
+  return colors;
+}
 
-/* Returns YES if all nodes were iterated over. */
++ (NSColor *)viewerBackgroundColor
+{
+  static NSColor *color;
 
-- (BOOL)foreachNode:(void (^)(YuTreeNode *node, BOOL *stop))thunk;
+  if (color == nil)
+    color = [NSColor colorWithCalibratedWhite:.5 alpha:1];
 
-- (YuTreeNode *)containingLayer;
-
-- (BOOL)isDescendantOf:(YuTreeNode *)tn;
-
-- (CGPoint)convertPointToRoot:(CGPoint)p;
-- (CGPoint)convertPointFromRoot:(CGPoint)p;
-
-- (BOOL)containsPoint:(CGPoint)p;
-- (YuTreeNode *)hitTest:(CGPoint)p;
+  return color;
+}
 
 @end

@@ -22,12 +22,11 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "YuBase.h"
+#import "GtViewController.h"
 
-@interface YuColor : NSColor
+@interface GtSplitViewController : GtViewController <NSSplitViewDelegate>
 
-+ (NSArray *)controlAlternatingRowBackgroundColors;
-
-+ (NSColor *)viewerBackgroundColor;
+@property(nonatomic, assign, getter=isVertical) BOOL vertical;
+@property(nonatomic, assign) NSInteger indexOfResizableSubview;
 
 @end
