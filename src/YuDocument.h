@@ -42,16 +42,21 @@ extern NSString *const YuDocumentGraphDidChange;
 - (void)registerUndo:(void (^)())thunk;
 
 - (IBAction)insertLayer:(id)sender;
-- (IBAction)insertTimeline:(id)sender;
 - (IBAction)addContent:(id)sender;
 - (IBAction)addAnimation:(id)sender;
-- (IBAction)embedInLayer:(id)sender;
-- (IBAction)unembed:(id)sender;
+- (IBAction)embedIn:(id)sender;
+- (IBAction)group:(id)sender;
+- (IBAction)ungroup:(id)sender;
 
-- (void)insertContent:(MgDrawableNode *)node intoLayer:(MgLayerNode *)parent
-    atIndex:(NSInteger)idx;
-- (void)removeContentFromLayer:(MgLayerNode *)parent atIndex:(NSInteger)idx;
+- (void)removeTreeNodeFromParent:(YuTreeNode *)tn;
+- (void)replaceTreeNode:(YuTreeNode *)tn with:(MgNode *)node;
 
 - (void)node:(YuTreeNode *)node setValue:(id)obj forKey:(NSString *)key;
+- (void)node:(YuTreeNode *)tn insertObject:(id)value atIndex:(NSInteger)idx
+    forKey:(NSString *)key;
+- (void)node:(YuTreeNode *)tn replaceObjectAtIndex:(NSInteger)idx
+    withObject:(id)value forKey:(NSString *)key;
+- (void)node:(YuTreeNode *)tn removeObjectAtIndex:(NSInteger)idx
+    forKey:(NSString *)key;
 
 @end

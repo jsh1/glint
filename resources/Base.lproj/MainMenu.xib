@@ -353,16 +353,12 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Object" id="GTL-ta-mVl">
                         <items>
-                            <menuItem title="Insert Layer" keyEquivalent="L" id="oKg-aW-Ie6">
+                            <menuItem title="New Layer" keyEquivalent="L" id="oKg-aW-Ie6">
                                 <connections>
                                     <action selector="insertLayer:" target="-1" id="eN7-QN-Uep"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Insert Timeline" keyEquivalent="T" id="ac7-KF-ReH">
-                                <connections>
-                                    <action selector="insertTimeline:" target="-1" id="qav-2g-fTo"/>
-                                </connections>
-                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="gHi-5Z-X2i"/>
                             <menuItem title="Add Content" id="YjA-sH-5v6">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Add Content" id="gTT-2t-EMV">
@@ -416,16 +412,36 @@
                                 </menu>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="CFV-Rl-BbR"/>
-                            <menuItem title="Embed In Layer" keyEquivalent="g" id="84e-Ta-EsS">
+                            <menuItem title="Embed In" id="KGz-BS-YRd">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="Embed In" id="tPx-wQ-Aol">
+                                    <items>
+                                        <menuItem title="Layer" keyEquivalent="l" id="Eup-9e-dWF">
+                                            <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
+                                            <connections>
+                                                <action selector="embedIn:" target="-1" id="hrP-w6-qgL"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Timeline" tag="1" id="cFC-9B-hZv">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="embedIn:" target="-1" id="S98-O9-ZoW"/>
+                                            </connections>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="ajc-gg-quV"/>
+                            <menuItem title="Group" keyEquivalent="g" id="L6d-AF-ykv">
                                 <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
                                 <connections>
-                                    <action selector="embedInLayer:" target="-1" id="FVg-Gj-cuh"/>
+                                    <action selector="group:" target="-1" id="5LB-Mn-55N"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Unembed" keyEquivalent="G" id="PYN-r3-c9L">
+                            <menuItem title="Ungroup" keyEquivalent="G" id="PYN-r3-c9L">
                                 <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
                                 <connections>
-                                    <action selector="unembed:" target="-1" id="svw-6G-z1a"/>
+                                    <action selector="ungroup:" target="-1" id="0cj-pL-6Ej"/>
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="ur5-Hc-eX5"/>

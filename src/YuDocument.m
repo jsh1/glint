@@ -229,62 +229,53 @@ NSString *const YuDocumentGraphDidChange = @"YuDocumentGraphDidChange";
   thunk();
 }
 
-static NSString *
-makeUniqueName(NSArray *nodes, NSString *stem)
+static void
+makeNameUnique(MgNode *node, MgNode *parent)
 {
   for (NSInteger i = 1;; i++)
     {
-      NSString *name = stem;
+      NSString *name = node.name;
       if (i > 1)
 	name = [NSString stringWithFormat:@"%@ %ld", name, (long)i];
 
-      BOOL unique = YES;
-      for (MgNode *node in nodes)
-	{
+      __block BOOL unique = YES;
+
+      [parent foreachNode:^(MgNode *node)
+        {
 	  if ([node.name isEqualToString:name])
-	    {
-	      unique = NO;
-	      break;
-	    }
-	}
+	    unique = NO;
+	}];
 
       if (unique)
-	return name;
+	{
+	  node.name = name;
+	  return;
+	}
     }
 }
 
-/* Returns map from YuTreeNode<MgLayerNode> -> @(index-in-parent). */
-
-static NSMapTable *
-findInsertionLayers(YuDocument *self)
+static void
+initializeLayerFromContainer(MgLayerNode *layer, MgLayerNode *container)
 {
-  NSMapTable *layers = [NSMapTable strongToStrongObjectsMapTable];
+  CGRect bounds = (container != nil ? container.bounds
+		   : CGRectMake(0, 0, 512, 512));
 
-  for (YuTreeNode *tn in self.controller.selection)
+  layer.bounds = bounds;
+  layer.position = CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds));
+}
+
+static NSArray *
+makeSelectionArray1(YuTreeNode *parent, MgNode *node)
+{
+  NSMutableArray *selection = [NSMutableArray array];
+
+  for (YuTreeNode *tn in parent.children)
     {
-      if (![tn.node isKindOfClass:[MgDrawableNode class]])
-	continue;
-
-      YuTreeNode *n = tn;
-      NSInteger idx = NSNotFound;
-      while (n != nil)
-	{
-	  if ([n.node isKindOfClass:[MgLayerNode class]])
-	    break;
-	  YuTreeNode *p = n.parent;
-	  idx = [p.children indexOfObjectIdenticalTo:n];
-	  if (idx != NSNotFound)
-	    idx = idx + 1;
-	  n = p;
-	}
-      if (n != nil)
-	[layers setObject:@(idx) forKey:n];
+      if (tn.node == node)
+	[selection addObject:tn];
     }
 
-  if ([layers count] == 0)
-    [layers setObject:@(NSNotFound) forKey:self.controller.tree];
-
-  return layers;
+  return selection;
 }
 
 /* ADDED is map from MgNode -> YuTreeNode<MgLayerNode>. */
@@ -308,92 +299,118 @@ makeSelectionArray(NSMapTable *added)
   return selection;
 }
 
-- (IBAction)insertLayer:(id)sender
+- (void)addLayerContent:(MgDrawableNode *(^)(MgLayerNode *parent_layer))block
 {
-  NSMapTable *layers = findInsertionLayers(self);
+  NSMapTable *layers = [NSMapTable strongToStrongObjectsMapTable];
+  NSMutableSet *nodes = [NSMutableSet set];
+
+  for (YuTreeNode *tn in self.controller.selection)
+    {
+      if (![tn.node isKindOfClass:[MgDrawableNode class]])
+	continue;
+
+      YuTreeNode *n = tn;
+      NSInteger idx = NSNotFound;
+      while (n != nil)
+	{
+	  if ([n.node isKindOfClass:[MgLayerNode class]])
+	    break;
+	  YuTreeNode *p = n.parent;
+	  if ([n.parentKey isEqualToString:@"contents"])
+	    idx = n.parentIndex;
+	  else
+	    idx = NSNotFound;
+	  if (idx != NSNotFound)
+	    idx = idx + 1;
+	  n = p;
+	}
+      if (n == nil)
+	continue;
+
+      if ([nodes containsObject:n.node])
+	continue;
+
+      [layers setObject:@(idx) forKey:n];
+      [nodes addObject:n.node];
+    }
+
+  if ([layers count] == 0)
+    [layers setObject:@(NSNotFound) forKey:self.controller.tree];
 
   NSMapTable *added = [NSMapTable strongToStrongObjectsMapTable];
 
   for (YuTreeNode *parent in layers)
     {
       MgLayerNode *parent_layer = (MgLayerNode *)parent.node;
-      MgLayerNode *layer = [MgLayerNode node];
-      layer.name = makeUniqueName(parent_layer.contents, @"Layer");
-      CGRect bounds = parent_layer.bounds;
-      layer.bounds = bounds;
-      layer.position = CGPointMake(CGRectGetMidX(bounds),
-				   CGRectGetMidY(bounds));
 
-      NSInteger idx = [[layers objectForKey:parent] integerValue];
-      if (idx == NSNotFound)
-	idx = [parent_layer.contents count];
+      MgDrawableNode *content = block(parent_layer);
 
-      [self insertContent:layer intoLayer:parent_layer atIndex:idx];
+      if (content != nil)
+	{
+	  NSInteger idx = [[layers objectForKey:parent] integerValue];
+	  if (idx == NSNotFound)
+	    idx = [parent_layer.contents count];
 
-      [added setObject:parent forKey:layer];
+	  [self node:parent insertObject:content atIndex:idx
+	   forKey:@"contents"];
+
+	  [added setObject:parent forKey:content];
+	}
     }
 
   self.controller.selection = makeSelectionArray(added);
 }
 
-- (IBAction)insertTimeline:(id)sender
+- (IBAction)insertLayer:(id)sender
 {
-  /* FIXME: implement this. */
+  [self addLayerContent:^MgDrawableNode * (MgLayerNode *parent_layer)
+    {
+      MgLayerNode *layer = [MgLayerNode node];
+      initializeLayerFromContainer(layer, parent_layer);
+      layer.name = @"Layer";
+      makeNameUnique(layer, parent_layer);
+      return layer;
+    }];
 }
 
 - (IBAction)addContent:(id)sender
 {
-  NSMapTable *layers = findInsertionLayers(self);
   NSInteger tag = [sender tag];
 
-  NSMapTable *added = [NSMapTable strongToStrongObjectsMapTable];
-
-  for (YuTreeNode *parent in layers)
+  [self addLayerContent:^MgDrawableNode * (MgLayerNode *parent_layer)
     {
-      MgLayerNode *parent_layer = (MgLayerNode *)parent.node;
-      
       MgDrawableNode *node = nil;
-      NSString *name = nil;
 
       if (tag == 0)
 	{
 	  node = [[MgImageNode alloc] init];
-	  name = @"Image";
+	  node.name = @"Image";
 	}
       else if (tag == 1)
 	{
 	  node = [[MgGradientNode alloc] init];
-	  name = @"Gradient";
+	  node.name = @"Gradient";
 	}
       else if (tag == 2 || tag == 3)
 	{
 	  node = [[MgRectNode alloc] init];
-	  name = @"Rect";
+	  node.name = @"Rect";
 	  if (tag == 3)
 	    ((MgRectNode *)node).drawingMode = kCGPathStroke;
 	}
       else if (tag == 4 || tag == 5)
 	{
 	  node = [[MgPathNode alloc] init];
-	  name = @"Path";
+	  node.name = @"Path";
 	  if (tag == 5)
 	    ((MgPathNode *)node).drawingMode = kCGPathStroke;
 	}
       else
-	return;
+	return nil;
 
-      node.name = makeUniqueName(parent_layer.contents, name);
-
-      NSInteger idx = [[layers objectForKey:parent] integerValue];
-      if (idx == NSNotFound)
-	idx = [parent_layer.contents count];
-
-      [self insertContent:node intoLayer:parent_layer atIndex:idx];
-
-      [added setObject:parent forKey:node];
-    }
-
-  self.controller.selection = makeSelectionArray(added);
+      makeNameUnique(node, parent_layer);
+      return node;
+    }];
 }
 
 - (IBAction)addAnimation:(id)sender
@@ -401,14 +418,193 @@ makeSelectionArray(NSMapTable *added)
   /* FIXME: implement this. */
 }
 
-- (IBAction)embedInLayer:(id)sender
+- (IBAction)embedIn:(id)sender
 {
-  /* FIXME: implement this. */
+  NSInteger tag = [sender tag];
+
+  NSMutableSet *nodes = [NSMutableSet set];
+  NSMapTable *added = [NSMapTable strongToStrongObjectsMapTable];
+
+  for (YuTreeNode *tn in self.controller.selection)
+    {
+      YuTreeNode *parent = tn.parent;
+      if (parent == nil)
+	continue;
+      if ([nodes containsObject:tn.node])
+	continue;
+      if (![tn.node isKindOfClass:[MgDrawableNode class]])
+	continue;
+
+      MgDrawableNode *node = nil;
+
+      switch (tag)
+	{
+	case 0: {
+	  MgLayerNode *layer = [MgLayerNode node];
+	  layer.name = @"Layer";
+	  initializeLayerFromContainer(layer, (MgLayerNode *)
+				       [tn containingLayer].node);
+	  [layer addContent:(MgDrawableNode *)tn.node];
+	  node = layer;
+	  break; }
+
+	case 1: {
+	  MgTimelineNode *timeline = [MgTimelineNode node];
+	  timeline.name = @"Timeline";
+	  timeline.node = (MgDrawableNode *)tn.node;
+	  node = timeline;
+	  break; }
+	}
+
+      if (node == nil)
+	continue;
+
+      makeNameUnique(node, parent.node);
+
+      [self replaceTreeNode:tn with:node];
+
+      [added setObject:parent forKey:node];
+    }
+
+  self.controller.selection = makeSelectionArray(added);
 }
 
-- (IBAction)unembed:(id)sender
+- (IBAction)group:(id)sender
 {
-  /* FIXME: implement this. */
+  YuTreeNode *master = nil;
+
+  NSMutableArray *group = [NSMutableArray array];
+  NSMutableSet *nodes = [NSMutableSet set];
+
+  for (YuTreeNode *tn in self.controller.selection)
+    {
+      if ([nodes containsObject:tn.node])
+	continue;
+
+      if (master == nil || [master isDescendantOf:tn])
+	master = tn;
+
+      [group addObject:tn];
+      [nodes addObject:tn.node];
+    }
+
+  if (master == nil)
+    return;
+
+  YuTreeNode *container = [master containingLayer];
+  if (container == nil)
+    return;
+
+  MgLayerNode *container_layer = (MgLayerNode *)container.node;
+
+  MgLayerNode *layer = [MgLayerNode node];
+  layer.name = @"Group";
+  if (container == master)
+    makeNameUnique(layer, container_layer);
+
+  initializeLayerFromContainer(layer, container_layer);
+
+  for (YuTreeNode *tn in group)
+    {
+      if (tn != master)
+	[self removeTreeNodeFromParent:tn];
+
+      MgDrawableNode *node = (MgDrawableNode *)tn.node;
+      [layer addContent:node];
+    }
+
+  YuTreeNode *parent = master.parent;
+
+  [self replaceTreeNode:master with:layer];
+
+  self.controller.selection = makeSelectionArray1(parent, layer);
+}
+
+- (IBAction)ungroup:(id)sender
+{
+  NSMutableSet *set = [NSMutableSet set];
+
+  NSMapTable *added = [NSMapTable strongToStrongObjectsMapTable];
+
+  for (YuTreeNode *tn in self.controller.selection)
+    {
+      MgLayerNode *layer = (MgLayerNode *)tn.node;
+      if (![layer isKindOfClass:[MgLayerNode class]])
+	continue;
+      if (layer.mask != nil)
+	continue;
+
+      YuTreeNode *parent = tn.parent;
+      if (parent == nil)
+	continue;
+
+      NSInteger idx = tn.parentIndex;
+      if (idx == NSNotFound)
+	{
+	  idx = NSIntegerMax;
+	  if ([layer.contents count] > 1)
+	    continue;
+	}
+
+      if ([set containsObject:layer])
+	continue;
+
+      [self removeTreeNodeFromParent:tn];
+
+      for (MgDrawableNode *child in layer.contents)
+	{
+	  [self node:parent insertObject:child atIndex:idx++
+	   forKey:@"contents"];
+
+	  [added setObject:parent forKey:child];
+	}
+
+      [set addObject:layer];
+    }
+
+  self.controller.selection = makeSelectionArray(added);
+}
+
+- (void)removeTreeNodeFromParent:(YuTreeNode *)tn
+{
+  YuTreeNode *parent = tn.parent;
+  if (parent == nil)
+    return;
+
+  NSString *key = tn.parentKey;
+  NSInteger idx = tn.parentIndex;
+
+  if (idx != NSNotFound)
+    {
+      /* Array key. */
+
+      [self node:parent removeObjectAtIndex:idx forKey:key];
+    }
+  else
+    {
+      [self node:parent setValue:nil forKey:key];
+    }
+}
+
+- (void)replaceTreeNode:(YuTreeNode *)tn with:(MgNode *)node
+{
+  YuTreeNode *parent = tn.parent;
+  if (parent == nil)
+    return;
+
+  NSString *key = tn.parentKey;
+  NSInteger idx = tn.parentIndex;
+
+  if (idx != NSNotFound)
+    {
+      /* Array key. */
+
+      [self node:parent replaceObjectAtIndex:idx withObject:node forKey:key];
+    }
+  else
+    {
+      [self node:parent setValue:node forKey:key];
+    }
 }
 
 static void
@@ -416,43 +612,6 @@ documentGraphChanged(YuDocument *self)
 {
   [[NSNotificationCenter defaultCenter]
    postNotificationName:YuDocumentGraphDidChange object:self];
-}
-
-- (void)insertContent:(MgDrawableNode *)node intoLayer:(MgLayerNode *)parent
-    atIndex:(NSInteger)idx
-{
-  if (idx < 0)
-    return;
-
-  NSInteger count = [parent.contents count];
-  if (idx > count)
-    idx = count;
-
-  [self registerUndo:^
-    {
-      [self removeContentFromLayer:parent atIndex:idx];
-    }];
-
-  [parent insertContent:node atIndex:idx];
-
-  documentGraphChanged(self);
-}
-
-- (void)removeContentFromLayer:(MgLayerNode *)parent atIndex:(NSInteger)idx
-{
-  if (idx < 0 || idx >= [parent.contents count])
-    return;
-
-  MgDrawableNode *node = parent.contents[idx];
-
-  [self registerUndo:^
-    {
-      [self insertContent:node intoLayer:parent atIndex:idx];
-    }];
-
-  [parent removeContentAtIndex:idx];
-
-  documentGraphChanged(self);
 }
 
 - (void)node:(YuTreeNode *)tn setValue:(id)value forKey:(NSString *)key
@@ -469,7 +628,90 @@ documentGraphChanged(YuDocument *self)
 	}];
 
       [node setValue:value forKey:key];
+
+      /* FIXME: heinous. */
+
+      if ([key isEqualToString:@"mask"]
+	  || [key isEqualToString:@"node"])
+	{
+	  documentGraphChanged(self);
+	}
     }
+}
+
+- (void)node:(YuTreeNode *)tn insertObject:(id)value atIndex:(NSInteger)idx
+    forKey:(NSString *)key
+{
+  assert(value != nil);
+  assert(idx >= 0);
+
+  MgNode *node = tn.node;
+
+  NSArray *array = [node valueForKey:key];
+
+  if (idx > [array count])
+    idx = [array count];
+
+  [self registerUndo:^
+   {
+     [self node:tn removeObjectAtIndex:idx forKey:key];
+   }];
+
+  NSMutableArray *m_array = [NSMutableArray arrayWithArray:array];
+  [m_array insertObject:value atIndex:idx];
+  [node setValue:m_array forKey:key];
+
+  documentGraphChanged(self);
+}
+
+- (void)node:(YuTreeNode *)tn replaceObjectAtIndex:(NSInteger)idx
+    withObject:(id)value forKey:(NSString *)key
+{
+  assert(value != nil);
+
+  MgNode *node = tn.node;
+
+  NSArray *array = [node valueForKey:key];
+
+  assert(array != nil);
+  assert(idx >= 0 && idx < [array count]);
+
+  id oldValue = array[idx];
+
+  [self registerUndo:^
+    {
+      [self node:tn replaceObjectAtIndex:idx withObject:oldValue forKey:key];
+    }];
+
+  NSMutableArray *m_array = [NSMutableArray arrayWithArray:array];
+  [m_array replaceObjectAtIndex:idx withObject:value];
+  [node setValue:m_array forKey:key];
+
+  documentGraphChanged(self);
+}
+
+- (void)node:(YuTreeNode *)tn removeObjectAtIndex:(NSInteger)idx
+    forKey:(NSString *)key
+{
+  MgNode *node = tn.node;
+
+  NSArray *array = [node valueForKey:key];
+
+  assert(array != nil);
+  assert(idx >= 0 && idx < [array count]);
+
+  id oldValue = array[idx];
+
+  [self registerUndo:^
+    {
+      [self node:tn insertObject:oldValue atIndex:idx forKey:key];
+    }];
+
+  NSMutableArray *m_array = [NSMutableArray arrayWithArray:array];
+  [m_array removeObjectAtIndex:idx];
+  [node setValue:m_array forKey:key];
+
+  documentGraphChanged(self);
 }
 
 @end

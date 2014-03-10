@@ -66,7 +66,10 @@
   MgNode *rootNode = self.document.documentNode;
 
   if (_tree == nil || _tree.node != rootNode)
-    _tree = [[YuTreeNode alloc] initWithNode:rootNode parent:nil];
+    {
+      _tree = [[YuTreeNode alloc] initWithNode:rootNode
+	       parent:nil parentKey:nil parentIndex:NSNotFound];
+    }
 
   return _tree;
 }

@@ -28,11 +28,19 @@
 {
   MgNode *_node;
   __weak YuTreeNode *_parent;
+  NSString *_parentKey;
+  NSInteger _parentIndex;
   NSArray *_children;
   NSInteger _childrenVersion;
 }
 
+@synthesize node = _node;
+@synthesize parent = _parent;
+@synthesize parentKey = _parentKey;
+@synthesize parentIndex = _parentIndex;
+
 - (id)initWithNode:(MgNode *)node parent:(YuTreeNode *)parent
+    parentKey:(NSString *)key parentIndex:(NSInteger)idx
 {
   self = [super init];
   if (self == nil)
@@ -40,6 +48,8 @@
 
   _node = node;
   _parent = parent;
+  _parentKey = [key copy];
+  _parentIndex = idx;
 
   return self;
 }
@@ -58,14 +68,22 @@
 	    [map setObject:node forKey:node->_node];
 	}
 
-      [_node foreachNode:^(MgNode *child)
+      [_node foreachNodeAndAttachmentInfo:^
+        (MgNode *child, NSString *parentKey, NSInteger parentIndex)
         {
 	  YuTreeNode *node = [map objectForKey:child];
 
-	  if (node != nil)
-	    [map removeObjectForKey:child];
+	  if (node != nil
+	      && node.parentIndex == parentIndex
+	      && [node.parentKey isEqualToString:parentKey])
+	    {
+	      [map removeObjectForKey:child];
+	    }
 	  else
-	    node = [[YuTreeNode alloc] initWithNode:child parent:self];
+	    {
+	      node = [[YuTreeNode alloc] initWithNode:child parent:self
+		      parentKey:parentKey parentIndex:parentIndex];
+	    }
 
 	  [children addObject:node];
 	}];
@@ -107,6 +125,17 @@
     }
 
   return nil;
+}
+
+- (BOOL)isDescendantOf:(YuTreeNode *)tn
+{
+  for (YuTreeNode *n = self; n != nil; n = n.parent)
+    {
+      if (n == tn)
+	return YES;
+    }
+
+  return NO;
 }
 
 - (CGAffineTransform)rootTransform
