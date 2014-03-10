@@ -45,6 +45,7 @@
 - (GtTreeNode *)containingLayer;
 
 - (BOOL)isDescendantOf:(GtTreeNode *)tn;
+- (GtTreeNode *)ancestorSharedWith:(GtTreeNode *)tn;
 
 - (CGPoint)convertPointToRoot:(CGPoint)p;
 - (CGPoint)convertPointFromRoot:(CGPoint)p;

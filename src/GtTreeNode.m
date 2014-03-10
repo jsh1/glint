@@ -138,6 +138,45 @@
   return NO;
 }
 
+static size_t
+tree_depth(GtTreeNode *tn)
+{
+  size_t depth = 0;
+  while (tn->_parent != nil)
+    tn = tn->_parent, depth++;
+  return depth;
+}
+
+- (GtTreeNode *)ancestorSharedWith:(GtTreeNode *)n2
+{
+  GtTreeNode *n1 = self;
+
+  if (n1 == nil)
+    return n2;
+  if (n2 == nil)
+    return n1;
+  if (n1 == n2)
+    return n1;
+
+  size_t n1_depth = tree_depth(n1);
+  size_t n2_depth = tree_depth(n2);
+
+  while (n1_depth > n2_depth)
+    n1 = n1->_parent, n1_depth--;
+  while (n2_depth > n1_depth)
+    n2 = n2->_parent, n2_depth--;
+
+  while (n1 != nil)
+    {
+      if (n1 == n2)
+	return n1;
+      n1 = n1->_parent;
+      n2 = n2->_parent;
+    }
+
+  return nil;
+}
+
 - (CGAffineTransform)rootTransform
 {
   CGAffineTransform m = CGAffineTransformIdentity;
