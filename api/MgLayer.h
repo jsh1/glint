@@ -22,12 +22,69 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "MgBase.h"
+#import "MgNode.h"
+#import "MgTiming.h"
 
-#import <QuartzCore/CALayer.h>
+@interface MgLayer : MgNode <MgTiming>
 
-@interface MgLayer : CALayer
+/** Geometry properties. **/
 
-@property(nonatomic, strong) MgLayerNode *rootNode;
+@property(nonatomic, assign) CGPoint position;
+@property(nonatomic, assign) CGPoint anchor;
+@property(nonatomic, assign) CGRect bounds;
+
+@property(nonatomic, assign) CGFloat scale;
+@property(nonatomic, assign) CGFloat squeeze;
+@property(nonatomic, assign) CGFloat skew;
+@property(nonatomic, assign) double rotation;
+
+@property(nonatomic, readonly) CGAffineTransform parentTransform;
+
+/** Compositing properties. **/
+
+@property(nonatomic, assign) float alpha;
+@property(nonatomic, assign) CGBlendMode blendMode;
+
+@property(nonatomic, strong) MgLayer *mask;
+
+/** Animations. **/
+
+@property(nonatomic, copy) NSArray *animations;
+
+- (void)insertAnimation:(MgAnimation *)anim atIndex:(NSInteger)idx;
+- (void)removeAnimationAtIndex:(NSInteger)idx;
+
+- (void)addAnimation:(MgAnimation *)anim;
+- (void)removeAnimation:(MgAnimation *)anim;
+
+/** Hit-testing and related. **/
+
+/* Returns the new point created by mapping 'p' either into or out of
+   the coordinate space containing the receiver. */
+
+- (CGPoint)convertPointToParent:(CGPoint)p;
+- (CGPoint)convertPointFromParent:(CGPoint)p;
+
+/* Hit-testing. Does a depth-first search from top-to-bottom finding
+   the deepest node that contains point 'p'. Point 'p' is defined in
+   the coordinate space containing the receiver. */
+
+- (MgLayer *)hitTest:(CGPoint)p;
+
+/* Returns true if the receiver or any of its descendants contain point
+   'p'. Point 'p' is defined in the coordinate space containing the
+   receiver. */
+
+- (BOOL)containsPoint:(CGPoint)p;
+
+/** Rendering. **/
+
+- (CFTimeInterval)renderInContext:(CGContextRef)ctx;
+- (CFTimeInterval)renderInContext:(CGContextRef)ctx atTime:(CFTimeInterval)t;
+
+/** Methods for subclasses to override. **/
+
+- (BOOL)contentContainsPoint:(CGPoint)lp;
+- (MgLayer *)hitTestContent:(CGPoint)lp;
 
 @end

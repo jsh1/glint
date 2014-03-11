@@ -22,12 +22,12 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "MgDrawingNode.h"
+#import "MgDrawingLayer.h"
 
-#import "MgLayerNodeInternal.h"
+#import "MgLayerInternal.h"
 #import "MgNodeInternal.h"
 
-@implementation MgDrawingNode
+@implementation MgDrawingLayer
 {
   MgLayerRenderState *_rs;
 }

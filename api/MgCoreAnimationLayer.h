@@ -22,28 +22,12 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#ifndef MAGNESIUM_H
-#define MAGNESIUM_H
+#import "MgBase.h"
 
-#include "MgBase.h"
+#import <QuartzCore/CALayer.h>
 
-#ifdef __OBJC__
-# import "MgAnimation.h"
-# import "MgBasicAnimation.h"
-# import "MgBezierTimingFunction.h"
-# import "MgCoreAnimationLayer.h"
-# import "MgDrawingLayer.h"
-# import "MgFunction.h"
-# import "MgGradientLayer.h"
-# import "MgGroupLayer.h"
-# import "MgImageLayer.h"
-# import "MgImageProvider.h"
-# import "MgLayer.h"
-# import "MgNode.h"
-# import "MgPathLayer.h"
-# import "MgRectLayer.h"
-# import "MgTiming.h"
-# import "MgTimingFunction.h"
-#endif
+@interface MgCoreAnimationLayer : CALayer
 
-#endif /* MAGNESIUM_H */
+@property(nonatomic, strong) MgLayer *layer;
+
+@end

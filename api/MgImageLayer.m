@@ -22,16 +22,16 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "MgImageNode.h"
+#import "MgImageLayer.h"
 
 #import "MgCoderExtensions.h"
 #import "MgImageProvider.h"
-#import "MgLayerNodeInternal.h"
+#import "MgLayerInternal.h"
 #import "MgNodeInternal.h"
 
 #import <Foundation/Foundation.h>
 
-@implementation MgImageNode
+@implementation MgImageLayer
 {
   id<MgImageProvider> _imageProvider;
   CGRect _cropRect;
@@ -197,7 +197,7 @@ static NSMutableSet *image_provider_classes;
 
 - (id)copyWithZone:(NSZone *)zone
 {
-  MgImageNode *copy = [super copyWithZone:zone];
+  MgImageLayer *copy = [super copyWithZone:zone];
 
   copy->_imageProvider = _imageProvider;
   copy->_cropRect = _cropRect;
@@ -236,7 +236,7 @@ static NSMutableSet *image_provider_classes;
     return nil;
 
   if (image_provider_classes == nil)
-    [MgImageNode registerImageProviderClass:[MgImageProvider class]];
+    [MgImageLayer registerImageProviderClass:[MgImageProvider class]];
 
   if (image_provider_classes != nil
       && [c containsValueForKey:@"imageProvider"])

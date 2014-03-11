@@ -22,17 +22,27 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "MgLayerNode.h"
+#import "MgLayer.h"
 
-@interface MgImageNode : MgLayerNode
+@protocol MgDrawingState;
 
-+ (void)registerImageProviderClass:(Class)cls;
+/* Note: this may not be (fully?) supported if and when a non-CGContext
+   based MgLayer is added. */
 
-@property(nonatomic, strong) id<MgImageProvider> imageProvider;
+@interface MgDrawingLayer : MgLayer
 
-@property(nonatomic, assign) CGRect cropRect;
-@property(nonatomic, assign) CGRect centerRect;
+- (void)setNeedsDisplay;
 
-@property(nonatomic, assign) BOOL repeats;
+- (void)drawWithState:(id<MgDrawingState>)obj;
+
+- (void)clipWithState:(id<MgDrawingState>)obj;
+
+@end
+
+@protocol MgDrawingState
+
+@property(nonatomic, assign, readonly) CGContextRef context;
+@property(nonatomic, assign, readonly) CFTimeInterval currentTime;
+@property(nonatomic, assign, readwrite) CFTimeInterval nextTime;
 
 @end

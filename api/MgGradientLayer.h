@@ -22,11 +22,22 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "MgAnimationNode.h"
+#import "MgLayer.h"
 
-@interface MgBasicAnimationNode : MgAnimationNode
+@interface MgGradientLayer : MgLayer
 
-@property(nonatomic, strong) id<NSSecureCoding> fromValue;
-@property(nonatomic, strong) id<NSSecureCoding> toValue;
+@property(nonatomic, copy) NSArray *colors;
+@property(nonatomic, copy) NSArray *locations;
+
+@property(nonatomic, getter=isRadial) BOOL radial;
+
+@property(nonatomic, assign) CGPoint startPoint;
+@property(nonatomic, assign) CGPoint endPoint;
+
+@property(nonatomic, assign) CGFloat startRadius;
+@property(nonatomic, assign) CGFloat endRadius;
+
+@property(nonatomic, assign) BOOL drawsBeforeStart;
+@property(nonatomic, assign) BOOL drawsAfterEnd;
 
 @end

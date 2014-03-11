@@ -22,18 +22,21 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "MgLayerNode.h"
+#import "MgLayer.h"
 
-@interface MgGroupNode : MgLayerNode
+@interface MgRectLayer : MgLayer
 
-@property(nonatomic, assign, getter=isGroup) BOOL group;
+@property(nonatomic, assign) CGFloat cornerRadius;
 
-@property(nonatomic, copy) NSArray *contents;
+@property(nonatomic, assign) CGPathDrawingMode drawingMode;
 
-- (void)addContent:(MgLayerNode *)node;
-- (void)removeContent:(MgLayerNode *)node;
+/** Fill parameters. **/
 
-- (void)insertContent:(MgLayerNode *)node atIndex:(NSInteger)idx;
-- (void)removeContentAtIndex:(NSInteger)idx;
+@property(nonatomic) CGColorRef fillColor;
+
+/** Stroke parameters. **/
+
+@property(nonatomic) CGColorRef strokeColor;
+@property(nonatomic, assign) CGFloat lineWidth;
 
 @end

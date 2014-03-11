@@ -22,22 +22,26 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "MgLayerNode.h"
+#import "MgLayer.h"
 
-@interface MgGradientNode : MgLayerNode
+typedef struct MgLayerRenderState MgLayerRenderState;
 
-@property(nonatomic, copy) NSArray *colors;
-@property(nonatomic, copy) NSArray *locations;
+struct MgLayerRenderState
+{
+  CGContextRef ctx;
+  CFTimeInterval t;
+  CFTimeInterval tnext;
+  float alpha;
+};
 
-@property(nonatomic, getter=isRadial) BOOL radial;
+@interface MgLayer ()
 
-@property(nonatomic, assign) CGPoint startPoint;
-@property(nonatomic, assign) CGPoint endPoint;
+/** Methods for subclasses to override. **/
 
-@property(nonatomic, assign) CGFloat startRadius;
-@property(nonatomic, assign) CGFloat endRadius;
+- (void)_renderWithState:(MgLayerRenderState *)rs;
+- (void)_renderMaskWithState:(MgLayerRenderState *)rs;
 
-@property(nonatomic, assign) BOOL drawsBeforeStart;
-@property(nonatomic, assign) BOOL drawsAfterEnd;
+- (void)_renderLayerWithState:(MgLayerRenderState *)rs;
+- (void)_renderLayerMaskWithState:(MgLayerRenderState *)rs;
 
 @end

@@ -22,13 +22,17 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "MgNode.h"
-#import "MgTiming.h"
+#import "MgLayer.h"
 
-@interface MgAnimationNode : MgNode <MgTiming>
+@interface MgImageLayer : MgLayer
 
-@property(nonatomic, copy) NSString *keyPath;
-@property(nonatomic, copy) MgTimingFunction *timingFunction;
-@property(nonatomic, copy) MgFunction *valueFunction;
++ (void)registerImageProviderClass:(Class)cls;
+
+@property(nonatomic, strong) id<MgImageProvider> imageProvider;
+
+@property(nonatomic, assign) CGRect cropRect;
+@property(nonatomic, assign) CGRect centerRect;
+
+@property(nonatomic, assign) BOOL repeats;
 
 @end

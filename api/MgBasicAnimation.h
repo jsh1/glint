@@ -22,21 +22,11 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "MgLayerNode.h"
+#import "MgAnimation.h"
 
-@interface MgRectNode : MgLayerNode
+@interface MgBasicAnimation : MgAnimation
 
-@property(nonatomic, assign) CGFloat cornerRadius;
-
-@property(nonatomic, assign) CGPathDrawingMode drawingMode;
-
-/** Fill parameters. **/
-
-@property(nonatomic) CGColorRef fillColor;
-
-/** Stroke parameters. **/
-
-@property(nonatomic) CGColorRef strokeColor;
-@property(nonatomic, assign) CGFloat lineWidth;
+@property(nonatomic, strong) id<NSSecureCoding> fromValue;
+@property(nonatomic, strong) id<NSSecureCoding> toValue;
 
 @end

@@ -22,27 +22,18 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "MgLayerNode.h"
+#import "MgLayer.h"
 
-@protocol MgDrawingState;
+@interface MgGroupLayer : MgLayer
 
-/* Note: this may not be (fully?) supported if and when a non-CGContext
-   based MgLayer is added. */
+@property(nonatomic, assign, getter=isGroup) BOOL group;
 
-@interface MgDrawingNode : MgLayerNode
+@property(nonatomic, copy) NSArray *contents;
 
-- (void)setNeedsDisplay;
+- (void)addContent:(MgLayer *)node;
+- (void)removeContent:(MgLayer *)node;
 
-- (void)drawWithState:(id<MgDrawingState>)obj;
-
-- (void)clipWithState:(id<MgDrawingState>)obj;
-
-@end
-
-@protocol MgDrawingState
-
-@property(nonatomic, assign, readonly) CGContextRef context;
-@property(nonatomic, assign, readonly) CFTimeInterval currentTime;
-@property(nonatomic, assign, readwrite) CFTimeInterval nextTime;
+- (void)insertContent:(MgLayer *)node atIndex:(NSInteger)idx;
+- (void)removeContentAtIndex:(NSInteger)idx;
 
 @end

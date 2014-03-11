@@ -24,7 +24,7 @@
 
 #if TARGET_OS_MAC
 
-#import "MgLayerNode.h"
+#import "MgLayer.h"
 #import "MgNodePasteboard.h"
 
 #import "MgCoreGraphics.h"
@@ -33,10 +33,10 @@
 #import <ImageIO/ImageIO.h>
 #import <AppKit/AppKit.h>
 
-@interface MgLayerNode (MgNodePasteboard)
+@interface MgLayer (MgNodePasteboard)
 @end
 
-@implementation MgLayerNode (MgNodePasteboard)
+@implementation MgLayer (MgNodePasteboard)
 
 /** NSPasteboardWriting methods. **/
 

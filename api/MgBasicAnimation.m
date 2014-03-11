@@ -22,13 +22,13 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "MgBasicAnimationNode.h"
+#import "MgBasicAnimation.h"
 
 #import "MgNodeInternal.h"
 
 #import <Foundation/Foundation.h>
 
-@implementation MgBasicAnimationNode
+@implementation MgBasicAnimation
 {
   id<NSSecureCoding> _fromValue;
   id<NSSecureCoding> _toValue;
@@ -80,7 +80,7 @@
 
 - (id)copyWithZone:(NSZone *)zone
 {
-  MgBasicAnimationNode *copy = [super copyWithZone:zone];
+  MgBasicAnimation *copy = [super copyWithZone:zone];
 
   copy->_fromValue = _fromValue;
   copy->_toValue = _toValue;

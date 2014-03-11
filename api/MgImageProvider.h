@@ -24,7 +24,7 @@
 
 #import "MgBase.h"
 
-/* Note: this object will be encoded along with any MgImageNode
+/* Note: this object will be encoded along with any MgImageLayer
    instances that refer to it, but only if it conforms to the
    NSSecureCoding protocol. We don't force this as many applications
    won't be serializing the objects. Caveat emptor! */

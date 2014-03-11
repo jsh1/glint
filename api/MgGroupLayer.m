@@ -22,15 +22,15 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "MgGroupNode.h"
+#import "MgGroupLayer.h"
 
 #import "MgCoderExtensions.h"
-#import "MgLayerNodeInternal.h"
+#import "MgLayerInternal.h"
 #import "MgNodeInternal.h"
 
 #import <Foundation/Foundation.h>
 
-@implementation MgGroupNode
+@implementation MgGroupLayer
 {
   BOOL _group;
   NSMutableArray *_contents;
@@ -73,12 +73,12 @@
     {
       [self willChangeValueForKey:@"contents"];
 
-      for (MgLayerNode *node in _contents)
+      for (MgLayer *node in _contents)
 	[node removeReference:self];
 
       _contents = [array copy];
 
-      for (MgLayerNode *node in _contents)
+      for (MgLayer *node in _contents)
 	[node addReference:self];
 
       [self incrementVersion];
@@ -86,12 +86,12 @@
     }
 }
 
-- (void)addContent:(MgLayerNode *)node
+- (void)addContent:(MgLayer *)node
 {
   [self insertContent:node atIndex:NSIntegerMax];
 }
 
-- (void)removeContent:(MgLayerNode *)node
+- (void)removeContent:(MgLayer *)node
 {
   while (true)
     {
@@ -103,7 +103,7 @@
     }
 }
 
-- (void)insertContent:(MgLayerNode *)node atIndex:(NSInteger)idx
+- (void)insertContent:(MgLayer *)node atIndex:(NSInteger)idx
 {
   if (_contents == nil)
     _contents = [[NSMutableArray alloc] init];
@@ -136,7 +136,7 @@
 
 - (void)foreachNode:(void (^)(MgNode *node))block
 {
-  for (MgLayerNode *node in _contents)
+  for (MgLayer *node in _contents)
     block(node);
 
   [super foreachNode:block];
@@ -161,7 +161,7 @@
 
   for (NSInteger i = count - 1; i >= 0; i--)
     {
-      MgLayerNode *node = array[i];
+      MgLayer *node = array[i];
       if ([node containsPoint:lp])
 	return YES;
     }
@@ -169,11 +169,11 @@
   return NO;
 }
 
-- (MgLayerNode *)hitTestContent:(CGPoint)lp
+- (MgLayer *)hitTestContent:(CGPoint)lp
 {
-  for (MgLayerNode *node in self.contents)
+  for (MgLayer *node in self.contents)
     {
-      MgLayerNode *hit = [node hitTest:lp];
+      MgLayer *hit = [node hitTest:lp];
       if (hit != nil)
 	return hit;
     }
@@ -199,7 +199,7 @@
       CGContextBeginTransparencyLayer(r.ctx, NULL);
     }
 
-  for (MgLayerNode *node in self.contents)
+  for (MgLayer *node in self.contents)
     {
       if (node.enabled)
 	[node _renderWithState:&r];
@@ -218,13 +218,13 @@
 
 - (id)copyWithZone:(NSZone *)zone
 {
-  MgGroupNode *copy = [super copyWithZone:zone];
+  MgGroupLayer *copy = [super copyWithZone:zone];
 
   copy->_group = _group;
 
   if ([_contents count] != 0)
     {
-      for (MgLayerNode *node in _contents)
+      for (MgLayer *node in _contents)
 	[node addReference:copy];
 
       copy->_contents = [_contents copy];
@@ -263,7 +263,7 @@
       BOOL valid = YES;
       for (id obj in array)
 	{
-	  if (![obj isKindOfClass:[MgLayerNode class]])
+	  if (![obj isKindOfClass:[MgLayer class]])
 	    {
 	      valid = NO;
 	      break;
@@ -274,7 +274,7 @@
 	{
 	  _contents = [array copy];
 
-	  for (MgLayerNode *node in _contents)
+	  for (MgLayer *node in _contents)
 	    [node addReference:self];
 	}
     }

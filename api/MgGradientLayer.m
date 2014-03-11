@@ -22,16 +22,16 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "MgGradientNode.h"
+#import "MgGradientLayer.h"
 
 #import "MgCoderExtensions.h"
 #import "MgCoreGraphics.h"
-#import "MgLayerNodeInternal.h"
+#import "MgLayerInternal.h"
 #import "MgNodeInternal.h"
 
 #import <Foundation/Foundation.h>
 
-@implementation MgGradientNode
+@implementation MgGradientLayer
 {
   NSArray *_colors;
   NSArray *_locations;
@@ -283,7 +283,7 @@
 
 - (id)copyWithZone:(NSZone *)zone
 {
-  MgGradientNode *copy = [super copyWithZone:zone];
+  MgGradientLayer *copy = [super copyWithZone:zone];
 
   copy->_colors = _colors;
   copy->_locations = _locations;

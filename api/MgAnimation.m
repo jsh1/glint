@@ -22,7 +22,7 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "MgAnimationNode.h"
+#import "MgAnimation.h"
 
 #import "MgNodeInternal.h"
 #import "MgTimingFunction.h"
@@ -30,7 +30,7 @@
 
 #import <Foundation/Foundation.h>
 
-@implementation MgAnimationNode
+@implementation MgAnimation
 {
   MgTimingStorage *_timing;
   NSString *_keyPath;
@@ -146,7 +146,7 @@
 
 - (id)copyWithZone:(NSZone *)zone
 {
-  MgAnimationNode *copy = [super copyWithZone:zone];
+  MgAnimation *copy = [super copyWithZone:zone];
 
   if (_timing != nil)
     copy->_timing = [_timing copy];

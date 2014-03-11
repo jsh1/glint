@@ -22,26 +22,13 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "MgLayerNode.h"
+#import "MgNode.h"
+#import "MgTiming.h"
 
-typedef struct MgLayerRenderState MgLayerRenderState;
+@interface MgAnimation : MgNode <MgTiming>
 
-struct MgLayerRenderState
-{
-  CGContextRef ctx;
-  CFTimeInterval t;
-  CFTimeInterval tnext;
-  float alpha;
-};
-
-@interface MgLayerNode ()
-
-/** Methods for subclasses to override. **/
-
-- (void)_renderWithState:(MgLayerRenderState *)rs;
-- (void)_renderMaskWithState:(MgLayerRenderState *)rs;
-
-- (void)_renderLayerWithState:(MgLayerRenderState *)rs;
-- (void)_renderLayerMaskWithState:(MgLayerRenderState *)rs;
+@property(nonatomic, copy) NSString *keyPath;
+@property(nonatomic, copy) MgTimingFunction *timingFunction;
+@property(nonatomic, copy) MgFunction *valueFunction;
 
 @end

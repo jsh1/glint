@@ -22,27 +22,22 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "MgPathNode.h"
+#import "MgRectLayer.h"
 
 #import "MgCoderExtensions.h"
 #import "MgCoreGraphics.h"
-#import "MgLayerNodeInternal.h"
+#import "MgLayerInternal.h"
 #import "MgNodeInternal.h"
 
 #import <Foundation/Foundation.h>
 
-@implementation MgPathNode
+@implementation MgRectLayer
 {
-  id _path;				/* CGPathRef */
+  CGFloat _cornerRadius;
   CGPathDrawingMode _drawingMode;
   id _fillColor;			/* CGColorRef */
-  id _strokeColor;			/* CGColorRef */
+  id _strokeColor;			/* CGColorref */
   CGFloat _lineWidth;
-  CGFloat _miterLimit;
-  CGLineCap _lineCap;
-  CGLineJoin _lineJoin;
-  CGFloat _lineDashPhase;
-  NSArray *_lineDashPattern;
 }
 
 - (id)init
@@ -55,31 +50,28 @@
   _fillColor = (__bridge id)MgBlackColor();
   _strokeColor = (__bridge id)MgBlackColor();
   _lineWidth = 1;
-  _miterLimit = 10;
-  _lineCap = kCGLineCapButt;
-  _lineJoin = kCGLineJoinMiter;
 
   return self;
 }
 
-+ (BOOL)automaticallyNotifiesObserversOfPath
++ (BOOL)automaticallyNotifiesObserversOfCornerRadius
 {
   return NO;
 }
 
-- (CGPathRef)path
+- (CGFloat)cornerRadius
 {
-  return (__bridge CGPathRef)_path;
+  return _cornerRadius;
 }
 
-- (void)setPath:(CGPathRef)x
+- (void)setCornerRadius:(CGFloat)x
 {
-  if (_path != (__bridge id)x)
+  if (_cornerRadius != x)
     {
-      [self willChangeValueForKey:@"path"];
-      _path = (__bridge id)x;
+      [self willChangeValueForKey:@"cornerRadius"];
+      _cornerRadius = x;
       [self incrementVersion];
-      [self didChangeValueForKey:@"path"];
+      [self didChangeValueForKey:@"cornerRadius"];
     }
 }
 
@@ -167,166 +159,47 @@
     }
 }
 
-+ (BOOL)automaticallyNotifiesObserversOfMiterLimit
+- (BOOL)containsPoint:(CGPoint)p layerNode:(MgLayer *)node
 {
-  return NO;
-}
+  /* FIXME: rounded corners. */
 
-- (CGFloat)miterLimit
-{
-  return _miterLimit;
-}
-
-- (void)setMiterLimit:(CGFloat)x
-{
-  if (_miterLimit != x)
-    {
-      [self willChangeValueForKey:@"miterLimit"];
-      _miterLimit = x;
-      [self incrementVersion];
-      [self didChangeValueForKey:@"miterLimit"];
-    }
-}
-
-+ (BOOL)automaticallyNotifiesObserversOfLineCap
-{
-  return NO;
-}
-
-- (CGLineCap)lineCap
-{
-  return _lineCap;
-}
-
-- (void)setLineCap:(CGLineCap)x
-{
-  if (_lineCap != x)
-    {
-      [self willChangeValueForKey:@"lineCap"];
-      _lineCap = x;
-      [self incrementVersion];
-      [self didChangeValueForKey:@"lineCap"];
-    }
-}
-
-+ (BOOL)automaticallyNotifiesObserversOfLineJoin
-{
-  return NO;
-}
-
-- (CGLineJoin)lineJoin
-{
-  return _lineJoin;
-}
-
-- (void)setLineJoin:(CGLineJoin)x
-{
-  if (_lineJoin != x)
-    {
-      [self willChangeValueForKey:@"lineJoin"];
-      _lineJoin = x;
-      [self incrementVersion];
-      [self didChangeValueForKey:@"lineJoin"];
-    }
-}
-
-+ (BOOL)automaticallyNotifiesObserversOfLineDashPhase
-{
-  return NO;
-}
-
-- (CGFloat)lineDashPhase
-{
-  return _lineDashPhase;
-}
-
-- (void)setLineDashPhase:(CGFloat)x
-{
-  if (_lineDashPhase != x)
-    {
-      [self willChangeValueForKey:@"lineDashPhase"];
-      _lineDashPhase = x;
-      [self incrementVersion];
-      [self didChangeValueForKey:@"lineDashPhase"];
-    }
-}
-
-+ (BOOL)automaticallyNotifiesObserversOfLineDashPattern
-{
-  return NO;
-}
-
-- (NSArray *)lineDashPattern
-{
-  return _lineDashPattern != nil ? _lineDashPattern : @[];
-}
-
-- (void)setLineDashPattern:(NSArray *)array
-{
-  if (_lineDashPattern != array && ![_lineDashPattern isEqual:array])
-    {
-      [self willChangeValueForKey:@"lineDashPattern"];
-      _lineDashPattern = [array copy];
-      [self incrementVersion];
-      [self didChangeValueForKey:@"lineDashPattern"];
-    }
-}
-
-- (BOOL)contentContainsPoint:(CGPoint)lp
-{
-  CGPathRef path = self.path;
-  if (path == NULL)
-    return NO;
-
-  CGPathDrawingMode mode = self.drawingMode;
-
-  switch (mode)
-    {
-    case kCGPathFill:
-    case kCGPathFillStroke:
-    case kCGPathStroke:			/* FIXME: incorrect */
-      return CGPathContainsPoint(path, NULL, lp, false);
-
-    case kCGPathEOFill:
-    case kCGPathEOFillStroke:
-      return CGPathContainsPoint(path, NULL, lp, true);
-
-    default:
-      return NO;
-    }
+  return node != nil && CGRectContainsPoint(node.bounds, p);
 }
 
 - (void)_renderLayerWithState:(MgLayerRenderState *)rs
 {
-  CGPathRef path = self.path;
-  if (path == NULL)
-    return;
-
   CGContextSaveGState(rs->ctx);
 
-  switch (self.drawingMode)
-    {
-    case kCGPathFill:
-    case kCGPathEOFill:
-      CGContextSetFillColorWithColor(rs->ctx, self.fillColor);
-      CGContextBeginPath(rs->ctx);
-      CGContextAddPath(rs->ctx, self.path);
-      CGContextFillPath(rs->ctx);
-      break;
+  CGFloat radius = self.cornerRadius;
+  CGPathDrawingMode mode = self.drawingMode;
 
-    default:
+  if (radius == 0 && (mode == kCGPathFill || mode == kCGPathEOFill))
+    {
+      CGContextSetFillColorWithColor(rs->ctx, self.fillColor);
+      CGContextFillRect(rs->ctx, self.bounds);
+    }
+  else if (radius == 0 && mode == kCGPathStroke)
+    {
+      CGContextSetStrokeColorWithColor(rs->ctx, self.strokeColor);
+      CGContextStrokeRectWithWidth(rs->ctx, self.bounds, self.lineWidth);
+    }
+  else
+    {
       CGContextSetFillColorWithColor(rs->ctx, self.fillColor);
       CGContextSetStrokeColorWithColor(rs->ctx, self.strokeColor);
       CGContextSetLineWidth(rs->ctx, self.lineWidth);
-      CGContextSetMiterLimit(rs->ctx, self.miterLimit);
-      CGContextSetLineJoin(rs->ctx, self.lineJoin);
-      CGContextSetLineCap(rs->ctx, self.lineCap);
-      MgContextSetLineDash(rs->ctx, (__bridge CFArrayRef)self.lineDashPattern,
-			   self.lineDashPhase);
+
       CGContextBeginPath(rs->ctx);
-      CGContextAddPath(rs->ctx, self.path);
+      if (radius == 0)
+	CGContextAddRect(rs->ctx, self.bounds);
+      else
+	{
+	  CGPathRef p = MgPathCreateWithRoundRect(self.bounds, radius);
+	  CGContextAddPath(rs->ctx, p);
+	  CGPathRelease(p);
+	}
+
       CGContextDrawPath(rs->ctx, self.drawingMode);
-      break;
     }
 
   CGContextRestoreGState(rs->ctx);
@@ -336,7 +209,9 @@
 {
   CGPathDrawingMode mode = self.drawingMode;
 
-  if (rs->alpha != 1
+  float alpha = rs->alpha * self.alpha;
+
+  if (alpha != 1
       || (mode != kCGPathStroke
 	  && CGColorGetAlpha(self.fillColor) < 1)
       || (mode != kCGPathFill && mode != kCGPathEOFill
@@ -346,13 +221,20 @@
       return;
     }
 
-  CGPathRef p = self.path;
+  CGFloat radius = self.cornerRadius;
 
+  if (radius == 0 && (mode == kCGPathFill || mode == kCGPathEOFill))
+    {
+      CGContextClipToRect(rs->ctx, self.bounds);
+      return;
+    }
+
+  CGPathRef p = MgPathCreateWithRoundRect(self.bounds, radius);
   CGPathRef sp = NULL;
   if (mode != kCGPathFill && mode != kCGPathEOFill)
     {
       sp = CGPathCreateCopyByStrokingPath(p, NULL, self.lineWidth,
-				self.lineCap, self.lineJoin, self.miterLimit);
+					kCGLineCapButt, kCGLineJoinMiter, 10);
     }
 
   CGContextBeginPath(rs->ctx);
@@ -362,24 +244,20 @@
   CGContextClip(rs->ctx);
 
   CGPathRelease(sp);
+  CGPathRelease(p);
 }
 
 /** NSCopying methods. **/
 
 - (id)copyWithZone:(NSZone *)zone
 {
-  MgPathNode *copy = [super copyWithZone:zone];
+  MgRectLayer *copy = [super copyWithZone:zone];
 
-  copy->_path = _path;
+  copy->_cornerRadius = _cornerRadius;
   copy->_drawingMode = _drawingMode;
   copy->_fillColor = _fillColor;
   copy->_strokeColor = _strokeColor;
   copy->_lineWidth = _lineWidth;
-  copy->_miterLimit = _miterLimit;
-  copy->_lineCap = _lineCap;
-  copy->_lineJoin = _lineJoin;
-  copy->_lineDashPhase = _lineDashPhase;
-  copy->_lineDashPattern = _lineDashPattern;
 
   return copy;
 }
@@ -390,8 +268,8 @@
 {
   [super encodeWithCoder:c];
 
-  if (_path != nil)
-    [c mg_encodeCGPath:(__bridge CGPathRef)_path forKey:@"path"];
+  if (_cornerRadius != 0)
+    [c encodeDouble:_cornerRadius forKey:@"cornerRadius"];
 
   if (_drawingMode != kCGPathFill)
     [c encodeInt:_drawingMode forKey:@"drawingMode"];
@@ -404,21 +282,6 @@
 
   if (_lineWidth != 1)
     [c encodeDouble:_lineWidth forKey:@"lineWidth"];
-
-  if (_miterLimit != 10)
-    [c encodeDouble:_miterLimit forKey:@"miterLimit"];
-
-  if (_lineCap != kCGLineCapButt)
-    [c encodeInt:_lineCap forKey:@"lineCap"];
-
-  if (_lineJoin != kCGLineJoinMiter)
-    [c encodeInt:_lineJoin forKey:@"lineJoin"];
-
-  if (_lineDashPhase != 0)
-    [c encodeDouble:_lineDashPhase forKey:@"lineDashPhase"];
-
-  if (_lineDashPattern != nil)
-    [c encodeObject:_lineDashPattern forKey:@"lineDashPattern"];
 }
 
 - (id)initWithCoder:(NSCoder *)c
@@ -427,8 +290,8 @@
   if (self == nil)
     return nil;
 
-  if ([c containsValueForKey:@"path"])
-    _path = (__bridge id)[c mg_decodeCGPathForKey:@"path"];
+  if ([c containsValueForKey:@"cornerRadius"])
+    _cornerRadius = [c decodeDoubleForKey:@"cornerRadius"];
 
   if ([c containsValueForKey:@"drawingMode"])
     _drawingMode = (CGPathDrawingMode)[c decodeIntForKey:@"drawingMode"];
@@ -445,27 +308,6 @@
     _lineWidth = [c decodeDoubleForKey:@"lineWidth"];
   else
     _lineWidth = 1;
-
-  if ([c containsValueForKey:@"miterLimit"])
-    _miterLimit = [c decodeDoubleForKey:@"miterLimit"];
-  else
-    _miterLimit = 10;
-
-  if ([c containsValueForKey:@"lineCap"])
-    _lineCap = [c decodeDoubleForKey:@"lineCap"];
-  else
-    _lineCap = kCGLineCapButt;
-
-  if ([c containsValueForKey:@"lineJoin"])
-    _lineJoin = [c decodeDoubleForKey:@"lineJoin"];
-  else
-    _lineJoin = kCGLineJoinMiter;
-
-  if ([c containsValueForKey:@"lineDashPhase"])
-    _lineDashPhase = [c decodeDoubleForKey:@"lineDashPhase"];
-
-  if ([c containsValueForKey:@"lineDashPattern"])
-    _lineDashPattern = [c decodeObjectOfClass:[NSArray class] forKey:@"lineDashPattern"];
 
   return self;
 }
