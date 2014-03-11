@@ -73,10 +73,10 @@
         {
 	  GtTreeNode *node = [map objectForKey:child];
 
-	  if (node != nil
-	      && node.parentIndex == parentIndex
-	      && [node.parentKey isEqualToString:parentKey])
+	  if (node != nil)
 	    {
+	      node->_parentIndex = parentIndex;
+	      node->_parentKey = [parentKey copy];
 	      [map removeObjectForKey:child];
 	    }
 	  else

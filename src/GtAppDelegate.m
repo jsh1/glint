@@ -24,6 +24,8 @@
 
 #import "GtAppDelegate.h"
 
+#import "GtDocument.h"
+
 #import "CoreAnimationExtensions.h"
 
 @implementation GtAppDelegate
@@ -65,6 +67,25 @@
 
 - (void)menuNeedsUpdate:(NSMenu *)menu
 {
+  GtDocument *document = (GtDocument *)
+   [[NSDocumentController sharedDocumentController] currentDocument];
+
+  if (![document isKindOfClass:[GtDocument class]])
+    document = nil;
+    
+  for (NSMenuItem *item in [menu itemArray])
+    {
+      SEL action = [item action];
+
+      if (action == @selector(toggleEnabled:))
+	[item setState:[document toggleEnabledState]];
+      else if (action == @selector(toggleIsolated:))
+	[item setState:[document toggleIsolatedState]];
+      else if (action == @selector(setBlendMode:))
+	[item setState:[document setBlendModeState:item]];
+      else if (action == @selector(setAlpha:))
+	[item setState:[document setAlphaState:item]];
+    }
 }
 
 @end

@@ -11,7 +11,13 @@
                 <outlet property="delegate" destination="k3f-FM-D6D" id="wFr-b6-Cs4"/>
             </connections>
         </customObject>
-        <customObject id="k3f-FM-D6D" customClass="GtAppDelegate"/>
+        <customObject id="k3f-FM-D6D" customClass="GtAppDelegate">
+            <connections>
+                <outlet property="objectAlphaMenu" destination="MD8-jg-eSM" id="zmE-qE-AzD"/>
+                <outlet property="objectBlendMenu" destination="CQ3-tP-VAm" id="nsy-E2-g27"/>
+                <outlet property="objectMenu" destination="GTL-ta-mVl" id="G43-6n-B0y"/>
+            </connections>
+        </customObject>
         <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
         <menu title="Main Menu" systemMenu="main" id="AYu-sK-qS6">
             <items>
@@ -458,6 +464,256 @@ CA
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="ur5-Hc-eX5"/>
+                            <menuItem title="Enabled" keyEquivalent="t" id="g4z-XX-Bxf">
+                                <modifierMask key="keyEquivalentModifierMask" control="YES"/>
+                                <connections>
+                                    <action selector="toggleEnabled:" target="-1" id="sGG-bA-mMX"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="GCO-bi-Jrq"/>
+                            <menuItem title="Layer Group" keyEquivalent="g" id="WDL-FO-qWu">
+                                <modifierMask key="keyEquivalentModifierMask" control="YES"/>
+                                <connections>
+                                    <action selector="toggleIsolated:" target="-1" id="4rF-u4-5lc"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Layer Blend Mode" id="XmU-Ox-uv1">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="Layer Blend Mode" id="CQ3-tP-VAm">
+                                    <items>
+                                        <menuItem title="Normal" keyEquivalent="N" id="i9W-Ry-oMr">
+                                            <modifierMask key="keyEquivalentModifierMask" option="YES"/>
+                                            <connections>
+                                                <action selector="setBlendMode:" target="-1" id="G66-Xf-k98"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="l3h-Vo-eaS"/>
+                                        <menuItem title="Darken" tag="4" keyEquivalent="K" id="zH4-NU-2jM">
+                                            <modifierMask key="keyEquivalentModifierMask" option="YES"/>
+                                            <connections>
+                                                <action selector="setBlendMode:" target="-1" id="8yf-9d-Fbk"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Multiply" tag="1" keyEquivalent="M" id="TFl-Vy-EqJ">
+                                            <modifierMask key="keyEquivalentModifierMask" option="YES"/>
+                                            <connections>
+                                                <action selector="setBlendMode:" target="-1" id="11m-eC-anc"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Color Burn" tag="7" keyEquivalent="B" id="l0c-zQ-tis">
+                                            <modifierMask key="keyEquivalentModifierMask" option="YES"/>
+                                            <connections>
+                                                <action selector="setBlendMode:" target="-1" id="Vdf-zO-0ad"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="yf8-zV-IZ2"/>
+                                        <menuItem title="Lighten" tag="5" keyEquivalent="G" id="MCG-cG-H8p">
+                                            <modifierMask key="keyEquivalentModifierMask" option="YES"/>
+                                            <connections>
+                                                <action selector="setBlendMode:" target="-1" id="oyC-Hw-ojX"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Screen" tag="2" keyEquivalent="S" id="okl-bZ-s7T">
+                                            <modifierMask key="keyEquivalentModifierMask" option="YES"/>
+                                            <connections>
+                                                <action selector="setBlendMode:" target="-1" id="cNU-rG-IhI"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Color Dodge" tag="6" keyEquivalent="D" id="tBl-Ed-num">
+                                            <modifierMask key="keyEquivalentModifierMask" option="YES"/>
+                                            <connections>
+                                                <action selector="setBlendMode:" target="-1" id="eWj-fk-Hfg"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="6BH-Ev-lOM"/>
+                                        <menuItem title="Overlay" tag="3" keyEquivalent="O" id="SKV-DI-uXb">
+                                            <modifierMask key="keyEquivalentModifierMask" option="YES"/>
+                                            <connections>
+                                                <action selector="setBlendMode:" target="-1" id="pqY-RY-Pgo"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Soft Light" tag="8" keyEquivalent="F" id="Ihw-Ar-6vA">
+                                            <modifierMask key="keyEquivalentModifierMask" option="YES"/>
+                                            <connections>
+                                                <action selector="setBlendMode:" target="-1" id="B1F-e8-u4w"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Hard Light" tag="9" keyEquivalent="H" id="rlY-QG-dNS">
+                                            <modifierMask key="keyEquivalentModifierMask" option="YES"/>
+                                            <connections>
+                                                <action selector="setBlendMode:" target="-1" id="wQo-TH-TDT"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="vNw-Hh-uIQ"/>
+                                        <menuItem title="Difference" tag="10" keyEquivalent="E" id="qkd-yl-q5U">
+                                            <modifierMask key="keyEquivalentModifierMask" option="YES"/>
+                                            <connections>
+                                                <action selector="setBlendMode:" target="-1" id="AV2-Hp-uOb"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Exclusion" tag="11" keyEquivalent="X" id="uGk-d2-N6B">
+                                            <modifierMask key="keyEquivalentModifierMask" option="YES"/>
+                                            <connections>
+                                                <action selector="setBlendMode:" target="-1" id="d7B-VD-5t8"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="XC6-mq-1oZ"/>
+                                        <menuItem title="Plus Darker" tag="26" keyEquivalent="A" id="jSi-Ro-hAj">
+                                            <modifierMask key="keyEquivalentModifierMask" option="YES"/>
+                                            <connections>
+                                                <action selector="setBlendMode:" target="-1" id="xjl-y7-n5d"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Plus Lighter" tag="27" keyEquivalent="W" id="A2p-zT-BAL">
+                                            <modifierMask key="keyEquivalentModifierMask" option="YES"/>
+                                            <connections>
+                                                <action selector="setBlendMode:" target="-1" id="AZY-YL-fdr"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="fN8-hD-3du"/>
+                                        <menuItem title="Clear" tag="16" id="5hb-zH-hgF">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="setBlendMode:" target="-1" id="OWr-eB-3G6"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Copy" tag="17" id="y4N-uH-KY0">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="setBlendMode:" target="-1" id="kog-61-1lR"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Source In" tag="18" id="oEG-pv-rHy">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="setBlendMode:" target="-1" id="Mmc-Oc-dwX"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Source Out" tag="19" id="XyE-gx-pLM">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="setBlendMode:" target="-1" id="vtn-9b-2fe"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Source Atop" tag="20" id="jyg-Tf-bNJ">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="setBlendMode:" target="-1" id="3zO-sJ-daR"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Dest Over" tag="21" id="A0B-er-gHO">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="setBlendMode:" target="-1" id="4kd-Rw-Pzi"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Dest In" tag="22" id="ax7-GQ-SjG">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="setBlendMode:" target="-1" id="Ufn-bp-yTb"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Dest Out" tag="23" id="5Jr-y1-4Mk">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="setBlendMode:" target="-1" id="E1g-3c-6gN"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Dest Atop" tag="24" id="D9x-uR-DJ0">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="setBlendMode:" target="-1" id="ANl-jy-Sys"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Xor" tag="25" id="yVK-RG-TZD">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="setBlendMode:" target="-1" id="PLv-Qx-KVQ"/>
+                                            </connections>
+                                        </menuItem>
+                                    </items>
+                                    <connections>
+                                        <outlet property="delegate" destination="k3f-FM-D6D" id="aqs-32-pY9"/>
+                                    </connections>
+                                </menu>
+                            </menuItem>
+                            <menuItem title="Layer Alpha" id="CLf-S5-Oi9">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="Layer Alpha" id="MD8-jg-eSM">
+                                    <items>
+                                        <menuItem title="100%" tag="100" keyEquivalent="0" id="ckE-84-3dR">
+                                            <modifierMask key="keyEquivalentModifierMask" option="YES"/>
+                                            <connections>
+                                                <action selector="setAlpha:" target="-1" id="CU8-1G-9rs"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="90%" tag="90" keyEquivalent="9" id="I7H-Qw-Chm">
+                                            <modifierMask key="keyEquivalentModifierMask" option="YES"/>
+                                            <connections>
+                                                <action selector="setAlpha:" target="-1" id="2Tc-W4-aYn"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="80%" tag="80" keyEquivalent="8" id="ZrH-cQ-DPd">
+                                            <modifierMask key="keyEquivalentModifierMask" option="YES"/>
+                                            <connections>
+                                                <action selector="setAlpha:" target="-1" id="46e-CX-YtM"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="70%" tag="70" keyEquivalent="7" id="tJh-57-tvT">
+                                            <modifierMask key="keyEquivalentModifierMask" option="YES"/>
+                                            <connections>
+                                                <action selector="setAlpha:" target="-1" id="ZVm-yX-2rC"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="60%" tag="60" keyEquivalent="6" id="50M-o7-Hxa">
+                                            <modifierMask key="keyEquivalentModifierMask" option="YES"/>
+                                            <connections>
+                                                <action selector="setAlpha:" target="-1" id="JHp-dB-Euv"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="50%" tag="50" keyEquivalent="5" id="FQy-vE-sdD">
+                                            <modifierMask key="keyEquivalentModifierMask" option="YES"/>
+                                            <connections>
+                                                <action selector="setAlpha:" target="-1" id="urp-p6-tbf"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="40%" tag="40" keyEquivalent="4" id="i8b-ah-bnl">
+                                            <modifierMask key="keyEquivalentModifierMask" option="YES"/>
+                                            <connections>
+                                                <action selector="setAlpha:" target="-1" id="UGI-9x-BmO"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="30%" tag="30" keyEquivalent="3" id="0lZ-TJ-gSG">
+                                            <modifierMask key="keyEquivalentModifierMask" option="YES"/>
+                                            <connections>
+                                                <action selector="setAlpha:" target="-1" id="Pzp-CW-ZEJ"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="20%" tag="20" keyEquivalent="2" id="841-DH-rZI">
+                                            <modifierMask key="keyEquivalentModifierMask" option="YES"/>
+                                            <connections>
+                                                <action selector="setAlpha:" target="-1" id="6n6-g8-m6v"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="10%" tag="10" keyEquivalent="1" id="JAT-sc-tNO">
+                                            <modifierMask key="keyEquivalentModifierMask" option="YES"/>
+                                            <connections>
+                                                <action selector="setAlpha:" target="-1" id="syF-Gc-NaT"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="0%" keyEquivalent="`" id="UD8-eD-hpT">
+                                            <modifierMask key="keyEquivalentModifierMask" option="YES"/>
+                                            <connections>
+                                                <action selector="setAlpha:" target="-1" id="HJM-0b-FW1"/>
+                                            </connections>
+                                        </menuItem>
+                                    </items>
+                                    <connections>
+                                        <outlet property="delegate" destination="k3f-FM-D6D" id="s1D-I3-7Tx"/>
+                                    </connections>
+                                </menu>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="DO2-tE-5oH"/>
                             <menuItem title="Parent Object" keyEquivalent="" id="FhE-LI-y9i">
                                 <connections>
                                     <action selector="parentNodeAction:" target="-1" id="pQh-gv-4QF"/>
@@ -478,7 +734,33 @@ CA
                                     <action selector="previousNodeAction:" target="-1" id="iJv-d1-g6p"/>
                                 </connections>
                             </menuItem>
+                            <menuItem isSeparatorItem="YES" id="Hke-9O-UIo"/>
+                            <menuItem title="Swap with Previous" tag="-1" keyEquivalent="[" id="Ppb-nl-3fk">
+                                <connections>
+                                    <action selector="raiseObject:" target="-1" id="XRe-fa-FET"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Swap with Next" tag="1" keyEquivalent="]" id="5uG-tk-sHY">
+                                <connections>
+                                    <action selector="raiseObject:" target="-1" id="HvW-GD-XUW"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Move to First" tag="-100000" keyEquivalent="[" id="fgj-gE-LBA">
+                                <modifierMask key="keyEquivalentModifierMask" shift="YES" command="YES"/>
+                                <connections>
+                                    <action selector="raiseObject:" target="-1" id="pRw-Jx-fSD"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Move to Last" tag="100000" keyEquivalent="]" id="VMi-E8-Jc5">
+                                <modifierMask key="keyEquivalentModifierMask" shift="YES" command="YES"/>
+                                <connections>
+                                    <action selector="raiseObject:" target="-1" id="BO9-l2-pbE"/>
+                                </connections>
+                            </menuItem>
                         </items>
+                        <connections>
+                            <outlet property="delegate" destination="k3f-FM-D6D" id="MbJ-Jf-jWR"/>
+                        </connections>
                     </menu>
                 </menuItem>
                 <menuItem title="Format" id="jxT-CU-nIS">

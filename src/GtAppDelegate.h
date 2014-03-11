@@ -25,4 +25,9 @@
 #import "GtBase.h"
 
 @interface GtAppDelegate : NSObject <NSApplicationDelegate, NSMenuDelegate>
+
+@property(nonatomic, weak) IBOutlet NSMenu *objectMenu;
+@property(nonatomic, weak) IBOutlet NSMenu *objectBlendMenu;
+@property(nonatomic, weak) IBOutlet NSMenu *objectAlphaMenu;
+
 @end

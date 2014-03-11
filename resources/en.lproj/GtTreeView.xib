@@ -36,7 +36,7 @@
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" white="0.33333298560000002" alpha="1" colorSpace="calibratedWhite"/>
                                         </tableHeaderCell>
-                                        <buttonCell key="dataCell" type="bevel" bezelStyle="regularSquare" image="NSMenuMixedStateTemplate" imagePosition="only" alternateImage="NSMenuOnStateTemplate" controlSize="small" inset="2" id="egT-ns-dq4">
+                                        <buttonCell key="dataCell" type="bevel" bezelStyle="regularSquare" imagePosition="only" alternateImage="NSMenuOnStateTemplate" controlSize="small" state="on" inset="2" id="egT-ns-dq4">
                                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                             <font key="font" metaFont="smallSystem"/>
                                         </buttonCell>
@@ -77,7 +77,6 @@
         </customView>
     </objects>
     <resources>
-        <image name="NSMenuMixedStateTemplate" width="10" height="3"/>
         <image name="NSMenuOnStateTemplate" width="11" height="11"/>
     </resources>
 </document>

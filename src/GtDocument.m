@@ -32,6 +32,7 @@
 #import "FoundationExtensions.h"
 
 NSString *const GtDocumentGraphDidChange = @"GtDocumentGraphDidChange";
+NSString *const GtDocumentNodeDidChange = @"GtDocumentNodeDidChange";
 
 @implementation GtDocument
 {
@@ -361,6 +362,9 @@ makeSelectionArray(NSMapTable *added)
 
   void (^paste_image)(MgImageProvider *) = ^(MgImageProvider *image_provider)
     {
+      if (image_provider == nil)
+	return;
+
       MgImageNode *image = [MgImageNode node];
       image.imageProvider = image_provider;
       image.name = @"Pasted Image";
@@ -432,6 +436,13 @@ makeSelectionArray(NSMapTable *added)
   [self pasteObjects:objects];
 }
 
+- (BOOL)canPasteAsImage
+{
+  NSPasteboard *pboard = [NSPasteboard generalPasteboard];
+
+  return [pboard canReadObjectForClasses:@[[NSImage class]] options:nil];
+}
+
 - (IBAction)paste:(id)sender
 {
   NSPasteboard *pboard = [NSPasteboard generalPasteboard];
@@ -440,10 +451,20 @@ makeSelectionArray(NSMapTable *added)
      data directly would let us avoid recompressing the data when
      saving the document. */
 
-  NSArray *objects = [pboard readObjectsForClasses:@[[MgNode class],
-		      [NSURL class], [NSImage class]] options:nil];
+  NSArray *classes = @[[MgNode class], [NSURL class], [NSImage class]];
+
+  NSArray *objects = [pboard readObjectsForClasses:classes options:nil];
 
   [self pasteObjects:objects];
+}
+
+- (BOOL)canPaste
+{
+  NSPasteboard *pboard = [NSPasteboard generalPasteboard];
+
+  NSArray *classes = @[[MgNode class], [NSURL class], [NSImage class]];
+
+  return [pboard canReadObjectForClasses:classes options:nil];
 }
 
 - (void)addLayerContent:(MgDrawableNode *(^)(MgLayerNode *parent_layer))block
@@ -712,6 +733,185 @@ makeSelectionArray(NSMapTable *added)
   self.controller.selection = makeSelectionArray(added);
 }
 
+- (IBAction)raiseObject:(id)sender
+{
+  NSInteger delta = [sender tag];
+
+  NSMutableSet *nodes = [NSMutableSet set];
+
+  NSArray *selection = self.controller.selection;
+
+  for (GtTreeNode *tn in selection)
+    {
+      if ([nodes containsObject:tn.node])
+	continue;
+
+      GtTreeNode *parent = tn.parent;
+      if (parent == nil)
+	continue;
+
+      NSInteger idx = tn.parentIndex;
+      NSString *key = tn.parentKey;
+
+      if (idx == NSNotFound)
+	continue;
+
+      [self node:parent moveObjectAtIndex:idx by:delta forKey:key];
+
+      [nodes addObject:tn.node];
+    }
+
+  self.controller.selection = selection;
+}
+
+- (IBAction)toggleEnabled:(id)sender
+{
+  NSMutableSet *nodes = [NSMutableSet set];
+
+  for (GtTreeNode *tn in self.controller.selection)
+    {
+      if ([nodes containsObject:tn.node])
+	continue;
+
+      [self node:tn setValue:@(!tn.node.enabled) forKey:@"enabled"];
+
+      [nodes addObject:tn.node];
+    }
+}
+
+- (NSInteger)toggleEnabledState
+{
+  NSInteger on = 0, off = 0;
+
+  for (GtTreeNode *tn in self.controller.selection)
+    {
+      if (tn.node.enabled)
+	on++;
+      else
+	off++;
+    }
+
+  return on && off ? NSMixedState : on ? NSOnState : NSOffState;
+}
+
+- (IBAction)toggleIsolated:(id)sender
+{
+  NSMutableSet *nodes = [NSMutableSet set];
+
+  for (GtTreeNode *tn in self.controller.selection)
+    {
+      MgLayerNode *layer = (MgLayerNode *)tn.node;
+      if (![layer isKindOfClass:[MgLayerNode class]])
+	continue;
+
+      if ([nodes containsObject:layer])
+	continue;
+
+      [self node:tn setValue:@(!layer.isolated) forKey:@"isolated"];
+
+      [nodes addObject:layer];
+    }
+}
+
+- (NSInteger)toggleIsolatedState
+{
+  NSInteger on = 0, off = 0;
+
+  for (GtTreeNode *tn in self.controller.selection)
+    {
+      MgLayerNode *layer = (MgLayerNode *)tn.node;
+      if (![layer isKindOfClass:[MgLayerNode class]])
+	continue;
+
+      if (layer.isolated)
+	on++;
+      else
+	off++;
+    }
+
+  return on && off ? NSMixedState : on ? NSOnState : NSOffState;
+}
+
+- (IBAction)setBlendMode:(id)sender
+{
+  CGBlendMode mode = (CGBlendMode)[sender tag];
+  NSMutableSet *nodes = [NSMutableSet set];
+
+  for (GtTreeNode *tn in self.controller.selection)
+    {
+      MgLayerNode *layer = (MgLayerNode *)tn.node;
+      if (![layer isKindOfClass:[MgLayerNode class]])
+	continue;
+
+      if ([nodes containsObject:layer])
+	continue;
+
+      [self node:tn setValue:@(mode) forKey:@"blendMode"];
+
+      [nodes addObject:layer];
+    }
+}
+
+- (NSInteger)setBlendModeState:(id)sender
+{
+  CGBlendMode mode = (CGBlendMode)[sender tag];
+  NSInteger on = 0, off = 0;
+
+  for (GtTreeNode *tn in self.controller.selection)
+    {
+      MgLayerNode *layer = (MgLayerNode *)tn.node;
+      if (![layer isKindOfClass:[MgLayerNode class]])
+	continue;
+
+      if (layer.blendMode == mode)
+	on++;
+      else
+	off++;
+    }
+
+  return on && off ? NSMixedState : on ? NSOnState : NSOffState;
+}
+
+- (IBAction)setAlpha:(id)sender
+{
+  float alpha = [sender tag] * .01f;
+  NSMutableSet *nodes = [NSMutableSet set];
+
+  for (GtTreeNode *tn in self.controller.selection)
+    {
+      MgLayerNode *layer = (MgLayerNode *)tn.node;
+      if (![layer isKindOfClass:[MgLayerNode class]])
+	continue;
+
+      if ([nodes containsObject:layer])
+	continue;
+
+      [self node:tn setValue:@(alpha) forKey:@"alpha"];
+
+      [nodes addObject:layer];
+    }
+}
+
+- (NSInteger)setAlphaState:(id)sender
+{
+  float alpha = [sender tag] * .01f;
+  NSInteger on = 0, off = 0;
+
+  for (GtTreeNode *tn in self.controller.selection)
+    {
+      MgLayerNode *layer = (MgLayerNode *)tn.node;
+      if (![layer isKindOfClass:[MgLayerNode class]])
+	continue;
+
+      if (fabsf(layer.alpha - alpha) < 1e-4f)
+	on++;
+      else
+	off++;
+    }
+
+  return on && off ? NSMixedState : on ? NSOnState : NSOffState;
+}
+
 - (void)removeTreeNodeFromParent:(GtTreeNode *)tn
 {
   GtTreeNode *parent = tn.parent;
@@ -761,6 +961,14 @@ documentGraphChanged(GtDocument *self)
    postNotificationName:GtDocumentGraphDidChange object:self];
 }
 
+static void
+documentNodeChanged(GtDocument *self, GtTreeNode *tn)
+{
+  [[NSNotificationCenter defaultCenter]
+   postNotificationName:GtDocumentNodeDidChange object:self
+   userInfo:@{@"treeItem": tn}];
+}
+
 - (void)node:(GtTreeNode *)tn setValue:(id)value forKey:(NSString *)key
 {
   MgNode *node = tn.node;
@@ -782,6 +990,10 @@ documentGraphChanged(GtDocument *self)
 	  || [key isEqualToString:@"node"])
 	{
 	  documentGraphChanged(self);
+	}
+      else
+	{
+	  documentNodeChanged(self, tn);
 	}
     }
 }
@@ -859,6 +1071,116 @@ documentGraphChanged(GtDocument *self)
   [node setValue:m_array forKey:key];
 
   documentGraphChanged(self);
+}
+
+- (void)node:(GtTreeNode *)tn moveObjectAtIndex:(NSInteger)idx
+    by:(NSInteger)delta forKey:(NSString *)key
+{
+  MgNode *node = tn.node;
+
+  NSArray *array = [node valueForKey:key];
+  NSInteger count = [array count];
+
+  assert(array != nil);
+
+  NSInteger inverse_delta = 0;
+  id object = array[idx];
+
+  NSMutableArray *m_array = [NSMutableArray arrayWithArray:array];
+
+  while (delta > 0 && idx < count - 1)
+    {
+      [m_array removeObjectAtIndex:idx];
+      idx++;
+      [m_array insertObject:object atIndex:idx];
+      inverse_delta--;
+      delta--;
+    }
+
+  while (delta < 0 && idx > 0)
+    {
+      [m_array removeObjectAtIndex:idx];
+      idx--;
+      [m_array insertObject:object atIndex:idx];
+      inverse_delta++;
+      delta++;
+    }
+
+  if (inverse_delta != 0)
+    {
+      [self registerUndo:^
+	{
+	  [self node:tn moveObjectAtIndex:idx by:inverse_delta forKey:key];
+	}];
+
+      [node setValue:m_array forKey:key];
+    }
+
+  documentGraphChanged(self);
+}
+
+- (BOOL)validateUserInterfaceItem:(id <NSValidatedUserInterfaceItem>)item
+{
+  SEL action = [item action];
+
+  if (action == @selector(selectNone:)
+      || action == @selector(delete:)
+      || action == @selector(copy:)
+      || action == @selector(cut:)
+      || action == @selector(toggleEnabled:))
+    {
+      return [self.controller.selection count] != 0;
+    }
+
+  if (action == @selector(embedIn:)
+      || action == @selector(group:))
+    {
+      for (GtTreeNode *tn in self.controller.selection)
+	{
+	  if ([tn.node isKindOfClass:[MgDrawableNode class]])
+	    return YES;
+	}
+
+      return NO;
+    }
+
+  if (action == @selector(ungroup:)
+      || action == @selector(toggleIsolated:)
+      || action == @selector(setBlendMode:)
+      || action == @selector(setAlpha:))
+    {
+      for (GtTreeNode *tn in self.controller.selection)
+	{
+	  if ([tn.node isKindOfClass:[MgLayerNode class]])
+	    return YES;
+	}
+
+      return NO;
+    }
+
+  if (action == @selector(raiseObject:))
+    {
+      for (GtTreeNode *tn in self.controller.selection)
+	{
+	  if (tn.parent != nil && tn.parentIndex != NSNotFound
+	      && [[tn.parent.node valueForKey:tn.parentKey] count] > 1)
+	    return YES;
+	}
+
+      return NO;
+    }
+
+  if (action == @selector(paste:))
+    {
+      return [self canPaste];
+    }
+
+  if (action == @selector(pasteAsImage:))
+    {
+      return [self canPasteAsImage];
+    }
+
+  return YES;
 }
 
 @end

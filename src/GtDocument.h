@@ -25,6 +25,7 @@
 #import "GtBase.h"
 
 extern NSString *const GtDocumentGraphDidChange;
+extern NSString *const GtDocumentNodeDidChange;
 
 @interface GtDocument : NSDocument
     <NSKeyedArchiverDelegate, NSKeyedUnarchiverDelegate>
@@ -46,7 +47,9 @@ extern NSString *const GtDocumentGraphDidChange;
 - (IBAction)cut:(id)sender;
 - (IBAction)copy:(id)sender;
 - (IBAction)paste:(id)sender;
+- (BOOL)canPaste;
 - (IBAction)pasteAsImage:(id)sender;
+- (BOOL)canPasteAsImage;
 
 - (IBAction)insertLayer:(id)sender;
 - (IBAction)addContent:(id)sender;
@@ -54,6 +57,17 @@ extern NSString *const GtDocumentGraphDidChange;
 - (IBAction)embedIn:(id)sender;
 - (IBAction)group:(id)sender;
 - (IBAction)ungroup:(id)sender;
+
+- (IBAction)raiseObject:(id)sender;
+
+- (IBAction)toggleEnabled:(id)sender;
+- (NSInteger)toggleEnabledState;
+- (IBAction)toggleIsolated:(id)sender;
+- (NSInteger)toggleIsolatedState;
+- (IBAction)setBlendMode:(id)sender;
+- (NSInteger)setBlendModeState:(id)sender;
+- (IBAction)setAlpha:(id)sender;
+- (NSInteger)setAlphaState:(id)sender;
 
 - (void)removeTreeNodeFromParent:(GtTreeNode *)tn;
 - (void)replaceTreeNode:(GtTreeNode *)tn with:(MgNode *)node;
@@ -65,5 +79,7 @@ extern NSString *const GtDocumentGraphDidChange;
     withObject:(id)value forKey:(NSString *)key;
 - (void)node:(GtTreeNode *)tn removeObjectAtIndex:(NSInteger)idx
     forKey:(NSString *)key;
+- (void)node:(GtTreeNode *)tn moveObjectAtIndex:(NSInteger)idx
+    by:(NSInteger)delta forKey:(NSString *)key;
 
 @end

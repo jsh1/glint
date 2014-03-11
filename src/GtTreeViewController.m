@@ -41,10 +41,13 @@
 {
   [[NSNotificationCenter defaultCenter]
    addObserver:self selector:@selector(documentGraphDidChange:)
-   name:GtDocumentGraphDidChange object:self.controller.document];
+   name:GtDocumentGraphDidChange object:self.document];
+  [[NSNotificationCenter defaultCenter]
+   addObserver:self selector:@selector(documentNodeDidChange:)
+   name:GtDocumentNodeDidChange object:self.document];
 
-  [self.controller.document addObserver:self forKeyPath:@"documentNode"
-   options:0 context:NULL];
+  [self.document addObserver:self forKeyPath:@"documentNode" options:0
+   context:NULL];
 
   [self.controller addObserver:self forKeyPath:@"selection" options:0
    context:NULL];
@@ -61,7 +64,7 @@
 
 - (void)invalidate
 {
-  [self.controller.document removeObserver:self forKeyPath:@"documentNode"];
+  [self.document removeObserver:self forKeyPath:@"documentNode"];
   [self.controller removeObserver:self forKeyPath:@"selection"];
 
   [super invalidate];
@@ -93,9 +96,17 @@ expandItem(NSOutlineView *ov, GtTreeNode *tn)
   [self.outlineView setSelectedItems:selection];
 }
 
-- (void)documentGraphDidChange:(NSNotification *)node
+- (void)documentGraphDidChange:(NSNotification *)note
 {
   [self.outlineView reloadData];
+  [self.outlineView setSelectedItems:self.controller.selection];
+}
+
+- (void)documentNodeDidChange:(NSNotification *)note
+{
+  NSDictionary *info = [note userInfo];
+
+  [self.outlineView reloadItem:info[@"treeItem"]];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
@@ -140,6 +151,14 @@ expandItem(NSOutlineView *ov, GtTreeNode *tn)
   NSString *ident = [col identifier];
 
   return [((GtTreeNode *)item).node valueForKey:ident];
+}
+
+- (void)outlineView:(NSOutlineView *)ov setObjectValue:(id)object
+    forTableColumn:(NSTableColumn *)col byItem:(id)item
+{
+  NSString *ident = [col identifier];
+
+  [self.document node:item setValue:object forKey:ident];
 }
 
 /** NSOutlineViewDelegate methods. **/

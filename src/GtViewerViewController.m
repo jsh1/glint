@@ -37,10 +37,10 @@
 
 - (void)viewDidLoad
 {
-  [self.controller.document addObserver:self forKeyPath:@"documentNode"
-   options:0 context:NULL];
-  [self.controller.document addObserver:self forKeyPath:@"documentSize"
-   options:0 context:NULL];
+  [self.document addObserver:self forKeyPath:@"documentNode" options:0
+   context:NULL];
+  [self.document addObserver:self forKeyPath:@"documentSize" options:0
+   context:NULL];
   [self.controller addObserver:self forKeyPath:@"selection"
    options:0 context:NULL];
 
@@ -51,8 +51,8 @@
 
 - (void)invalidate
 {
-  [self.controller.document removeObserver:self forKeyPath:@"documentNode"];
-  [self.controller.document removeObserver:self forKeyPath:@"documentSize"];
+  [self.document removeObserver:self forKeyPath:@"documentNode"];
+  [self.document removeObserver:self forKeyPath:@"documentSize"];
   [self.controller removeObserver:self forKeyPath:@"selection"];
 
   [super invalidate];
