@@ -26,37 +26,37 @@
 		572A5B2818C4CF6200AB8086 /* GtWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 572A5B2618C4CF6200AB8086 /* GtWindow.xib */; };
 		5738567818C746D80010CFB7 /* GtTreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 5738567718C746D80010CFB7 /* GtTreeNode.m */; };
 		5738567B18C74CCC0010CFB7 /* AppKitExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5738567A18C74CCC0010CFB7 /* AppKitExtensions.m */; };
-		575ACEC518CFA3F600161C70 /* MgGroupNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 575ACEC418CFA3F600161C70 /* MgGroupNode.m */; };
-		575F56F818C357080034B28C /* MgAnimationNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 575F56D518C357080034B28C /* MgAnimationNode.m */; };
-		575F56F918C357080034B28C /* MgBasicAnimationNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 575F56D818C357080034B28C /* MgBasicAnimationNode.m */; };
-		575F56FA18C357080034B28C /* MgBezierTimingFunction.mm in Sources */ = {isa = PBXBuildFile; fileRef = 575F56DA18C357080034B28C /* MgBezierTimingFunction.mm */; };
-		575F56FD18C357080034B28C /* MgFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 575F56E018C357080034B28C /* MgFunction.m */; };
-		575F56FE18C357080034B28C /* MgGradientNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 575F56E218C357080034B28C /* MgGradientNode.m */; };
-		575F56FF18C357080034B28C /* MgImageNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 575F56E418C357080034B28C /* MgImageNode.m */; };
-		575F570018C357080034B28C /* MgLayerNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 575F56E618C357080034B28C /* MgLayerNode.m */; };
-		575F570118C357080034B28C /* MgNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 575F56E818C357080034B28C /* MgNode.m */; };
-		575F570218C357080034B28C /* MgPathNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 575F56EB18C357080034B28C /* MgPathNode.m */; };
-		575F570318C357080034B28C /* MgRectNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 575F56ED18C357080034B28C /* MgRectNode.m */; };
-		575F570518C357080034B28C /* MgTimingFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 575F56F218C357080034B28C /* MgTimingFunction.m */; };
+		575ACEED18CFCFE100161C70 /* MgAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 575ACEC918CFCFE100161C70 /* MgAnimation.m */; };
+		575ACEEE18CFCFE100161C70 /* MgBasicAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 575ACECC18CFCFE100161C70 /* MgBasicAnimation.m */; };
+		575ACEEF18CFCFE100161C70 /* MgBezierTimingFunction.mm in Sources */ = {isa = PBXBuildFile; fileRef = 575ACECE18CFCFE100161C70 /* MgBezierTimingFunction.mm */; };
+		575ACEF018CFCFE100161C70 /* MgCoreAnimationLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 575ACED018CFCFE100161C70 /* MgCoreAnimationLayer.m */; };
+		575ACEF118CFCFE100161C70 /* MgDrawingLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 575ACED218CFCFE100161C70 /* MgDrawingLayer.m */; };
+		575ACEF218CFCFE100161C70 /* MgFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 575ACED418CFCFE100161C70 /* MgFunction.m */; };
+		575ACEF318CFCFE100161C70 /* MgGradientLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 575ACED618CFCFE100161C70 /* MgGradientLayer.m */; };
+		575ACEF518CFCFE100161C70 /* MgImageLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 575ACEDA18CFCFE100161C70 /* MgImageLayer.m */; };
+		575ACEF618CFCFE100161C70 /* MgImageProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 575ACEDC18CFCFE100161C70 /* MgImageProvider.m */; };
+		575ACEF718CFCFE100161C70 /* MgLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 575ACEDE18CFCFE100161C70 /* MgLayer.m */; };
+		575ACEF818CFCFE100161C70 /* MgLayerPasteboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 575ACEE018CFCFE100161C70 /* MgLayerPasteboard.m */; };
+		575ACEF918CFCFE100161C70 /* MgNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 575ACEE218CFCFE100161C70 /* MgNode.m */; };
+		575ACEFA18CFCFE100161C70 /* MgNodePasteboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 575ACEE518CFCFE100161C70 /* MgNodePasteboard.m */; };
+		575ACEFB18CFCFE100161C70 /* MgPathLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 575ACEE718CFCFE100161C70 /* MgPathLayer.m */; };
+		575ACEFC18CFCFE100161C70 /* MgRectLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 575ACEE918CFCFE100161C70 /* MgRectLayer.m */; };
+		575ACEFD18CFCFE100161C70 /* MgTimingFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 575ACEEC18CFCFE100161C70 /* MgTimingFunction.m */; };
+		575ACF0018CFD00100161C70 /* MgGroupLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 575ACEFF18CFD00100161C70 /* MgGroupLayer.m */; };
 		57618DB718C5D1B6004108D8 /* GtViewerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 57618DB418C5D1B6004108D8 /* GtViewerView.m */; };
 		57618DB818C5D1B6004108D8 /* GtViewerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 57618DB618C5D1B6004108D8 /* GtViewerViewController.m */; };
 		57618DBB18C5D1F5004108D8 /* GtViewerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 57618DB918C5D1F5004108D8 /* GtViewerView.xib */; };
 		57618DBE18C5D538004108D8 /* CoreAnimationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 57618DBD18C5D538004108D8 /* CoreAnimationExtensions.m */; };
-		578A328618C87AC10000ADC4 /* MgDrawingNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 578A328518C87AC10000ADC4 /* MgDrawingNode.m */; };
 		578A328918C87EA80000ADC4 /* GtViewerOverlayNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 578A328818C87EA80000ADC4 /* GtViewerOverlayNode.m */; };
 		578A328D18C881050000ADC4 /* MgTimingStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 578A328C18C881050000ADC4 /* MgTimingStorage.m */; };
 		579CAFD118C381BD0051454F /* MgCoreGraphics.c in Sources */ = {isa = PBXBuildFile; fileRef = 579CAFCF18C381BD0051454F /* MgCoreGraphics.c */; };
-		579CAFD518C38B9C0051454F /* MgImageProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 579CAFD418C38B9C0051454F /* MgImageProvider.m */; };
 		579CAFD918C3F63A0051454F /* MgCoderExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 579CAFD818C3F63A0051454F /* MgCoderExtensions.m */; };
-		57DFFD1C18CE5B7800B156A8 /* MgNodePasteboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 57DFFD1B18CE5B7800B156A8 /* MgNodePasteboard.m */; };
-		57DFFD1E18CE637F00B156A8 /* MgLayerNodePasteboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 57DFFD1D18CE637F00B156A8 /* MgLayerNodePasteboard.m */; };
 		57E776B318BD3478007CD31F /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57E776B218BD3478007CD31F /* Quartz.framework */; };
 		57E776B418BD347D007CD31F /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5714A8B618BD322900ED67EE /* AppKit.framework */; };
 		57E776B618BD3488007CD31F /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57E776B518BD3487007CD31F /* ImageIO.framework */; };
 		57E776B818BD348D007CD31F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57E776B718BD348D007CD31F /* CoreGraphics.framework */; };
 		57E776B918BD3493007CD31F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5714A8B818BD322900ED67EE /* Foundation.framework */; };
 		57E776BB18BD3498007CD31F /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57E776BA18BD3498007CD31F /* CoreFoundation.framework */; };
-		57FB21DC18C5181100B4BF6C /* MgLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 57FB21DB18C5181100B4BF6C /* MgLayer.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -97,34 +97,44 @@
 		5738567718C746D80010CFB7 /* GtTreeNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtTreeNode.m; path = src/GtTreeNode.m; sourceTree = "<group>"; };
 		5738567918C74CCC0010CFB7 /* AppKitExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppKitExtensions.h; path = src/AppKitExtensions.h; sourceTree = "<group>"; };
 		5738567A18C74CCC0010CFB7 /* AppKitExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppKitExtensions.m; path = src/AppKitExtensions.m; sourceTree = "<group>"; };
-		575ACEC318CFA3F600161C70 /* MgGroupNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgGroupNode.h; sourceTree = "<group>"; };
-		575ACEC418CFA3F600161C70 /* MgGroupNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgGroupNode.m; sourceTree = "<group>"; };
-		575ACEC618CFAFAD00161C70 /* MgLayerNodeInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgLayerNodeInternal.h; sourceTree = "<group>"; };
-		575F56D318C357080034B28C /* Magnesium.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Magnesium.h; sourceTree = "<group>"; };
-		575F56D418C357080034B28C /* MgAnimationNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgAnimationNode.h; sourceTree = "<group>"; };
-		575F56D518C357080034B28C /* MgAnimationNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgAnimationNode.m; sourceTree = "<group>"; };
-		575F56D718C357080034B28C /* MgBasicAnimationNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgBasicAnimationNode.h; sourceTree = "<group>"; };
-		575F56D818C357080034B28C /* MgBasicAnimationNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgBasicAnimationNode.m; sourceTree = "<group>"; };
-		575F56D918C357080034B28C /* MgBezierTimingFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgBezierTimingFunction.h; sourceTree = "<group>"; };
-		575F56DA18C357080034B28C /* MgBezierTimingFunction.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MgBezierTimingFunction.mm; sourceTree = "<group>"; };
-		575F56DF18C357080034B28C /* MgFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgFunction.h; sourceTree = "<group>"; };
-		575F56E018C357080034B28C /* MgFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgFunction.m; sourceTree = "<group>"; };
-		575F56E118C357080034B28C /* MgGradientNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgGradientNode.h; sourceTree = "<group>"; };
-		575F56E218C357080034B28C /* MgGradientNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgGradientNode.m; sourceTree = "<group>"; };
-		575F56E318C357080034B28C /* MgImageNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgImageNode.h; sourceTree = "<group>"; };
-		575F56E418C357080034B28C /* MgImageNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgImageNode.m; sourceTree = "<group>"; };
-		575F56E518C357080034B28C /* MgLayerNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgLayerNode.h; sourceTree = "<group>"; };
-		575F56E618C357080034B28C /* MgLayerNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgLayerNode.m; sourceTree = "<group>"; };
-		575F56E718C357080034B28C /* MgNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgNode.h; sourceTree = "<group>"; };
-		575F56E818C357080034B28C /* MgNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgNode.m; sourceTree = "<group>"; };
-		575F56E918C357080034B28C /* MgNodeInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgNodeInternal.h; sourceTree = "<group>"; };
-		575F56EA18C357080034B28C /* MgPathNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgPathNode.h; sourceTree = "<group>"; };
-		575F56EB18C357080034B28C /* MgPathNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgPathNode.m; sourceTree = "<group>"; };
-		575F56EC18C357080034B28C /* MgRectNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgRectNode.h; sourceTree = "<group>"; };
-		575F56ED18C357080034B28C /* MgRectNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgRectNode.m; sourceTree = "<group>"; };
-		575F56F018C357080034B28C /* MgTiming.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgTiming.h; sourceTree = "<group>"; };
-		575F56F118C357080034B28C /* MgTimingFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgTimingFunction.h; sourceTree = "<group>"; };
-		575F56F218C357080034B28C /* MgTimingFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgTimingFunction.m; sourceTree = "<group>"; };
+		575ACEC718CFCFE100161C70 /* Magnesium.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Magnesium.h; sourceTree = "<group>"; };
+		575ACEC818CFCFE100161C70 /* MgAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgAnimation.h; sourceTree = "<group>"; };
+		575ACEC918CFCFE100161C70 /* MgAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgAnimation.m; sourceTree = "<group>"; };
+		575ACECA18CFCFE100161C70 /* MgBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgBase.h; sourceTree = "<group>"; };
+		575ACECB18CFCFE100161C70 /* MgBasicAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgBasicAnimation.h; sourceTree = "<group>"; };
+		575ACECC18CFCFE100161C70 /* MgBasicAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgBasicAnimation.m; sourceTree = "<group>"; };
+		575ACECD18CFCFE100161C70 /* MgBezierTimingFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgBezierTimingFunction.h; sourceTree = "<group>"; };
+		575ACECE18CFCFE100161C70 /* MgBezierTimingFunction.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MgBezierTimingFunction.mm; sourceTree = "<group>"; };
+		575ACECF18CFCFE100161C70 /* MgCoreAnimationLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgCoreAnimationLayer.h; sourceTree = "<group>"; };
+		575ACED018CFCFE100161C70 /* MgCoreAnimationLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgCoreAnimationLayer.m; sourceTree = "<group>"; };
+		575ACED118CFCFE100161C70 /* MgDrawingLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgDrawingLayer.h; sourceTree = "<group>"; };
+		575ACED218CFCFE100161C70 /* MgDrawingLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgDrawingLayer.m; sourceTree = "<group>"; };
+		575ACED318CFCFE100161C70 /* MgFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgFunction.h; sourceTree = "<group>"; };
+		575ACED418CFCFE100161C70 /* MgFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgFunction.m; sourceTree = "<group>"; };
+		575ACED518CFCFE100161C70 /* MgGradientLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgGradientLayer.h; sourceTree = "<group>"; };
+		575ACED618CFCFE100161C70 /* MgGradientLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgGradientLayer.m; sourceTree = "<group>"; };
+		575ACED918CFCFE100161C70 /* MgImageLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgImageLayer.h; sourceTree = "<group>"; };
+		575ACEDA18CFCFE100161C70 /* MgImageLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgImageLayer.m; sourceTree = "<group>"; };
+		575ACEDB18CFCFE100161C70 /* MgImageProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgImageProvider.h; sourceTree = "<group>"; };
+		575ACEDC18CFCFE100161C70 /* MgImageProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgImageProvider.m; sourceTree = "<group>"; };
+		575ACEDD18CFCFE100161C70 /* MgLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgLayer.h; sourceTree = "<group>"; };
+		575ACEDE18CFCFE100161C70 /* MgLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgLayer.m; sourceTree = "<group>"; };
+		575ACEDF18CFCFE100161C70 /* MgLayerInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgLayerInternal.h; sourceTree = "<group>"; };
+		575ACEE018CFCFE100161C70 /* MgLayerPasteboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgLayerPasteboard.m; sourceTree = "<group>"; };
+		575ACEE118CFCFE100161C70 /* MgNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgNode.h; sourceTree = "<group>"; };
+		575ACEE218CFCFE100161C70 /* MgNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgNode.m; sourceTree = "<group>"; };
+		575ACEE318CFCFE100161C70 /* MgNodeInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgNodeInternal.h; sourceTree = "<group>"; };
+		575ACEE418CFCFE100161C70 /* MgNodePasteboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgNodePasteboard.h; sourceTree = "<group>"; };
+		575ACEE518CFCFE100161C70 /* MgNodePasteboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgNodePasteboard.m; sourceTree = "<group>"; };
+		575ACEE618CFCFE100161C70 /* MgPathLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgPathLayer.h; sourceTree = "<group>"; };
+		575ACEE718CFCFE100161C70 /* MgPathLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgPathLayer.m; sourceTree = "<group>"; };
+		575ACEE818CFCFE100161C70 /* MgRectLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgRectLayer.h; sourceTree = "<group>"; };
+		575ACEE918CFCFE100161C70 /* MgRectLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgRectLayer.m; sourceTree = "<group>"; };
+		575ACEEA18CFCFE100161C70 /* MgTiming.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgTiming.h; sourceTree = "<group>"; };
+		575ACEEB18CFCFE100161C70 /* MgTimingFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgTimingFunction.h; sourceTree = "<group>"; };
+		575ACEEC18CFCFE100161C70 /* MgTimingFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgTimingFunction.m; sourceTree = "<group>"; };
+		575ACEFE18CFD00100161C70 /* MgGroupLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgGroupLayer.h; sourceTree = "<group>"; };
+		575ACEFF18CFD00100161C70 /* MgGroupLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgGroupLayer.m; sourceTree = "<group>"; };
 		575F56F718C357080034B28C /* MgUnitBezier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgUnitBezier.h; sourceTree = "<group>"; };
 		57618DB318C5D1B6004108D8 /* GtViewerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtViewerView.h; path = src/GtViewerView.h; sourceTree = "<group>"; };
 		57618DB418C5D1B6004108D8 /* GtViewerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtViewerView.m; path = src/GtViewerView.m; sourceTree = "<group>"; };
@@ -133,29 +143,19 @@
 		57618DBA18C5D1F5004108D8 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = resources/en.lproj/GtViewerView.xib; sourceTree = "<group>"; };
 		57618DBC18C5D538004108D8 /* CoreAnimationExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CoreAnimationExtensions.h; path = src/CoreAnimationExtensions.h; sourceTree = "<group>"; };
 		57618DBD18C5D538004108D8 /* CoreAnimationExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CoreAnimationExtensions.m; path = src/CoreAnimationExtensions.m; sourceTree = "<group>"; };
-		578A328418C87AC10000ADC4 /* MgDrawingNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgDrawingNode.h; sourceTree = "<group>"; };
-		578A328518C87AC10000ADC4 /* MgDrawingNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgDrawingNode.m; sourceTree = "<group>"; };
 		578A328718C87EA80000ADC4 /* GtViewerOverlayNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtViewerOverlayNode.h; path = src/GtViewerOverlayNode.h; sourceTree = "<group>"; };
 		578A328818C87EA80000ADC4 /* GtViewerOverlayNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtViewerOverlayNode.m; path = src/GtViewerOverlayNode.m; sourceTree = "<group>"; };
-		578A328A18C880D60000ADC4 /* MgBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgBase.h; sourceTree = "<group>"; };
 		578A328B18C881050000ADC4 /* MgTimingStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgTimingStorage.h; sourceTree = "<group>"; };
 		578A328C18C881050000ADC4 /* MgTimingStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgTimingStorage.m; sourceTree = "<group>"; };
 		579CAFCF18C381BD0051454F /* MgCoreGraphics.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = MgCoreGraphics.c; path = magnesium/util/MgCoreGraphics.c; sourceTree = SOURCE_ROOT; };
 		579CAFD018C381BD0051454F /* MgCoreGraphics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MgCoreGraphics.h; path = magnesium/util/MgCoreGraphics.h; sourceTree = SOURCE_ROOT; };
 		579CAFD218C385310051454F /* MgMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgMacros.h; sourceTree = "<group>"; };
-		579CAFD318C38B9C0051454F /* MgImageProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgImageProvider.h; sourceTree = "<group>"; };
-		579CAFD418C38B9C0051454F /* MgImageProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgImageProvider.m; sourceTree = "<group>"; };
 		579CAFD718C3F63A0051454F /* MgCoderExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgCoderExtensions.h; sourceTree = "<group>"; };
 		579CAFD818C3F63A0051454F /* MgCoderExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgCoderExtensions.m; sourceTree = "<group>"; };
-		57DFFD1A18CE5B7800B156A8 /* MgNodePasteboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgNodePasteboard.h; sourceTree = "<group>"; };
-		57DFFD1B18CE5B7800B156A8 /* MgNodePasteboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgNodePasteboard.m; sourceTree = "<group>"; };
-		57DFFD1D18CE637F00B156A8 /* MgLayerNodePasteboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgLayerNodePasteboard.m; sourceTree = "<group>"; };
 		57E776B218BD3478007CD31F /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = System/Library/Frameworks/Quartz.framework; sourceTree = SDKROOT; };
 		57E776B518BD3487007CD31F /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		57E776B718BD348D007CD31F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		57E776BA18BD3498007CD31F /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
-		57FB21DA18C5181100B4BF6C /* MgLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgLayer.h; sourceTree = "<group>"; };
-		57FB21DB18C5181100B4BF6C /* MgLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgLayer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -220,44 +220,44 @@
 		575F56D218C357080034B28C /* api */ = {
 			isa = PBXGroup;
 			children = (
-				575F56D318C357080034B28C /* Magnesium.h */,
-				575F56D418C357080034B28C /* MgAnimationNode.h */,
-				575F56D518C357080034B28C /* MgAnimationNode.m */,
-				578A328A18C880D60000ADC4 /* MgBase.h */,
-				575F56D718C357080034B28C /* MgBasicAnimationNode.h */,
-				575F56D818C357080034B28C /* MgBasicAnimationNode.m */,
-				575F56D918C357080034B28C /* MgBezierTimingFunction.h */,
-				575F56DA18C357080034B28C /* MgBezierTimingFunction.mm */,
-				578A328418C87AC10000ADC4 /* MgDrawingNode.h */,
-				578A328518C87AC10000ADC4 /* MgDrawingNode.m */,
-				575F56DF18C357080034B28C /* MgFunction.h */,
-				575F56E018C357080034B28C /* MgFunction.m */,
-				575F56E118C357080034B28C /* MgGradientNode.h */,
-				575F56E218C357080034B28C /* MgGradientNode.m */,
-				575ACEC318CFA3F600161C70 /* MgGroupNode.h */,
-				575ACEC418CFA3F600161C70 /* MgGroupNode.m */,
-				575F56E318C357080034B28C /* MgImageNode.h */,
-				575F56E418C357080034B28C /* MgImageNode.m */,
-				579CAFD318C38B9C0051454F /* MgImageProvider.h */,
-				579CAFD418C38B9C0051454F /* MgImageProvider.m */,
-				57FB21DA18C5181100B4BF6C /* MgLayer.h */,
-				57FB21DB18C5181100B4BF6C /* MgLayer.m */,
-				575F56E518C357080034B28C /* MgLayerNode.h */,
-				575F56E618C357080034B28C /* MgLayerNode.m */,
-				575ACEC618CFAFAD00161C70 /* MgLayerNodeInternal.h */,
-				57DFFD1D18CE637F00B156A8 /* MgLayerNodePasteboard.m */,
-				575F56E718C357080034B28C /* MgNode.h */,
-				575F56E818C357080034B28C /* MgNode.m */,
-				575F56E918C357080034B28C /* MgNodeInternal.h */,
-				57DFFD1A18CE5B7800B156A8 /* MgNodePasteboard.h */,
-				57DFFD1B18CE5B7800B156A8 /* MgNodePasteboard.m */,
-				575F56EA18C357080034B28C /* MgPathNode.h */,
-				575F56EB18C357080034B28C /* MgPathNode.m */,
-				575F56EC18C357080034B28C /* MgRectNode.h */,
-				575F56ED18C357080034B28C /* MgRectNode.m */,
-				575F56F018C357080034B28C /* MgTiming.h */,
-				575F56F118C357080034B28C /* MgTimingFunction.h */,
-				575F56F218C357080034B28C /* MgTimingFunction.m */,
+				575ACEC718CFCFE100161C70 /* Magnesium.h */,
+				575ACEC818CFCFE100161C70 /* MgAnimation.h */,
+				575ACEC918CFCFE100161C70 /* MgAnimation.m */,
+				575ACECA18CFCFE100161C70 /* MgBase.h */,
+				575ACECB18CFCFE100161C70 /* MgBasicAnimation.h */,
+				575ACECC18CFCFE100161C70 /* MgBasicAnimation.m */,
+				575ACECD18CFCFE100161C70 /* MgBezierTimingFunction.h */,
+				575ACECE18CFCFE100161C70 /* MgBezierTimingFunction.mm */,
+				575ACECF18CFCFE100161C70 /* MgCoreAnimationLayer.h */,
+				575ACED018CFCFE100161C70 /* MgCoreAnimationLayer.m */,
+				575ACED118CFCFE100161C70 /* MgDrawingLayer.h */,
+				575ACED218CFCFE100161C70 /* MgDrawingLayer.m */,
+				575ACED318CFCFE100161C70 /* MgFunction.h */,
+				575ACED418CFCFE100161C70 /* MgFunction.m */,
+				575ACED518CFCFE100161C70 /* MgGradientLayer.h */,
+				575ACED618CFCFE100161C70 /* MgGradientLayer.m */,
+				575ACEFE18CFD00100161C70 /* MgGroupLayer.h */,
+				575ACEFF18CFD00100161C70 /* MgGroupLayer.m */,
+				575ACED918CFCFE100161C70 /* MgImageLayer.h */,
+				575ACEDA18CFCFE100161C70 /* MgImageLayer.m */,
+				575ACEDB18CFCFE100161C70 /* MgImageProvider.h */,
+				575ACEDC18CFCFE100161C70 /* MgImageProvider.m */,
+				575ACEDD18CFCFE100161C70 /* MgLayer.h */,
+				575ACEDE18CFCFE100161C70 /* MgLayer.m */,
+				575ACEDF18CFCFE100161C70 /* MgLayerInternal.h */,
+				575ACEE018CFCFE100161C70 /* MgLayerPasteboard.m */,
+				575ACEE118CFCFE100161C70 /* MgNode.h */,
+				575ACEE218CFCFE100161C70 /* MgNode.m */,
+				575ACEE318CFCFE100161C70 /* MgNodeInternal.h */,
+				575ACEE418CFCFE100161C70 /* MgNodePasteboard.h */,
+				575ACEE518CFCFE100161C70 /* MgNodePasteboard.m */,
+				575ACEE618CFCFE100161C70 /* MgPathLayer.h */,
+				575ACEE718CFCFE100161C70 /* MgPathLayer.m */,
+				575ACEE818CFCFE100161C70 /* MgRectLayer.h */,
+				575ACEE918CFCFE100161C70 /* MgRectLayer.m */,
+				575ACEEA18CFCFE100161C70 /* MgTiming.h */,
+				575ACEEB18CFCFE100161C70 /* MgTimingFunction.h */,
+				575ACEEC18CFCFE100161C70 /* MgTimingFunction.m */,
 			);
 			path = api;
 			sourceTree = "<group>";
@@ -412,42 +412,42 @@
 			buildActionMask = 2147483647;
 			files = (
 				579CAFD918C3F63A0051454F /* MgCoderExtensions.m in Sources */,
-				575F56F818C357080034B28C /* MgAnimationNode.m in Sources */,
-				575F570118C357080034B28C /* MgNode.m in Sources */,
-				579CAFD518C38B9C0051454F /* MgImageProvider.m in Sources */,
-				575F56FD18C357080034B28C /* MgFunction.m in Sources */,
-				575F570318C357080034B28C /* MgRectNode.m in Sources */,
 				5721E87D18C693E4000DA2C3 /* GtOutlineView.m in Sources */,
-				575F570218C357080034B28C /* MgPathNode.m in Sources */,
 				5721E87118C6212D000DA2C3 /* FoundationExtensions.m in Sources */,
-				575F570018C357080034B28C /* MgLayerNode.m in Sources */,
 				5721E88018C6A2DF000DA2C3 /* GtSplitViewController.m in Sources */,
+				575ACEFA18CFCFE100161C70 /* MgNodePasteboard.m in Sources */,
+				575ACEF818CFCFE100161C70 /* MgLayerPasteboard.m in Sources */,
 				578A328918C87EA80000ADC4 /* GtViewerOverlayNode.m in Sources */,
 				572A5B2018C4CD4100AB8086 /* GtWindowController.m in Sources */,
-				575F56FA18C357080034B28C /* MgBezierTimingFunction.mm in Sources */,
 				579CAFD118C381BD0051454F /* MgCoreGraphics.c in Sources */,
+				575ACF0018CFD00100161C70 /* MgGroupLayer.m in Sources */,
+				575ACEF718CFCFE100161C70 /* MgLayer.m in Sources */,
+				575ACEF218CFCFE100161C70 /* MgFunction.m in Sources */,
 				572A5B1F18C4CD4100AB8086 /* GtViewController.m in Sources */,
+				575ACEED18CFCFE100161C70 /* MgAnimation.m in Sources */,
 				57618DBE18C5D538004108D8 /* CoreAnimationExtensions.m in Sources */,
-				578A328618C87AC10000ADC4 /* MgDrawingNode.m in Sources */,
-				57FB21DC18C5181100B4BF6C /* MgLayer.m in Sources */,
-				575F56F918C357080034B28C /* MgBasicAnimationNode.m in Sources */,
+				575ACEF318CFCFE100161C70 /* MgGradientLayer.m in Sources */,
 				572A5B2318C4CE2000AB8086 /* GtAppDelegate.m in Sources */,
+				575ACEEE18CFCFE100161C70 /* MgBasicAnimation.m in Sources */,
 				578A328D18C881050000ADC4 /* MgTimingStorage.m in Sources */,
+				575ACEFB18CFCFE100161C70 /* MgPathLayer.m in Sources */,
 				5714A8C718BD322900ED67EE /* GtDocument.m in Sources */,
 				5721E87A18C69363000DA2C3 /* GtColor.m in Sources */,
 				5738567818C746D80010CFB7 /* GtTreeNode.m in Sources */,
+				575ACEFC18CFCFE100161C70 /* MgRectLayer.m in Sources */,
 				572A5B1E18C4CD4100AB8086 /* GtSplitView.m in Sources */,
-				575F56FF18C357080034B28C /* MgImageNode.m in Sources */,
+				575ACEFD18CFCFE100161C70 /* MgTimingFunction.m in Sources */,
 				57618DB718C5D1B6004108D8 /* GtViewerView.m in Sources */,
 				5714A8C018BD322900ED67EE /* main.m in Sources */,
+				575ACEF618CFCFE100161C70 /* MgImageProvider.m in Sources */,
+				575ACEF018CFCFE100161C70 /* MgCoreAnimationLayer.m in Sources */,
 				5738567B18C74CCC0010CFB7 /* AppKitExtensions.m in Sources */,
-				57DFFD1C18CE5B7800B156A8 /* MgNodePasteboard.m in Sources */,
-				57DFFD1E18CE637F00B156A8 /* MgLayerNodePasteboard.m in Sources */,
+				575ACEEF18CFCFE100161C70 /* MgBezierTimingFunction.mm in Sources */,
+				575ACEF518CFCFE100161C70 /* MgImageLayer.m in Sources */,
 				57618DB818C5D1B6004108D8 /* GtViewerViewController.m in Sources */,
-				575F56FE18C357080034B28C /* MgGradientNode.m in Sources */,
+				575ACEF118CFCFE100161C70 /* MgDrawingLayer.m in Sources */,
+				575ACEF918CFCFE100161C70 /* MgNode.m in Sources */,
 				5721E87418C67439000DA2C3 /* GtTreeViewController.m in Sources */,
-				575F570518C357080034B28C /* MgTimingFunction.m in Sources */,
-				575ACEC518CFA3F600161C70 /* MgGroupNode.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

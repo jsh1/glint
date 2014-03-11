@@ -120,7 +120,7 @@
 {
   for (GtTreeNode *n = self.parent; n != nil; n = n.parent)
     {
-      if ([n.node isKindOfClass:[MgLayerNode class]])
+      if ([n.node isKindOfClass:[MgLayer class]])
 	return n;
     }
 
@@ -131,7 +131,7 @@
 {
   for (GtTreeNode *n = self.parent; n != nil; n = n.parent)
     {
-      if ([n.node isKindOfClass:[MgGroupNode class]])
+      if ([n.node isKindOfClass:[MgGroupLayer class]])
 	return n;
     }
 
@@ -194,9 +194,9 @@ tree_depth(GtTreeNode *tn)
 
   for (GtTreeNode *n = self; n != nil; n = n.parent)
     {
-      MgLayerNode *layer = (MgLayerNode *)n.node;
+      MgLayer *layer = (MgLayer *)n.node;
 
-      if ([layer isKindOfClass:[MgLayerNode class]])
+      if ([layer isKindOfClass:[MgLayer class]])
 	m = CGAffineTransformConcat(m, [layer parentTransform]);
     }
 
@@ -217,15 +217,15 @@ tree_depth(GtTreeNode *tn)
 
 - (BOOL)containsPoint:(CGPoint)p
 {
-  return [(MgLayerNode *)_node containsPoint:p];
+  return [(MgLayer *)_node containsPoint:p];
 }
 
 - (GtTreeNode *)hitTest:(CGPoint)p
 {
-  if (![_node isKindOfClass:[MgLayerNode class]])
+  if (![_node isKindOfClass:[MgLayer class]])
     return nil;
 
-  MgLayerNode *layer = (MgLayerNode *)_node;
+  MgLayer *layer = (MgLayer *)_node;
 
   CGPoint node_p = [layer convertPointFromParent:p];
 

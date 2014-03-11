@@ -33,7 +33,7 @@ extern NSString *const GtDocumentNodeDidChange;
 @property(nonatomic, readonly, strong) GtWindowController *controller;
 
 @property(nonatomic, assign) CGSize documentSize;
-@property(nonatomic, strong) MgLayerNode *documentNode;
+@property(nonatomic, strong) MgLayer *documentNode;
 
 - (void)disableUndo;
 - (void)reenableUndo;

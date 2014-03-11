@@ -31,7 +31,7 @@
 #import "GtViewerViewController.h"
 #import "GtWindowController.h"
 
-#import "MgLayer.h"
+#import "MgCoreAnimationLayer.h"
 #import "MgMacros.h"
 
 #define MIN_SCALE (1. / 32)
@@ -44,9 +44,9 @@
 
 @implementation GtViewerView
 {
-  MgLayer *_nodeLayer;
-  MgGroupNode *_rootNode;
-  MgGroupNode *_documentContainer;
+  MgCoreAnimationLayer *_nodeLayer;
+  MgGroupLayer *_rootLayer;
+  MgGroupLayer *_documentContainer;
   GtViewerOverlayNode *_overlayNode;
   CGPoint _viewCenter;
   CGFloat _viewScale;
@@ -158,29 +158,29 @@
 
   if (_nodeLayer == nil)
     {
-      _nodeLayer = [MgLayer layer];
+      _nodeLayer = [MgCoreAnimationLayer layer];
       _nodeLayer.delegate = [NSApp delegate];
       [layer addSublayer:_nodeLayer];
     }
 
-  if (_rootNode == nil)
+  if (_rootLayer == nil)
     {
-      _rootNode = [MgGroupNode node];
-      _rootNode.anchor = CGPointZero;
-      _nodeLayer.rootNode = _rootNode;
+      _rootLayer = [MgGroupLayer node];
+      _rootLayer.anchor = CGPointZero;
+      _nodeLayer.layer = _rootLayer;
     }
 
   if (_documentContainer == nil)
     {
-      _documentContainer = [MgGroupNode node];
-      [_rootNode addContent:_documentContainer];
+      _documentContainer = [MgGroupLayer node];
+      [_rootLayer addContent:_documentContainer];
     }
 
   if (_overlayNode == nil)
     {
       _overlayNode = [GtViewerOverlayNode node];
       _overlayNode.view = self;
-      [_rootNode addContent:_overlayNode];
+      [_rootLayer addContent:_overlayNode];
     }
 
   GtDocument *document = self.controller.document;
@@ -190,7 +190,7 @@
   _nodeLayer.frame = bounds;
   _nodeLayer.contentsScale = [[self window] backingScaleFactor];
 
-  _rootNode.bounds = bounds;
+  _rootLayer.bounds = bounds;
 
   _documentContainer.scale = self.viewScale;
   _documentContainer.position = self.viewCenter;
@@ -274,11 +274,11 @@
   for (GtTreeNode *tn in controller.selection)
     {
       GtTreeNode *pn = tn;
-      while (pn != nil && ![pn.node isKindOfClass:[MgLayerNode class]])
+      while (pn != nil && ![pn.node isKindOfClass:[MgLayer class]])
 	pn = pn.parent;
       if (pn == nil)
 	continue;
-      MgLayerNode *layer = (MgLayerNode *)pn.node;
+      MgLayer *layer = (MgLayer *)pn.node;
       if ([layers containsObject:layer])
 	continue;
       if (node == nil && pn.parent == nil)
@@ -313,13 +313,13 @@
   for (NSInteger i = 0; i < count; i++)
     {
       GtTreeNode *tn = nodes[i];
-      MgLayerNode *layer = (MgLayerNode *)tn.node;
-      old_state[i].is_rect = [layer isKindOfClass:[MgRectNode class]];
+      MgLayer *layer = (MgLayer *)tn.node;
+      old_state[i].is_rect = [layer isKindOfClass:[MgRectLayer class]];
       old_state[i].position = layer.position;
       old_state[i].anchor = layer.anchor;
       old_state[i].bounds = layer.bounds;
       old_state[i].cornerRadius = (old_state[i].is_rect
-				   ? ((MgRectNode *)layer).cornerRadius : 0);
+				   ? ((MgRectLayer *)layer).cornerRadius : 0);
       old_state[i].scale = layer.scale;
       old_state[i].squeeze = layer.squeeze;
       old_state[i].skew = layer.skew;
@@ -405,7 +405,7 @@
       for (NSInteger i = 0; i < count; i++)
 	{
 	  GtTreeNode *tn = nodes[i];
-	  MgLayerNode *layer = (MgLayerNode *)tn.node;
+	  MgLayer *layer = (MgLayer *)tn.node;
 
 	  CGPoint np0 = [tn convertPointFromRoot:
 			 [self convertPointToDocument:p0]];
@@ -516,7 +516,7 @@
 	  layer.anchor = ns->anchor;
 	  layer.bounds = ns->bounds;
 	  if (ns->is_rect)
-	    ((MgRectNode *)layer).cornerRadius = ns->cornerRadius;
+	    ((MgRectLayer *)layer).cornerRadius = ns->cornerRadius;
 	  layer.scale = ns->scale;
 	  layer.squeeze = ns->squeeze;
 	  layer.skew = ns->skew;
@@ -531,7 +531,7 @@
       for (NSInteger i = 0; i < count; i++)
 	{
 	  GtTreeNode *node = nodes[i];
-	  MgLayerNode *layer = (MgLayerNode *)node.node;
+	  MgLayer *layer = (MgLayer *)node.node;
 	  struct layer_state *os = &old_state[i];
 	  struct layer_state *ns = &new_state[i];
 
@@ -539,7 +539,7 @@
 	  layer.anchor = os->anchor;
 	  layer.bounds = os->bounds;
 	  if (os->is_rect)
-	    ((MgRectNode *)layer).cornerRadius = os->cornerRadius;
+	    ((MgRectLayer *)layer).cornerRadius = os->cornerRadius;
 	  layer.scale = os->scale;
 	  layer.squeeze = os->squeeze;
 	  layer.skew = os->skew;

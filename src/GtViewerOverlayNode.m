@@ -100,17 +100,17 @@ static const CGPoint adornmentPositions[] =
   [GtViewerAdornmentSkew] = {0, 1},
 };
 
-static MgLayerNode *
+static MgLayer *
 getLayerAndTransform(GtTreeNode *node, CGAffineTransform *ret_m)
 {
   CGAffineTransform m = CGAffineTransformIdentity;
-  MgLayerNode *container = nil;
+  MgLayer *container = nil;
 
   for (GtTreeNode *pn = node; pn != nil; pn = pn.parent)
     {
-      MgLayerNode *layer = (MgLayerNode *)pn.node;
+      MgLayer *layer = (MgLayer *)pn.node;
 
-      if (![layer isKindOfClass:[MgLayerNode class]])
+      if (![layer isKindOfClass:[MgLayer class]])
 	continue;
 
       if (container == nil)
@@ -154,7 +154,7 @@ strokeLineSegments(CGContextRef ctx, const CGPoint lines[], size_t count)
      is affine, that may change... */
 
   CGAffineTransform m;
-  MgLayerNode *container = getLayerAndTransform(tn, &m);
+  MgLayer *container = getLayerAndTransform(tn, &m);
   if (container == nil)
     return;
 
@@ -197,7 +197,7 @@ strokeLineSegments(CGContextRef ctx, const CGPoint lines[], size_t count)
 
   GtViewerAdornmentMask mask = self.adornmentMask;
 
-  if (![tn.node isKindOfClass:[MgRectNode class]])
+  if (![tn.node isKindOfClass:[MgRectLayer class]])
     mask &= ~GtViewerAdornmentMaskCornerRadius;
 
   if (mask != 0 && container == tn.node)
@@ -223,7 +223,7 @@ strokeLineSegments(CGContextRef ctx, const CGPoint lines[], size_t count)
 	      p.y = p.y * bounds.size.height;
 
 	      if (i == GtViewerAdornmentCornerRadius)
-		p.x += ((MgRectNode *)container).cornerRadius;
+		p.x += ((MgRectLayer *)container).cornerRadius;
 	    }
 	  else
 	    {
@@ -291,13 +291,13 @@ strokeLineSegments(CGContextRef ctx, const CGPoint lines[], size_t count)
 - (NSInteger)hitTest:(CGPoint)point inAdornmentsOfNode:(GtTreeNode *)tn
 {
   CGAffineTransform m;
-  MgLayerNode *container = getLayerAndTransform(tn, &m);
+  MgLayer *container = getLayerAndTransform(tn, &m);
   if (container == nil || container != tn.node)
     return NSNotFound;
 
   GtViewerAdornmentMask mask = self.adornmentMask;
 
-  if (![tn.node isKindOfClass:[MgRectNode class]])
+  if (![tn.node isKindOfClass:[MgRectLayer class]])
     mask &= ~GtViewerAdornmentMaskCornerRadius;
 
   if (mask == 0)
@@ -321,7 +321,7 @@ strokeLineSegments(CGContextRef ctx, const CGPoint lines[], size_t count)
 	  p.y = p.y * bounds.size.height;
 
 	  if (i == GtViewerAdornmentCornerRadius)
-	    p.x += ((MgRectNode *)container).cornerRadius;
+	    p.x += ((MgRectLayer *)container).cornerRadius;
 	}
       else
 	{

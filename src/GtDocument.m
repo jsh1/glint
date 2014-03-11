@@ -38,7 +38,7 @@ NSString *const GtDocumentNodeDidChange = @"GtDocumentNodeDidChange";
 {
   GtWindowController *_controller;
   CGSize _documentSize;
-  MgLayerNode *_documentNode;
+  MgLayer *_documentNode;
   int _undoDisable;
 }
 
@@ -57,7 +57,7 @@ NSString *const GtDocumentNodeDidChange = @"GtDocumentNodeDidChange";
   CGFloat width = [defaults doubleForKey:@"GtDefaultDocumentWidth"];
   CGFloat height = [defaults doubleForKey:@"GtDefaultDocumentHeight"];
 
-  MgGroupNode *root = [MgGroupNode node];
+  MgGroupLayer *root = [MgGroupLayer node];
 
   root.name = @"Root Layer";
   root.bounds = CGRectMake(0, 0, width, height);
@@ -67,14 +67,14 @@ NSString *const GtDocumentNodeDidChange = @"GtDocumentNodeDidChange";
   self.documentNode = root;
 
 #if 1
-  MgRectNode *bg_rect = [MgRectNode node];
+  MgRectLayer *bg_rect = [MgRectLayer node];
   bg_rect.fillColor = [[NSColor lightGrayColor] CGColor];
   bg_rect.name = @"BG Fill";
   bg_rect.bounds = root.bounds;
   bg_rect.position = root.position;
   [root addContent:bg_rect];
 
-  MgImageNode *image_layer = [MgImageNode node];
+  MgImageLayer *image_layer = [MgImageLayer node];
   image_layer.position = CGPointMake(700, 400);
   image_layer.bounds = CGRectMake(0, 0, 512, 512);
   image_layer.rotation = -10 * (M_PI / 180);
@@ -85,7 +85,7 @@ NSString *const GtDocumentNodeDidChange = @"GtDocumentNodeDidChange";
   [root addContent:image_layer];
 
 #if 1
-  MgGroupNode *image_group = [MgGroupNode node];
+  MgGroupLayer *image_group = [MgGroupLayer node];
   image_group.position = CGPointMake(-200, 300);
   image_group.bounds = CGRectMake(0, 0, 512, 512);
   image_group.alpha = .25;
@@ -94,7 +94,7 @@ NSString *const GtDocumentNodeDidChange = @"GtDocumentNodeDidChange";
   [root addContent:image_group];
 #endif
 
-  MgRectNode *rect_layer = [MgRectNode node];
+  MgRectLayer *rect_layer = [MgRectLayer node];
   rect_layer.position = CGPointMake(350, 300);
   rect_layer.bounds = CGRectMake(0, 0, 400, 250);
   rect_layer.cornerRadius = 8;
@@ -138,12 +138,12 @@ NSString *const GtDocumentNodeDidChange = @"GtDocumentNodeDidChange";
   return NO;
 }
 
-- (MgLayerNode *)documentNode
+- (MgLayer *)documentNode
 {
   return _documentNode;
 }
 
-- (void)setDocumentNode:(MgLayerNode *)node
+- (void)setDocumentNode:(MgLayer *)node
 {
   if (_documentNode != node)
     {
@@ -190,7 +190,7 @@ NSString *const GtDocumentNodeDidChange = @"GtDocumentNodeDidChange";
 
       self.documentSize = [unarchiver mg_decodeCGSizeForKey:@"documentSize"];
       self.documentNode = [unarchiver decodeObjectOfClass:
-			   [MgLayerNode class]
+			   [MgLayer class]
 			   forKey:NSKeyedArchiveRootObjectKey];
 
       [unarchiver finishDecoding];
@@ -256,7 +256,7 @@ makeNameUnique(MgNode *node, MgNode *parent)
 }
 
 static void
-initializeLayerFromContainer(MgLayerNode *layer, MgLayerNode *container)
+initializeLayerFromContainer(MgLayer *layer, MgLayer *container)
 {
   CGRect bounds = (container != nil ? container.bounds
 		   : CGRectMake(0, 0, 512, 512));
@@ -279,7 +279,7 @@ makeSelectionArray1(GtTreeNode *parent, MgNode *node)
   return selection;
 }
 
-/* ADDED is map from MgNode -> GtTreeNode<MgGroupNode>. */
+/* ADDED is map from MgNode -> GtTreeNode<MgGroupLayer>. */
 
 static NSArray *
 makeSelectionArray(NSMapTable *added)
@@ -376,7 +376,7 @@ makeSelectionArray(NSMapTable *added)
       if (image_provider == nil)
 	return;
 
-      MgImageNode *layer = [MgImageNode node];
+      MgImageLayer *layer = [MgImageLayer node];
       layer.imageProvider = image_provider;
       layer.name = @"Pasted Image";
       makeNameUnique(layer, parent_group.node);
@@ -398,14 +398,14 @@ makeSelectionArray(NSMapTable *added)
 
   for (id object in objects)
     {
-      if ([object isKindOfClass:[MgLayerNode class]])
+      if ([object isKindOfClass:[MgLayer class]])
 	{
 	  [self node:parent_group insertObject:object atIndex:NSIntegerMax
 	   forKey:@"contents"];
 
 	  [added setObject:parent_group forKey:object];
 	}
-      else if ([object isKindOfClass:[MgAnimationNode class]])
+      else if ([object isKindOfClass:[MgAnimation class]])
 	{
 	  [self node:parent_layer insertObject:object atIndex:NSIntegerMax
 	   forKey:@"animations"];
@@ -475,21 +475,21 @@ makeSelectionArray(NSMapTable *added)
   return [pboard canReadObjectForClasses:classes options:nil];
 }
 
-- (void)addLayerContent:(MgLayerNode *(^)(MgGroupNode *parent_group))block
+- (void)addLayerContent:(MgLayer *(^)(MgGroupLayer *parent_group))block
 {
   NSMapTable *groups = [NSMapTable strongToStrongObjectsMapTable];
   NSMutableSet *nodes = [NSMutableSet set];
 
   for (GtTreeNode *tn in self.controller.selection)
     {
-      if (![tn.node isKindOfClass:[MgLayerNode class]])
+      if (![tn.node isKindOfClass:[MgLayer class]])
 	continue;
 
       GtTreeNode *n = tn;
       NSInteger idx = NSNotFound;
       while (n != nil)
 	{
-	  if ([n.node isKindOfClass:[MgGroupNode class]])
+	  if ([n.node isKindOfClass:[MgGroupLayer class]])
 	    break;
 	  GtTreeNode *p = n.parent;
 	  if ([n.parentKey isEqualToString:@"contents"])
@@ -517,9 +517,9 @@ makeSelectionArray(NSMapTable *added)
 
   for (GtTreeNode *parent in groups)
     {
-      MgGroupNode *parent_group = (MgGroupNode *)parent.node;
+      MgGroupLayer *parent_group = (MgGroupLayer *)parent.node;
 
-      MgLayerNode *content = block(parent_group);
+      MgLayer *content = block(parent_group);
 
       if (content != nil)
 	{
@@ -539,9 +539,9 @@ makeSelectionArray(NSMapTable *added)
 
 - (IBAction)insertLayer:(id)sender
 {
-  [self addLayerContent:^MgLayerNode * (MgGroupNode *parent_group)
+  [self addLayerContent:^MgLayer * (MgGroupLayer *parent_group)
     {
-      MgLayerNode *layer = [MgLayerNode node];
+      MgLayer *layer = [MgLayer node];
       initializeLayerFromContainer(layer, parent_group);
       layer.name = @"Layer";
       makeNameUnique(layer, parent_group);
@@ -553,33 +553,33 @@ makeSelectionArray(NSMapTable *added)
 {
   NSInteger tag = [sender tag];
 
-  [self addLayerContent:^MgLayerNode * (MgGroupNode *parent_group)
+  [self addLayerContent:^MgLayer * (MgGroupLayer *parent_group)
     {
-      MgLayerNode *node = nil;
+      MgLayer *node = nil;
 
       if (tag == 0)
 	{
-	  node = [[MgImageNode alloc] init];
+	  node = [[MgImageLayer alloc] init];
 	  node.name = @"Image";
 	}
       else if (tag == 1)
 	{
-	  node = [[MgGradientNode alloc] init];
+	  node = [[MgGradientLayer alloc] init];
 	  node.name = @"Gradient";
 	}
       else if (tag == 2 || tag == 3)
 	{
-	  node = [[MgRectNode alloc] init];
+	  node = [[MgRectLayer alloc] init];
 	  node.name = @"Rect";
 	  if (tag == 3)
-	    ((MgRectNode *)node).drawingMode = kCGPathStroke;
+	    ((MgRectLayer *)node).drawingMode = kCGPathStroke;
 	}
       else if (tag == 4 || tag == 5)
 	{
-	  node = [[MgPathNode alloc] init];
+	  node = [[MgPathLayer alloc] init];
 	  node.name = @"Path";
 	  if (tag == 5)
-	    ((MgPathNode *)node).drawingMode = kCGPathStroke;
+	    ((MgPathLayer *)node).drawingMode = kCGPathStroke;
 	}
       else
 	return nil;
@@ -620,9 +620,9 @@ makeSelectionArray(NSMapTable *added)
   if (container == nil)
     return;
 
-  MgGroupNode *container_group = (MgGroupNode *)container.node;
+  MgGroupLayer *container_group = (MgGroupLayer *)container.node;
 
-  MgGroupNode *layer = [MgGroupNode node];
+  MgGroupLayer *layer = [MgGroupLayer node];
   layer.name = @"Group";
   if (container == master)
     makeNameUnique(layer, container_group);
@@ -634,7 +634,7 @@ makeSelectionArray(NSMapTable *added)
       if (tn != master)
 	[self removeTreeNodeFromParent:tn];
 
-      MgLayerNode *node = (MgLayerNode *)tn.node;
+      MgLayer *node = (MgLayer *)tn.node;
       [layer addContent:node];
     }
 
@@ -653,8 +653,8 @@ makeSelectionArray(NSMapTable *added)
 
   for (GtTreeNode *tn in self.controller.selection)
     {
-      MgGroupNode *group = (MgGroupNode *)tn.node;
-      if (![group isKindOfClass:[MgGroupNode class]])
+      MgGroupLayer *group = (MgGroupLayer *)tn.node;
+      if (![group isKindOfClass:[MgGroupLayer class]])
 	continue;
       if (group.mask != nil)
 	continue;
@@ -676,7 +676,7 @@ makeSelectionArray(NSMapTable *added)
 
       [self removeTreeNodeFromParent:tn];
 
-      for (MgLayerNode *child in group.contents)
+      for (MgLayer *child in group.contents)
 	{
 	  [self node:parent insertObject:child atIndex:idx++
 	   forKey:@"contents"];
@@ -757,8 +757,8 @@ makeSelectionArray(NSMapTable *added)
 
   for (GtTreeNode *tn in self.controller.selection)
     {
-      MgGroupNode *layer = (MgGroupNode *)tn.node;
-      if (![layer isKindOfClass:[MgGroupNode class]])
+      MgGroupLayer *layer = (MgGroupLayer *)tn.node;
+      if (![layer isKindOfClass:[MgGroupLayer class]])
 	continue;
 
       if ([nodes containsObject:layer])
@@ -776,8 +776,8 @@ makeSelectionArray(NSMapTable *added)
 
   for (GtTreeNode *tn in self.controller.selection)
     {
-      MgGroupNode *layer = (MgGroupNode *)tn.node;
-      if (![layer isKindOfClass:[MgGroupNode class]])
+      MgGroupLayer *layer = (MgGroupLayer *)tn.node;
+      if (![layer isKindOfClass:[MgGroupLayer class]])
 	continue;
 
       if (layer.group)
@@ -796,8 +796,8 @@ makeSelectionArray(NSMapTable *added)
 
   for (GtTreeNode *tn in self.controller.selection)
     {
-      MgLayerNode *layer = (MgLayerNode *)tn.node;
-      if (![layer isKindOfClass:[MgLayerNode class]])
+      MgLayer *layer = (MgLayer *)tn.node;
+      if (![layer isKindOfClass:[MgLayer class]])
 	continue;
 
       if ([nodes containsObject:layer])
@@ -816,8 +816,8 @@ makeSelectionArray(NSMapTable *added)
 
   for (GtTreeNode *tn in self.controller.selection)
     {
-      MgLayerNode *layer = (MgLayerNode *)tn.node;
-      if (![layer isKindOfClass:[MgLayerNode class]])
+      MgLayer *layer = (MgLayer *)tn.node;
+      if (![layer isKindOfClass:[MgLayer class]])
 	continue;
 
       if (layer.blendMode == mode)
@@ -836,8 +836,8 @@ makeSelectionArray(NSMapTable *added)
 
   for (GtTreeNode *tn in self.controller.selection)
     {
-      MgLayerNode *layer = (MgLayerNode *)tn.node;
-      if (![layer isKindOfClass:[MgLayerNode class]])
+      MgLayer *layer = (MgLayer *)tn.node;
+      if (![layer isKindOfClass:[MgLayer class]])
 	continue;
 
       if ([nodes containsObject:layer])
@@ -856,8 +856,8 @@ makeSelectionArray(NSMapTable *added)
 
   for (GtTreeNode *tn in self.controller.selection)
     {
-      MgLayerNode *layer = (MgLayerNode *)tn.node;
-      if (![layer isKindOfClass:[MgLayerNode class]])
+      MgLayer *layer = (MgLayer *)tn.node;
+      if (![layer isKindOfClass:[MgLayer class]])
 	continue;
 
       if (fabsf(layer.alpha - alpha) < 1e-4f)
@@ -1097,11 +1097,11 @@ documentNodeChanged(GtDocument *self, GtTreeNode *tn)
       for (GtTreeNode *tn in self.controller.selection)
 	{
 	  if (action == @selector(setBlendMode:)
-	      && [tn.node isKindOfClass:[MgGroupNode class]]
-	      && !((MgGroupNode *)tn.node).group)
+	      && [tn.node isKindOfClass:[MgGroupLayer class]]
+	      && !((MgGroupLayer *)tn.node).group)
 	    continue;
 
-	  if ([tn.node isKindOfClass:[MgLayerNode class]])
+	  if ([tn.node isKindOfClass:[MgLayer class]])
 	    return YES;
 	}
 
@@ -1113,7 +1113,7 @@ documentNodeChanged(GtDocument *self, GtTreeNode *tn)
     {
       for (GtTreeNode *tn in self.controller.selection)
 	{
-	  if ([tn.node isKindOfClass:[MgGroupNode class]])
+	  if ([tn.node isKindOfClass:[MgGroupLayer class]])
 	    return YES;
 	}
 
