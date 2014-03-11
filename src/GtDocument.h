@@ -62,8 +62,8 @@ extern NSString *const GtDocumentNodeDidChange;
 
 - (IBAction)toggleEnabled:(id)sender;
 - (NSInteger)toggleEnabledState;
-- (IBAction)toggleIsolated:(id)sender;
-- (NSInteger)toggleIsolatedState;
+- (IBAction)toggleLayerGroup:(id)sender;
+- (NSInteger)toggleLayerGroupState;
 - (IBAction)setBlendMode:(id)sender;
 - (NSInteger)setBlendModeState:(id)sender;
 - (IBAction)setAlpha:(id)sender;

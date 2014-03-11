@@ -794,7 +794,7 @@ makeSelectionArray(NSMapTable *added)
   return on && off ? NSMixedState : on ? NSOnState : NSOffState;
 }
 
-- (IBAction)toggleIsolated:(id)sender
+- (IBAction)toggleLayerGroup:(id)sender
 {
   NSMutableSet *nodes = [NSMutableSet set];
 
@@ -807,13 +807,13 @@ makeSelectionArray(NSMapTable *added)
       if ([nodes containsObject:layer])
 	continue;
 
-      [self node:tn setValue:@(!layer.isolated) forKey:@"isolated"];
+      [self node:tn setValue:@(!layer.group) forKey:@"group"];
 
       [nodes addObject:layer];
     }
 }
 
-- (NSInteger)toggleIsolatedState
+- (NSInteger)toggleLayerGroupState
 {
   NSInteger on = 0, off = 0;
 
@@ -823,7 +823,7 @@ makeSelectionArray(NSMapTable *added)
       if (![layer isKindOfClass:[MgLayerNode class]])
 	continue;
 
-      if (layer.isolated)
+      if (layer.group)
 	on++;
       else
 	off++;
@@ -839,16 +839,16 @@ makeSelectionArray(NSMapTable *added)
 
   for (GtTreeNode *tn in self.controller.selection)
     {
-      MgLayerNode *layer = (MgLayerNode *)tn.node;
-      if (![layer isKindOfClass:[MgLayerNode class]])
+      MgDrawableNode *node = (MgDrawableNode *)tn.node;
+      if (![node isKindOfClass:[MgDrawableNode class]])
 	continue;
 
-      if ([nodes containsObject:layer])
+      if ([nodes containsObject:node])
 	continue;
 
       [self node:tn setValue:@(mode) forKey:@"blendMode"];
 
-      [nodes addObject:layer];
+      [nodes addObject:node];
     }
 }
 
@@ -859,11 +859,11 @@ makeSelectionArray(NSMapTable *added)
 
   for (GtTreeNode *tn in self.controller.selection)
     {
-      MgLayerNode *layer = (MgLayerNode *)tn.node;
-      if (![layer isKindOfClass:[MgLayerNode class]])
+      MgDrawableNode *node = (MgDrawableNode *)tn.node;
+      if (![node isKindOfClass:[MgDrawableNode class]])
 	continue;
 
-      if (layer.blendMode == mode)
+      if (node.blendMode == mode)
 	on++;
       else
 	off++;
@@ -879,16 +879,16 @@ makeSelectionArray(NSMapTable *added)
 
   for (GtTreeNode *tn in self.controller.selection)
     {
-      MgLayerNode *layer = (MgLayerNode *)tn.node;
-      if (![layer isKindOfClass:[MgLayerNode class]])
+      MgDrawableNode *node = (MgDrawableNode *)tn.node;
+      if (![node isKindOfClass:[MgDrawableNode class]])
 	continue;
 
-      if ([nodes containsObject:layer])
+      if ([nodes containsObject:node])
 	continue;
 
       [self node:tn setValue:@(alpha) forKey:@"alpha"];
 
-      [nodes addObject:layer];
+      [nodes addObject:node];
     }
 }
 
@@ -899,11 +899,11 @@ makeSelectionArray(NSMapTable *added)
 
   for (GtTreeNode *tn in self.controller.selection)
     {
-      MgLayerNode *layer = (MgLayerNode *)tn.node;
-      if (![layer isKindOfClass:[MgLayerNode class]])
+      MgDrawableNode *node = (MgDrawableNode *)tn.node;
+      if (![node isKindOfClass:[MgDrawableNode class]])
 	continue;
 
-      if (fabsf(layer.alpha - alpha) < 1e-4f)
+      if (fabsf(node.alpha - alpha) < 1e-4f)
 	on++;
       else
 	off++;
@@ -1133,10 +1133,17 @@ documentNodeChanged(GtDocument *self, GtTreeNode *tn)
     }
 
   if (action == @selector(embedIn:)
-      || action == @selector(group:))
+      || action == @selector(group:)
+      || action == @selector(setBlendMode:)
+      || action == @selector(setAlpha:))
     {
       for (GtTreeNode *tn in self.controller.selection)
 	{
+	  if (action == @selector(setBlendMode:)
+	      && [tn.node isKindOfClass:[MgLayerNode class]]
+	      && !((MgLayerNode *)tn.node).group)
+	    continue;
+
 	  if ([tn.node isKindOfClass:[MgDrawableNode class]])
 	    return YES;
 	}
@@ -1145,9 +1152,7 @@ documentNodeChanged(GtDocument *self, GtTreeNode *tn)
     }
 
   if (action == @selector(ungroup:)
-      || action == @selector(toggleIsolated:)
-      || action == @selector(setBlendMode:)
-      || action == @selector(setAlpha:))
+      || action == @selector(toggleLayerGroup:))
     {
       for (GtTreeNode *tn in self.controller.selection)
 	{

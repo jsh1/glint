@@ -79,8 +79,8 @@
 
       if (action == @selector(toggleEnabled:))
 	[item setState:[document toggleEnabledState]];
-      else if (action == @selector(toggleIsolated:))
-	[item setState:[document toggleIsolatedState]];
+      else if (action == @selector(toggleLayerGroup:))
+	[item setState:[document toggleLayerGroupState]];
       else if (action == @selector(setBlendMode:))
 	[item setState:[document setBlendModeState:item]];
       else if (action == @selector(setAlpha:))

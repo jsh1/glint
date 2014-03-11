@@ -470,16 +470,15 @@ CA
                                     <action selector="toggleEnabled:" target="-1" id="sGG-bA-mMX"/>
                                 </connections>
                             </menuItem>
-                            <menuItem isSeparatorItem="YES" id="GCO-bi-Jrq"/>
                             <menuItem title="Layer Group" keyEquivalent="g" id="WDL-FO-qWu">
                                 <modifierMask key="keyEquivalentModifierMask" control="YES"/>
                                 <connections>
-                                    <action selector="toggleIsolated:" target="-1" id="4rF-u4-5lc"/>
+                                    <action selector="toggleLayerGroup:" target="-1" id="E0n-Vc-ToP"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Layer Blend Mode" id="XmU-Ox-uv1">
+                            <menuItem title="Blend Mode" id="XmU-Ox-uv1">
                                 <modifierMask key="keyEquivalentModifierMask"/>
-                                <menu key="submenu" title="Layer Blend Mode" id="CQ3-tP-VAm">
+                                <menu key="submenu" title="Blend Mode" id="CQ3-tP-VAm">
                                     <items>
                                         <menuItem title="Normal" keyEquivalent="N" id="i9W-Ry-oMr">
                                             <modifierMask key="keyEquivalentModifierMask" option="YES"/>
@@ -637,9 +636,9 @@ CA
                                     </connections>
                                 </menu>
                             </menuItem>
-                            <menuItem title="Layer Alpha" id="CLf-S5-Oi9">
+                            <menuItem title="Alpha" id="CLf-S5-Oi9">
                                 <modifierMask key="keyEquivalentModifierMask"/>
-                                <menu key="submenu" title="Layer Alpha" id="MD8-jg-eSM">
+                                <menu key="submenu" title="Alpha" id="MD8-jg-eSM">
                                     <items>
                                         <menuItem title="100%" tag="100" keyEquivalent="0" id="ckE-84-3dR">
                                             <modifierMask key="keyEquivalentModifierMask" option="YES"/>
