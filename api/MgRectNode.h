@@ -22,9 +22,11 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "MgDrawableNode.h"
+#import "MgLayerNode.h"
 
-@interface MgRectNode : MgDrawableNode
+@interface MgRectNode : MgLayerNode
+
+@property(nonatomic, assign) CGFloat cornerRadius;
 
 @property(nonatomic, assign) CGPathDrawingMode drawingMode;
 

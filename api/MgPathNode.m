@@ -26,7 +26,7 @@
 
 #import "MgCoderExtensions.h"
 #import "MgCoreGraphics.h"
-#import "MgDrawableNodeInternal.h"
+#import "MgLayerNodeInternal.h"
 #import "MgNodeInternal.h"
 
 #import <Foundation/Foundation.h>
@@ -272,7 +272,7 @@
     }
 }
 
-- (BOOL)containsPoint:(CGPoint)p layerNode:(MgLayerNode *)node
+- (BOOL)contentContainsPoint:(CGPoint)lp
 {
   CGPathRef path = self.path;
   if (path == NULL)
@@ -285,27 +285,24 @@
     case kCGPathFill:
     case kCGPathFillStroke:
     case kCGPathStroke:			/* FIXME: incorrect */
-      return CGPathContainsPoint(path, NULL, p, false);
+      return CGPathContainsPoint(path, NULL, lp, false);
 
     case kCGPathEOFill:
     case kCGPathEOFillStroke:
-      return CGPathContainsPoint(path, NULL, p, true);
+      return CGPathContainsPoint(path, NULL, lp, true);
 
     default:
       return NO;
     }
 }
 
-- (void)_renderWithState:(MgDrawableRenderState *)rs
+- (void)_renderLayerWithState:(MgLayerRenderState *)rs
 {
   CGPathRef path = self.path;
   if (path == NULL)
     return;
 
   CGContextSaveGState(rs->ctx);
-
-  CGContextSetBlendMode(rs->ctx, self.blendMode);
-  CGContextSetAlpha(rs->ctx, rs->alpha * self.alpha);
 
   switch (self.drawingMode)
     {
@@ -335,19 +332,17 @@
   CGContextRestoreGState(rs->ctx);
 }
 
-- (void)_renderMaskWithState:(MgDrawableRenderState *)rs
+- (void)_renderLayerMaskWithState:(MgLayerRenderState *)rs
 {
   CGPathDrawingMode mode = self.drawingMode;
 
-  float alpha = rs->alpha * self.alpha;
-
-  if (alpha != 1
+  if (rs->alpha != 1
       || (mode != kCGPathStroke
 	  && CGColorGetAlpha(self.fillColor) < 1)
       || (mode != kCGPathFill && mode != kCGPathEOFill
 	  && CGColorGetAlpha(self.strokeColor) < 1))
     {
-      [super _renderMaskWithState:rs];
+      [super _renderLayerMaskWithState:rs];
       return;
     }
 

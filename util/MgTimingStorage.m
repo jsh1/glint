@@ -84,6 +84,22 @@
   return t;
 }
 
+- (CFTimeInterval)applyInverseToTime:(CFTimeInterval)t
+    currentTime:(CFTimeInterval)now
+{
+  /* FIXME: handle repeats, etc. */
+
+  if (_speed != 0)
+    {
+      t = (t - _offset) / _speed;
+      t = _begin + t;
+    }
+  else
+    t = now;
+
+  return t;
+}
+
 /** NSCopying methods. **/
 
 - (id)copyWithZone:(NSZone *)zone

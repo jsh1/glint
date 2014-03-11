@@ -26,7 +26,7 @@
 
 #import "MgCoderExtensions.h"
 #import "MgCoreGraphics.h"
-#import "MgDrawableNodeInternal.h"
+#import "MgLayerNodeInternal.h"
 #import "MgNodeInternal.h"
 
 #import <Foundation/Foundation.h>
@@ -238,14 +238,14 @@
     }
 }
 
-- (BOOL)containsPoint:(CGPoint)p layerNode:(MgLayerNode *)node
+- (BOOL)contentContainsPoint:(CGPoint)lp
 {
   /* FIXME: implement this. */
 
   return YES;
 }
 
-- (void)_renderWithState:(MgDrawableRenderState *)rs
+- (void)_renderLayerWithState:(MgLayerRenderState *)rs
 {
   if (_gradient == nil)
     {
@@ -257,11 +257,6 @@
   CGGradientRef grad = (__bridge CGGradientRef)_gradient;
   if (grad == NULL)
     return;
-
-  CGContextSaveGState(rs->ctx);
-
-  CGContextSetBlendMode(rs->ctx, self.blendMode);
-  CGContextSetAlpha(rs->ctx, rs->alpha * self.alpha);
 
   CGGradientDrawingOptions options = 0;
   if (self.drawsBeforeStart)
@@ -280,11 +275,9 @@
 				  self.startRadius, self.endPoint,
 				  self.endRadius, options);
     }
-
-  CGContextRestoreGState(rs->ctx);
 }
 
-/* FIXME: implement _renderMaskWithState: */
+/* FIXME: implement _renderLayerMaskWithState: */
 
 /** NSCopying methods. **/
 

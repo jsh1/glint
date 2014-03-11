@@ -57,20 +57,12 @@ MgNode : NSObject
   BOOL enabled
   NSString *name
 
-MgDrawableNode : MgNode
+MgTiming (protocol)
 
-  float alpha
-  CGBlendMode blendMode
-  NSArray<MgAnimationNode> *animations
+  double begin, duration, speed, offset, repeat
+  bool autoreverses, holdsBeforeStart, holdsAfterEnd
 
-  -- abstract class representing a color source that can be drawn
-  through a matrix and clip.
-
-MgTimelineNode : MgDrawableNode <MgTiming>
-
-  MgDrawableNode *node
-
-MgLayerNode : MgDrawableNode
+MgLayerNode : MgDrawableNode <MgTiming>
 
   CGPoint position
   CGPoint anchor
@@ -78,11 +70,17 @@ MgLayerNode : MgDrawableNode
   CGFloat cornerRadius
   CGFloat scale, squeeze, skew
   double rotation
-  BOOL group
+  float alpha
+  CGBlendMode blendMode
   MgDrawableNode *mask
+  NSArray<MgAnimationNode> *animations
+
+MgGroupNode : MgLayerNode
+
+  BOOL group
   NSArray<MgDrawableNode> *contents
 
-MgRectNode : MgDrawableNode
+MgRectNode : MgLayerNode
 
   CGPathDrawingMode drawingMode
   CGColorRef fillColor
@@ -91,7 +89,7 @@ MgRectNode : MgDrawableNode
 
   Draws into bounds rect of containing layer.
 
-MgImageNode : MgDrawableNode
+MgImageNode : MgLayerNode
 
   id<MgImageProvider> imageProvider
   CGRect cropRect		-- in image pixels
@@ -100,7 +98,7 @@ MgImageNode : MgDrawableNode
 
   Draws into bounds rect of containing layer.
 
-MgPathNode : MgDrawableNode
+MgPathNode : MgLayerNode
 
   CGPathRef path
   CGPathDrawingMode drawingMode
@@ -108,7 +106,7 @@ MgPathNode : MgDrawableNode
   CGColorRef strokeColor
   -- and the usual stroke parameters
 
-MgGradientNode : MgDrawableNode
+MgGradientNode : MgLayerNode
 
   NSArray<CGColorRef> *colors
   NSArray<NSNumber> *locations
@@ -126,9 +124,4 @@ MgAnimationNode : MgNode <MgTiming>
 MgBasicAnimationNode : MgAnimationNode
 
   id fromValue, toValue
-
-MgTiming (protocol)
-
-  double begin, duration, speed, offset, repeat
-  bool autoreverses, holdsBeforeStart, holdsAfterEnd
 </pre>

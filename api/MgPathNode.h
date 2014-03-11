@@ -22,9 +22,9 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "MgDrawableNode.h"
+#import "MgLayerNode.h"
 
-@interface MgPathNode : MgDrawableNode
+@interface MgPathNode : MgLayerNode
 
 @property(nonatomic) CGPathRef path;
 

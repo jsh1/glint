@@ -22,11 +22,12 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "MgLayerNode.h"
+#import "MgLayerNodeInternal.h"
 
+#import "MgAnimationNode.h"
 #import "MgCoderExtensions.h"
-#import "MgDrawableNodeInternal.h"
 #import "MgNodeInternal.h"
+#import "MgTimingStorage.h"
 
 #import <Foundation/Foundation.h>
 
@@ -35,14 +36,15 @@
   CGPoint _position;
   CGPoint _anchor;
   CGRect _bounds;
-  CGFloat _cornerRadius;
   CGFloat _scale;
   CGFloat _squeeze;
   CGFloat _skew;
   double _rotation;
-  BOOL _group;
-  MgDrawableNode *_mask;
-  NSMutableArray *_contents;
+  MgTimingStorage *_timing;
+  float _alpha;
+  CGBlendMode _blendMode;
+  MgLayerNode *_mask;
+  NSMutableArray *_animations;
 }
 
 - (id)init
@@ -55,6 +57,9 @@
   _bounds = CGRectZero;
   _scale = 1;
   _squeeze = 1;
+
+  _alpha = 1;
+  _blendMode = kCGBlendModeNormal;
 
   return self;
 }
@@ -119,27 +124,6 @@
       _bounds = r;
       [self incrementVersion];
       [self didChangeValueForKey:@"bounds"];
-    }
-}
-
-+ (BOOL)automaticallyNotifiesObserversOfCornerRadius
-{
-  return NO;
-}
-
-- (CGFloat)cornerRadius
-{
-  return _cornerRadius;
-}
-
-- (void)setCornerRadius:(CGFloat)x
-{
-  if (_cornerRadius != x)
-    {
-      [self willChangeValueForKey:@"cornerRadius"];
-      _cornerRadius = x;
-      [self incrementVersion];
-      [self didChangeValueForKey:@"cornerRadius"];
     }
 }
 
@@ -302,24 +286,45 @@
   return CGAffineTransformMake(m11, m12, m21, m22, tx, ty);
 }
 
-+ (BOOL)automaticallyNotifiesObserversOfGroup
++ (BOOL)automaticallyNotifiesObserversOfAlpha
 {
   return NO;
 }
 
-- (BOOL)group
+- (float)alpha
 {
-  return _group;
+  return _alpha;
 }
 
-- (void)setGroup:(BOOL)flag
+- (void)setAlpha:(float)x
 {
-  if (_group != flag)
+  if (_alpha != x)
     {
-      [self willChangeValueForKey:@"group"];
-      _group = flag;
+      [self willChangeValueForKey:@"alpha"];
+      _alpha = x;
       [self incrementVersion];
-      [self didChangeValueForKey:@"group"];
+      [self didChangeValueForKey:@"alpha"];
+    }
+}
+
++ (BOOL)automaticallyNotifiesObserversOfBlendMode
+{
+  return NO;
+}
+
+- (CGBlendMode)blendMode
+{
+  return _blendMode;
+}
+
+- (void)setBlendMode:(CGBlendMode)x
+{
+  if (_blendMode != x)
+    {
+      [self willChangeValueForKey:@"blendMode"];
+      _blendMode = x;
+      [self incrementVersion];
+      [self didChangeValueForKey:@"blendMode"];
     }
 }
 
@@ -328,12 +333,12 @@
   return NO;
 }
 
-- (MgDrawableNode *)mask
+- (MgLayerNode *)mask
 {
   return _mask;
 }
 
-- (void)setMask:(MgDrawableNode *)node
+- (void)setMask:(MgLayerNode *)node
 {
   if (_mask != node)
     {
@@ -346,90 +351,285 @@
     }
 }
 
-+ (BOOL)automaticallyNotifiesObserversOfContents
++ (BOOL)automaticallyNotifiesObserversOfAnimations
 {
   return NO;
 }
 
-- (NSArray *)contents
+- (NSArray *)animations
 {
-  return _contents != nil ? _contents : @[];
+  return _animations != nil ? _animations : @[];
 }
 
-- (void)setContents:(NSArray *)array
+- (void)setAnimations:(NSArray *)array
 {
-  if (_contents != array && ![_contents isEqual:array])
+  if (_animations != array)
     {
-      [self willChangeValueForKey:@"contents"];
+      [self willChangeValueForKey:@"animations"];
 
-      for (MgDrawableNode *node in _contents)
-	[node removeReference:self];
+      for (MgAnimationNode *anim in _animations)
+	[anim removeReference:self];
 
-      _contents = [array copy];
+      _animations = [array mutableCopy];
 
-      for (MgDrawableNode *node in _contents)
-	[node addReference:self];
+      for (MgAnimationNode *anim in _animations)
+	[anim addReference:self];
 
       [self incrementVersion];
-      [self didChangeValueForKey:@"contents"];
+      [self didChangeValueForKey:@"animations"];
     }
 }
 
-- (void)addContent:(MgDrawableNode *)node
+- (void)insertAnimation:(MgAnimationNode *)anim atIndex:(NSInteger)idx
 {
-  [self insertContent:node atIndex:NSIntegerMax];
+  if (_animations == nil)
+    _animations = [[NSMutableArray alloc] init];
+
+  if ([_animations indexOfObjectIdenticalTo:anim] == NSNotFound)
+    {
+      [self willChangeValueForKey:@"animations"];
+
+      if (idx > [_animations count])
+	idx = [_animations count];
+
+      [_animations insertObject:anim atIndex:idx];
+      [anim addReference:self];
+
+      [self incrementVersion];
+      [self didChangeValueForKey:@"animations"];
+    }
 }
 
-- (void)removeContent:(MgDrawableNode *)node
+- (void)removeAnimationAtIndex:(NSInteger)idx
+{
+  if (idx < [_animations count])
+    {
+      [self willChangeValueForKey:@"animations"];
+
+      [_animations[idx] removeReference:self];
+      [_animations removeObjectAtIndex:idx];
+
+      [self incrementVersion];
+      [self didChangeValueForKey:@"animations"];
+    }
+}
+
+- (void)addAnimation:(MgAnimationNode *)anim
+{
+  [self insertAnimation:anim atIndex:NSIntegerMax];
+}
+
+- (void)removeAnimation:(MgAnimationNode *)anim
 {
   while (true)
     {
-      NSInteger idx = [_contents indexOfObjectIdenticalTo:node];
+      NSInteger idx = [_animations indexOfObjectIdenticalTo:anim];
       if (idx == NSNotFound)
 	break;
 
-      [self removeContentAtIndex:idx];
+      [self removeAnimationAtIndex:idx];
     }
 }
 
-- (void)insertContent:(MgDrawableNode *)node atIndex:(NSInteger)idx
++ (BOOL)automaticallyNotifiesObserversOfBegin
 {
-  if (_contents == nil)
-    _contents = [[NSMutableArray alloc] init];
-
-  if (idx > [_contents count])
-    idx = [_contents count];
-
-  [self willChangeValueForKey:@"contents"];
-
-  [_contents insertObject:node atIndex:idx];
-  [node addReference:self];
-
-  [self incrementVersion];
-  [self didChangeValueForKey:@"contents"];
+  return NO;
 }
 
-- (void)removeContentAtIndex:(NSInteger)idx
+- (CFTimeInterval)begin
 {
-  if (idx < [_contents count])
+  return _timing != nil ? _timing.begin : 0;
+}
+
+- (void)setBegin:(CFTimeInterval)t
+{
+  if (_timing == nil && t != 0)
+    _timing = [[MgTimingStorage alloc] init];
+
+  if (_timing.begin != t)
     {
-      [self willChangeValueForKey:@"contents"];
-
-      [_contents[idx] removeReference:self];
-      [_contents removeObjectAtIndex:idx];
-
+      [self willChangeValueForKey:@"begin"];
+      _timing.begin = t;
       [self incrementVersion];
-      [self didChangeValueForKey:@"contents"];
+      [self didChangeValueForKey:@"begin"];
+    }
+}
+
++ (BOOL)automaticallyNotifiesObserversOfDuration
+{
+  return NO;
+}
+
+- (CFTimeInterval)duration
+{
+  return _timing != nil ? _timing.duration : 0;
+}
+
+- (void)setDuration:(CFTimeInterval)t
+{
+  if (_timing == nil && t != HUGE_VAL)
+    _timing = [[MgTimingStorage alloc] init];
+
+  if (_timing.duration != t)
+    {
+      [self willChangeValueForKey:@"duration"];
+      _timing.duration = t;
+      [self incrementVersion];
+      [self didChangeValueForKey:@"duration"];
+    }
+}
+
++ (BOOL)automaticallyNotifiesObserversOfSpeed
+{
+  return NO;
+}
+
+- (double)speed
+{
+  return _timing != nil ? _timing.speed : 0;
+}
+
+- (void)setSpeed:(double)t
+{
+  if (_timing == nil && t != 1)
+    _timing = [[MgTimingStorage alloc] init];
+
+  if (_timing.speed != t)
+    {
+      [self willChangeValueForKey:@"speed"];
+      _timing.speed = t;
+      [self incrementVersion];
+      [self didChangeValueForKey:@"speed"];
+    }
+}
+
++ (BOOL)automaticallyNotifiesObserversOfOffset
+{
+  return NO;
+}
+
+- (CFTimeInterval)offset
+{
+  return _timing != nil ? _timing.offset : 0;
+}
+
+- (void)setOffset:(CFTimeInterval)t
+{
+  if (_timing == nil && t != 0)
+    _timing = [[MgTimingStorage alloc] init];
+
+  if (_timing.offset != t)
+    {
+      [self willChangeValueForKey:@"offset"];
+      _timing.offset = t;
+      [self incrementVersion];
+      [self didChangeValueForKey:@"offset"];
+    }
+}
+
++ (BOOL)automaticallyNotifiesObserversOfRepeat
+{
+  return NO;
+}
+
+- (double)repeat
+{
+  return _timing != nil ? _timing.repeat : 0;
+}
+
+- (void)setRepeat:(double)t
+{
+  if (_timing == nil && t != 1)
+    _timing = [[MgTimingStorage alloc] init];
+
+  if (_timing.repeat != t)
+    {
+      [self willChangeValueForKey:@"repeat"];
+      _timing.repeat = t;
+      [self incrementVersion];
+      [self didChangeValueForKey:@"repeat"];
+    }
+}
+
++ (BOOL)automaticallyNotifiesObserversOfAutoreverses
+{
+  return NO;
+}
+
+- (BOOL)autoreverses
+{
+  return _timing != nil ? _timing.autoreverses : NO;
+}
+
+- (void)setAutoreverses:(BOOL)flag
+{
+  if (_timing == nil && flag)
+    _timing = [[MgTimingStorage alloc] init];
+
+  if (_timing.autoreverses != flag)
+    {
+      [self willChangeValueForKey:@"autoreverses"];
+      _timing.autoreverses = flag;
+      [self incrementVersion];
+      [self didChangeValueForKey:@"autoreverses"];
+    }
+}
+
++ (BOOL)automaticallyNotifiesObserversOfHoldsBeforeStart
+{
+  return NO;
+}
+
+- (BOOL)holdsBeforeStart
+{
+  return _timing != nil ? _timing.holdsBeforeStart : NO;
+}
+
+- (void)setHoldsBeforeStart:(BOOL)flag
+{
+  if (_timing == nil && flag)
+    _timing = [[MgTimingStorage alloc] init];
+
+  if (_timing.holdsBeforeStart != flag)
+    {
+      [self willChangeValueForKey:@"holdsBeforeStart"];
+      _timing.holdsBeforeStart = flag;
+      [self incrementVersion];
+      [self didChangeValueForKey:@"holdsBeforeStart"];
+    }
+}
+
++ (BOOL)automaticallyNotifiesObserversOfHoldsAfterEnd
+{
+  return NO;
+}
+
+- (BOOL)holdsAfterEnd
+{
+  return _timing != nil ? _timing.holdsAfterEnd : NO;
+}
+
+- (void)setHoldsAfterEnd:(BOOL)flag
+{
+  if (_timing == nil && flag)
+    _timing = [[MgTimingStorage alloc] init];
+
+  if (_timing.holdsAfterEnd != flag)
+    {
+      [self willChangeValueForKey:@"holdsAfterEnd"];
+      _timing.holdsAfterEnd = flag;
+      [self incrementVersion];
+      [self didChangeValueForKey:@"holdsAfterEnd"];
     }
 }
 
 - (void)foreachNode:(void (^)(MgNode *node))block
 {
-  for (MgDrawableNode *node in _contents)
-    block(node);
-
   if (_mask != nil)
     block(_mask);
+
+  for (MgAnimationNode *anim in _animations)
+    block(anim);
 
   [super foreachNode:block];
 }
@@ -437,14 +637,14 @@
 - (void)foreachNodeAndAttachmentInfo:(void (^)(MgNode *node,
     NSString *parentKey, NSInteger parentIndex))block
 {
-  NSArray *array = _contents;
+  if (_mask != nil)
+    block(_mask, @"mask", NSNotFound);
+
+  NSArray *array = _animations;
   NSInteger count = [array count];
 
   for (NSInteger i = 0; i < count; i++)
-    block(array[i], @"contents", i);
-
-  if (_mask != nil)
-    block(_mask, @"mask", NSNotFound);
+    block(array[i], @"animations", i);
 
   [super foreachNodeAndAttachmentInfo:block];
 }
@@ -461,44 +661,39 @@
   return CGPointApplyAffineTransform(p, m);
 }
 
-- (BOOL)containsPoint:(CGPoint)p layerNode:(MgLayerNode *)node
+- (BOOL)containsPoint:(CGPoint)p
 {
   CGPoint lp = [self convertPointFromParent:p];
 
-  MgDrawableNode *mask = self.mask;
-  if (mask != nil && [mask hitTest:lp layerNode:node] == nil)
+  MgLayerNode *mask = self.mask;
+  if (mask != nil && [mask hitTest:lp] == nil)
     return NO;
 
   if (CGRectContainsPoint(self.bounds, lp))
     return YES;
 
-  NSArray *array = self.contents;
-  NSInteger count = [array count];
-
-  for (NSInteger i = count - 1; i >= 0; i--)
-    {
-      MgDrawableNode *node = array[i];
-      if ([node containsPoint:lp layerNode:self])
-	return YES;
-    }
+  if ([self contentContainsPoint:lp])
+    return YES;
 
   return NO;
 }
 
-- (MgDrawableNode *)hitTest:(CGPoint)p layerNode:(MgLayerNode *)node
+- (BOOL)contentContainsPoint:(CGPoint)lp
+{
+  return NO;
+}
+
+- (MgLayerNode *)hitTest:(CGPoint)p
 {
   CGPoint lp = [self convertPointFromParent:p];
 
-  MgDrawableNode *mask = self.mask;
-  if (mask != nil && [mask hitTest:lp layerNode:node] == nil)
+  MgLayerNode *mask = self.mask;
+  if (mask != nil && [mask hitTest:lp] == nil)
     return nil;
 
-  for (MgDrawableNode *node in self.contents)
-    {
-      MgDrawableNode *hit = [node hitTest:lp layerNode:self];
-      if (hit != nil)
-	return hit;
-    }
+  MgLayerNode *node = [self hitTestContent:lp];
+  if (node != nil)
+    return node;
 
   if (CGRectContainsPoint(self.bounds, lp))
     return self;
@@ -506,75 +701,114 @@
   return nil;
 }
 
-- (void)addNodesContainingPoint:(CGPoint)p toSet:(NSMutableSet *)set
-    layerNode:(MgLayerNode *)node
+- (MgLayerNode *)hitTestContent:(CGPoint)lp
 {
-  CGPoint lp = [self convertPointFromParent:p];
-
-  MgDrawableNode *mask = self.mask;
-  if (mask != nil && [mask hitTest:lp layerNode:node] == nil)
-    return;
-
-  if (CGRectContainsPoint(self.bounds, lp))
-    [set addObject:self];
-
-  for (MgDrawableNode *node in self.contents)
-    [node addNodesContainingPoint:lp toSet:set layerNode:self];
+  return nil;
 }
 
 /** Rendering. **/
 
-- (void)_renderWithState:(MgDrawableRenderState *)rs
+- (CFTimeInterval)renderInContext:(CGContextRef)ctx
+{
+  return [self renderInContext:ctx atTime:CACurrentMediaTime()];
+}
+
+- (CFTimeInterval)renderInContext:(CGContextRef)ctx atTime:(CFTimeInterval)t
+{
+  MgLayerRenderState rs;
+  rs.ctx = ctx;
+  rs.t = t;
+  rs.tnext = HUGE_VAL;
+  rs.alpha = 1;
+
+  [self _renderWithState:&rs];
+
+  return rs.tnext;
+}
+
+- (void)_renderWithState:(MgLayerRenderState *)rs
 {
   float alpha = rs->alpha * fmin(self.alpha, 1);
   if (!(alpha > 0))
     return;
 
-  if ([self.contents count] == 0)
-    return;
-
-  BOOL group = self.group;
-
-  MgDrawableRenderState r = *rs;
+  MgLayerRenderState r = *rs;
+  r.t = _timing != nil ? [_timing applyToTime:rs->t] : rs->t;
   r.tnext = HUGE_VAL;
-  r.layer = self;
-  r.alpha = group ? 1 : alpha;
+  r.alpha = alpha;
 
   CGContextSaveGState(r.ctx);
+
   CGContextConcatCTM(r.ctx, [self parentTransform]);
 
-  MgDrawableNode *mask = self.mask;
+  MgLayerNode *mask = self.mask;
   if (mask != nil && mask.enabled)
-    [mask _renderMaskWithState:rs];
-
-  if (group)
     {
-      CGContextSetAlpha(r.ctx, alpha);
-      CGContextSetBlendMode(r.ctx, self.blendMode);
-      CGContextBeginTransparencyLayer(r.ctx, NULL);
+      MgLayerRenderState rm = r;
+      rm.tnext = HUGE_VAL;
+      rm.alpha = 1;
+
+      [mask _renderMaskWithState:&rm];
+
+      if (rm.tnext < r.tnext)
+	r.tnext = rm.tnext;
     }
 
-  for (MgDrawableNode *node in self.contents)
-    {
-      if (node.enabled)
-	[node _renderWithState:&r];
-    }
+  CGContextSetBlendMode(rs->ctx, self.blendMode);
+  CGContextSetAlpha(rs->ctx, r.alpha);
 
-  if (group)
-    CGContextEndTransparencyLayer(r.ctx);
+  [self _renderLayerWithState:&r];
 
   CGContextRestoreGState(r.ctx);
 
-  if (r.tnext < rs->tnext)
-    rs->tnext = r.tnext;
+  if (isfinite(r.tnext))
+    {
+      CFTimeInterval tnext = r.tnext;
+      if (_timing != nil)
+	tnext = [_timing applyInverseToTime:r.tnext currentTime:rs->t];
+      if (tnext < rs->tnext)
+	rs->tnext = tnext;
+    }
 }
 
-- (void)_renderMaskWithState:(MgDrawableRenderState *)rs
+- (void)_renderLayerWithState:(MgLayerRenderState *)rs
 {
-  /* FIXME: implement this. No good options, so will have to rasterize
-     an image mask using the CGBitmapContext? */
+}
 
-  [super _renderMaskWithState:rs];
+- (void)_renderMaskWithState:(MgLayerRenderState *)rs
+{
+  float alpha = rs->alpha * fmin(self.alpha, 1);
+  if (!(alpha > 0))
+    {
+      CGContextClipToRect(rs->ctx, CGRectNull);
+      return;
+    }
+
+  MgLayerRenderState r = *rs;
+  r.t = _timing != nil ? [_timing applyToTime:rs->t] : rs->t;
+  r.tnext = HUGE_VAL;
+  r.alpha = alpha;
+
+  CGAffineTransform m = [self parentTransform];
+  CGContextConcatCTM(r.ctx, m);
+
+  [self _renderLayerMaskWithState:&r];
+
+  CGContextConcatCTM(r.ctx, CGAffineTransformInvert(m));
+
+  if (isfinite(r.tnext))
+    {
+      CFTimeInterval tnext = r.tnext;
+      if (_timing != nil)
+	tnext = [_timing applyInverseToTime:r.tnext currentTime:rs->t];
+      if (tnext < rs->tnext)
+	rs->tnext = tnext;
+    }
+}
+
+- (void)_renderLayerMaskWithState:(MgLayerRenderState *)rs
+{
+  /* FIXME: render mask to an image and clip to it. */
 }
 
 /** NSCopying methods. **/
@@ -586,21 +820,16 @@
   copy->_position = _position;
   copy->_anchor = _anchor;
   copy->_bounds = _bounds;
-  copy->_cornerRadius = _cornerRadius;
   copy->_scale = _scale;
   copy->_squeeze = _squeeze;
   copy->_skew = _skew;
   copy->_rotation = _rotation;
-  copy->_group = _group;
+  copy->_timing = [_timing copy];
+  copy->_alpha = _alpha;
+  copy->_blendMode = _blendMode;
   copy->_mask = _mask;
-
-  if ([_contents count] != 0)
-    {
-      for (MgDrawableNode *node in _contents)
-	[node addReference:copy];
-
-      copy->_contents = [_contents copy];
-    }
+  for (MgAnimationNode *anim in self.animations)
+    [copy addAnimation:[anim copyWithZone:zone]];
 
   return copy;
 }
@@ -620,9 +849,6 @@
   if (!CGRectIsNull(_bounds))
     [c mg_encodeCGRect:_bounds forKey:@"bounds"];
 
-  if (_cornerRadius != 0)
-    [c encodeDouble:_cornerRadius forKey:@"cornerRadius"];
-
   if (_scale != 1)
     [c encodeDouble:_scale forKey:@"scale"];
 
@@ -635,14 +861,27 @@
   if (_rotation != 0)
     [c encodeDouble:_rotation forKey:@"rotation"];
 
-  if (_group)
-    [c encodeBool:_group forKey:@"group"];
+  if (_alpha != 1)
+    [c encodeFloat:_alpha forKey:@"alpha"];
+
+  if (_blendMode != kCGBlendModeNormal)
+    [c encodeInt:_blendMode forKey:@"blendMode"];
 
   if (_mask != nil)
     [c encodeObject:_mask forKey:@"mask"];
 
-  if ([_contents count] != 0)
-    [c encodeObject:_contents forKey:@"contents"];
+  /* Don't encode MgTimingStorage as its own object, embed its values
+     in this classes (in case we want to change the implementation in
+     the future). */
+
+  if (_timing != nil)
+    {
+      [c encodeBool:YES forKey:@"_hasTiming"];
+      [_timing encodeWithCoder:c];
+    }
+
+  if (_animations != nil)
+    [c encodeObject:_animations forKey:@"animations"];
 }
 
 - (id)initWithCoder:(NSCoder *)c
@@ -664,9 +903,6 @@
   else
     _bounds = CGRectNull;
 
-  if ([c containsValueForKey:@"cornerRadius"])
-    _cornerRadius = [c decodeDoubleForKey:@"cornerRadius"];
-
   if ([c containsValueForKey:@"scale"])
     _scale = [c decodeDoubleForKey:@"scale"];
   else
@@ -683,36 +919,36 @@
   if ([c containsValueForKey:@"rotation"])
     _rotation = [c decodeDoubleForKey:@"rotation"];
 
-  if ([c containsValueForKey:@"group"])
-    _group = [c decodeBoolForKey:@"group"];
+  if ([c containsValueForKey:@"alpha"])
+    _alpha = [c decodeFloatForKey:@"alpha"];
+  else
+    _alpha = 1;
+
+  if ([c containsValueForKey:@"blendMode"])
+    _blendMode = (CGBlendMode)[c decodeIntForKey:@"blendMode"];
+  else
+    _blendMode = kCGBlendModeNormal;
 
   if ([c containsValueForKey:@"mask"])
     {
-      _mask = [c decodeObjectOfClass:[MgDrawableNode class] forKey:@"mask"];
+      _mask = [c decodeObjectOfClass:[MgLayerNode class] forKey:@"mask"];
       [_mask addReference:self];
     }
 
-  if ([c containsValueForKey:@"contents"])
+  if ([c decodeBoolForKey:@"_hasTiming"])
     {
-      NSArray *array = [c decodeObjectOfClass:[NSArray class]
-			forKey:@"contents"];
+      _timing = [[MgTimingStorage alloc] init];
+      [_timing decodeWithCoder:c];
+    }
 
-      BOOL valid = YES;
+  if ([c containsValueForKey:@"animations"])
+    {
+      NSArray *array = [c decodeObjectOfClass:
+			[NSArray class] forKey:@"animations"];
       for (id obj in array)
 	{
-	  if (![obj isKindOfClass:[MgDrawableNode class]])
-	    {
-	      valid = NO;
-	      break;
-	    }
-	}
-
-      if (valid)
-	{
-	  _contents = [array copy];
-
-	  for (MgDrawableNode *node in _contents)
-	    [node addReference:self];
+	  if ([obj isKindOfClass:[MgAnimationNode class]])
+	    [self addAnimation:obj];
 	}
     }
 

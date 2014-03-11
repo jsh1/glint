@@ -24,13 +24,12 @@
 
 #import "MgDrawingNode.h"
 
-#import "MgDrawableNodeInternal.h"
-#import "MgLayerNode.h"
+#import "MgLayerNodeInternal.h"
 #import "MgNodeInternal.h"
 
 @implementation MgDrawingNode
 {
-  MgDrawableRenderState *_rs;
+  MgLayerRenderState *_rs;
 }
 
 - (void)setNeedsDisplay
@@ -46,22 +45,11 @@
 {
 }
 
-- (NSArray *)nodesContainingPoint:(CGPoint)p layerNode:(MgLayerNode *)node
-{
-  if (node != nil && CGRectContainsPoint(node.bounds, p))
-    return [NSArray arrayWithObject:self];
-  else
-    return @[];
-}
-
-- (void)_renderWithState:(MgDrawableRenderState *)rs
+- (void)_renderLayerWithState:(MgLayerRenderState *)rs
 {
   _rs = rs;
 
   CGContextSaveGState(rs->ctx);
-
-  CGContextSetBlendMode(rs->ctx, self.blendMode);
-  CGContextSetAlpha(rs->ctx, rs->alpha * self.alpha);
 
   [self drawWithState:(id)self];
 
@@ -70,7 +58,7 @@
   _rs = NULL;
 }
 
-- (void)_renderMaskWithState:(MgDrawableRenderState *)rs
+- (void)_renderLayerMaskWithState:(MgLayerRenderState *)rs
 {
   _rs = rs;
 
@@ -78,7 +66,7 @@
 
   if (alpha != 1)
     {
-      [super _renderMaskWithState:rs];
+      [super _renderLayerMaskWithState:rs];
       return;
     }
 
@@ -94,11 +82,6 @@
 - (CGContextRef)context
 {
   return _rs != NULL ? _rs->ctx : NULL;
-}
-
-- (MgLayerNode *)layer
-{
-  return _rs != NULL ? _rs->layer : nil;
 }
 
 - (CFTimeInterval)currentTime

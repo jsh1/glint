@@ -25,9 +25,8 @@
 #import "MgImageNode.h"
 
 #import "MgCoderExtensions.h"
-#import "MgDrawableNodeInternal.h"
 #import "MgImageProvider.h"
-#import "MgLayerNode.h"
+#import "MgLayerNodeInternal.h"
 #import "MgNodeInternal.h"
 
 #import <Foundation/Foundation.h>
@@ -146,11 +145,8 @@ static NSMutableSet *image_provider_classes;
     }
 }
 
-- (void)_renderWithState:(MgDrawableRenderState *)rs
+- (void)_renderLayerWithState:(MgLayerRenderState *)rs
 {
-  if (rs->layer == nil)
-    return;
-
   CGImageRef im = [self.imageProvider mg_providedImage];
   bool release_im = false;
 
@@ -167,14 +163,12 @@ static NSMutableSet *image_provider_classes;
 	 oriented the right way vertically. */
 
       CGContextSaveGState(rs->ctx);
-      CGContextSetBlendMode(rs->ctx, self.blendMode);
-      CGContextSetAlpha(rs->ctx, rs->alpha * self.alpha);
-      CGContextTranslateCTM(rs->ctx, 0, rs->layer.bounds.size.height);
+      CGContextTranslateCTM(rs->ctx, 0, self.bounds.size.height);
       CGContextScaleCTM(rs->ctx, 1, -1);
 
       /* FIXME: implement 9-part and tiling. */
 
-      CGContextDrawImage(rs->ctx, rs->layer.bounds, im);
+      CGContextDrawImage(rs->ctx, self.bounds, im);
 
       CGContextRestoreGState(rs->ctx);
 
@@ -183,23 +177,20 @@ static NSMutableSet *image_provider_classes;
     }
 }
 
-- (void)_renderMaskWithState:(MgDrawableRenderState *)rs
+- (void)_renderLayerMaskWithState:(MgLayerRenderState *)rs
 {
-  if (rs->layer == nil)
-    return;
-
   float alpha = rs->alpha * self.alpha;
 
   if (alpha != 1)
     {
-      [super _renderMaskWithState:rs];
+      [super _renderLayerMaskWithState:rs];
       return;
     }
 
   /* FIXME: incorrect, assumes image is opaque. Could just call
      CGContextClipToMask() and hope it does the right thing? */
 
-  CGContextClipToRect(rs->ctx, rs->layer.bounds);
+  CGContextClipToRect(rs->ctx, self.bounds);
 }
 
 /** NSCopying methods. **/

@@ -22,16 +22,16 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "MgDrawableNode.h"
+#import "MgNode.h"
+#import "MgTiming.h"
 
-@interface MgLayerNode : MgDrawableNode
+@interface MgLayerNode : MgNode <MgTiming>
 
 /** Geometry properties. **/
 
 @property(nonatomic, assign) CGPoint position;
 @property(nonatomic, assign) CGPoint anchor;
 @property(nonatomic, assign) CGRect bounds;
-@property(nonatomic, assign) CGFloat cornerRadius;
 
 @property(nonatomic, assign) CGFloat scale;
 @property(nonatomic, assign) CGFloat squeeze;
@@ -42,17 +42,49 @@
 
 /** Compositing properties. **/
 
-@property(nonatomic, assign, getter=isGroup) BOOL group;
-@property(nonatomic, strong) MgDrawableNode *mask;
+@property(nonatomic, assign) float alpha;
+@property(nonatomic, assign) CGBlendMode blendMode;
 
-/** Content nodes. **/
+@property(nonatomic, strong) MgLayerNode *mask;
 
-@property(nonatomic, copy) NSArray *contents;
+/** Animations. **/
 
-- (void)addContent:(MgDrawableNode *)node;
-- (void)removeContent:(MgDrawableNode *)node;
+@property(nonatomic, copy) NSArray *animations;
 
-- (void)insertContent:(MgDrawableNode *)node atIndex:(NSInteger)idx;
-- (void)removeContentAtIndex:(NSInteger)idx;
+- (void)insertAnimation:(MgAnimationNode *)anim atIndex:(NSInteger)idx;
+- (void)removeAnimationAtIndex:(NSInteger)idx;
+
+- (void)addAnimation:(MgAnimationNode *)anim;
+- (void)removeAnimation:(MgAnimationNode *)anim;
+
+/** Hit-testing and related. **/
+
+/* Returns the new point created by mapping 'p' either into or out of
+   the coordinate space containing the receiver. */
+
+- (CGPoint)convertPointToParent:(CGPoint)p;
+- (CGPoint)convertPointFromParent:(CGPoint)p;
+
+/* Hit-testing. Does a depth-first search from top-to-bottom finding
+   the deepest node that contains point 'p'. Point 'p' is defined in
+   the coordinate space containing the receiver. */
+
+- (MgLayerNode *)hitTest:(CGPoint)p;
+
+/* Returns true if the receiver or any of its descendants contain point
+   'p'. Point 'p' is defined in the coordinate space containing the
+   receiver. */
+
+- (BOOL)containsPoint:(CGPoint)p;
+
+/** Rendering. **/
+
+- (CFTimeInterval)renderInContext:(CGContextRef)ctx;
+- (CFTimeInterval)renderInContext:(CGContextRef)ctx atTime:(CFTimeInterval)t;
+
+/** Methods for subclasses to override. **/
+
+- (BOOL)contentContainsPoint:(CGPoint)lp;
+- (MgLayerNode *)hitTestContent:(CGPoint)lp;
 
 @end

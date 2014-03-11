@@ -26,14 +26,14 @@
 
 #import "MgCoderExtensions.h"
 #import "MgCoreGraphics.h"
-#import "MgDrawableNodeInternal.h"
-#import "MgLayerNode.h"
+#import "MgLayerNodeInternal.h"
 #import "MgNodeInternal.h"
 
 #import <Foundation/Foundation.h>
 
 @implementation MgRectNode
 {
+  CGFloat _cornerRadius;
   CGPathDrawingMode _drawingMode;
   id _fillColor;			/* CGColorRef */
   id _strokeColor;			/* CGColorref */
@@ -52,6 +52,27 @@
   _lineWidth = 1;
 
   return self;
+}
+
++ (BOOL)automaticallyNotifiesObserversOfCornerRadius
+{
+  return NO;
+}
+
+- (CGFloat)cornerRadius
+{
+  return _cornerRadius;
+}
+
+- (void)setCornerRadius:(CGFloat)x
+{
+  if (_cornerRadius != x)
+    {
+      [self willChangeValueForKey:@"cornerRadius"];
+      _cornerRadius = x;
+      [self incrementVersion];
+      [self didChangeValueForKey:@"cornerRadius"];
+    }
 }
 
 + (BOOL)automaticallyNotifiesObserversOfDrawingMode
@@ -145,28 +166,22 @@
   return node != nil && CGRectContainsPoint(node.bounds, p);
 }
 
-- (void)_renderWithState:(MgDrawableRenderState *)rs
+- (void)_renderLayerWithState:(MgLayerRenderState *)rs
 {
-  if (rs->layer == nil)
-    return;
-
   CGContextSaveGState(rs->ctx);
 
-  CGContextSetBlendMode(rs->ctx, self.blendMode);
-  CGContextSetAlpha(rs->ctx, rs->alpha * self.alpha);
-
-  CGFloat radius = rs->layer.cornerRadius;
+  CGFloat radius = self.cornerRadius;
   CGPathDrawingMode mode = self.drawingMode;
 
   if (radius == 0 && (mode == kCGPathFill || mode == kCGPathEOFill))
     {
       CGContextSetFillColorWithColor(rs->ctx, self.fillColor);
-      CGContextFillRect(rs->ctx, rs->layer.bounds);
+      CGContextFillRect(rs->ctx, self.bounds);
     }
   else if (radius == 0 && mode == kCGPathStroke)
     {
       CGContextSetStrokeColorWithColor(rs->ctx, self.strokeColor);
-      CGContextStrokeRectWithWidth(rs->ctx, rs->layer.bounds, self.lineWidth);
+      CGContextStrokeRectWithWidth(rs->ctx, self.bounds, self.lineWidth);
     }
   else
     {
@@ -176,10 +191,10 @@
 
       CGContextBeginPath(rs->ctx);
       if (radius == 0)
-	CGContextAddRect(rs->ctx, rs->layer.bounds);
+	CGContextAddRect(rs->ctx, self.bounds);
       else
 	{
-	  CGPathRef p = MgPathCreateWithRoundRect(rs->layer.bounds, radius);
+	  CGPathRef p = MgPathCreateWithRoundRect(self.bounds, radius);
 	  CGContextAddPath(rs->ctx, p);
 	  CGPathRelease(p);
 	}
@@ -190,11 +205,8 @@
   CGContextRestoreGState(rs->ctx);
 }
 
-- (void)_renderMaskWithState:(MgDrawableRenderState *)rs
+- (void)_renderLayerMaskWithState:(MgLayerRenderState *)rs
 {
-  if (rs->layer == nil)
-    return;
-
   CGPathDrawingMode mode = self.drawingMode;
 
   float alpha = rs->alpha * self.alpha;
@@ -205,19 +217,19 @@
       || (mode != kCGPathFill && mode != kCGPathEOFill
 	  && CGColorGetAlpha(self.strokeColor) < 1))
     {
-      [super _renderMaskWithState:rs];
+      [super _renderLayerMaskWithState:rs];
       return;
     }
 
-  CGFloat radius = rs->layer.cornerRadius;
+  CGFloat radius = self.cornerRadius;
 
   if (radius == 0 && (mode == kCGPathFill || mode == kCGPathEOFill))
     {
-      CGContextClipToRect(rs->ctx, rs->layer.bounds);
+      CGContextClipToRect(rs->ctx, self.bounds);
       return;
     }
 
-  CGPathRef p = MgPathCreateWithRoundRect(rs->layer.bounds, radius);
+  CGPathRef p = MgPathCreateWithRoundRect(self.bounds, radius);
   CGPathRef sp = NULL;
   if (mode != kCGPathFill && mode != kCGPathEOFill)
     {
@@ -241,6 +253,7 @@
 {
   MgRectNode *copy = [super copyWithZone:zone];
 
+  copy->_cornerRadius = _cornerRadius;
   copy->_drawingMode = _drawingMode;
   copy->_fillColor = _fillColor;
   copy->_strokeColor = _strokeColor;
@@ -254,6 +267,9 @@
 - (void)encodeWithCoder:(NSCoder *)c
 {
   [super encodeWithCoder:c];
+
+  if (_cornerRadius != 0)
+    [c encodeDouble:_cornerRadius forKey:@"cornerRadius"];
 
   if (_drawingMode != kCGPathFill)
     [c encodeInt:_drawingMode forKey:@"drawingMode"];
@@ -273,6 +289,9 @@
   self = [super initWithCoder:c];
   if (self == nil)
     return nil;
+
+  if ([c containsValueForKey:@"cornerRadius"])
+    _cornerRadius = [c decodeDoubleForKey:@"cornerRadius"];
 
   if ([c containsValueForKey:@"drawingMode"])
     _drawingMode = (CGPathDrawingMode)[c decodeIntForKey:@"drawingMode"];

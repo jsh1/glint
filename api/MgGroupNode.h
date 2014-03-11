@@ -22,22 +22,18 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "MgDrawableNode.h"
+#import "MgLayerNode.h"
 
-typedef struct MgDrawableRenderState MgDrawableRenderState;
+@interface MgGroupNode : MgLayerNode
 
-struct MgDrawableRenderState
-{
-  CGContextRef ctx;
-  CFTimeInterval t;
-  CFTimeInterval tnext;
-  __unsafe_unretained MgLayerNode *layer;
-  float alpha;
-};
+@property(nonatomic, assign, getter=isGroup) BOOL group;
 
-@interface MgDrawableNode ()
+@property(nonatomic, copy) NSArray *contents;
 
-- (void)_renderWithState:(MgDrawableRenderState *)rs;
-- (void)_renderMaskWithState:(MgDrawableRenderState *)rs;
+- (void)addContent:(MgLayerNode *)node;
+- (void)removeContent:(MgLayerNode *)node;
+
+- (void)insertContent:(MgLayerNode *)node atIndex:(NSInteger)idx;
+- (void)removeContentAtIndex:(NSInteger)idx;
 
 @end

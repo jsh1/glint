@@ -22,9 +22,9 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "MgDrawableNode.h"
+#import "MgLayerNode.h"
 
-@interface MgGradientNode : MgDrawableNode
+@interface MgGradientNode : MgLayerNode
 
 @property(nonatomic, copy) NSArray *colors;
 @property(nonatomic, copy) NSArray *locations;

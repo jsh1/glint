@@ -22,14 +22,14 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "MgDrawableNode.h"
+#import "MgLayerNode.h"
 
 @protocol MgDrawingState;
 
 /* Note: this may not be (fully?) supported if and when a non-CGContext
    based MgLayer is added. */
 
-@interface MgDrawingNode : MgDrawableNode
+@interface MgDrawingNode : MgLayerNode
 
 - (void)setNeedsDisplay;
 
@@ -42,8 +42,6 @@
 @protocol MgDrawingState
 
 @property(nonatomic, assign, readonly) CGContextRef context;
-@property(nonatomic, strong, readonly) MgLayerNode *layer;
-
 @property(nonatomic, assign, readonly) CFTimeInterval currentTime;
 @property(nonatomic, assign, readwrite) CFTimeInterval nextTime;
 

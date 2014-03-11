@@ -15,6 +15,11 @@ Issues
   Question then is, do we also move the timing properties into
   MgLayerNode and eliminate MgDrawableNode entirely?
 
+  RESOLVED: implemented the latter -- layers have geometry, timing,
+  compositing properties, but don't render anything. Group layers add
+  an array of sublayers ("contents"), Rect/image/etc objects are now
+  layers that draw content but don't have sublayers.
+
 2. Should content nodes have alpha and blendMode properties?
 
   The simplest method would be push the properties up to
@@ -25,7 +30,7 @@ Issues
   is true, in which case the layer's content will be sover'd and then
   composited using the layer's blend mode.
 
-  RESOLVED: MgDrawableNode now defines alpha and blendMode.
+  RESOLVED: everything's a layer now.
 
 3. Remove masksToBounds property from MgLayerNode?
 

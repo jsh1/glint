@@ -30,5 +30,7 @@
 - (void)decodeWithCoder:(NSCoder *)c;
 
 - (CFTimeInterval)applyToTime:(CFTimeInterval)t;
+- (CFTimeInterval)applyInverseToTime:(CFTimeInterval)t
+    currentTime:(CFTimeInterval)now;
 
 @end
