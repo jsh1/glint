@@ -289,9 +289,14 @@
   if (_node == nil)
     return;
 
+  float alpha = rs->alpha * fmin(self.alpha, 1);
+  if (!(alpha > 0))
+    return;
+
   MgDrawableRenderState r = *rs;
   r.t = _timing != nil ? [_timing applyToTime:rs->t] : rs->t;
   r.tnext = HUGE_VAL;
+  r.alpha = alpha;
 
   [_node _renderWithState:&r];
 

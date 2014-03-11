@@ -60,6 +60,9 @@
 
   CGContextSaveGState(rs->ctx);
 
+  CGContextSetBlendMode(rs->ctx, self.blendMode);
+  CGContextSetAlpha(rs->ctx, rs->alpha * self.alpha);
+
   [self drawWithState:(id)self];
 
   CGContextRestoreGState(rs->ctx);
@@ -70,6 +73,14 @@
 - (void)_renderMaskWithState:(MgDrawableRenderState *)rs
 {
   _rs = rs;
+
+  float alpha = rs->alpha * self.alpha;
+
+  if (alpha != 1)
+    {
+      [super _renderMaskWithState:rs];
+      return;
+    }
 
   /* Can't save/restore gstate, need clip changes. */
 

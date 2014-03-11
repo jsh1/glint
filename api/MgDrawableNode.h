@@ -26,6 +26,9 @@
 
 @interface MgDrawableNode : MgNode
 
+@property(nonatomic, assign) float alpha;
+@property(nonatomic, assign) CGBlendMode blendMode;
+
 /* Array of animations attached to this node. */
 
 @property(nonatomic, copy) NSArray *animations;

@@ -152,6 +152,9 @@
 
   CGContextSaveGState(rs->ctx);
 
+  CGContextSetBlendMode(rs->ctx, self.blendMode);
+  CGContextSetAlpha(rs->ctx, rs->alpha * self.alpha);
+
   CGFloat radius = rs->layer.cornerRadius;
   CGPathDrawingMode mode = self.drawingMode;
 
@@ -194,8 +197,11 @@
 
   CGPathDrawingMode mode = self.drawingMode;
 
-  if ((mode != kCGPathStroke
-       && CGColorGetAlpha(self.fillColor) < 1)
+  float alpha = rs->alpha * self.alpha;
+
+  if (alpha != 1
+      || (mode != kCGPathStroke
+	  && CGColorGetAlpha(self.fillColor) < 1)
       || (mode != kCGPathFill && mode != kCGPathEOFill
 	  && CGColorGetAlpha(self.strokeColor) < 1))
     {

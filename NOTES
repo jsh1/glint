@@ -25,6 +25,8 @@ Issues
   is true, in which case the layer's content will be sover'd and then
   composited using the layer's blend mode.
 
+  RESOLVED: MgDrawableNode now defines alpha and blendMode.
+
 3. Remove masksToBounds property from MgLayerNode?
 
   Exactly the same effect can be had by setting layer.mask to an

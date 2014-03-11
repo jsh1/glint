@@ -32,7 +32,63 @@
 
 @implementation MgDrawableNode
 {
+  float _alpha;
+  CGBlendMode _blendMode;
   NSMutableArray *_animations;
+}
+
+- (id)init
+{
+  self = [super init];
+  if (self == nil)
+    return nil;
+
+  _alpha = 1;
+  _blendMode = kCGBlendModeNormal;
+
+  return self;
+}
+
++ (BOOL)automaticallyNotifiesObserversOfAlpha
+{
+  return NO;
+}
+
+- (float)alpha
+{
+  return _alpha;
+}
+
+- (void)setAlpha:(float)x
+{
+  if (_alpha != x)
+    {
+      [self willChangeValueForKey:@"alpha"];
+      _alpha = x;
+      [self incrementVersion];
+      [self didChangeValueForKey:@"alpha"];
+    }
+}
+
++ (BOOL)automaticallyNotifiesObserversOfBlendMode
+{
+  return NO;
+}
+
+- (CGBlendMode)blendMode
+{
+  return _blendMode;
+}
+
+- (void)setBlendMode:(CGBlendMode)x
+{
+  if (_blendMode != x)
+    {
+      [self willChangeValueForKey:@"blendMode"];
+      _blendMode = x;
+      [self incrementVersion];
+      [self didChangeValueForKey:@"blendMode"];
+    }
 }
 
 + (BOOL)automaticallyNotifiesObserversOfAnimations
@@ -207,6 +263,7 @@
 
 - (void)_renderMaskWithState:(MgDrawableRenderState *)rs
 {
+  /* FIXME: implement this in terms of -_renderWithState: */
 }
 
 /** NSCopying methods. **/
@@ -214,6 +271,9 @@
 - (id)copyWithZone:(NSZone *)zone
 {
   MgDrawableNode *copy = [super copyWithZone:zone];
+
+  copy->_alpha = _alpha;
+  copy->_blendMode = _blendMode;
 
   for (MgAnimationNode *anim in self.animations)
     [copy addAnimation:[anim copyWithZone:zone]];
@@ -227,6 +287,12 @@
 {
   [super encodeWithCoder:c];
 
+  if (_alpha != 1)
+    [c encodeFloat:_alpha forKey:@"alpha"];
+
+  if (_blendMode != kCGBlendModeNormal)
+    [c encodeInt:_blendMode forKey:@"blendMode"];
+
   if (_animations != nil)
     [c encodeObject:_animations forKey:@"animations"];
 }
@@ -236,6 +302,16 @@
   self = [super initWithCoder:c];
   if (self == nil)
     return nil;
+
+  if ([c containsValueForKey:@"alpha"])
+    _alpha = [c decodeFloatForKey:@"alpha"];
+  else
+    _alpha = 1;
+
+  if ([c containsValueForKey:@"blendMode"])
+    _blendMode = (CGBlendMode)[c decodeIntForKey:@"blendMode"];
+  else
+    _blendMode = kCGBlendModeNormal;
 
   if ([c containsValueForKey:@"animations"])
     {

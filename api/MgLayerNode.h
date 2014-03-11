@@ -42,9 +42,7 @@
 
 /** Compositing properties. **/
 
-@property(nonatomic, assign, getter=isIsolated) BOOL isolated;
-@property(nonatomic, assign) float alpha;
-@property(nonatomic, assign) CGBlendMode blendMode;
+@property(nonatomic, assign, getter=isGroup) BOOL group;
 @property(nonatomic, strong) MgDrawableNode *mask;
 
 /** Content nodes. **/

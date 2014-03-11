@@ -59,6 +59,8 @@ MgNode : NSObject
 
 MgDrawableNode : MgNode
 
+  float alpha
+  CGBlendMode blendMode
   NSArray<MgAnimationNode> *animations
 
   -- abstract class representing a color source that can be drawn
@@ -76,9 +78,7 @@ MgLayerNode : MgDrawableNode
   CGFloat cornerRadius
   CGFloat scale, squeeze, skew
   double rotation
-  BOOL isolated
-  float alpha
-  CGBlendMode blendMode
+  BOOL group
   MgDrawableNode *mask
   NSArray<MgDrawableNode> *contents
 

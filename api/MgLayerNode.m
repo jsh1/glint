@@ -40,9 +40,7 @@
   CGFloat _squeeze;
   CGFloat _skew;
   double _rotation;
-  BOOL _isolated;
-  float _alpha;
-  CGBlendMode _blendMode;
+  BOOL _group;
   MgDrawableNode *_mask;
   NSMutableArray *_contents;
 }
@@ -57,8 +55,6 @@
   _bounds = CGRectZero;
   _scale = 1;
   _squeeze = 1;
-  _alpha = 1;
-  _blendMode = kCGBlendModeNormal;
 
   return self;
 }
@@ -306,66 +302,24 @@
   return CGAffineTransformMake(m11, m12, m21, m22, tx, ty);
 }
 
-+ (BOOL)automaticallyNotifiesObserversOfIsolated
++ (BOOL)automaticallyNotifiesObserversOfGroup
 {
   return NO;
 }
 
-- (BOOL)isolated
+- (BOOL)group
 {
-  return _isolated;
+  return _group;
 }
 
-- (void)setIsolated:(BOOL)flag
+- (void)setGroup:(BOOL)flag
 {
-  if (_isolated != flag)
+  if (_group != flag)
     {
-      [self willChangeValueForKey:@"isolated"];
-      _isolated = flag;
+      [self willChangeValueForKey:@"group"];
+      _group = flag;
       [self incrementVersion];
-      [self didChangeValueForKey:@"isolated"];
-    }
-}
-
-+ (BOOL)automaticallyNotifiesObserversOfAlpha
-{
-  return NO;
-}
-
-- (float)alpha
-{
-  return _alpha;
-}
-
-- (void)setAlpha:(float)x
-{
-  if (_alpha != x)
-    {
-      [self willChangeValueForKey:@"alpha"];
-      _alpha = x;
-      [self incrementVersion];
-      [self didChangeValueForKey:@"alpha"];
-    }
-}
-
-+ (BOOL)automaticallyNotifiesObserversOfBlendMode
-{
-  return NO;
-}
-
-- (CGBlendMode)blendMode
-{
-  return _blendMode;
-}
-
-- (void)setBlendMode:(CGBlendMode)x
-{
-  if (_blendMode != x)
-    {
-      [self willChangeValueForKey:@"blendMode"];
-      _blendMode = x;
-      [self incrementVersion];
-      [self didChangeValueForKey:@"blendMode"];
+      [self didChangeValueForKey:@"group"];
     }
 }
 
@@ -573,19 +527,18 @@
 - (void)_renderWithState:(MgDrawableRenderState *)rs
 {
   float alpha = rs->alpha * fmin(self.alpha, 1);
-
   if (!(alpha > 0))
     return;
 
   if ([self.contents count] == 0)
     return;
 
-  BOOL isolated = self.isolated;
+  BOOL group = self.group;
 
   MgDrawableRenderState r = *rs;
   r.tnext = HUGE_VAL;
   r.layer = self;
-  r.alpha = isolated ? 1 : alpha;
+  r.alpha = group ? 1 : alpha;
 
   CGContextSaveGState(r.ctx);
   CGContextConcatCTM(r.ctx, [self parentTransform]);
@@ -594,11 +547,12 @@
   if (mask != nil && mask.enabled)
     [mask _renderMaskWithState:rs];
 
-  CGContextSetAlpha(r.ctx, alpha);
-  CGContextSetBlendMode(r.ctx, self.blendMode);
-
-  if (isolated)
-    CGContextBeginTransparencyLayer(r.ctx, NULL);
+  if (group)
+    {
+      CGContextSetAlpha(r.ctx, alpha);
+      CGContextSetBlendMode(r.ctx, self.blendMode);
+      CGContextBeginTransparencyLayer(r.ctx, NULL);
+    }
 
   for (MgDrawableNode *node in self.contents)
     {
@@ -606,7 +560,7 @@
 	[node _renderWithState:&r];
     }
 
-  if (isolated)
+  if (group)
     CGContextEndTransparencyLayer(r.ctx);
 
   CGContextRestoreGState(r.ctx);
@@ -619,6 +573,8 @@
 {
   /* FIXME: implement this. No good options, so will have to rasterize
      an image mask using the CGBitmapContext? */
+
+  [super _renderMaskWithState:rs];
 }
 
 /** NSCopying methods. **/
@@ -635,9 +591,7 @@
   copy->_squeeze = _squeeze;
   copy->_skew = _skew;
   copy->_rotation = _rotation;
-  copy->_isolated = _isolated;
-  copy->_alpha = _alpha;
-  copy->_blendMode = _blendMode;
+  copy->_group = _group;
   copy->_mask = _mask;
 
   if ([_contents count] != 0)
@@ -681,14 +635,8 @@
   if (_rotation != 0)
     [c encodeDouble:_rotation forKey:@"rotation"];
 
-  if (_isolated)
-    [c encodeBool:_isolated forKey:@"isolated"];
-
-  if (_alpha != 1)
-    [c encodeFloat:_alpha forKey:@"alpha"];
-
-  if (_blendMode != kCGBlendModeNormal)
-    [c encodeInt:_blendMode forKey:@"blendMode"];
+  if (_group)
+    [c encodeBool:_group forKey:@"group"];
 
   if (_mask != nil)
     [c encodeObject:_mask forKey:@"mask"];
@@ -735,18 +683,8 @@
   if ([c containsValueForKey:@"rotation"])
     _rotation = [c decodeDoubleForKey:@"rotation"];
 
-  if ([c containsValueForKey:@"isolated"])
-    _isolated = [c decodeBoolForKey:@"isolated"];
-
-  if ([c containsValueForKey:@"alpha"])
-    _alpha = [c decodeFloatForKey:@"alpha"];
-  else
-    _alpha = 1;
-
-  if ([c containsValueForKey:@"blendMode"])
-    _blendMode = (CGBlendMode)[c decodeIntForKey:@"blendMode"];
-  else
-    _blendMode = kCGBlendModeNormal;
+  if ([c containsValueForKey:@"group"])
+    _group = [c decodeBoolForKey:@"group"];
 
   if ([c containsValueForKey:@"mask"])
     {

@@ -167,6 +167,8 @@ static NSMutableSet *image_provider_classes;
 	 oriented the right way vertically. */
 
       CGContextSaveGState(rs->ctx);
+      CGContextSetBlendMode(rs->ctx, self.blendMode);
+      CGContextSetAlpha(rs->ctx, rs->alpha * self.alpha);
       CGContextTranslateCTM(rs->ctx, 0, rs->layer.bounds.size.height);
       CGContextScaleCTM(rs->ctx, 1, -1);
 
@@ -185,6 +187,14 @@ static NSMutableSet *image_provider_classes;
 {
   if (rs->layer == nil)
     return;
+
+  float alpha = rs->alpha * self.alpha;
+
+  if (alpha != 1)
+    {
+      [super _renderMaskWithState:rs];
+      return;
+    }
 
   /* FIXME: incorrect, assumes image is opaque. Could just call
      CGContextClipToMask() and hope it does the right thing? */

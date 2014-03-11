@@ -258,6 +258,11 @@
   if (grad == NULL)
     return;
 
+  CGContextSaveGState(rs->ctx);
+
+  CGContextSetBlendMode(rs->ctx, self.blendMode);
+  CGContextSetAlpha(rs->ctx, rs->alpha * self.alpha);
+
   CGGradientDrawingOptions options = 0;
   if (self.drawsBeforeStart)
     options |= kCGGradientDrawsBeforeStartLocation;
@@ -275,6 +280,8 @@
 				  self.startRadius, self.endPoint,
 				  self.endRadius, options);
     }
+
+  CGContextRestoreGState(rs->ctx);
 }
 
 /* FIXME: implement _renderMaskWithState: */
