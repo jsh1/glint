@@ -64,10 +64,8 @@ MgDrawableNode : MgNode
   -- abstract class representing a color source that can be drawn
   through a matrix and clip.
 
-MgTimelineNode : MgDrawableNode
+MgTimelineNode : MgDrawableNode <MgTiming>
 
-  double begin, duration, speed, offset, repeat
-  bool autoreverses, holdsBeforeStart, holdsAfterEnd
   MgDrawableNode *node
 
 MgLayerNode : MgDrawableNode
@@ -119,10 +117,8 @@ MgGradientNode : MgDrawableNode
   CGFloat startRadius, endRadius
   BOOL drawsBeforeStart, drawsAfterEnd
 
-MgAnimationNode : MgNode
+MgAnimationNode : MgNode <MgTiming>
 
-  double begin, duration, speed, offset, repeat
-  BOOL autoreverses, holdsBeforeStart, holdsAfterEnd
   NSString *keyPath
   MgTimingFunction *timingFunction
   MgFunction *valueFunction
@@ -130,4 +126,9 @@ MgAnimationNode : MgNode
 MgBasicAnimationNode : MgAnimationNode
 
   id fromValue, toValue
+
+MgTiming (protocol)
+
+  double begin, duration, speed, offset, repeat
+  bool autoreverses, holdsBeforeStart, holdsAfterEnd
 </pre>
