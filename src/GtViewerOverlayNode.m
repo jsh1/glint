@@ -32,7 +32,6 @@
 #import "GtWindowController.h"
 
 #import "MgCoreGraphics.h"
-#import "MgLayerNode.h"
 
 #define ADORNMENT_SIZE 12
 #define INNER_ADORNMENT_RADIUS 50
@@ -198,6 +197,9 @@ strokeLineSegments(CGContextRef ctx, const CGPoint lines[], size_t count)
 
   GtViewerAdornmentMask mask = self.adornmentMask;
 
+  if (![tn.node isKindOfClass:[MgRectNode class]])
+    mask &= ~GtViewerAdornmentMaskCornerRadius;
+
   if (mask != 0 && container == tn.node)
     {
       CGPoint anchor = container.anchor;
@@ -221,7 +223,7 @@ strokeLineSegments(CGContextRef ctx, const CGPoint lines[], size_t count)
 	      p.y = p.y * bounds.size.height;
 
 	      if (i == GtViewerAdornmentCornerRadius)
-		p.x += container.cornerRadius;
+		p.x += ((MgRectNode *)container).cornerRadius;
 	    }
 	  else
 	    {
@@ -294,6 +296,10 @@ strokeLineSegments(CGContextRef ctx, const CGPoint lines[], size_t count)
     return NSNotFound;
 
   GtViewerAdornmentMask mask = self.adornmentMask;
+
+  if (![tn.node isKindOfClass:[MgRectNode class]])
+    mask &= ~GtViewerAdornmentMaskCornerRadius;
+
   if (mask == 0)
     return NSNotFound;
 
@@ -315,7 +321,7 @@ strokeLineSegments(CGContextRef ctx, const CGPoint lines[], size_t count)
 	  p.y = p.y * bounds.size.height;
 
 	  if (i == GtViewerAdornmentCornerRadius)
-	    p.x += container.cornerRadius;
+	    p.x += ((MgRectNode *)container).cornerRadius;
 	}
       else
 	{

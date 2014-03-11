@@ -127,6 +127,17 @@
   return nil;
 }
 
+- (GtTreeNode *)containingGroup
+{
+  for (GtTreeNode *n = self.parent; n != nil; n = n.parent)
+    {
+      if ([n.node isKindOfClass:[MgGroupNode class]])
+	return n;
+    }
+
+  return nil;
+}
+
 - (BOOL)isDescendantOf:(GtTreeNode *)tn
 {
   for (GtTreeNode *n = self; n != nil; n = n.parent)
@@ -206,26 +217,17 @@ tree_depth(GtTreeNode *tn)
 
 - (BOOL)containsPoint:(CGPoint)p
 {
-  GtTreeNode *layer = [self containingLayer];
-
-  return [(MgDrawableNode *)_node containsPoint:p layerNode:(MgLayerNode *)layer.node];
+  return [(MgLayerNode *)_node containsPoint:p];
 }
 
 - (GtTreeNode *)hitTest:(CGPoint)p
 {
-  return [self hitTest:p layer:nil];
-}
-
-- (GtTreeNode *)hitTest:(CGPoint)p layer:(GtTreeNode *)layer
-{
-  if (![_node isKindOfClass:[MgDrawableNode class]])
+  if (![_node isKindOfClass:[MgLayerNode class]])
     return nil;
 
-  MgDrawableNode *drawable = (MgDrawableNode *)_node;
+  MgLayerNode *layer = (MgLayerNode *)_node;
 
-  CGPoint node_p = [drawable convertPointFromParent:p];
-  GtTreeNode *node_layer = ([drawable isKindOfClass:[MgLayerNode class]]
-			    ? self : layer);
+  CGPoint node_p = [layer convertPointFromParent:p];
 
   NSArray *children = self.children;
   NSInteger count = [children count];
@@ -233,12 +235,12 @@ tree_depth(GtTreeNode *tn)
   for (NSInteger i = count - 1; i >= 0; i--)
     {
       GtTreeNode *node = children[i];
-      GtTreeNode *hit = [node hitTest:node_p layer:node_layer];
+      GtTreeNode *hit = [node hitTest:node_p];
       if (hit != nil)
 	return hit;
     }
 
-  if ([drawable containsPoint:p layerNode:(MgLayerNode *)layer.node])
+  if ([layer containsPoint:p])
     return self;
 
   return nil;

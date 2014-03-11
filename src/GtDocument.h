@@ -33,7 +33,7 @@ extern NSString *const GtDocumentNodeDidChange;
 @property(nonatomic, readonly, strong) GtWindowController *controller;
 
 @property(nonatomic, assign) CGSize documentSize;
-@property(nonatomic, strong) MgDrawableNode *documentNode;
+@property(nonatomic, strong) MgLayerNode *documentNode;
 
 - (void)disableUndo;
 - (void)reenableUndo;
@@ -54,7 +54,6 @@ extern NSString *const GtDocumentNodeDidChange;
 - (IBAction)insertLayer:(id)sender;
 - (IBAction)addContent:(id)sender;
 - (IBAction)addAnimation:(id)sender;
-- (IBAction)embedIn:(id)sender;
 - (IBAction)group:(id)sender;
 - (IBAction)ungroup:(id)sender;
 

@@ -431,26 +431,6 @@ CA
                                 </menu>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="CFV-Rl-BbR"/>
-                            <menuItem title="Embed In" id="KGz-BS-YRd">
-                                <modifierMask key="keyEquivalentModifierMask"/>
-                                <menu key="submenu" title="Embed In" id="tPx-wQ-Aol">
-                                    <items>
-                                        <menuItem title="Layer" keyEquivalent="l" id="Eup-9e-dWF">
-                                            <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
-                                            <connections>
-                                                <action selector="embedIn:" target="-1" id="hrP-w6-qgL"/>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem title="Timeline" tag="1" id="cFC-9B-hZv">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                            <connections>
-                                                <action selector="embedIn:" target="-1" id="S98-O9-ZoW"/>
-                                            </connections>
-                                        </menuItem>
-                                    </items>
-                                </menu>
-                            </menuItem>
-                            <menuItem isSeparatorItem="YES" id="ajc-gg-quV"/>
                             <menuItem title="Group" keyEquivalent="g" id="L6d-AF-ykv">
                                 <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
                                 <connections>

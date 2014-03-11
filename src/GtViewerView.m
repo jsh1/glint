@@ -45,8 +45,8 @@
 @implementation GtViewerView
 {
   MgLayer *_nodeLayer;
-  MgLayerNode *_rootNode;
-  MgLayerNode *_documentContainer;
+  MgGroupNode *_rootNode;
+  MgGroupNode *_documentContainer;
   GtViewerOverlayNode *_overlayNode;
   CGPoint _viewCenter;
   CGFloat _viewScale;
@@ -165,14 +165,14 @@
 
   if (_rootNode == nil)
     {
-      _rootNode = [MgLayerNode node];
+      _rootNode = [MgGroupNode node];
       _rootNode.anchor = CGPointZero;
       _nodeLayer.rootNode = _rootNode;
     }
 
   if (_documentContainer == nil)
     {
-      _documentContainer = [MgLayerNode node];
+      _documentContainer = [MgGroupNode node];
       [_rootNode addContent:_documentContainer];
     }
 
@@ -298,6 +298,7 @@
 
   struct layer_state
     {
+      bool is_rect;
       CGPoint position;
       CGPoint anchor;
       CGRect bounds;
@@ -313,10 +314,12 @@
     {
       GtTreeNode *tn = nodes[i];
       MgLayerNode *layer = (MgLayerNode *)tn.node;
+      old_state[i].is_rect = [layer isKindOfClass:[MgRectNode class]];
       old_state[i].position = layer.position;
       old_state[i].anchor = layer.anchor;
       old_state[i].bounds = layer.bounds;
-      old_state[i].cornerRadius = layer.cornerRadius;
+      old_state[i].cornerRadius = (old_state[i].is_rect
+				   ? ((MgRectNode *)layer).cornerRadius : 0);
       old_state[i].scale = layer.scale;
       old_state[i].squeeze = layer.squeeze;
       old_state[i].skew = layer.skew;
@@ -512,7 +515,8 @@
 	  layer.position = ns->position;
 	  layer.anchor = ns->anchor;
 	  layer.bounds = ns->bounds;
-	  layer.cornerRadius = ns->cornerRadius;
+	  if (ns->is_rect)
+	    ((MgRectNode *)layer).cornerRadius = ns->cornerRadius;
 	  layer.scale = ns->scale;
 	  layer.squeeze = ns->squeeze;
 	  layer.skew = ns->skew;
@@ -534,7 +538,8 @@
 	  layer.position = os->position;
 	  layer.anchor = os->anchor;
 	  layer.bounds = os->bounds;
-	  layer.cornerRadius = os->cornerRadius;
+	  if (os->is_rect)
+	    ((MgRectNode *)layer).cornerRadius = os->cornerRadius;
 	  layer.scale = os->scale;
 	  layer.squeeze = os->squeeze;
 	  layer.skew = os->skew;
@@ -543,7 +548,8 @@
 	  [document node:node setValue:BOX(ns->position) forKey:@"position"];
 	  [document node:node setValue:BOX(ns->anchor) forKey:@"anchor"];
 	  [document node:node setValue:BOX(ns->bounds) forKey:@"bounds"];
-	  [document node:node setValue:@(ns->cornerRadius) forKey:@"cornerRadius"];
+	  if (ns->is_rect)
+	    [document node:node setValue:@(ns->cornerRadius) forKey:@"cornerRadius"];
 	  [document node:node setValue:@(ns->scale) forKey:@"scale"];
 	  [document node:node setValue:@(ns->squeeze) forKey:@"squeeze"];
 	  [document node:node setValue:@(ns->skew) forKey:@"skew"];
