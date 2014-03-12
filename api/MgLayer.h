@@ -38,8 +38,6 @@
 @property(nonatomic, assign) CGFloat skew;
 @property(nonatomic, assign) double rotation;
 
-@property(nonatomic, readonly) CGAffineTransform parentTransform;
-
 /** Compositing properties. **/
 
 @property(nonatomic, assign) float alpha;
@@ -57,13 +55,20 @@
 - (void)addAnimation:(MgAnimation *)anim;
 - (void)removeAnimation:(MgAnimation *)anim;
 
-/** Hit-testing and related. **/
+/** Geometry methods. **/
+
+/* The matrix that maps the layer's content into its containing
+   coordinate space. */
+
+@property(nonatomic, readonly) CGAffineTransform parentTransform;
 
 /* Returns the new point created by mapping 'p' either into or out of
    the coordinate space containing the receiver. */
 
 - (CGPoint)convertPointToParent:(CGPoint)p;
 - (CGPoint)convertPointFromParent:(CGPoint)p;
+
+/** Hit-testing and related. **/
 
 /* Hit-testing. Does a depth-first search from top-to-bottom finding
    the deepest node that contains point 'p'. Point 'p' is defined in
