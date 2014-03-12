@@ -6,13 +6,17 @@ This is an experimental scene graph / layer compositing framework.
 
 ## Goals
 
+- Priority is simple and logical behavior when viewed by a designer
+through an app wrapping the API.
+
 - Explore what happens when compositor objects can have multiple
-parents. (E.g. what replaces the -convertPoint:fromView: style methods?)
+parents. (E.g. what replaces the -convertPoint:fromView: style
+methods?)
 
-- Will be rendered directly (to CGContext initially), or translated at
-runtime to a CALayer/UIView hierarchy.
+- Either render directly (to CGContext initially), or translate at
+run-time to a CALayer/UIView hierarchy.
 
-- 2D only for now, but don't prevent adding 2.5D later.
+- 2D only for now, but don't do anything that stops 2.5D later.
 
 - Build support for node/document states into the scene graph.
 
@@ -22,27 +26,26 @@ declarative animations.
 
 ## Implementation Decisions
 
-- Layers don't render content, their child nodes can be layers or
-content objects (no geometry, only drawing). This simplifies the base
-layer class.
+- Layers don't render content or have sublayers. There are subclasses
+that each provide a specific kind of content or add sublayers. This
+simplifies the base layer class.
 
-- Enabled property is not animatable. This allows hidden subtrees to be
-pruned before they get to the render tree.
+- The enabled (aka hidden) property is not animatable. This allows
+hidden subtrees to be pruned before they get to the render tree.
+
+- Coordinate space is relative to top-left corner, on both Mac and iOS.
 
 - No transactions or built-in thread safety. Callers will modify the
 shared object graph, then manually render it to a drawing context or
 commit its translation to a hosting CALayer.
 
-- Animations are nodes in the scene graph (although they aren't
-"drawable"). They can be added to any drawable object but can't target
-properties of that object's descendants.
+- Animations are explicit nodes in the scene graph. They can be added
+to any layer but can't target properties of that object's descendants.
 
 - Ignore filters for now. At some point try to solve the "background
 filters suck" problem. Support N-input filters, e.g. either a filter
-attached to a layer that takes another drawable node as input, or make
-filters be drawable nodes themselves.
-
-- Coordinate space is relative to top-left corner, on both Mac and iOS.
+attached to a layer that takes another layer as input, or make filters
+be layers themselves?
 
 
 ## Class Hierarchy (work in progress)
@@ -50,9 +53,9 @@ filters be drawable nodes themselves.
 <pre>
 MgNode : NSObject
 
- -- stores the version number of this node and its children
- -- internally caches an array of supernodes ("references")
- -- abstract child traversal (with optional de-dup'ing)
+  -- stores the version number of this node and its children
+  -- internally caches an array of supernodes ("references")
+  -- abstract child traversal (with optional de-dup'ing)
 
   BOOL enabled
   NSString *name
@@ -67,12 +70,11 @@ MgLayer : MgNode <MgTiming>
   CGPoint position
   CGPoint anchor
   CGRect bounds
-  CGFloat cornerRadius
   CGFloat scale, squeeze, skew
   double rotation
   float alpha
   CGBlendMode blendMode
-  MgDrawableNode *mask
+  MgLayer *mask
   NSArray<MgAnimation> *animations
 
 MgGroupLayer : MgLayer
@@ -82,12 +84,11 @@ MgGroupLayer : MgLayer
 
 MgRectLayer : MgLayer
 
+  CGFloat cornerRadius
   CGPathDrawingMode drawingMode
   CGColorRef fillColor
   CGColorRef strokeColor
   CGFloat lineWidth
-
-  Draws into bounds rect of containing layer.
 
 MgImageLayer : MgLayer
 
@@ -95,8 +96,6 @@ MgImageLayer : MgLayer
   CGRect cropRect		-- in image pixels
   CGRect centerRect		-- in image pixels
   BOOL repeats
-
-  Draws into bounds rect of containing layer.
 
 MgPathLayer : MgLayer
 
