@@ -65,7 +65,7 @@ typedef NS_OPTIONS(NSUInteger, GtViewerAdornmentMask)
   GtViewerAdornmentMaskSkew = 1U << GtViewerAdornmentSkew,
 };
 
-@interface GtViewerOverlayNode : MgDrawingLayer
+@interface GtViewerOverlayLayer : MgDrawingLayer
 
 @property(nonatomic, weak) GtViewerView *view;
 

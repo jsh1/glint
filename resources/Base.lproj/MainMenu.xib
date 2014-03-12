@@ -372,55 +372,54 @@ CA
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Object" id="GTL-ta-mVl">
                         <items>
-                            <menuItem title="New Layer" keyEquivalent="L" id="oKg-aW-Ie6">
-                                <connections>
-                                    <action selector="insertLayer:" target="-1" id="eN7-QN-Uep"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem isSeparatorItem="YES" id="gHi-5Z-X2i"/>
-                            <menuItem title="Add Content" id="YjA-sH-5v6">
+                            <menuItem title="New Layer" id="YjA-sH-5v6">
                                 <modifierMask key="keyEquivalentModifierMask"/>
-                                <menu key="submenu" title="Add Content" id="gTT-2t-EMV">
+                                <menu key="submenu" title="New Layer" id="gTT-2t-EMV">
                                     <items>
-                                        <menuItem title="Image" keyEquivalent="I" id="sMD-fn-2yV">
+                                        <menuItem title="Group" keyEquivalent="N" id="sMD-fn-2yV">
                                             <connections>
-                                                <action selector="addContent:" target="-1" id="DiF-bh-1bx"/>
+                                                <action selector="addLayer:" target="-1" id="yWG-e0-5GO"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Gradient" tag="1" keyEquivalent="G" id="psD-9R-enJ">
+                                        <menuItem title="Image" tag="1" keyEquivalent="I" id="5u0-Us-feG">
                                             <connections>
-                                                <action selector="addContent:" target="-1" id="sRo-sr-gae"/>
+                                                <action selector="addLayer:" target="-1" id="CID-c4-N4M"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Rect" tag="2" keyEquivalent="R" id="svX-S3-dlp">
+                                        <menuItem title="Gradient" tag="2" keyEquivalent="D" id="psD-9R-enJ">
                                             <connections>
-                                                <action selector="addContent:" target="-1" id="bBW-eE-Ies"/>
+                                                <action selector="addLayer:" target="-1" id="dye-dB-dyP"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Stroked Rect" tag="3" id="mr4-Li-kP3">
+                                        <menuItem title="Rect" tag="3" keyEquivalent="R" id="svX-S3-dlp">
+                                            <connections>
+                                                <action selector="addLayer:" target="-1" id="9MR-Nh-LJo"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Stroked Rect" tag="4" id="mr4-Li-kP3">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <action selector="addContent:" target="-1" id="isf-Uy-iJ2"/>
+                                                <action selector="addLayer:" target="-1" id="I94-0e-fzf"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Path" tag="4" id="d3O-JF-tvf">
+                                        <menuItem title="Path" tag="5" id="d3O-JF-tvf">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <action selector="addContent:" target="-1" id="xfx-Az-Mzy"/>
+                                                <action selector="addLayer:" target="-1" id="BAv-wE-etj"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Stroked Path" tag="5" id="cQ6-Hc-u7w">
+                                        <menuItem title="Stroked Path" tag="6" id="cQ6-Hc-u7w">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <action selector="addContent:" target="-1" id="DoM-Bn-sjm"/>
+                                                <action selector="addLayer:" target="-1" id="Tsa-Jv-0df"/>
                                             </connections>
                                         </menuItem>
                                     </items>
                                 </menu>
                             </menuItem>
-                            <menuItem title="Add Animation" id="kPH-PW-ZYZ">
+                            <menuItem title="New Animation" id="kPH-PW-ZYZ">
                                 <modifierMask key="keyEquivalentModifierMask"/>
-                                <menu key="submenu" title="Add Animation" id="LKb-AL-IJ8">
+                                <menu key="submenu" title="New Animation" id="LKb-AL-IJ8">
                                     <items>
                                         <menuItem title="Basic Animation" keyEquivalent="B" id="d7P-P2-QHG">
                                             <connections>
@@ -432,13 +431,11 @@ CA
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="CFV-Rl-BbR"/>
                             <menuItem title="Group" keyEquivalent="g" id="L6d-AF-ykv">
-                                <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
                                 <connections>
                                     <action selector="group:" target="-1" id="5LB-Mn-55N"/>
                                 </connections>
                             </menuItem>
                             <menuItem title="Ungroup" keyEquivalent="G" id="PYN-r3-c9L">
-                                <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
                                 <connections>
                                     <action selector="ungroup:" target="-1" id="0cj-pL-6Ej"/>
                                 </connections>
@@ -450,7 +447,7 @@ CA
                                     <action selector="toggleEnabled:" target="-1" id="sGG-bA-mMX"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Layer Group" keyEquivalent="g" id="WDL-FO-qWu">
+                            <menuItem title="Group Compositing" keyEquivalent="g" id="WDL-FO-qWu">
                                 <modifierMask key="keyEquivalentModifierMask" control="YES"/>
                                 <connections>
                                     <action selector="toggleLayerGroup:" target="-1" id="E0n-Vc-ToP"/>
@@ -695,22 +692,22 @@ CA
                             <menuItem isSeparatorItem="YES" id="DO2-tE-5oH"/>
                             <menuItem title="Parent Object" keyEquivalent="" id="FhE-LI-y9i">
                                 <connections>
-                                    <action selector="parentNodeAction:" target="-1" id="pQh-gv-4QF"/>
+                                    <action selector="parentNode:" target="-1" id="Vbk-gW-vbf"/>
                                 </connections>
                             </menuItem>
                             <menuItem title="Child Object" keyEquivalent="" id="83A-aO-VZB">
                                 <connections>
-                                    <action selector="childNodeAction:" target="-1" id="Bmp-Yj-KJT"/>
+                                    <action selector="childNode:" target="-1" id="vFb-nj-4E1"/>
                                 </connections>
                             </menuItem>
                             <menuItem title="Next Object" keyEquivalent="" id="8HW-aB-IN5">
                                 <connections>
-                                    <action selector="nextNodeAction:" target="-1" id="aHr-iU-rCI"/>
+                                    <action selector="nextNode:" target="-1" id="kdf-sF-BE6"/>
                                 </connections>
                             </menuItem>
                             <menuItem title="Previous Object" keyEquivalent="" id="TvO-VC-N0w">
                                 <connections>
-                                    <action selector="previousNodeAction:" target="-1" id="iJv-d1-g6p"/>
+                                    <action selector="previousNode:" target="-1" id="45c-Vz-bYO"/>
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="Hke-9O-UIo"/>
@@ -1015,12 +1012,12 @@ CA
                         <items>
                             <menuItem title="Zoom In" keyEquivalent="=" id="2CS-ci-bqb">
                                 <connections>
-                                    <action selector="zoomInAction:" target="-1" id="CNb-yj-qh6"/>
+                                    <action selector="zoomIn:" target="-1" id="C6z-U2-A6Q"/>
                                 </connections>
                             </menuItem>
                             <menuItem title="Zoom Out" keyEquivalent="-" id="KZM-u9-gj0">
                                 <connections>
-                                    <action selector="zoomOutAction:" target="-1" id="hSB-Yf-GIZ"/>
+                                    <action selector="zoomOut:" target="-1" id="HKs-LZ-NQd"/>
                                 </connections>
                             </menuItem>
                             <menuItem title="Zoom To" id="e0H-4b-j0m">
@@ -1029,42 +1026,42 @@ CA
                                     <items>
                                         <menuItem title="Fit" keyEquivalent="+" id="lNP-YT-Yys">
                                             <connections>
-                                                <action selector="zoomToFitAction:" target="-1" id="DIg-aZ-FJj"/>
+                                                <action selector="zoomToFit:" target="-1" id="Eas-9o-eM1"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem title="Fill" keyEquivalent="_" id="B0C-2j-i4U">
                                             <connections>
-                                                <action selector="zoomToFillAction:" target="-1" id="iGg-Lf-dah"/>
+                                                <action selector="zoomToFill:" target="-1" id="0og-DO-YNO"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="4Sk-yW-8tc"/>
                                         <menuItem title="25%" tag="-2" id="FAQ-Rb-1PB">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <action selector="zoomToAction:" target="-1" id="naM-GN-lrv"/>
+                                                <action selector="zoomTo:" target="-1" id="8ge-1e-i94"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem title="50%" tag="-1" id="jMV-It-Iof">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <action selector="zoomToAction:" target="-1" id="oqp-oc-EBS"/>
+                                                <action selector="zoomTo:" target="-1" id="dWC-rT-hf4"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem title="100%" keyEquivalent="0" id="GLZ-Cy-z40">
                                             <connections>
-                                                <action selector="zoomToAction:" target="-1" id="rHU-KP-xwN"/>
+                                                <action selector="zoomTo:" target="-1" id="Oye-wU-3Vn"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem title="200%" tag="1" id="a4V-eA-JI6">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <action selector="zoomToAction:" target="-1" id="bxT-6l-T2I"/>
+                                                <action selector="zoomTo:" target="-1" id="Irs-Xi-fTn"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem title="400%" tag="1" id="wiM-5e-0at">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <action selector="zoomToAction:" target="-1" id="pMI-mm-3FU"/>
+                                                <action selector="zoomTo:" target="-1" id="9gE-JJ-9iU"/>
                                             </connections>
                                         </menuItem>
                                     </items>

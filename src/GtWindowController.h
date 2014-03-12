@@ -43,15 +43,15 @@
 - (void)saveWindowState;
 - (void)applySavedWindowState;
 
-- (IBAction)nextNodeAction:(id)sender;
-- (IBAction)previousNodeAction:(id)sender;
-- (IBAction)parentNodeAction:(id)sender;
-- (IBAction)childNodeAction:(id)sender;
+- (IBAction)nextNode:(id)sender;
+- (IBAction)previousNode:(id)sender;
+- (IBAction)parentNode:(id)sender;
+- (IBAction)childNode:(id)sender;
 
-- (IBAction)zoomInAction:(id)sender;
-- (IBAction)zoomOutAction:(id)sender;
-- (IBAction)zoomToAction:(id)sender;	/* zoom(2^[sender tag]) */
-- (IBAction)zoomToFitAction:(id)sender;
-- (IBAction)zoomToFillAction:(id)sender;
+- (IBAction)zoomIn:(id)sender;
+- (IBAction)zoomOut:(id)sender;
+- (IBAction)zoomTo:(id)sender;		/* zoom(2^[sender tag]) */
+- (IBAction)zoomToFit:(id)sender;
+- (IBAction)zoomToFill:(id)sender;
 
 @end

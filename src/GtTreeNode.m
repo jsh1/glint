@@ -54,7 +54,17 @@
   return self;
 }
 
-- (NSArray *)children
+- (BOOL)isRoot
+{
+  return self.parent == nil;
+}
+
+- (BOOL)isLeaf
+{
+  return [self.children count] == 0;
+}
+
+- (void)updateChildren
 {
   if (_childrenVersion != _node.version)
     {
@@ -91,13 +101,12 @@
       _children = children;
       _childrenVersion = _node.version;
     }
-
-  return _children != nil ? _children : @[];
 }
 
-- (BOOL)isLeaf
+- (NSArray *)children
 {
-  return [self.children count] == 0;
+  [self updateChildren];
+  return _children != nil ? _children : @[];
 }
 
 - (BOOL)foreachNode:(void (^)(GtTreeNode *node, BOOL *stop))thunk
@@ -240,7 +249,7 @@ tree_depth(GtTreeNode *tn)
 	return hit;
     }
 
-  if ([layer containsPoint:p])
+  if (!self.root && [layer containsPoint:p])
     return self;
 
   return nil;

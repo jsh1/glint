@@ -127,17 +127,17 @@ expandItem(NSOutlineView *ov, GtTreeNode *tn)
 - (NSInteger)outlineView:(NSOutlineView *)ov numberOfChildrenOfItem:(id)item
 {
   if (item == nil)
-    return 1;
-  else
-    return [((GtTreeNode *)item).children count];
+    item = self.controller.tree;
+
+  return [((GtTreeNode *)item).children count];
 }
 
 - (id)outlineView:(NSOutlineView *)ov child:(NSInteger)idx ofItem:(id)item
 {
   if (item == nil)
-    return self.controller.tree;
-  else
-    return ((GtTreeNode *)item).children[idx];
+    item = self.controller.tree;
+
+  return ((GtTreeNode *)item).children[idx];
 }
 
 - (BOOL)outlineView:(NSOutlineView *)ov isItemExpandable:(id)item

@@ -29,5 +29,6 @@
 + (NSArray *)controlAlternatingRowBackgroundColors;
 
 + (NSColor *)viewerBackgroundColor;
++ (NSColor *)viewerBorderColor;
 
 @end

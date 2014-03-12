@@ -24,6 +24,8 @@
 
 #import "GtColor.h"
 
+#define BG_HUE (204./360.)
+
 @implementation GtColor
 
 + (NSArray *)controlAlternatingRowBackgroundColors
@@ -33,8 +35,10 @@
   if (colors == nil)
     {
       colors = @[
-	[self colorWithCalibratedWhite:.9 alpha:1],
-	[self colorWithCalibratedWhite:.85 alpha:1],
+	[NSColor colorWithCalibratedHue:BG_HUE
+	 saturation:.01 brightness:.93 alpha:1],
+	[NSColor colorWithCalibratedHue:BG_HUE
+	 saturation:.03 brightness:.88 alpha:1],
       ];
     }
 
@@ -46,7 +50,23 @@
   static NSColor *color;
 
   if (color == nil)
-    color = [NSColor colorWithCalibratedWhite:.5 alpha:1];
+    {
+      color = [NSColor colorWithCalibratedHue:BG_HUE
+	       saturation:.2 brightness:.25 alpha:1];
+    }
+
+  return color;
+}
+
++ (NSColor *)viewerBorderColor
+{
+  static NSColor *color;
+
+  if (color == nil)
+    {
+      color = [NSColor colorWithCalibratedHue:BG_HUE
+	       saturation:.2 brightness:.1 alpha:.7];
+    }
 
   return color;
 }

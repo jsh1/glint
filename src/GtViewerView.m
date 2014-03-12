@@ -27,7 +27,7 @@
 #import "GtColor.h"
 #import "GtDocument.h"
 #import "GtTreeNode.h"
-#import "GtViewerOverlayNode.h"
+#import "GtViewerOverlayLayer.h"
 #import "GtViewerViewController.h"
 #import "GtWindowController.h"
 
@@ -47,7 +47,7 @@
   MgCoreAnimationLayer *_nodeLayer;
   MgGroupLayer *_rootLayer;
   MgGroupLayer *_documentContainer;
-  GtViewerOverlayNode *_overlayNode;
+  GtViewerOverlayLayer *_overlayLayer;
   CGPoint _viewCenter;
   CGFloat _viewScale;
   NSTrackingArea *_trackingArea;
@@ -173,31 +173,36 @@
   if (_documentContainer == nil)
     {
       _documentContainer = [MgGroupLayer node];
-      [_rootLayer addContent:_documentContainer];
+      [_rootLayer addSublayer:_documentContainer];
     }
 
-  if (_overlayNode == nil)
+  if (_overlayLayer == nil)
     {
-      _overlayNode = [GtViewerOverlayNode node];
-      _overlayNode.view = self;
-      [_rootLayer addContent:_overlayNode];
+      _overlayLayer = [GtViewerOverlayLayer node];
+      _overlayLayer.view = self;
+      _overlayLayer.anchor = CGPointZero;
+      [_rootLayer addSublayer:_overlayLayer];
     }
 
   GtDocument *document = self.controller.document;
   CGSize size = document.documentSize;
   CGRect bounds = [layer bounds];
+  CGFloat scale = self.viewScale;
+  CGPoint center = self.viewCenter;
 
   _nodeLayer.frame = bounds;
   _nodeLayer.contentsScale = [[self window] backingScaleFactor];
 
   _rootLayer.bounds = bounds;
 
-  _documentContainer.scale = self.viewScale;
-  _documentContainer.position = self.viewCenter;
+  _documentContainer.scale = scale;
+  _documentContainer.position = center;
   _documentContainer.bounds = CGRectMake(0, 0, size.width, size.height);
-  _documentContainer.contents = @[document.documentNode];
+  _documentContainer.sublayers = @[document.documentNode];
 
-  [_overlayNode update];
+  _overlayLayer.bounds = bounds;
+
+  [_overlayLayer update];
 
   if (_trackingArea == nil
       || !NSEqualRects(NSRectFromCGRect(bounds), [_trackingArea rect]))
@@ -332,6 +337,8 @@
   BOOL dragging = NO;
 
   NSPoint p0 = [self convertPoint:[e locationInWindow] fromView:nil];
+  p0.x = round(p0.x);
+  p0.y = round(p0.y);
 
   while (1)
     {
@@ -342,6 +349,11 @@
 	break;
 
       NSPoint p1 = [self convertPoint:[e locationInWindow] fromView:nil];
+
+      /* NSEvent loves to give us fractional window locations. wtf? */
+
+      p1.x = round(p1.x);
+      p1.y = round(p1.y);
 
       CGFloat dx = p1.x - p0.x;
       CGFloat dy = p0.y - p1.y;
@@ -602,7 +614,7 @@
 
   for (GtTreeNode *node in controller.selection)
     {
-      NSInteger a = [_overlayNode hitTest:dp inAdornmentsOfNode:node];
+      NSInteger a = [_overlayLayer hitTest:dp inAdornmentsOfNode:node];
       if (a != NSNotFound)
 	{
 	  if ([self mouseDown:e inAdornment:a ofNode:node])

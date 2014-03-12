@@ -112,6 +112,8 @@
   [window setInitialFirstResponder:[viewer initialFirstResponder]];
 
   [window makeFirstResponder:[window initialFirstResponder]];
+
+  [self zoomTo:nil];
 }
 
 - (id)viewControllerWithClass:(Class)cls
@@ -180,7 +182,7 @@
     }
 }
 
-- (IBAction)nextNodeAction:(id)sender
+- (IBAction)nextNode:(id)sender
 {
   NSMutableSet *set = [NSMutableSet set];
 
@@ -204,11 +206,17 @@
 
 	  NSArray *p_children = p.children;
 	  if (p_children == nil)
-	    continue;
+	    {
+	      [set addObject:node];
+	      break;
+	    }
 
 	  NSInteger idx = [p_children indexOfObjectIdenticalTo:n];
 	  if (idx == NSNotFound)
-	    continue;
+	    {
+	      [set addObject:node];
+	      break;
+	    }
 
 	  if (idx + 1 < [p_children count])
 	    {
@@ -219,7 +227,7 @@
     }
 
   if ([set count] == 0)
-    [set addObject:self.tree];
+    [set addObject:[self.tree.children firstObject]];
 
   self.selection = [set allObjects];
 }
@@ -241,7 +249,7 @@ deepestLastChild(GtTreeNode *n)
   return n;
 }
 
-- (IBAction)previousNodeAction:(id)sender
+- (IBAction)previousNode:(id)sender
 {
   NSMutableSet *set = [NSMutableSet set];
 
@@ -256,16 +264,22 @@ deepestLastChild(GtTreeNode *n)
 
       NSArray *p_children = p.children;
       if (p_children == nil)
-	continue;
+	{
+	  [set addObject:node];
+	  continue;
+	}
 
       NSInteger idx = [p_children indexOfObjectIdenticalTo:node];
       if (idx == NSNotFound)
-	continue;
+	{
+	  [set addObject:node];
+	  continue;
+	}
 
       if (idx > 0)
 	[set addObject:deepestLastChild(p_children[idx - 1])];
       else
-	[set addObject:p];
+	[set addObject:!p.root ? p : node];
     }
 
   if ([set count] == 0)
@@ -274,23 +288,23 @@ deepestLastChild(GtTreeNode *n)
   self.selection = [set allObjects];
 }
 
-- (IBAction)parentNodeAction:(id)sender
+- (IBAction)parentNode:(id)sender
 {
   NSMutableSet *set = [NSMutableSet set];
 
   for (GtTreeNode *node in self.selection)
     {
       GtTreeNode *parent = node.parent;
-      [set addObject:parent != nil ? parent : node];
+      [set addObject:!parent.root ? parent : node];
     }
 
   if ([set count] == 0)
-    [set addObject:self.tree];
+    [set addObject:[self.tree.children firstObject]];
 
   self.selection = [set allObjects];
 }
 
-- (IBAction)childNodeAction:(id)sender
+- (IBAction)childNode:(id)sender
 {
   NSMutableSet *set = [NSMutableSet set];
 
@@ -306,7 +320,7 @@ deepestLastChild(GtTreeNode *n)
   self.selection = [set allObjects];
 }
 
-- (IBAction)zoomInAction:(id)sender
+- (IBAction)zoomIn:(id)sender
 {
   [self foreachViewControllerWithClass:[GtViewerViewController class]
    handler:^(id obj)
@@ -316,7 +330,7 @@ deepestLastChild(GtTreeNode *n)
     }];
 }
 
-- (IBAction)zoomOutAction:(id)sender
+- (IBAction)zoomOut:(id)sender
 {
   [self foreachViewControllerWithClass:[GtViewerViewController class]
    handler:^(id obj)
@@ -326,7 +340,7 @@ deepestLastChild(GtTreeNode *n)
     }];
 }
 
-- (IBAction)zoomToAction:(id)sender
+- (IBAction)zoomTo:(id)sender
 {
   CGFloat scale = pow(2, [sender tag]);
 
@@ -338,30 +352,36 @@ deepestLastChild(GtTreeNode *n)
 	view.viewScale = scale;
       else
 	{
-	  CGRect bounds = [view bounds];
+	  CGRect bounds = NSRectToCGRect([view bounds]);
 	  view.viewCenter = CGPointMake(CGRectGetMidX(bounds),
 					CGRectGetMidY(bounds));
 	}
     }];
 }
 
-- (IBAction)zoomToFitAction:(id)sender
+- (IBAction)zoomToFit:(id)sender
 {
   [self foreachViewControllerWithClass:[GtViewerViewController class]
    handler:^(id obj)
     {
       GtViewerView *view = ((GtViewerViewController *)obj).contentView;
       view.viewScale = view.zoomToFitScale;
+      CGRect bounds = NSRectToCGRect([view bounds]);
+      view.viewCenter = CGPointMake(CGRectGetMidX(bounds),
+				    CGRectGetMidY(bounds));
     }];
 }
 
-- (IBAction)zoomToFillAction:(id)sender
+- (IBAction)zoomToFill:(id)sender
 {
   [self foreachViewControllerWithClass:[GtViewerViewController class]
    handler:^(id obj)
     {
       GtViewerView *view = ((GtViewerViewController *)obj).contentView;
       view.viewScale = view.zoomToFillScale;
+      CGRect bounds = NSRectToCGRect([view bounds]);
+      view.viewCenter = CGPointMake(CGRectGetMidX(bounds),
+				    CGRectGetMidY(bounds));
     }];
 }
 

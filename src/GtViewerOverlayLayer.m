@@ -22,7 +22,7 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "GtViewerOverlayNode.h"
+#import "GtViewerOverlayLayer.h"
 
 #import "GtColor.h"
 #import "GtDocument.h"
@@ -37,7 +37,7 @@
 #define INNER_ADORNMENT_RADIUS 50
 #define HIT_THRESH ADORNMENT_SIZE
 
-@implementation GtViewerOverlayNode
+@implementation GtViewerOverlayLayer
 {
   NSArray *_selection;			/* NSArray<GtTreeNode> */
   NSInteger _lastVersion;
@@ -148,7 +148,85 @@ strokeLineSegments(CGContextRef ctx, const CGPoint lines[], size_t count)
     });
 }
 
-- (void)drawNode:(GtTreeNode *)tn withState:(id<MgDrawingState>)st
+static CGRect
+rect_slice_8(CGRect content, CGRect bounds, size_t i)
+{
+  CGFloat llx, lly, urx, ury;
+
+  switch (i)
+    {
+    case 0: case 3: case 5:
+      llx = bounds.origin.x;
+      urx = content.origin.x;
+      break;
+
+    case 1: case 6:
+      llx = content.origin.x;
+      urx = content.origin.x + content.size.width;
+      break;
+
+    case 2: case 4: case 7:
+      llx = content.origin.x + content.size.width;
+      urx = bounds.origin.x + bounds.size.width;
+      break;
+    }
+
+  switch (i)
+    {
+    case 0: case 1: case 2:
+      lly = bounds.origin.y;
+      ury = content.origin.y;
+      break;
+
+    case 3: case 4:
+      lly = content.origin.y;
+      ury = content.origin.y + content.size.height;
+      break;
+
+    case 5: case 6: case 7:
+      lly = content.origin.y + content.size.height;
+      ury = bounds.origin.y + bounds.size.height;
+      break;
+    }
+
+  llx = round(llx);
+  lly = round(lly);
+  urx = round(urx);
+  ury = round(ury);
+
+  return CGRectMake(llx, lly, fmax(0, urx-llx), fmax(0, ury-lly));
+}
+
+- (void)drawBorderInContext:(CGContextRef)ctx
+{
+  GtViewerView *view = self.view;
+  GtDocument *document = view.controller.document;
+
+  CGSize size = document.documentSize;
+  CGFloat scale = view.viewScale;
+  CGPoint center = view.viewCenter;
+  CGRect bounds = self.bounds;
+
+  CGRect docR;
+  docR.origin.x = center.x - size.width * scale * .5;
+  docR.origin.y = center.y - size.height * scale * .5;
+  docR.size.width = size.width * scale;
+  docR.size.height = size.height * scale;
+
+  CGContextSaveGState(ctx);
+
+  CGContextSetFillColorWithColor(ctx, [[GtColor viewerBorderColor] CGColor]);
+
+  for (size_t i = 0; i < 8; i++)
+    {
+      CGRect r = rect_slice_8(docR, bounds, i);
+      CGContextFillRect(ctx, r);
+    }
+
+  CGContextRestoreGState(ctx);
+}
+
+- (void)drawNode:(GtTreeNode *)tn inContext:(CGContextRef)ctx
 {
   /* FIXME: concatenating into one matrix only works because everything
      is affine, that may change... */
@@ -157,8 +235,6 @@ strokeLineSegments(CGContextRef ctx, const CGPoint lines[], size_t count)
   MgLayer *container = getLayerAndTransform(tn, &m);
   if (container == nil)
     return;
-
-  CGContextRef ctx = st.context;
 
   CGContextSaveGState(ctx);
   
@@ -280,12 +356,15 @@ strokeLineSegments(CGContextRef ctx, const CGPoint lines[], size_t count)
 
 - (void)drawWithState:(id<MgDrawingState>)st
 {
-  GtWindowController *controller = self.view.controller.controller;
+  GtViewerView *view = self.view;
+  GtDocument *document = view.controller.document;
+
+  [self drawBorderInContext:st.context];
 
   for (GtTreeNode *tn in _selection)
-    [self drawNode:tn withState:st];
+    [self drawNode:tn inContext:st.context];
 
-  _lastVersion = controller.document.documentNode.version;
+  _lastVersion = document.documentNode.version;
 }
 
 - (NSInteger)hitTest:(CGPoint)point inAdornmentsOfNode:(GtTreeNode *)tn

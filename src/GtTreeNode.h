@@ -31,12 +31,20 @@
 - (id)initWithNode:(MgNode *)node parent:(GtTreeNode *)parent
     parentKey:(NSString *)key parentIndex:(NSInteger)idx;
 
+@property(nonatomic, assign, readonly, getter=isRoot) BOOL root;
+@property(nonatomic, assign, readonly, getter=isLeaf) BOOL leaf;
+
 @property(nonatomic, strong, readonly) MgNode *node;
 @property(nonatomic, weak, readonly) GtTreeNode *parent;
 @property(nonatomic, copy, readonly) NSString *parentKey;
 @property(nonatomic, assign, readonly) NSInteger parentIndex;
 @property(nonatomic, readonly) NSArray *children;
-@property(nonatomic, assign, readonly, getter=isLeaf) BOOL leaf;
+
+/* Rebuilds `children' property, which ensures `parent', `parentKey'
+   and `parentIndex' properties of the children are synchronized.
+   Happens automatically when `children' property is read. */
+
+- (void)updateChildren;
 
 /* Returns YES if all nodes were iterated over. */
 

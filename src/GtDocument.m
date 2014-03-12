@@ -59,7 +59,7 @@ NSString *const GtDocumentNodeDidChange = @"GtDocumentNodeDidChange";
 
   MgGroupLayer *root = [MgGroupLayer node];
 
-  root.name = @"Root Layer";
+  root.name = @"Root";
   root.bounds = CGRectMake(0, 0, width, height);
   root.position = CGPointMake(width * .5, height * .5);
 
@@ -67,13 +67,6 @@ NSString *const GtDocumentNodeDidChange = @"GtDocumentNodeDidChange";
   self.documentNode = root;
 
 #if 1
-  MgRectLayer *bg_rect = [MgRectLayer node];
-  bg_rect.fillColor = [[NSColor lightGrayColor] CGColor];
-  bg_rect.name = @"BG Fill";
-  bg_rect.bounds = root.bounds;
-  bg_rect.position = root.position;
-  [root addContent:bg_rect];
-
   MgImageLayer *image_layer = [MgImageLayer node];
   image_layer.position = CGPointMake(700, 400);
   image_layer.bounds = CGRectMake(0, 0, 512, 512);
@@ -82,7 +75,7 @@ NSString *const GtDocumentNodeDidChange = @"GtDocumentNodeDidChange";
   image_layer.imageProvider = [MgImageProvider imageProviderWithURL:
 			       [NSURL fileURLWithPath:
 				@"/Library/User Pictures/Animals/Parrot.tif"]];
-  [root addContent:image_layer];
+  [root addSublayer:image_layer];
 
 #if 1
   MgGroupLayer *image_group = [MgGroupLayer node];
@@ -90,8 +83,8 @@ NSString *const GtDocumentNodeDidChange = @"GtDocumentNodeDidChange";
   image_group.bounds = CGRectMake(0, 0, 512, 512);
   image_group.alpha = .25;
   image_group.name = @"Image Group";
-  [image_group addContent:image_layer];
-  [root addContent:image_group];
+  [image_group addSublayer:image_layer];
+  [root addSublayer:image_group];
 #endif
 
   MgRectLayer *rect_layer = [MgRectLayer node];
@@ -102,7 +95,7 @@ NSString *const GtDocumentNodeDidChange = @"GtDocumentNodeDidChange";
   rect_layer.name = @"Layer 3";
   rect_layer.fillColor = [[NSColor blueColor] CGColor];
   rect_layer.name = @"Rect Fill";
-  [root addContent:rect_layer];
+  [root addSublayer:rect_layer];
 #endif
 
   return self;
@@ -391,7 +384,7 @@ makeSelectionArray(NSMapTable *added)
       layer.position = CGPointMake(size.width*.5, size.height*.5);
 
       [self node:parent_group insertObject:layer atIndex:NSIntegerMax
-       forKey:@"contents"];
+       forKey:@"sublayers"];
 
       [added setObject:parent_group forKey:layer];
     };
@@ -401,7 +394,7 @@ makeSelectionArray(NSMapTable *added)
       if ([object isKindOfClass:[MgLayer class]])
 	{
 	  [self node:parent_group insertObject:object atIndex:NSIntegerMax
-	   forKey:@"contents"];
+	   forKey:@"sublayers"];
 
 	  [added setObject:parent_group forKey:object];
 	}
@@ -475,7 +468,7 @@ makeSelectionArray(NSMapTable *added)
   return [pboard canReadObjectForClasses:classes options:nil];
 }
 
-- (void)addLayerContent:(MgLayer *(^)(MgGroupLayer *parent_group))block
+- (void)addSublayer:(MgLayer *(^)(MgGroupLayer *parent_group))block
 {
   NSMapTable *groups = [NSMapTable strongToStrongObjectsMapTable];
   NSMutableSet *nodes = [NSMutableSet set];
@@ -492,7 +485,7 @@ makeSelectionArray(NSMapTable *added)
 	  if ([n.node isKindOfClass:[MgGroupLayer class]])
 	    break;
 	  GtTreeNode *p = n.parent;
-	  if ([n.parentKey isEqualToString:@"contents"])
+	  if ([n.parentKey isEqualToString:@"sublayers"])
 	    idx = n.parentIndex;
 	  else
 	    idx = NSNotFound;
@@ -525,10 +518,10 @@ makeSelectionArray(NSMapTable *added)
 	{
 	  NSInteger idx = [[groups objectForKey:parent] integerValue];
 	  if (idx == NSNotFound)
-	    idx = [parent_group.contents count];
+	    idx = [parent_group.sublayers count];
 
 	  [self node:parent insertObject:content atIndex:idx
-	   forKey:@"contents"];
+	   forKey:@"sublayers"];
 
 	  [added setObject:parent forKey:content];
 	}
@@ -537,55 +530,50 @@ makeSelectionArray(NSMapTable *added)
   self.controller.selection = makeSelectionArray(added);
 }
 
-- (IBAction)insertLayer:(id)sender
-{
-  [self addLayerContent:^MgLayer * (MgGroupLayer *parent_group)
-    {
-      MgLayer *layer = [MgLayer node];
-      initializeLayerFromContainer(layer, parent_group);
-      layer.name = @"Layer";
-      makeNameUnique(layer, parent_group);
-      return layer;
-    }];
-}
-
-- (IBAction)addContent:(id)sender
+- (IBAction)addLayer:(id)sender
 {
   NSInteger tag = [sender tag];
 
-  [self addLayerContent:^MgLayer * (MgGroupLayer *parent_group)
+  [self addSublayer:^MgLayer * (MgGroupLayer *parent_group)
     {
-      MgLayer *node = nil;
+      MgLayer *layer = nil;
 
       if (tag == 0)
 	{
-	  node = [[MgImageLayer alloc] init];
-	  node.name = @"Image";
+	  layer = [[MgGroupLayer alloc] init];
+	  layer.name = @"Group";
 	}
       else if (tag == 1)
 	{
-	  node = [[MgGradientLayer alloc] init];
-	  node.name = @"Gradient";
+	  layer = [[MgImageLayer alloc] init];
+	  layer.name = @"Image";
 	}
-      else if (tag == 2 || tag == 3)
+      else if (tag == 2)
 	{
-	  node = [[MgRectLayer alloc] init];
-	  node.name = @"Rect";
-	  if (tag == 3)
-	    ((MgRectLayer *)node).drawingMode = kCGPathStroke;
+	  layer = [[MgGradientLayer alloc] init];
+	  layer.name = @"Gradient";
 	}
-      else if (tag == 4 || tag == 5)
+      else if (tag == 3 || tag == 4)
 	{
-	  node = [[MgPathLayer alloc] init];
-	  node.name = @"Path";
-	  if (tag == 5)
-	    ((MgPathLayer *)node).drawingMode = kCGPathStroke;
+	  layer = [[MgRectLayer alloc] init];
+	  layer.name = @"Rect";
+	  if (tag == 4)
+	    ((MgRectLayer *)layer).drawingMode = kCGPathStroke;
+	}
+      else if (tag == 5 || tag == 6)
+	{
+	  layer = [[MgPathLayer alloc] init];
+	  layer.name = @"Path";
+	  if (tag == 6)
+	    ((MgPathLayer *)layer).drawingMode = kCGPathStroke;
 	}
       else
 	return nil;
 
-      makeNameUnique(node, parent_group);
-      return node;
+      makeNameUnique(layer, parent_group);
+      initializeLayerFromContainer(layer, parent_group);
+
+      return layer;
     }];
 }
 
@@ -635,7 +623,7 @@ makeSelectionArray(NSMapTable *added)
 	[self removeTreeNodeFromParent:tn];
 
       MgLayer *node = (MgLayer *)tn.node;
-      [layer addContent:node];
+      [layer addSublayer:node];
     }
 
   GtTreeNode *parent = master.parent;
@@ -667,7 +655,7 @@ makeSelectionArray(NSMapTable *added)
       if (idx == NSNotFound)
 	{
 	  idx = NSIntegerMax;
-	  if ([group.contents count] > 1)
+	  if ([group.sublayers count] > 1)
 	    continue;
 	}
 
@@ -676,10 +664,10 @@ makeSelectionArray(NSMapTable *added)
 
       [self removeTreeNodeFromParent:tn];
 
-      for (MgLayer *child in group.contents)
+      for (MgLayer *child in group.sublayers)
 	{
 	  [self node:parent insertObject:child atIndex:idx++
-	   forKey:@"contents"];
+	   forKey:@"sublayers"];
 
 	  [added setObject:parent forKey:child];
 	}
@@ -713,7 +701,7 @@ makeSelectionArray(NSMapTable *added)
       if (idx == NSNotFound)
 	continue;
 
-      [self node:parent moveObjectAtIndex:idx by:delta forKey:key];
+      [self node:parent moveObject:tn.node atIndex:idx by:delta forKey:key];
 
       [nodes addObject:tn.node];
     }
@@ -882,7 +870,7 @@ makeSelectionArray(NSMapTable *added)
     {
       /* Array key. */
 
-      [self node:parent removeObjectAtIndex:idx forKey:key];
+      [self node:parent removeObject:tn.node atIndex:idx forKey:key];
     }
   else
     {
@@ -903,7 +891,8 @@ makeSelectionArray(NSMapTable *added)
     {
       /* Array key. */
 
-      [self node:parent replaceObjectAtIndex:idx withObject:node forKey:key];
+      [self node:parent replaceObject:tn.node atIndex:idx
+       withObject:node forKey:key];
     }
   else
     {
@@ -970,7 +959,7 @@ documentNodeChanged(GtDocument *self, GtTreeNode *tn)
 
   [self registerUndo:^
    {
-     [self node:tn removeObjectAtIndex:idx forKey:key];
+     [self node:tn removeObject:value atIndex:idx forKey:key];
    }];
 
   NSMutableArray *m_array = [NSMutableArray arrayWithArray:array];
@@ -980,8 +969,52 @@ documentNodeChanged(GtDocument *self, GtTreeNode *tn)
   documentGraphChanged(self);
 }
 
-- (void)node:(GtTreeNode *)tn replaceObjectAtIndex:(NSInteger)idx
-    withObject:(id)value forKey:(NSString *)key
+static NSInteger
+indexOfObjectInArray(NSArray *array, id value, NSInteger idx)
+{
+  if (array == nil)
+    return NSNotFound;
+
+  if (idx == NSNotFound)
+    return [array indexOfObjectIdenticalTo:value];
+
+  NSInteger count = [array count];
+
+  if (idx < 0)
+    idx = 0;
+  else if (idx >= count)
+    idx = count - 1;
+
+  if (array[idx] != value)
+    {
+      NSInteger before, after;
+
+      for (before = idx - 1; before >= 0; before--)
+	{
+	  if (array[before] == value)
+	    break;
+	}
+      for (after = idx + 1; after < count; after++)
+	{
+	  if (array[after] == value)
+	    break;
+	}
+
+      if (before >= 0 && after < count)
+	idx = (idx - before) < (after - idx) ? before : after;
+      else if (before >= 0)
+	idx = before;
+      else if (after < count)
+	idx = count;
+      else
+	idx = NSNotFound;
+    }
+
+  return idx;
+}
+
+- (void)node:(GtTreeNode *)tn replaceObject:(id)oldValue
+    atIndex:(NSInteger)idx withObject:(id)value forKey:(NSString *)key
 {
   assert(value != nil);
 
@@ -989,14 +1022,14 @@ documentNodeChanged(GtDocument *self, GtTreeNode *tn)
 
   NSArray *array = [node valueForKey:key];
 
-  assert(array != nil);
-  assert(idx >= 0 && idx < [array count]);
-
-  id oldValue = array[idx];
+  idx = indexOfObjectInArray(array, oldValue, idx);
+  if (idx == NSNotFound)
+    return;
 
   [self registerUndo:^
     {
-      [self node:tn replaceObjectAtIndex:idx withObject:oldValue forKey:key];
+      [self node:tn replaceObject:value atIndex:idx
+       withObject:oldValue forKey:key];
     }];
 
   NSMutableArray *m_array = [NSMutableArray arrayWithArray:array];
@@ -1006,17 +1039,16 @@ documentNodeChanged(GtDocument *self, GtTreeNode *tn)
   documentGraphChanged(self);
 }
 
-- (void)node:(GtTreeNode *)tn removeObjectAtIndex:(NSInteger)idx
-    forKey:(NSString *)key
+- (void)node:(GtTreeNode *)tn removeObject:(id)oldValue
+    atIndex:(NSInteger)idx forKey:(NSString *)key
 {
   MgNode *node = tn.node;
 
   NSArray *array = [node valueForKey:key];
 
-  assert(array != nil);
-  assert(idx >= 0 && idx < [array count]);
-
-  id oldValue = array[idx];
+  idx = indexOfObjectInArray(array, oldValue, idx);
+  if (idx == NSNotFound)
+    return;
 
   [self registerUndo:^
     {
@@ -1030,15 +1062,18 @@ documentNodeChanged(GtDocument *self, GtTreeNode *tn)
   documentGraphChanged(self);
 }
 
-- (void)node:(GtTreeNode *)tn moveObjectAtIndex:(NSInteger)idx
+- (void)node:(GtTreeNode *)tn moveObject:(id)value atIndex:(NSInteger)idx
     by:(NSInteger)delta forKey:(NSString *)key
 {
   MgNode *node = tn.node;
 
   NSArray *array = [node valueForKey:key];
-  NSInteger count = [array count];
 
-  assert(array != nil);
+  idx = indexOfObjectInArray(array, value, idx);
+  if (idx == NSNotFound)
+    return;
+
+  NSInteger count = [array count];
 
   NSInteger inverse_delta = 0;
   id object = array[idx];
@@ -1067,7 +1102,8 @@ documentNodeChanged(GtDocument *self, GtTreeNode *tn)
     {
       [self registerUndo:^
 	{
-	  [self node:tn moveObjectAtIndex:idx by:inverse_delta forKey:key];
+	  [self node:tn moveObject:value atIndex:idx
+	   by:inverse_delta forKey:key];
 	}];
 
       [node setValue:m_array forKey:key];

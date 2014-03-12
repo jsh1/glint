@@ -51,8 +51,7 @@ extern NSString *const GtDocumentNodeDidChange;
 - (IBAction)pasteAsImage:(id)sender;
 - (BOOL)canPasteAsImage;
 
-- (IBAction)insertLayer:(id)sender;
-- (IBAction)addContent:(id)sender;
+- (IBAction)addLayer:(id)sender;
 - (IBAction)addAnimation:(id)sender;
 - (IBAction)group:(id)sender;
 - (IBAction)ungroup:(id)sender;
@@ -74,11 +73,11 @@ extern NSString *const GtDocumentNodeDidChange;
 - (void)node:(GtTreeNode *)node setValue:(id)obj forKey:(NSString *)key;
 - (void)node:(GtTreeNode *)tn insertObject:(id)value atIndex:(NSInteger)idx
     forKey:(NSString *)key;
-- (void)node:(GtTreeNode *)tn replaceObjectAtIndex:(NSInteger)idx
+- (void)node:(GtTreeNode *)tn replaceObject:(id)oldValue atIndex:(NSInteger)idx
     withObject:(id)value forKey:(NSString *)key;
-- (void)node:(GtTreeNode *)tn removeObjectAtIndex:(NSInteger)idx
+- (void)node:(GtTreeNode *)tn removeObject:(id)oldValue atIndex:(NSInteger)idx
     forKey:(NSString *)key;
-- (void)node:(GtTreeNode *)tn moveObjectAtIndex:(NSInteger)idx
+- (void)node:(GtTreeNode *)tn moveObject:(id)value atIndex:(NSInteger)idx
     by:(NSInteger)delta forKey:(NSString *)key;
 
 @end
