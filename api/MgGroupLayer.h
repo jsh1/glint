@@ -28,12 +28,14 @@
 
 @property(nonatomic, assign, getter=isGroup) BOOL group;
 
-@property(nonatomic, copy) NSArray *contents;
+/* The array of sublayers comprising this group. */
 
-- (void)addContent:(MgLayer *)node;
-- (void)removeContent:(MgLayer *)node;
+@property(nonatomic, copy) NSArray *sublayers;
 
-- (void)insertContent:(MgLayer *)node atIndex:(NSInteger)idx;
-- (void)removeContentAtIndex:(NSInteger)idx;
+- (void)addSublayer:(MgLayer *)node;
+- (void)removeSublayer:(MgLayer *)node;
+
+- (void)insertSublayer:(MgLayer *)node atIndex:(NSInteger)idx;
+- (void)removeSublayerAtIndex:(NSInteger)idx;
 
 @end

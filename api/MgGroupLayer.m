@@ -33,7 +33,7 @@
 @implementation MgGroupLayer
 {
   BOOL _group;
-  NSMutableArray *_contents;
+  NSMutableArray *_sublayers;
 }
 
 + (BOOL)automaticallyNotifiesObserversOfGroup
@@ -57,86 +57,86 @@
     }
 }
 
-+ (BOOL)automaticallyNotifiesObserversOfContents
++ (BOOL)automaticallyNotifiesObserversOfSublayers
 {
   return NO;
 }
 
-- (NSArray *)contents
+- (NSArray *)sublayers
 {
-  return _contents != nil ? _contents : @[];
+  return _sublayers != nil ? _sublayers : @[];
 }
 
-- (void)setContents:(NSArray *)array
+- (void)setSublayers:(NSArray *)array
 {
-  if (_contents != array && ![_contents isEqual:array])
+  if (_sublayers != array && ![_sublayers isEqual:array])
     {
-      [self willChangeValueForKey:@"contents"];
+      [self willChangeValueForKey:@"sublayers"];
 
-      for (MgLayer *node in _contents)
+      for (MgLayer *node in _sublayers)
 	[node removeReference:self];
 
-      _contents = [array copy];
+      _sublayers = [array copy];
 
-      for (MgLayer *node in _contents)
+      for (MgLayer *node in _sublayers)
 	[node addReference:self];
 
       [self incrementVersion];
-      [self didChangeValueForKey:@"contents"];
+      [self didChangeValueForKey:@"sublayers"];
     }
 }
 
-- (void)addContent:(MgLayer *)node
+- (void)addSublayer:(MgLayer *)node
 {
-  [self insertContent:node atIndex:NSIntegerMax];
+  [self insertSublayer:node atIndex:NSIntegerMax];
 }
 
-- (void)removeContent:(MgLayer *)node
+- (void)removeSublayer:(MgLayer *)node
 {
   while (true)
     {
-      NSInteger idx = [_contents indexOfObjectIdenticalTo:node];
+      NSInteger idx = [_sublayers indexOfObjectIdenticalTo:node];
       if (idx == NSNotFound)
 	break;
 
-      [self removeContentAtIndex:idx];
+      [self removeSublayerAtIndex:idx];
     }
 }
 
-- (void)insertContent:(MgLayer *)node atIndex:(NSInteger)idx
+- (void)insertSublayer:(MgLayer *)node atIndex:(NSInteger)idx
 {
-  if (_contents == nil)
-    _contents = [[NSMutableArray alloc] init];
+  if (_sublayers == nil)
+    _sublayers = [[NSMutableArray alloc] init];
 
-  if (idx > [_contents count])
-    idx = [_contents count];
+  if (idx > [_sublayers count])
+    idx = [_sublayers count];
 
-  [self willChangeValueForKey:@"contents"];
+  [self willChangeValueForKey:@"sublayers"];
 
-  [_contents insertObject:node atIndex:idx];
+  [_sublayers insertObject:node atIndex:idx];
   [node addReference:self];
 
   [self incrementVersion];
-  [self didChangeValueForKey:@"contents"];
+  [self didChangeValueForKey:@"sublayers"];
 }
 
-- (void)removeContentAtIndex:(NSInteger)idx
+- (void)removeSublayerAtIndex:(NSInteger)idx
 {
-  if (idx < [_contents count])
+  if (idx < [_sublayers count])
     {
-      [self willChangeValueForKey:@"contents"];
+      [self willChangeValueForKey:@"sublayers"];
 
-      [_contents[idx] removeReference:self];
-      [_contents removeObjectAtIndex:idx];
+      [_sublayers[idx] removeReference:self];
+      [_sublayers removeObjectAtIndex:idx];
 
       [self incrementVersion];
-      [self didChangeValueForKey:@"contents"];
+      [self didChangeValueForKey:@"sublayers"];
     }
 }
 
 - (void)foreachNode:(void (^)(MgNode *node))block
 {
-  for (MgLayer *node in _contents)
+  for (MgLayer *node in _sublayers)
     block(node);
 
   [super foreachNode:block];
@@ -145,18 +145,18 @@
 - (void)foreachNodeAndAttachmentInfo:(void (^)(MgNode *node,
     NSString *parentKey, NSInteger parentIndex))block
 {
-  NSArray *array = _contents;
+  NSArray *array = _sublayers;
   NSInteger count = [array count];
 
   for (NSInteger i = 0; i < count; i++)
-    block(array[i], @"contents", i);
+    block(array[i], @"sublayers", i);
 
   [super foreachNodeAndAttachmentInfo:block];
 }
 
 - (BOOL)contentContainsPoint:(CGPoint)lp
 {
-  NSArray *array = self.contents;
+  NSArray *array = self.sublayers;
   NSInteger count = [array count];
 
   for (NSInteger i = count - 1; i >= 0; i--)
@@ -171,7 +171,7 @@
 
 - (MgLayer *)hitTestContent:(CGPoint)lp
 {
-  for (MgLayer *node in self.contents)
+  for (MgLayer *node in self.sublayers)
     {
       MgLayer *hit = [node hitTest:lp];
       if (hit != nil)
@@ -185,7 +185,7 @@
 
 - (void)_renderLayerWithState:(MgLayerRenderState *)rs
 {
-  if ([self.contents count] == 0)
+  if ([self.sublayers count] == 0)
     return;
 
   BOOL group = self.group;
@@ -199,7 +199,7 @@
       CGContextBeginTransparencyLayer(r.ctx, NULL);
     }
 
-  for (MgLayer *node in self.contents)
+  for (MgLayer *node in self.sublayers)
     {
       if (node.enabled)
 	[node _renderWithState:&r];
@@ -222,12 +222,12 @@
 
   copy->_group = _group;
 
-  if ([_contents count] != 0)
+  if ([_sublayers count] != 0)
     {
-      for (MgLayer *node in _contents)
+      for (MgLayer *node in _sublayers)
 	[node addReference:copy];
 
-      copy->_contents = [_contents copy];
+      copy->_sublayers = [_sublayers copy];
     }
 
   return copy;
@@ -242,8 +242,8 @@
   if (_group)
     [c encodeBool:_group forKey:@"group"];
 
-  if ([_contents count] != 0)
-    [c encodeObject:_contents forKey:@"contents"];
+  if ([_sublayers count] != 0)
+    [c encodeObject:_sublayers forKey:@"sublayers"];
 }
 
 - (id)initWithCoder:(NSCoder *)c
@@ -255,10 +255,10 @@
   if ([c containsValueForKey:@"group"])
     _group = [c decodeBoolForKey:@"group"];
 
-  if ([c containsValueForKey:@"contents"])
+  if ([c containsValueForKey:@"sublayers"])
     {
       NSArray *array = [c decodeObjectOfClass:[NSArray class]
-			forKey:@"contents"];
+			forKey:@"sublayers"];
 
       BOOL valid = YES;
       for (id obj in array)
@@ -272,9 +272,9 @@
 
       if (valid)
 	{
-	  _contents = [array copy];
+	  _sublayers = [array copy];
 
-	  for (MgLayer *node in _contents)
+	  for (MgLayer *node in _sublayers)
 	    [node addReference:self];
 	}
     }
