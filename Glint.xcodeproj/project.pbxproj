@@ -31,7 +31,6 @@
 		575ACEEF18CFCFE100161C70 /* MgBezierTimingFunction.mm in Sources */ = {isa = PBXBuildFile; fileRef = 575ACECE18CFCFE100161C70 /* MgBezierTimingFunction.mm */; };
 		575ACEF018CFCFE100161C70 /* MgCoreAnimationLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 575ACED018CFCFE100161C70 /* MgCoreAnimationLayer.m */; };
 		575ACEF118CFCFE100161C70 /* MgDrawingLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 575ACED218CFCFE100161C70 /* MgDrawingLayer.m */; };
-		575ACEF218CFCFE100161C70 /* MgFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 575ACED418CFCFE100161C70 /* MgFunction.m */; };
 		575ACEF318CFCFE100161C70 /* MgGradientLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 575ACED618CFCFE100161C70 /* MgGradientLayer.m */; };
 		575ACEF518CFCFE100161C70 /* MgImageLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 575ACEDA18CFCFE100161C70 /* MgImageLayer.m */; };
 		575ACEF618CFCFE100161C70 /* MgImageProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 575ACEDC18CFCFE100161C70 /* MgImageProvider.m */; };
@@ -109,8 +108,6 @@
 		575ACED018CFCFE100161C70 /* MgCoreAnimationLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgCoreAnimationLayer.m; sourceTree = "<group>"; };
 		575ACED118CFCFE100161C70 /* MgDrawingLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgDrawingLayer.h; sourceTree = "<group>"; };
 		575ACED218CFCFE100161C70 /* MgDrawingLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgDrawingLayer.m; sourceTree = "<group>"; };
-		575ACED318CFCFE100161C70 /* MgFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgFunction.h; sourceTree = "<group>"; };
-		575ACED418CFCFE100161C70 /* MgFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgFunction.m; sourceTree = "<group>"; };
 		575ACED518CFCFE100161C70 /* MgGradientLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgGradientLayer.h; sourceTree = "<group>"; };
 		575ACED618CFCFE100161C70 /* MgGradientLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgGradientLayer.m; sourceTree = "<group>"; };
 		575ACED918CFCFE100161C70 /* MgImageLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgImageLayer.h; sourceTree = "<group>"; };
@@ -232,8 +229,6 @@
 				575ACED018CFCFE100161C70 /* MgCoreAnimationLayer.m */,
 				575ACED118CFCFE100161C70 /* MgDrawingLayer.h */,
 				575ACED218CFCFE100161C70 /* MgDrawingLayer.m */,
-				575ACED318CFCFE100161C70 /* MgFunction.h */,
-				575ACED418CFCFE100161C70 /* MgFunction.m */,
 				575ACED518CFCFE100161C70 /* MgGradientLayer.h */,
 				575ACED618CFCFE100161C70 /* MgGradientLayer.m */,
 				575ACEFE18CFD00100161C70 /* MgGroupLayer.h */,
@@ -422,7 +417,6 @@
 				575ACF0018CFD00100161C70 /* MgGroupLayer.m in Sources */,
 				575ACEF718CFCFE100161C70 /* MgLayer.m in Sources */,
 				57B111B718D0BB8C00A41A64 /* GtViewerOverlayLayer.m in Sources */,
-				575ACEF218CFCFE100161C70 /* MgFunction.m in Sources */,
 				572A5B1F18C4CD4100AB8086 /* GtViewController.m in Sources */,
 				575ACEED18CFCFE100161C70 /* MgAnimation.m in Sources */,
 				57618DBE18C5D538004108D8 /* CoreAnimationExtensions.m in Sources */,
