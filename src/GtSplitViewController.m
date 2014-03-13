@@ -95,7 +95,7 @@
 
 - (BOOL)_isSubviewControllerVisible:(GtViewController *)c
 {
-  return [(GtSplitView *)[self view] isSubviewCollapsed:[c view]];
+  return ![(GtSplitView *)[self view] isSubviewCollapsed:[c view]];
 }
 
 - (void)_showSubviewController:(GtViewController *)c

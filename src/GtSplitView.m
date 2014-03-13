@@ -128,6 +128,23 @@
 {
   if (flag != [subview isHidden])
     {
+      if (flag)
+	{
+	  BOOL all_hidden = YES;
+
+	  for (NSView *view in [self subviews])
+	    {
+	      if (view != subview && ![view isHidden])
+		{
+		  all_hidden = NO;
+		  break;
+		}
+	    }
+
+	  if (all_hidden)
+	    return;
+	}
+
       [subview setHidden:flag];
 
       _collapsingSubview = subview;

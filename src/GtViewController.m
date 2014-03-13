@@ -191,6 +191,19 @@
     [self hideSubviewController:controller];
 }
 
+- (BOOL)subviewControllerIsVisible:(GtViewController *)controller
+{
+  while (controller != nil && controller != self)
+    {
+      GtViewController *parent = controller->_superviewController;
+      if (![parent _isSubviewControllerVisible:controller])
+	return NO;
+      controller = parent;
+    }
+
+  return YES;
+}
+
 - (BOOL)_isSubviewControllerVisible:(GtViewController *)controller
 {
   return YES;

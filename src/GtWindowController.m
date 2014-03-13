@@ -122,7 +122,7 @@
 }
 
 - (void)foreachViewControllerWithClass:(Class)cls
-    handler:(void (^)(id obj))block
+    handler:(void (^)(GtViewController *obj))block
 {
   [_viewController foreachViewControllerWithClass:cls handler:block];
 }
@@ -323,7 +323,7 @@ deepestLastChild(GtTreeNode *n)
 - (IBAction)zoomIn:(id)sender
 {
   [self foreachViewControllerWithClass:[GtViewerViewController class]
-   handler:^(id obj)
+   handler:^(GtViewController *obj)
     {
       GtViewerView *view = ((GtViewerViewController *)obj).contentView;
       view.viewScale *= 2;
@@ -333,7 +333,7 @@ deepestLastChild(GtTreeNode *n)
 - (IBAction)zoomOut:(id)sender
 {
   [self foreachViewControllerWithClass:[GtViewerViewController class]
-   handler:^(id obj)
+   handler:^(GtViewController *obj)
     {
       GtViewerView *view = ((GtViewerViewController *)obj).contentView;
       view.viewScale *= .5;
@@ -345,7 +345,7 @@ deepestLastChild(GtTreeNode *n)
   CGFloat scale = pow(2, [sender tag]);
 
   [self foreachViewControllerWithClass:[GtViewerViewController class]
-   handler:^(id obj)
+   handler:^(GtViewController *obj)
     {
       GtViewerView *view = ((GtViewerViewController *)obj).contentView;
       if (view.viewScale != scale)
@@ -362,7 +362,7 @@ deepestLastChild(GtTreeNode *n)
 - (IBAction)zoomToFit:(id)sender
 {
   [self foreachViewControllerWithClass:[GtViewerViewController class]
-   handler:^(id obj)
+   handler:^(GtViewController *obj)
     {
       GtViewerView *view = ((GtViewerViewController *)obj).contentView;
       view.viewScale = view.zoomToFitScale;
@@ -375,7 +375,7 @@ deepestLastChild(GtTreeNode *n)
 - (IBAction)zoomToFill:(id)sender
 {
   [self foreachViewControllerWithClass:[GtViewerViewController class]
-   handler:^(id obj)
+   handler:^(GtViewController *obj)
     {
       GtViewerView *view = ((GtViewerViewController *)obj).contentView;
       view.viewScale = view.zoomToFillScale;
@@ -383,6 +383,56 @@ deepestLastChild(GtTreeNode *n)
       view.viewCenter = CGPointMake(CGRectGetMidX(bounds),
 				    CGRectGetMidY(bounds));
     }];
+}
+
+static Class
+viewControllerClass(id sender)
+{
+  switch ([sender tag])
+    {
+    case 0:
+      return [GtViewerViewController class];
+
+    case 1:
+      return [GtTreeViewController class];
+
+    default:
+      return Nil;
+    }
+}
+
+- (IBAction)showView:(id)sender
+{
+  [self foreachViewControllerWithClass:viewControllerClass(sender)
+   handler:^(GtViewController *obj)
+    {
+      [_viewController showSubviewController:obj];
+    }];
+}
+
+- (IBAction)toggleView:(id)sender
+{
+  [self foreachViewControllerWithClass:viewControllerClass(sender)
+   handler:^(GtViewController *obj)
+    {
+      [_viewController toggleSubviewController:obj];
+    }];
+}
+
+- (NSInteger)viewState:(id)sender
+{
+  __block NSInteger on = 0, off = 0;
+
+  [self foreachViewControllerWithClass:viewControllerClass(sender)
+   handler:^(GtViewController *obj)
+    {
+      if ([_viewController subviewControllerIsVisible:obj])
+	on++;
+      else
+	off++;
+    }];
+
+  return on && off ? NSMixedState : on ? NSOnState : NSOffState;
 }
 
 @end

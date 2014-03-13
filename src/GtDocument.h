@@ -30,7 +30,7 @@ extern NSString *const GtDocumentNodeDidChange;
 @interface GtDocument : NSDocument
     <NSKeyedArchiverDelegate, NSKeyedUnarchiverDelegate>
 
-@property(nonatomic, readonly, strong) GtWindowController *controller;
+@property(nonatomic, readonly, strong) GtWindowController *windowController;
 
 @property(nonatomic, assign) CGSize documentSize;
 @property(nonatomic, strong) MgLayer *documentNode;

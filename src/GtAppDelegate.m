@@ -25,6 +25,7 @@
 #import "GtAppDelegate.h"
 
 #import "GtDocument.h"
+#import "GtWindowController.h"
 
 #import "CoreAnimationExtensions.h"
 
@@ -72,6 +73,8 @@
 
   if (![document isKindOfClass:[GtDocument class]])
     document = nil;
+
+  GtWindowController *controller = document.windowController;
     
   for (NSMenuItem *item in [menu itemArray])
     {
@@ -85,6 +88,8 @@
 	[item setState:[document setBlendModeState:item]];
       else if (action == @selector(setAlpha:))
 	[item setState:[document setAlphaState:item]];
+      else if (action == @selector(toggleView:))
+	[item setState:[controller viewState:item]];
     }
 }
 

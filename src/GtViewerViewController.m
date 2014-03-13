@@ -44,6 +44,11 @@
   [self.controller addObserver:self forKeyPath:@"selection"
    options:0 context:NULL];
 
+  [self.contentView setPostsFrameChangedNotifications:YES];
+  [[NSNotificationCenter defaultCenter]
+   addObserver:self selector:@selector(contentViewBoundsDidChange:)
+   name:NSViewFrameDidChangeNotification object:self.contentView];
+
   CGRect bounds = [self.contentView bounds];
   self.contentView.viewCenter = CGPointMake(CGRectGetMidX(bounds),
 					    CGRectGetMidY(bounds));
@@ -67,6 +72,11 @@
     {
       [self.contentView setNeedsUpdate];
     }
+}
+
+- (void)contentViewBoundsDidChange:(NSNotification *)note
+{
+  [self.contentView setNeedsUpdate];
 }
 
 @end

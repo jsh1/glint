@@ -54,4 +54,8 @@
 - (IBAction)zoomToFit:(id)sender;
 - (IBAction)zoomToFill:(id)sender;
 
+- (IBAction)showView:(id)sender;
+- (IBAction)toggleView:(id)sender;
+- (NSInteger)viewState:(id)sender;
+
 @end

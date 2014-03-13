@@ -36,13 +36,13 @@ NSString *const GtDocumentNodeDidChange = @"GtDocumentNodeDidChange";
 
 @implementation GtDocument
 {
-  GtWindowController *_controller;
+  GtWindowController *_windowController;
   CGSize _documentSize;
   MgLayer *_documentNode;
   int _undoDisable;
 }
 
-@synthesize controller = _controller;
+@synthesize windowController = _windowController;
 
 - (id)init
 {
@@ -50,7 +50,7 @@ NSString *const GtDocumentNodeDidChange = @"GtDocumentNodeDidChange";
   if (self == nil)
     return nil;
 
-  _controller = [[GtWindowController alloc] init];
+  _windowController = [[GtWindowController alloc] init];
 
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
@@ -103,7 +103,7 @@ NSString *const GtDocumentNodeDidChange = @"GtDocumentNodeDidChange";
 
 - (void)makeWindowControllers
 {
-  [self addWindowController:_controller];
+  [self addWindowController:_windowController];
 }
 
 + (BOOL)automaticallyNotifiesObserversOfDocumentSize
@@ -295,14 +295,14 @@ makeSelectionArray(NSMapTable *added)
 
 - (IBAction)selectNone:(id)sender
 {
-  self.controller.selection = @[];
+  self.windowController.selection = @[];
 }
 
 - (IBAction)delete:(id)sender
 {
   NSMutableSet *set = [NSMutableSet set];
 
-  for (GtTreeNode *tn in self.controller.selection)
+  for (GtTreeNode *tn in self.windowController.selection)
     {
       if ([set containsObject:tn.node])
 	continue;
@@ -313,7 +313,7 @@ makeSelectionArray(NSMapTable *added)
       [set addObject:tn.node];
     }
 
-  self.controller.selection = @[];
+  self.windowController.selection = @[];
 }
 
 - (IBAction)cut:(id)sender
@@ -327,7 +327,7 @@ makeSelectionArray(NSMapTable *added)
   NSPasteboard *pboard = [NSPasteboard generalPasteboard];
 
   [pboard clearContents];
-  [pboard writeObjects:[self.controller.selection mappedArray:
+  [pboard writeObjects:[self.windowController.selection mappedArray:
 			^id(id obj) {return ((GtTreeNode *)obj).node;}]];
 }
 
@@ -336,7 +336,7 @@ makeSelectionArray(NSMapTable *added)
   GtTreeNode *parent_group = nil;
   GtTreeNode *parent_layer = nil;
 
-  for (GtTreeNode *tn in self.controller.selection)
+  for (GtTreeNode *tn in self.windowController.selection)
     {
       GtTreeNode *ln = [tn containingLayer];
       if (ln != nil)
@@ -358,9 +358,9 @@ makeSelectionArray(NSMapTable *added)
     }
 
   if (parent_layer == nil)
-    parent_layer = self.controller.tree;
+    parent_layer = self.windowController.tree;
   if (parent_group == nil)
-    parent_group = self.controller.tree;
+    parent_group = self.windowController.tree;
 
   NSMapTable *added = [NSMapTable strongToStrongObjectsMapTable];
 
@@ -424,7 +424,7 @@ makeSelectionArray(NSMapTable *added)
 	}
     }
 
-  self.controller.selection = makeSelectionArray(added);
+  self.windowController.selection = makeSelectionArray(added);
 }
 
 - (IBAction)pasteAsImage:(id)sender
@@ -473,7 +473,7 @@ makeSelectionArray(NSMapTable *added)
   NSMapTable *groups = [NSMapTable strongToStrongObjectsMapTable];
   NSMutableSet *nodes = [NSMutableSet set];
 
-  for (GtTreeNode *tn in self.controller.selection)
+  for (GtTreeNode *tn in self.windowController.selection)
     {
       if (![tn.node isKindOfClass:[MgLayer class]])
 	continue;
@@ -504,7 +504,7 @@ makeSelectionArray(NSMapTable *added)
     }
 
   if ([groups count] == 0)
-    [groups setObject:@(NSNotFound) forKey:self.controller.tree];
+    [groups setObject:@(NSNotFound) forKey:self.windowController.tree];
 
   NSMapTable *added = [NSMapTable strongToStrongObjectsMapTable];
 
@@ -527,7 +527,7 @@ makeSelectionArray(NSMapTable *added)
 	}
     }
 
-  self.controller.selection = makeSelectionArray(added);
+  self.windowController.selection = makeSelectionArray(added);
 }
 
 - (IBAction)addLayer:(id)sender
@@ -589,7 +589,7 @@ makeSelectionArray(NSMapTable *added)
   NSMutableArray *group = [NSMutableArray array];
   NSMutableSet *nodes = [NSMutableSet set];
 
-  for (GtTreeNode *tn in self.controller.selection)
+  for (GtTreeNode *tn in self.windowController.selection)
     {
       if ([nodes containsObject:tn.node])
 	continue;
@@ -630,7 +630,7 @@ makeSelectionArray(NSMapTable *added)
 
   [self replaceTreeNode:master with:layer];
 
-  self.controller.selection = makeSelectionArray1(parent, layer);
+  self.windowController.selection = makeSelectionArray1(parent, layer);
 }
 
 - (IBAction)ungroup:(id)sender
@@ -639,7 +639,7 @@ makeSelectionArray(NSMapTable *added)
 
   NSMapTable *added = [NSMapTable strongToStrongObjectsMapTable];
 
-  for (GtTreeNode *tn in self.controller.selection)
+  for (GtTreeNode *tn in self.windowController.selection)
     {
       MgGroupLayer *group = (MgGroupLayer *)tn.node;
       if (![group isKindOfClass:[MgGroupLayer class]])
@@ -675,7 +675,7 @@ makeSelectionArray(NSMapTable *added)
       [set addObject:group];
     }
 
-  self.controller.selection = makeSelectionArray(added);
+  self.windowController.selection = makeSelectionArray(added);
 }
 
 - (IBAction)raiseObject:(id)sender
@@ -684,7 +684,7 @@ makeSelectionArray(NSMapTable *added)
 
   NSMutableSet *nodes = [NSMutableSet set];
 
-  NSArray *selection = self.controller.selection;
+  NSArray *selection = self.windowController.selection;
 
   for (GtTreeNode *tn in selection)
     {
@@ -706,14 +706,14 @@ makeSelectionArray(NSMapTable *added)
       [nodes addObject:tn.node];
     }
 
-  self.controller.selection = selection;
+  self.windowController.selection = selection;
 }
 
 - (IBAction)toggleEnabled:(id)sender
 {
   NSMutableSet *nodes = [NSMutableSet set];
 
-  for (GtTreeNode *tn in self.controller.selection)
+  for (GtTreeNode *tn in self.windowController.selection)
     {
       if ([nodes containsObject:tn.node])
 	continue;
@@ -728,7 +728,7 @@ makeSelectionArray(NSMapTable *added)
 {
   NSInteger on = 0, off = 0;
 
-  for (GtTreeNode *tn in self.controller.selection)
+  for (GtTreeNode *tn in self.windowController.selection)
     {
       if (tn.node.enabled)
 	on++;
@@ -743,7 +743,7 @@ makeSelectionArray(NSMapTable *added)
 {
   NSMutableSet *nodes = [NSMutableSet set];
 
-  for (GtTreeNode *tn in self.controller.selection)
+  for (GtTreeNode *tn in self.windowController.selection)
     {
       MgGroupLayer *layer = (MgGroupLayer *)tn.node;
       if (![layer isKindOfClass:[MgGroupLayer class]])
@@ -762,7 +762,7 @@ makeSelectionArray(NSMapTable *added)
 {
   NSInteger on = 0, off = 0;
 
-  for (GtTreeNode *tn in self.controller.selection)
+  for (GtTreeNode *tn in self.windowController.selection)
     {
       MgGroupLayer *layer = (MgGroupLayer *)tn.node;
       if (![layer isKindOfClass:[MgGroupLayer class]])
@@ -782,7 +782,7 @@ makeSelectionArray(NSMapTable *added)
   CGBlendMode mode = (CGBlendMode)[sender tag];
   NSMutableSet *nodes = [NSMutableSet set];
 
-  for (GtTreeNode *tn in self.controller.selection)
+  for (GtTreeNode *tn in self.windowController.selection)
     {
       MgLayer *layer = (MgLayer *)tn.node;
       if (![layer isKindOfClass:[MgLayer class]])
@@ -802,7 +802,7 @@ makeSelectionArray(NSMapTable *added)
   CGBlendMode mode = (CGBlendMode)[sender tag];
   NSInteger on = 0, off = 0;
 
-  for (GtTreeNode *tn in self.controller.selection)
+  for (GtTreeNode *tn in self.windowController.selection)
     {
       MgLayer *layer = (MgLayer *)tn.node;
       if (![layer isKindOfClass:[MgLayer class]])
@@ -822,7 +822,7 @@ makeSelectionArray(NSMapTable *added)
   float alpha = [sender tag] * .01f;
   NSMutableSet *nodes = [NSMutableSet set];
 
-  for (GtTreeNode *tn in self.controller.selection)
+  for (GtTreeNode *tn in self.windowController.selection)
     {
       MgLayer *layer = (MgLayer *)tn.node;
       if (![layer isKindOfClass:[MgLayer class]])
@@ -842,7 +842,7 @@ makeSelectionArray(NSMapTable *added)
   float alpha = [sender tag] * .01f;
   NSInteger on = 0, off = 0;
 
-  for (GtTreeNode *tn in self.controller.selection)
+  for (GtTreeNode *tn in self.windowController.selection)
     {
       MgLayer *layer = (MgLayer *)tn.node;
       if (![layer isKindOfClass:[MgLayer class]])
@@ -1122,7 +1122,7 @@ indexOfObjectInArray(NSArray *array, id value, NSInteger idx)
       || action == @selector(cut:)
       || action == @selector(toggleEnabled:))
     {
-      return [self.controller.selection count] != 0;
+      return [self.windowController.selection count] != 0;
     }
 
   if (action == @selector(embedIn:)
@@ -1130,7 +1130,7 @@ indexOfObjectInArray(NSArray *array, id value, NSInteger idx)
       || action == @selector(setBlendMode:)
       || action == @selector(setAlpha:))
     {
-      for (GtTreeNode *tn in self.controller.selection)
+      for (GtTreeNode *tn in self.windowController.selection)
 	{
 	  if (action == @selector(setBlendMode:)
 	      && [tn.node isKindOfClass:[MgGroupLayer class]]
@@ -1147,7 +1147,7 @@ indexOfObjectInArray(NSArray *array, id value, NSInteger idx)
   if (action == @selector(ungroup:)
       || action == @selector(toggleLayerGroup:))
     {
-      for (GtTreeNode *tn in self.controller.selection)
+      for (GtTreeNode *tn in self.windowController.selection)
 	{
 	  if ([tn.node isKindOfClass:[MgGroupLayer class]])
 	    return YES;
@@ -1158,7 +1158,7 @@ indexOfObjectInArray(NSArray *array, id value, NSInteger idx)
 
   if (action == @selector(raiseObject:))
     {
-      for (GtTreeNode *tn in self.controller.selection)
+      for (GtTreeNode *tn in self.windowController.selection)
 	{
 	  if (tn.parent != nil && tn.parentIndex != NSNotFound
 	      && [[tn.parent.node valueForKey:tn.parentKey] count] > 1)
