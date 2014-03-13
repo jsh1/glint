@@ -1,0 +1,42 @@
+-*- indented-text -*-
+
+Issues
+======
+
+1. Should content nodes have geometry?
+
+  I.e should they be subclasses of MgLayerNode instead of
+  MgDrawableNode? I'm conflicted about this, but will keep the current
+  scheme for now.
+
+  Alternatively: move "contents" from MgLayerNode into a new subclass
+  (MgGroupNode?), with the drawing nodes subclasses of MgLayerNode.
+  This would mean they have geometry but still only draw one thing.
+  Question then is, do we also move the timing properties into
+  MgLayerNode and eliminate MgDrawableNode entirely?
+
+  RESOLVED: implemented the latter -- layers have geometry, timing,
+  compositing properties, but don't render anything. Group layers add
+  an array of sublayers ("contents"), Rect/image/etc objects are now
+  layers that draw content but don't have sublayers.
+
+2. Should content nodes have alpha and blendMode properties?
+
+  The simplest method would be push the properties up to
+  MgDrawableNode, but it means they'd also exist on MgTimelineNode,
+  which doesn't make much sense.
+
+  Currently they use the blend mode of their layer, unless layer.group
+  is true, in which case the layer's content will be sover'd and then
+  composited using the layer's blend mode.
+
+  RESOLVED: everything's a layer now.
+
+3. Remove masksToBounds property from MgLayerNode?
+
+  Exactly the same effect can be had by setting layer.mask to an
+  instance of MgRectNode. So in the interests of eliminating redundancy
+  masksToBounds should be eliminated.
+
+  RESOLVED: deleted.
+
