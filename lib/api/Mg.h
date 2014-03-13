@@ -22,8 +22,8 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#ifndef MAGNESIUM_H
-#define MAGNESIUM_H
+#ifndef MG_H
+#define MG_H
 
 #include "MgBase.h"
 
@@ -45,4 +45,4 @@
 # import "MgTimingFunction.h"
 #endif
 
-#endif /* MAGNESIUM_H */
+#endif /* MG_H */

@@ -96,7 +96,7 @@
 		5738567718C746D80010CFB7 /* GtTreeNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtTreeNode.m; path = src/GtTreeNode.m; sourceTree = "<group>"; };
 		5738567918C74CCC0010CFB7 /* AppKitExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppKitExtensions.h; path = src/AppKitExtensions.h; sourceTree = "<group>"; };
 		5738567A18C74CCC0010CFB7 /* AppKitExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppKitExtensions.m; path = src/AppKitExtensions.m; sourceTree = "<group>"; };
-		575ACEC718CFCFE100161C70 /* Magnesium.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Magnesium.h; sourceTree = "<group>"; };
+		574D310A18D2737300B1D094 /* Mg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mg.h; sourceTree = "<group>"; };
 		575ACEC818CFCFE100161C70 /* MgAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgAnimation.h; sourceTree = "<group>"; };
 		575ACEC918CFCFE100161C70 /* MgAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgAnimation.m; sourceTree = "<group>"; };
 		575ACECA18CFCFE100161C70 /* MgBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgBase.h; sourceTree = "<group>"; };
@@ -217,7 +217,7 @@
 		575F56D218C357080034B28C /* api */ = {
 			isa = PBXGroup;
 			children = (
-				575ACEC718CFCFE100161C70 /* Magnesium.h */,
+				574D310A18D2737300B1D094 /* Mg.h */,
 				575ACEC818CFCFE100161C70 /* MgAnimation.h */,
 				575ACEC918CFCFE100161C70 /* MgAnimation.m */,
 				575ACECA18CFCFE100161C70 /* MgBase.h */,

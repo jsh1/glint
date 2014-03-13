@@ -25,7 +25,7 @@
 #ifndef GT_BASE_H
 #define GT_BASE_H
 
-#include "Magnesium.h"
+#include "Mg.h"
 
 #ifdef __OBJC__
 #import <AppKit/AppKit.h>
