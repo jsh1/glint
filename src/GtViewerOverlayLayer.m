@@ -426,7 +426,7 @@ rect_slice_8(CGRect content, CGRect bounds, size_t i)
 
 - (void)updateSelectedNodes
 {
-  GtWindowController *controller = self.view.controller.controller;
+  GtWindowController *controller = self.view.controller.windowController;
   GtDocument *document = controller.document;
   NSArray *sel = controller.selection;
 

@@ -49,7 +49,7 @@
   [self.document addObserver:self forKeyPath:@"documentNode" options:0
    context:NULL];
 
-  [self.controller addObserver:self forKeyPath:@"selection" options:0
+  [self.windowController addObserver:self forKeyPath:@"selection" options:0
    context:NULL];
 
   for (NSTableColumn *col in [self.outlineView tableColumns])
@@ -65,7 +65,7 @@
 - (void)invalidate
 {
   [self.document removeObserver:self forKeyPath:@"documentNode"];
-  [self.controller removeObserver:self forKeyPath:@"selection"];
+  [self.windowController removeObserver:self forKeyPath:@"selection"];
 
   [super invalidate];
 }
@@ -88,7 +88,7 @@ expandItem(NSOutlineView *ov, GtTreeNode *tn)
 
 - (void)updateSelection
 {
-  NSArray *selection = self.controller.selection;
+  NSArray *selection = self.windowController.selection;
 
   for (GtTreeNode *tn in selection)
     expandItem(self.outlineView, tn.parent);
@@ -99,7 +99,7 @@ expandItem(NSOutlineView *ov, GtTreeNode *tn)
 - (void)documentGraphDidChange:(NSNotification *)note
 {
   [self.outlineView reloadData];
-  [self.outlineView setSelectedItems:self.controller.selection];
+  [self.outlineView setSelectedItems:self.windowController.selection];
 }
 
 - (void)documentNodeDidChange:(NSNotification *)note
@@ -127,7 +127,7 @@ expandItem(NSOutlineView *ov, GtTreeNode *tn)
 - (NSInteger)outlineView:(NSOutlineView *)ov numberOfChildrenOfItem:(id)item
 {
   if (item == nil)
-    item = self.controller.tree;
+    item = self.windowController.tree;
 
   return [((GtTreeNode *)item).children count];
 }
@@ -135,7 +135,7 @@ expandItem(NSOutlineView *ov, GtTreeNode *tn)
 - (id)outlineView:(NSOutlineView *)ov child:(NSInteger)idx ofItem:(id)item
 {
   if (item == nil)
-    item = self.controller.tree;
+    item = self.windowController.tree;
 
   return ((GtTreeNode *)item).children[idx];
 }
@@ -165,7 +165,7 @@ expandItem(NSOutlineView *ov, GtTreeNode *tn)
 
 - (void)outlineViewSelectionDidChange:(NSNotification *)notification
 {
-  self.controller.selection = [self.outlineView selectedItems];
+  self.windowController.selection = [self.outlineView selectedItems];
 }
 
 @end

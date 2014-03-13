@@ -32,7 +32,7 @@
 
 @property(nonatomic, copy) NSString *identifierSuffix;
 
-- (id)initWithController:(GtWindowController *)controller;
+- (id)initWithWindowController:(GtWindowController *)windowController;
 
 - (void)invalidate;
 
@@ -46,7 +46,7 @@
 - (void)viewWillDisappear;
 - (void)viewDidDisappear;
 
-@property(nonatomic, weak, readonly) GtWindowController *controller;
+@property(nonatomic, weak, readonly) GtWindowController *windowController;
 @property(nonatomic, weak, readonly) GtDocument *document;
 
 - (GtViewController *)viewControllerWithClass:(Class)cls;

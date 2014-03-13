@@ -90,11 +90,11 @@
   /* FIXME: replace by something else. */
 
   GtSplitViewController *split = [[GtSplitViewController alloc]
-				  initWithController:self];
+				  initWithWindowController:self];
   GtTreeViewController *tree = [[GtTreeViewController alloc]
-				initWithController:self];
+				initWithWindowController:self];
   GtViewerViewController *viewer = [[GtViewerViewController alloc]
-				    initWithController:self];
+				    initWithWindowController:self];
 
   split.vertical = YES;
   split.indexOfResizableSubview = 1;

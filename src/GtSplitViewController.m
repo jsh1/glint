@@ -30,9 +30,9 @@
 
 @implementation GtSplitViewController
 
-- (id)initWithController:(GtWindowController *)controller
+- (id)initWithWindowController:(GtWindowController *)controller
 {
-  self = [super initWithController:controller];
+  self = [super initWithWindowController:controller];
   if (self == nil)
     return nil;
 

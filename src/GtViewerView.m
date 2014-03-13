@@ -252,7 +252,7 @@
 
 - (GtTreeNode *)selectedNodeContainingPoint:(CGPoint)p
 {
-  GtWindowController *controller = self.controller.controller;
+  GtWindowController *controller = self.controller.windowController;
 
   for (GtTreeNode *node in controller.selection)
     {
@@ -270,7 +270,7 @@
 - (BOOL)mouseDown:(NSEvent *)e inAdornment:(NSInteger)adornment
     ofNode:(GtTreeNode *)node
 {
-  GtWindowController *controller = self.controller.controller;
+  GtWindowController *controller = self.controller.windowController;
 
   NSMutableArray *nodes = [NSMutableArray array];
   NSMutableSet *layers = [NSMutableSet set];
@@ -579,7 +579,7 @@
 
 - (void)modifySelectionForNode:(GtTreeNode *)node withEvent:(NSEvent *)e
 {
-  GtWindowController *controller = self.controller.controller;
+  GtWindowController *controller = self.controller.windowController;
 
   BOOL extend = ([e modifierFlags] & NSShiftKeyMask) != 0;
   BOOL toggle = ([e modifierFlags] & NSCommandKeyMask) != 0;
@@ -604,7 +604,7 @@
 
 - (void)mouseDown:(NSEvent *)e
 {
-  GtWindowController *controller = self.controller.controller;
+  GtWindowController *controller = self.controller.windowController;
 
   NSPoint p = [self convertPoint:[e locationInWindow] fromView:nil];
 

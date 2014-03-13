@@ -41,7 +41,7 @@
    context:NULL];
   [self.document addObserver:self forKeyPath:@"documentSize" options:0
    context:NULL];
-  [self.controller addObserver:self forKeyPath:@"selection"
+  [self.windowController addObserver:self forKeyPath:@"selection"
    options:0 context:NULL];
 
   [self.contentView setPostsFrameChangedNotifications:YES];
@@ -58,7 +58,7 @@
 {
   [self.document removeObserver:self forKeyPath:@"documentNode"];
   [self.document removeObserver:self forKeyPath:@"documentSize"];
-  [self.controller removeObserver:self forKeyPath:@"selection"];
+  [self.windowController removeObserver:self forKeyPath:@"selection"];
 
   [super invalidate];
 }

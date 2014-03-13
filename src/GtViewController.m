@@ -28,14 +28,14 @@
 
 @implementation GtViewController
 {
-  __weak GtWindowController *_controller;
+  __weak GtWindowController *_windowController;
   __weak GtViewController *_superviewController;
   NSMutableArray *_subviewControllers;
   NSString *_identifierSuffix;
   BOOL _viewHasBeenLoaded;
 }
 
-@synthesize controller = _controller;
+@synthesize windowController = _windowController;
 @synthesize identifierSuffix = _identifierSuffix;
 @synthesize superviewController = _superviewController;
 @synthesize viewHasBeenLoaded = _viewHasBeenLoaded;
@@ -45,14 +45,14 @@
   return nil;
 }
 
-- (id)initWithController:(GtWindowController *)controller
+- (id)initWithWindowController:(GtWindowController *)windowController
 {
   self = [super initWithNibName:[[self class] viewNibName]
 	  bundle:[NSBundle mainBundle]];
   if (self == nil)
     return nil;
 
-  _controller = controller;
+  _windowController = windowController;
   _subviewControllers = [[NSMutableArray alloc] init];
 
   return self;
@@ -71,7 +71,7 @@
 
 - (GtDocument *)document
 {
-  return _controller.document;
+  return _windowController.document;
 }
 
 - (NSString *)identifier
