@@ -142,8 +142,8 @@
 		57618DBD18C5D538004108D8 /* CoreAnimationExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CoreAnimationExtensions.m; path = src/CoreAnimationExtensions.m; sourceTree = "<group>"; };
 		578A328B18C881050000ADC4 /* MgTimingStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgTimingStorage.h; sourceTree = "<group>"; };
 		578A328C18C881050000ADC4 /* MgTimingStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgTimingStorage.m; sourceTree = "<group>"; };
-		579CAFCF18C381BD0051454F /* MgCoreGraphics.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = MgCoreGraphics.c; path = magnesium/util/MgCoreGraphics.c; sourceTree = SOURCE_ROOT; };
-		579CAFD018C381BD0051454F /* MgCoreGraphics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MgCoreGraphics.h; path = magnesium/util/MgCoreGraphics.h; sourceTree = SOURCE_ROOT; };
+		579CAFCF18C381BD0051454F /* MgCoreGraphics.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = MgCoreGraphics.c; path = lib/util/MgCoreGraphics.c; sourceTree = SOURCE_ROOT; };
+		579CAFD018C381BD0051454F /* MgCoreGraphics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MgCoreGraphics.h; path = lib/util/MgCoreGraphics.h; sourceTree = SOURCE_ROOT; };
 		579CAFD218C385310051454F /* MgMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgMacros.h; sourceTree = "<group>"; };
 		579CAFD718C3F63A0051454F /* MgCoderExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgCoderExtensions.h; sourceTree = "<group>"; };
 		579CAFD818C3F63A0051454F /* MgCoderExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgCoderExtensions.m; sourceTree = "<group>"; };
@@ -175,8 +175,8 @@
 		5714A8A718BD322900ED67EE = {
 			isa = PBXGroup;
 			children = (
-				57E776BC18BD35D0007CD31F /* Source */,
-				575F56D118C357080034B28C /* magnesium */,
+				57E776BC18BD35D0007CD31F /* src */,
+				575F56D118C357080034B28C /* lib */,
 				57E776BD18BD35DF007CD31F /* Nibs */,
 				57E776BE18BD3609007CD31F /* Resources */,
 				5714A8B218BD322900ED67EE /* Frameworks */,
@@ -205,13 +205,13 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		575F56D118C357080034B28C /* magnesium */ = {
+		575F56D118C357080034B28C /* lib */ = {
 			isa = PBXGroup;
 			children = (
 				575F56D218C357080034B28C /* api */,
 				575F56F618C357080034B28C /* util */,
 			);
-			path = magnesium;
+			path = lib;
 			sourceTree = "<group>";
 		};
 		575F56D218C357080034B28C /* api */ = {
@@ -272,7 +272,7 @@
 			path = util;
 			sourceTree = "<group>";
 		};
-		57E776BC18BD35D0007CD31F /* Source */ = {
+		57E776BC18BD35D0007CD31F /* src */ = {
 			isa = PBXGroup;
 			children = (
 				572A5B2118C4CE2000AB8086 /* GtAppDelegate.h */,
@@ -311,7 +311,7 @@
 				5714A8C118BD322900ED67EE /* Glint-Prefix.pch */,
 				5714A8BF18BD322900ED67EE /* main.m */,
 			);
-			name = Source;
+			name = src;
 			sourceTree = SOURCE_ROOT;
 		};
 		57E776BD18BD35DF007CD31F /* Nibs */ = {

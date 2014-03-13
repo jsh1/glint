@@ -1,3 +1,3 @@
 
-This is the design tool for the Mg compositing framework.
+This is the test app for the experimental Mg compositing framework.
 
