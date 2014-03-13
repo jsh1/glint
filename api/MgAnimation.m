@@ -33,9 +33,7 @@
 @implementation MgAnimation
 {
   MgTimingStorage *_timing;
-  NSString *_keyPath;
   MgTimingFunction *_timingFunction;
-  MgFunction *_valueFunction;
 }
 
 - (CFTimeInterval)begin
@@ -151,9 +149,7 @@
   if (_timing != nil)
     copy->_timing = [_timing copy];
 
-  copy->_keyPath = [_keyPath copy];
   copy->_timingFunction = [_timingFunction copy];
-  copy->_valueFunction = [_valueFunction copy];
 
   return copy;
 }
@@ -174,14 +170,8 @@
       [_timing encodeWithCoder:c];
     }
 
-  if (_keyPath != nil)
-    [c encodeObject:_keyPath forKey:@"keyPath"];
-
   if (_timingFunction != nil)
     [c encodeObject:_timingFunction forKey:@"timingFunction"];
-
-  if (_valueFunction != nil)
-    [c encodeObject:_valueFunction forKey:@"valueFunction"];
 }
 
 - (id)initWithCoder:(NSCoder *)c
@@ -196,14 +186,8 @@
       [_timing decodeWithCoder:c];
     }
 
-  if ([c containsValueForKey:@"keyPath"])
-    _keyPath = [c decodeObjectOfClass:[NSString class] forKey:@"keyPath"];
-
   if ([c containsValueForKey:@"timingFunction"])
     _timingFunction = [c decodeObjectOfClass:[MgTimingFunction class] forKey:@"timingFunction"];
-
-  if ([c containsValueForKey:@"valueFunction"])
-    _valueFunction = [c decodeObjectOfClass:[MgFunction class] forKey:@"valueFunction"];
 
   return self;
 }

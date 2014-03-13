@@ -27,8 +27,6 @@
 
 @interface MgAnimation : MgNode <MgTiming>
 
-@property(nonatomic, copy) NSString *keyPath;
 @property(nonatomic, copy) MgTimingFunction *timingFunction;
-@property(nonatomic, copy) MgFunction *valueFunction;
 
 @end

@@ -28,16 +28,9 @@
 
 @implementation MgTimingFunction
 
-- (void)applyToValues:(const CGFloat *)src count:(size_t)n
-    handler:(void (^)(const CGFloat *dst, size_t n))block
++ (instancetype)functionWithName:(NSString *)name
 {
-  if (n == 1)
-    {
-      CGFloat ret = [self applyToTime:src[0] epsilon:1e-6];
-      block(&ret, 1);
-    }
-  else
-    block(NULL, 0);
+  return nil;
 }
 
 - (CFTimeInterval)applyToTime:(CFTimeInterval)t epsilon:(double)eps
@@ -48,6 +41,29 @@
 - (CFTimeInterval)applyInverseToTime:(CFTimeInterval)t epsilon:(double)eps
 {
   return t;
+}
+
+/** NSCopying methods. **/
+
+- (id)copyWithZone:(NSZone *)zone
+{
+  return [[[self class] alloc] init];
+}
+
+/** NSSecureCoding methods. **/
+
++ (BOOL)supportsSecureCoding
+{
+  return YES;
+}
+
+- (void)encodeWithCoder:(NSCoder *)c
+{
+}
+
+- (id)initWithCoder:(NSCoder *)c
+{
+  return [self init];
 }
 
 @end

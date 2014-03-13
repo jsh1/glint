@@ -26,6 +26,7 @@
 
 @interface MgBasicAnimation : MgAnimation
 
+@property(nonatomic, copy) NSString *keyPath;
 @property(nonatomic, strong) id<NSSecureCoding> fromValue;
 @property(nonatomic, strong) id<NSSecureCoding> toValue;
 

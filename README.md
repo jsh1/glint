@@ -18,8 +18,6 @@ run-time to a CALayer/UIView hierarchy.
 
 - 2D only for now, but don't do anything that stops 2.5D later.
 
-- Build support for node/document states into the scene graph.
-
 - Integrate spring dynamics simulation. Try to unify dynamics and
 declarative animations.
 
@@ -34,18 +32,6 @@ simplifies the base layer class.
 hidden subtrees to be pruned before they get to the render tree.
 
 - Coordinate space is relative to top-left corner, on both Mac and iOS.
-
-- No transactions or built-in thread safety. Callers will modify the
-shared object graph, then manually render it to a drawing context or
-commit its translation to a hosting CALayer.
-
-- Animations are explicit nodes in the scene graph. They can be added
-to any layer but can't target properties of that object's descendants.
-
-- Ignore filters for now. At some point try to solve the "background
-filters suck" problem. Support N-input filters, e.g. either a filter
-attached to a layer that takes another layer as input, or make filters
-be layers themselves?
 
 
 ## Class Hierarchy (work in progress)

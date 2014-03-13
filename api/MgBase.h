@@ -81,7 +81,7 @@
     NSMutableDictionary, NSSet, NSMutableSet, NSIndexSet, NSMutableIndexSet,
     NSPointerArray, NSURL;
 @class MgAnimation, MgBasicAnimation, MgBezierTimingFunction,
-    MgDrawingLayer, MgLayer, MgFunction, MgGradientLayer, MgGroupLayer,
+    MgDrawingLayer, MgLayer, MgGradientLayer, MgGroupLayer,
     MgImageLayer, MgImageProvider, MgNode, MgPathLayer, MgRectLayer,
     MgTimingFunction;
 

@@ -33,7 +33,6 @@
 # import "MgBezierTimingFunction.h"
 # import "MgCoreAnimationLayer.h"
 # import "MgDrawingLayer.h"
-# import "MgFunction.h"
 # import "MgGradientLayer.h"
 # import "MgGroupLayer.h"
 # import "MgImageLayer.h"

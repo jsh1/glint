@@ -30,6 +30,7 @@
 
 @implementation MgBasicAnimation
 {
+  NSString *_keyPath;
   id<NSSecureCoding> _fromValue;
   id<NSSecureCoding> _toValue;
 }
@@ -82,6 +83,7 @@
 {
   MgBasicAnimation *copy = [super copyWithZone:zone];
 
+  copy->_keyPath = [_keyPath copy];
   copy->_fromValue = _fromValue;
   copy->_toValue = _toValue;
 
@@ -93,6 +95,9 @@
 - (void)encodeWithCoder:(NSCoder *)c
 {
   [super encodeWithCoder:c];
+
+  if (_keyPath != nil)
+    [c encodeObject:_keyPath forKey:@"keyPath"];
 
   if (_fromValue != nil)
     [c encodeObject:_fromValue forKey:@"fromValue"];
@@ -106,6 +111,9 @@
   self = [super initWithCoder:c];
   if (self == nil)
     return nil;
+
+  if ([c containsValueForKey:@"keyPath"])
+    _keyPath = [c decodeObjectOfClass:[NSString class] forKey:@"keyPath"];
 
   if ([c containsValueForKey:@"fromValue"])
     _fromValue = [c decodeObjectOfClass:[NSObject class] forKey:@"fromValue"];

@@ -22,9 +22,11 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "MgFunction.h"
+#import "MgBase.h"
 
-@interface MgTimingFunction : MgFunction
+@interface MgTimingFunction :  NSObject <NSCopying, NSSecureCoding>
+
++ (instancetype)functionWithName:(NSString *)name;
 
 - (CFTimeInterval)applyToTime:(CFTimeInterval)t epsilon:(double)eps;
 - (CFTimeInterval)applyInverseToTime:(CFTimeInterval)t epsilon:(double)eps;
