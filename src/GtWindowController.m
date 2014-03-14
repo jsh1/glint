@@ -340,6 +340,14 @@ deepestLastChild(GtTreeNode *n)
     }];
 }
 
+- (void)_centerView:(GtViewerView *)view
+{
+  CGRect bounds = NSRectToCGRect([view bounds]);
+
+  view.viewCenter = CGPointMake(round(CGRectGetMidX(bounds)),
+				round(CGRectGetMidY(bounds)));
+}
+
 - (IBAction)zoomTo:(id)sender
 {
   CGFloat scale = pow(2, [sender tag]);
@@ -351,11 +359,7 @@ deepestLastChild(GtTreeNode *n)
       if (view.viewScale != scale)
 	view.viewScale = scale;
       else
-	{
-	  CGRect bounds = NSRectToCGRect([view bounds]);
-	  view.viewCenter = CGPointMake(CGRectGetMidX(bounds),
-					CGRectGetMidY(bounds));
-	}
+	[self _centerView:view];
     }];
 }
 
@@ -366,9 +370,7 @@ deepestLastChild(GtTreeNode *n)
     {
       GtViewerView *view = ((GtViewerViewController *)obj).contentView;
       view.viewScale = view.zoomToFitScale;
-      CGRect bounds = NSRectToCGRect([view bounds]);
-      view.viewCenter = CGPointMake(CGRectGetMidX(bounds),
-				    CGRectGetMidY(bounds));
+      [self _centerView:view];
     }];
 }
 
@@ -379,9 +381,7 @@ deepestLastChild(GtTreeNode *n)
     {
       GtViewerView *view = ((GtViewerViewController *)obj).contentView;
       view.viewScale = view.zoomToFillScale;
-      CGRect bounds = NSRectToCGRect([view bounds]);
-      view.viewCenter = CGPointMake(CGRectGetMidX(bounds),
-				    CGRectGetMidY(bounds));
+      [self _centerView:view];
     }];
 }
 

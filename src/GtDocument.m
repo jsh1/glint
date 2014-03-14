@@ -313,6 +313,12 @@ pasteboard_classes(bool as_images)
 	  : @[[NSImage class]]);
 }
 
+static CGFloat
+fract(CGFloat x)
+{
+  return x - floor(x);
+}
+
 - (BOOL)addObjectsFromPasteboard:(NSPasteboard *)pboard
     asImages:(BOOL)flag atDocumentPoint:(CGPoint)p
 {
@@ -371,7 +377,8 @@ pasteboard_classes(bool as_images)
 	size = CGSizeMake(CGImageGetWidth(im), CGImageGetHeight(im));
 
       layer.bounds = CGRectMake(0, 0, size.width, size.height);
-      layer.position = p;
+      layer.position = CGPointMake(round(p.x) + fract(size.width*.5),
+				   round(p.y) + fract(size.height*.5));
 
       [self node:parent_group insertObject:layer atIndex:NSIntegerMax
        forKey:@"sublayers"];

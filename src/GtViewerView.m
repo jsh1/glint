@@ -701,8 +701,8 @@
 - (void)scrollWheel:(NSEvent *)e
 {
   CGPoint o = self.viewCenter;
-  o.x += [e scrollingDeltaX];
-  o.y += [e scrollingDeltaY];
+  o.x += round([e scrollingDeltaX]);
+  o.y += round([e scrollingDeltaY]);
   self.viewCenter = o;
 }
 
