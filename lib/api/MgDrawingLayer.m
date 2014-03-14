@@ -84,20 +84,4 @@
   return _rs != NULL ? _rs->ctx : NULL;
 }
 
-- (CFTimeInterval)currentTime
-{
-  return _rs != NULL ? _rs->t : 0;
-}
-
-- (CFTimeInterval)nextTime
-{
-  return _rs != NULL ? _rs->tnext : 0;
-}
-
-- (void)setNextTime:(CFTimeInterval)t
-{
-  if (_rs != NULL && t < _rs->tnext)
-    _rs->tnext = t;
-}
-
 @end

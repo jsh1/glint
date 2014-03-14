@@ -42,7 +42,5 @@
 @protocol MgDrawingState
 
 @property(nonatomic, assign, readonly) CGContextRef context;
-@property(nonatomic, assign, readonly) CFTimeInterval currentTime;
-@property(nonatomic, assign, readwrite) CFTimeInterval nextTime;
 
 @end

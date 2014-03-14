@@ -60,7 +60,7 @@
 	  CGContextTranslateCTM(ctx, bounds.origin.x, bounds.origin.y);
 	  CGAffineTransform m = [self parentTransform];
 	  CGContextConcatCTM(ctx, CGAffineTransformInvert(m));
-	  [self renderInContext:ctx atTime:0];
+	  [self renderInContext:ctx];
 	});
 
       NSMutableData *data = [NSMutableData data];

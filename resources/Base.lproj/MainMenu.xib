@@ -417,18 +417,6 @@ CA
                                     </items>
                                 </menu>
                             </menuItem>
-                            <menuItem title="New Animation" id="kPH-PW-ZYZ">
-                                <modifierMask key="keyEquivalentModifierMask"/>
-                                <menu key="submenu" title="New Animation" id="LKb-AL-IJ8">
-                                    <items>
-                                        <menuItem title="Basic Animation" keyEquivalent="B" id="d7P-P2-QHG">
-                                            <connections>
-                                                <action selector="addAnimation:" target="-1" id="0Mq-fB-wz9"/>
-                                            </connections>
-                                        </menuItem>
-                                    </items>
-                                </menu>
-                            </menuItem>
                             <menuItem isSeparatorItem="YES" id="CFV-Rl-BbR"/>
                             <menuItem title="Group" keyEquivalent="g" id="L6d-AF-ykv">
                                 <connections>

@@ -46,12 +46,7 @@ MgNode : NSObject
   BOOL enabled
   NSString *name
 
-MgTiming (protocol)
-
-  double begin, duration, speed, offset, repeat
-  bool autoreverses, holdsBeforeStart, holdsAfterEnd
-
-MgLayer : MgNode <MgTiming>
+MgLayer : MgNode
 
   CGPoint position
   CGPoint anchor
@@ -61,7 +56,6 @@ MgLayer : MgNode <MgTiming>
   float alpha
   CGBlendMode blendMode
   MgLayer *mask
-  NSArray<MgAnimation> *animations
 
 MgGroupLayer : MgLayer
 
@@ -99,14 +93,4 @@ MgGradientLayer : MgLayer
   CGPoint startPoint, endPoint
   CGFloat startRadius, endRadius
   BOOL drawsBeforeStart, drawsAfterEnd
-
-MgAnimation : MgNode <MgTiming>
-
-  NSString *keyPath
-  MgTimingFunction *timingFunction
-  MgFunction *valueFunction
-
-MgBasicAnimation : MgAnimation
-
-  id fromValue, toValue
 </pre>

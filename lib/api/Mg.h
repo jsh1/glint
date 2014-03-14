@@ -28,9 +28,6 @@
 #include "MgBase.h"
 
 #ifdef __OBJC__
-# import "MgAnimation.h"
-# import "MgBasicAnimation.h"
-# import "MgBezierTimingFunction.h"
 # import "MgCoreAnimationLayer.h"
 # import "MgDrawingLayer.h"
 # import "MgGradientLayer.h"
@@ -41,8 +38,6 @@
 # import "MgNode.h"
 # import "MgPathLayer.h"
 # import "MgRectLayer.h"
-# import "MgTiming.h"
-# import "MgTimingFunction.h"
 #endif
 
 #endif /* MG_H */

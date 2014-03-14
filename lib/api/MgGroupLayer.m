@@ -210,8 +210,6 @@
       CGContextEndTransparencyLayer(r.ctx);
       CGContextRestoreGState(r.ctx);
     }
-
-  rs->tnext = r.tnext;
 }
 
 /** NSCopying methods. **/

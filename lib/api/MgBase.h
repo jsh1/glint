@@ -80,10 +80,8 @@
 @class NSArray, NSMutableArray, NSData, NSMutableData, NSDictionary,
     NSMutableDictionary, NSSet, NSMutableSet, NSIndexSet, NSMutableIndexSet,
     NSPointerArray, NSURL;
-@class MgAnimation, MgBasicAnimation, MgBezierTimingFunction,
-    MgDrawingLayer, MgLayer, MgGradientLayer, MgGroupLayer,
-    MgImageLayer, MgImageProvider, MgNode, MgPathLayer, MgRectLayer,
-    MgTimingFunction;
+@class MgDrawingLayer, MgLayer, MgGradientLayer, MgGroupLayer,
+    MgImageLayer, MgImageProvider, MgNode, MgPathLayer, MgRectLayer;
 
 @protocol MgImageProvider;
 

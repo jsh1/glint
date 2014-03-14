@@ -29,8 +29,6 @@ typedef struct MgLayerRenderState MgLayerRenderState;
 struct MgLayerRenderState
 {
   CGContextRef ctx;
-  CFTimeInterval t;
-  CFTimeInterval tnext;
   float alpha;
 };
 

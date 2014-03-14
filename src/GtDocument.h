@@ -52,7 +52,6 @@ extern NSString *const GtDocumentNodeDidChange;
 - (BOOL)canPasteAsImage;
 
 - (IBAction)addLayer:(id)sender;
-- (IBAction)addAnimation:(id)sender;
 - (IBAction)group:(id)sender;
 - (IBAction)ungroup:(id)sender;
 

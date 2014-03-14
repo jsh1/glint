@@ -23,9 +23,8 @@
    SOFTWARE. */
 
 #import "MgNode.h"
-#import "MgTiming.h"
 
-@interface MgLayer : MgNode <MgTiming>
+@interface MgLayer : MgNode
 
 /** Geometry properties. **/
 
@@ -44,16 +43,6 @@
 @property(nonatomic, assign) CGBlendMode blendMode;
 
 @property(nonatomic, strong) MgLayer *mask;
-
-/** Animations. **/
-
-@property(nonatomic, copy) NSArray *animations;
-
-- (void)insertAnimation:(MgAnimation *)anim atIndex:(NSInteger)idx;
-- (void)removeAnimationAtIndex:(NSInteger)idx;
-
-- (void)addAnimation:(MgAnimation *)anim;
-- (void)removeAnimation:(MgAnimation *)anim;
 
 /** Geometry methods. **/
 
@@ -84,8 +73,7 @@
 
 /** Rendering. **/
 
-- (CFTimeInterval)renderInContext:(CGContextRef)ctx;
-- (CFTimeInterval)renderInContext:(CGContextRef)ctx atTime:(CFTimeInterval)t;
+- (void)renderInContext:(CGContextRef)ctx;
 
 /** Methods for subclasses to override. **/
 

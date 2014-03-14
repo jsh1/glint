@@ -398,13 +398,6 @@ makeSelectionArray(NSMapTable *added)
 
 	  [added setObject:parent_group forKey:object];
 	}
-      else if ([object isKindOfClass:[MgAnimation class]])
-	{
-	  [self node:parent_layer insertObject:object atIndex:NSIntegerMax
-	   forKey:@"animations"];
-
-	  [added setObject:parent_layer forKey:object];
-	}
       else if ([object isKindOfClass:[NSImage class]])
 	{
 	  CGImageRef im = [(NSImage *)object CGImageForProposedRect:NULL
@@ -575,11 +568,6 @@ makeSelectionArray(NSMapTable *added)
 
       return layer;
     }];
-}
-
-- (IBAction)addAnimation:(id)sender
-{
-  /* FIXME: implement this. */
 }
 
 - (IBAction)group:(id)sender

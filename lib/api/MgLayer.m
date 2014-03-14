@@ -24,10 +24,8 @@
 
 #import "MgLayerInternal.h"
 
-#import "MgAnimation.h"
 #import "MgCoderExtensions.h"
 #import "MgNodeInternal.h"
-#import "MgTimingStorage.h"
 
 #import <Foundation/Foundation.h>
 
@@ -40,11 +38,9 @@
   CGFloat _squeeze;
   CGFloat _skew;
   double _rotation;
-  MgTimingStorage *_timing;
   float _alpha;
   CGBlendMode _blendMode;
   MgLayer *_mask;
-  NSMutableArray *_animations;
 }
 
 - (id)init
@@ -351,285 +347,10 @@
     }
 }
 
-+ (BOOL)automaticallyNotifiesObserversOfAnimations
-{
-  return NO;
-}
-
-- (NSArray *)animations
-{
-  return _animations != nil ? _animations : @[];
-}
-
-- (void)setAnimations:(NSArray *)array
-{
-  if (_animations != array)
-    {
-      [self willChangeValueForKey:@"animations"];
-
-      for (MgAnimation *anim in _animations)
-	[anim removeReference:self];
-
-      _animations = [array mutableCopy];
-
-      for (MgAnimation *anim in _animations)
-	[anim addReference:self];
-
-      [self incrementVersion];
-      [self didChangeValueForKey:@"animations"];
-    }
-}
-
-- (void)insertAnimation:(MgAnimation *)anim atIndex:(NSInteger)idx
-{
-  if (_animations == nil)
-    _animations = [[NSMutableArray alloc] init];
-
-  if ([_animations indexOfObjectIdenticalTo:anim] == NSNotFound)
-    {
-      [self willChangeValueForKey:@"animations"];
-
-      if (idx > [_animations count])
-	idx = [_animations count];
-
-      [_animations insertObject:anim atIndex:idx];
-      [anim addReference:self];
-
-      [self incrementVersion];
-      [self didChangeValueForKey:@"animations"];
-    }
-}
-
-- (void)removeAnimationAtIndex:(NSInteger)idx
-{
-  if (idx < [_animations count])
-    {
-      [self willChangeValueForKey:@"animations"];
-
-      [_animations[idx] removeReference:self];
-      [_animations removeObjectAtIndex:idx];
-
-      [self incrementVersion];
-      [self didChangeValueForKey:@"animations"];
-    }
-}
-
-- (void)addAnimation:(MgAnimation *)anim
-{
-  [self insertAnimation:anim atIndex:NSIntegerMax];
-}
-
-- (void)removeAnimation:(MgAnimation *)anim
-{
-  while (true)
-    {
-      NSInteger idx = [_animations indexOfObjectIdenticalTo:anim];
-      if (idx == NSNotFound)
-	break;
-
-      [self removeAnimationAtIndex:idx];
-    }
-}
-
-+ (BOOL)automaticallyNotifiesObserversOfBegin
-{
-  return NO;
-}
-
-- (CFTimeInterval)begin
-{
-  return _timing != nil ? _timing.begin : 0;
-}
-
-- (void)setBegin:(CFTimeInterval)t
-{
-  if (_timing == nil && t != 0)
-    _timing = [[MgTimingStorage alloc] init];
-
-  if (_timing.begin != t)
-    {
-      [self willChangeValueForKey:@"begin"];
-      _timing.begin = t;
-      [self incrementVersion];
-      [self didChangeValueForKey:@"begin"];
-    }
-}
-
-+ (BOOL)automaticallyNotifiesObserversOfDuration
-{
-  return NO;
-}
-
-- (CFTimeInterval)duration
-{
-  return _timing != nil ? _timing.duration : 0;
-}
-
-- (void)setDuration:(CFTimeInterval)t
-{
-  if (_timing == nil && t != HUGE_VAL)
-    _timing = [[MgTimingStorage alloc] init];
-
-  if (_timing.duration != t)
-    {
-      [self willChangeValueForKey:@"duration"];
-      _timing.duration = t;
-      [self incrementVersion];
-      [self didChangeValueForKey:@"duration"];
-    }
-}
-
-+ (BOOL)automaticallyNotifiesObserversOfSpeed
-{
-  return NO;
-}
-
-- (double)speed
-{
-  return _timing != nil ? _timing.speed : 0;
-}
-
-- (void)setSpeed:(double)t
-{
-  if (_timing == nil && t != 1)
-    _timing = [[MgTimingStorage alloc] init];
-
-  if (_timing.speed != t)
-    {
-      [self willChangeValueForKey:@"speed"];
-      _timing.speed = t;
-      [self incrementVersion];
-      [self didChangeValueForKey:@"speed"];
-    }
-}
-
-+ (BOOL)automaticallyNotifiesObserversOfOffset
-{
-  return NO;
-}
-
-- (CFTimeInterval)offset
-{
-  return _timing != nil ? _timing.offset : 0;
-}
-
-- (void)setOffset:(CFTimeInterval)t
-{
-  if (_timing == nil && t != 0)
-    _timing = [[MgTimingStorage alloc] init];
-
-  if (_timing.offset != t)
-    {
-      [self willChangeValueForKey:@"offset"];
-      _timing.offset = t;
-      [self incrementVersion];
-      [self didChangeValueForKey:@"offset"];
-    }
-}
-
-+ (BOOL)automaticallyNotifiesObserversOfRepeat
-{
-  return NO;
-}
-
-- (double)repeat
-{
-  return _timing != nil ? _timing.repeat : 0;
-}
-
-- (void)setRepeat:(double)t
-{
-  if (_timing == nil && t != 1)
-    _timing = [[MgTimingStorage alloc] init];
-
-  if (_timing.repeat != t)
-    {
-      [self willChangeValueForKey:@"repeat"];
-      _timing.repeat = t;
-      [self incrementVersion];
-      [self didChangeValueForKey:@"repeat"];
-    }
-}
-
-+ (BOOL)automaticallyNotifiesObserversOfAutoreverses
-{
-  return NO;
-}
-
-- (BOOL)autoreverses
-{
-  return _timing != nil ? _timing.autoreverses : NO;
-}
-
-- (void)setAutoreverses:(BOOL)flag
-{
-  if (_timing == nil && flag)
-    _timing = [[MgTimingStorage alloc] init];
-
-  if (_timing.autoreverses != flag)
-    {
-      [self willChangeValueForKey:@"autoreverses"];
-      _timing.autoreverses = flag;
-      [self incrementVersion];
-      [self didChangeValueForKey:@"autoreverses"];
-    }
-}
-
-+ (BOOL)automaticallyNotifiesObserversOfHoldsBeforeStart
-{
-  return NO;
-}
-
-- (BOOL)holdsBeforeStart
-{
-  return _timing != nil ? _timing.holdsBeforeStart : NO;
-}
-
-- (void)setHoldsBeforeStart:(BOOL)flag
-{
-  if (_timing == nil && flag)
-    _timing = [[MgTimingStorage alloc] init];
-
-  if (_timing.holdsBeforeStart != flag)
-    {
-      [self willChangeValueForKey:@"holdsBeforeStart"];
-      _timing.holdsBeforeStart = flag;
-      [self incrementVersion];
-      [self didChangeValueForKey:@"holdsBeforeStart"];
-    }
-}
-
-+ (BOOL)automaticallyNotifiesObserversOfHoldsAfterEnd
-{
-  return NO;
-}
-
-- (BOOL)holdsAfterEnd
-{
-  return _timing != nil ? _timing.holdsAfterEnd : NO;
-}
-
-- (void)setHoldsAfterEnd:(BOOL)flag
-{
-  if (_timing == nil && flag)
-    _timing = [[MgTimingStorage alloc] init];
-
-  if (_timing.holdsAfterEnd != flag)
-    {
-      [self willChangeValueForKey:@"holdsAfterEnd"];
-      _timing.holdsAfterEnd = flag;
-      [self incrementVersion];
-      [self didChangeValueForKey:@"holdsAfterEnd"];
-    }
-}
-
 - (void)foreachNode:(void (^)(MgNode *node))block
 {
   if (_mask != nil)
     block(_mask);
-
-  for (MgAnimation *anim in _animations)
-    block(anim);
 
   [super foreachNode:block];
 }
@@ -639,12 +360,6 @@
 {
   if (_mask != nil)
     block(_mask, @"mask", NSNotFound);
-
-  NSArray *array = _animations;
-  NSInteger count = [array count];
-
-  for (NSInteger i = 0; i < count; i++)
-    block(array[i], @"animations", i);
 
   [super foreachNodeAndAttachmentInfo:block];
 }
@@ -708,22 +423,13 @@
 
 /** Rendering. **/
 
-- (CFTimeInterval)renderInContext:(CGContextRef)ctx
-{
-  return [self renderInContext:ctx atTime:CACurrentMediaTime()];
-}
-
-- (CFTimeInterval)renderInContext:(CGContextRef)ctx atTime:(CFTimeInterval)t
+- (void)renderInContext:(CGContextRef)ctx
 {
   MgLayerRenderState rs;
   rs.ctx = ctx;
-  rs.t = t;
-  rs.tnext = HUGE_VAL;
   rs.alpha = 1;
 
   [self _renderWithState:&rs];
-
-  return rs.tnext;
 }
 
 - (void)_renderWithState:(MgLayerRenderState *)rs
@@ -733,8 +439,6 @@
     return;
 
   MgLayerRenderState r = *rs;
-  r.t = _timing != nil ? [_timing applyToTime:rs->t] : rs->t;
-  r.tnext = HUGE_VAL;
   r.alpha = alpha;
 
   CGContextSaveGState(r.ctx);
@@ -745,13 +449,9 @@
   if (mask != nil && mask.enabled)
     {
       MgLayerRenderState rm = r;
-      rm.tnext = HUGE_VAL;
       rm.alpha = 1;
 
       [mask _renderMaskWithState:&rm];
-
-      if (rm.tnext < r.tnext)
-	r.tnext = rm.tnext;
     }
 
   CGContextSetBlendMode(rs->ctx, self.blendMode);
@@ -760,15 +460,6 @@
   [self _renderLayerWithState:&r];
 
   CGContextRestoreGState(r.ctx);
-
-  if (isfinite(r.tnext))
-    {
-      CFTimeInterval tnext = r.tnext;
-      if (_timing != nil)
-	tnext = [_timing applyInverseToTime:r.tnext currentTime:rs->t];
-      if (tnext < rs->tnext)
-	rs->tnext = tnext;
-    }
 }
 
 - (void)_renderLayerWithState:(MgLayerRenderState *)rs
@@ -785,8 +476,6 @@
     }
 
   MgLayerRenderState r = *rs;
-  r.t = _timing != nil ? [_timing applyToTime:rs->t] : rs->t;
-  r.tnext = HUGE_VAL;
   r.alpha = alpha;
 
   CGAffineTransform m = [self parentTransform];
@@ -795,15 +484,6 @@
   [self _renderLayerMaskWithState:&r];
 
   CGContextConcatCTM(r.ctx, CGAffineTransformInvert(m));
-
-  if (isfinite(r.tnext))
-    {
-      CFTimeInterval tnext = r.tnext;
-      if (_timing != nil)
-	tnext = [_timing applyInverseToTime:r.tnext currentTime:rs->t];
-      if (tnext < rs->tnext)
-	rs->tnext = tnext;
-    }
 }
 
 - (void)_renderLayerMaskWithState:(MgLayerRenderState *)rs
@@ -824,12 +504,9 @@
   copy->_squeeze = _squeeze;
   copy->_skew = _skew;
   copy->_rotation = _rotation;
-  copy->_timing = [_timing copy];
   copy->_alpha = _alpha;
   copy->_blendMode = _blendMode;
   copy->_mask = _mask;
-  for (MgAnimation *anim in self.animations)
-    [copy addAnimation:[anim copyWithZone:zone]];
 
   return copy;
 }
@@ -869,19 +546,6 @@
 
   if (_mask != nil)
     [c encodeObject:_mask forKey:@"mask"];
-
-  /* Don't encode MgTimingStorage as its own object, embed its values
-     in this classes (in case we want to change the implementation in
-     the future). */
-
-  if (_timing != nil)
-    {
-      [c encodeBool:YES forKey:@"_hasTiming"];
-      [_timing encodeWithCoder:c];
-    }
-
-  if (_animations != nil)
-    [c encodeObject:_animations forKey:@"animations"];
 }
 
 - (id)initWithCoder:(NSCoder *)c
@@ -933,23 +597,6 @@
     {
       _mask = [c decodeObjectOfClass:[MgLayer class] forKey:@"mask"];
       [_mask addReference:self];
-    }
-
-  if ([c decodeBoolForKey:@"_hasTiming"])
-    {
-      _timing = [[MgTimingStorage alloc] init];
-      [_timing decodeWithCoder:c];
-    }
-
-  if ([c containsValueForKey:@"animations"])
-    {
-      NSArray *array = [c decodeObjectOfClass:
-			[NSArray class] forKey:@"animations"];
-      for (id obj in array)
-	{
-	  if ([obj isKindOfClass:[MgAnimation class]])
-	    [self addAnimation:obj];
-	}
     }
 
   return self;
