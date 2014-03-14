@@ -57,6 +57,44 @@
   return self;
 }
 
+/** NSApplicationDelegate methods. */
+
+- (BOOL)application:(NSApplication *)app openFile:(NSString *)file
+{
+  NSDocumentController *controller
+    = [NSDocumentController sharedDocumentController];
+
+  GtDocument *document = (GtDocument *)[controller currentDocument];
+
+  NSError *err = nil;
+  BOOL opened = NO;
+
+  /* Attempt to open in the current window if that window is untitled
+     and unmodified. */
+
+  if (document != nil
+      && [document fileURL] == nil
+      && ![document isDocumentEdited])
+    {
+      NSString *type = [[NSWorkspace sharedWorkspace]
+			typeOfFile:file error:nil];
+      if (type != nil)
+	{
+	  [document revertToContentsOfURL:[NSURL fileURLWithPath:file]
+	   ofType:type error:&err];
+	  opened = YES;
+	}
+    }
+
+  if (!opened)
+    {
+      [controller openDocumentWithContentsOfURL:[NSURL fileURLWithPath:file]
+       display:YES error:&err];
+    }
+
+  return err == nil;
+}
+
 /** CALayer delegate methods. **/
 
 - (id<CAAction>)actionForLayer:(CALayer *)layer forKey:(NSString *)key
