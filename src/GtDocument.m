@@ -615,6 +615,50 @@ fract(CGFloat x)
     }];
 }
 
+- (IBAction)addImage:(id)sender
+{
+  NSOpenPanel *panel = [NSOpenPanel openPanel];
+
+  /* FIXME: allow insertion of multiple images. */
+
+  [panel setAllowedFileTypes:@[(id)kUTTypeImage]];
+  [panel setAllowsMultipleSelection:NO];
+  [panel setPrompt:@"Add"];
+  [panel setNameFieldLabel:@"Add Image:"];
+
+  [panel beginWithCompletionHandler:^(NSInteger result)
+    {
+      if (result != NSFileHandlingPanelOKButton)
+	return;
+
+      MgImageProvider *p = [MgImageProvider imageProviderWithURL:[panel URL]];
+      if (p == nil)
+	return;
+
+      [self addSublayer:^MgLayer * (MgGroupLayer *parent_group)
+        {
+	  MgImageLayer *layer = [MgImageLayer node];
+	  layer.imageProvider = p;
+
+	  layer.name = [[[[panel URL] path] lastPathComponent]
+			stringByDeletingPathExtension];
+
+	  CGImageRef im = [p mg_providedImage];
+
+	  CGSize size = CGSizeMake(512, 512);
+	  if (im != NULL)
+	    size = CGSizeMake(CGImageGetWidth(im), CGImageGetHeight(im));
+
+	  layer.bounds = CGRectMake(0, 0, size.width, size.height);
+
+	  CGRect r = parent_group.bounds;
+	  layer.position = CGPointMake(CGRectGetMidX(r), CGRectGetMidY(r));
+
+	  return layer;
+	}];
+    }];
+}
+
 - (IBAction)group:(id)sender
 {
   GtTreeNode *master = nil;

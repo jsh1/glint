@@ -381,18 +381,18 @@ CA
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Object" id="GTL-ta-mVl">
                         <items>
-                            <menuItem title="New Layer" id="YjA-sH-5v6">
+                            <menuItem title="Insert" id="YjA-sH-5v6">
                                 <modifierMask key="keyEquivalentModifierMask"/>
-                                <menu key="submenu" title="New Layer" id="gTT-2t-EMV">
+                                <menu key="submenu" title="Insert" id="gTT-2t-EMV">
                                     <items>
-                                        <menuItem title="Group" keyEquivalent="N" id="sMD-fn-2yV">
+                                        <menuItem title="Group" keyEquivalent="L" id="sMD-fn-2yV">
                                             <connections>
                                                 <action selector="addLayer:" target="-1" id="yWG-e0-5GO"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Image" tag="1" keyEquivalent="I" id="5u0-Us-feG">
+                                        <menuItem title="Image…" tag="1" keyEquivalent="I" id="5u0-Us-feG">
                                             <connections>
-                                                <action selector="addLayer:" target="-1" id="CID-c4-N4M"/>
+                                                <action selector="addImage:" target="-1" id="BMa-Lm-xnE"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem title="Gradient" tag="2" keyEquivalent="D" id="psD-9R-enJ">
