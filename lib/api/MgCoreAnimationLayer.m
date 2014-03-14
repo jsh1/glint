@@ -37,6 +37,7 @@
 {
   MgLayer *_layer;
   NSInteger _lastVersion;
+  BOOL _addedObserver;
 }
 
 + (id)defaultValueForKey:(NSString *)key
@@ -63,7 +64,7 @@
 
 - (void)dealloc
 {
-  if ([self modelLayer] == self)
+  if (_addedObserver)
     [_layer removeObserver:self forKeyPath:@"version"];
 }
 
@@ -90,6 +91,8 @@
 
       [_layer addObserver:self forKeyPath:@"version" options:0 context:nil];
 
+      _addedObserver = YES;
+      
       [self setNeedsDisplay];
 
       [self didChangeValueForKey:@"layer"];

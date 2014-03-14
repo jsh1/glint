@@ -60,6 +60,9 @@
 
 - (void)invalidate
 {
+  for (GtViewController *obj in _subviewControllers)
+    [obj invalidate];
+
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   [NSRunLoop cancelPreviousPerformRequestsWithTarget:self];
 }
