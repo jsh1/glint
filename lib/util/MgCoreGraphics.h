@@ -50,4 +50,7 @@ MG_EXTERN CGPathRef MgPathCreateWithRoundRect(CGRect rect, CGFloat radius)
 MG_EXTERN CGImageRef MgImageCreateByDrawing(size_t w, size_t, bool opaque,
     void (^block)(CGContextRef ctx)) CF_RETURNS_RETAINED;
 
+MG_EXTERN CFDataRef MgImageCreateData(CGImageRef im, CFStringRef type)
+    CF_RETURNS_RETAINED;
+
 MG_EXTERN_C_END

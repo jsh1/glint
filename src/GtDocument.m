@@ -28,6 +28,7 @@
 #import "GtWindowController.h"
 
 #import "MgCoderExtensions.h"
+#import "MgCoreGraphics.h"
 
 #import "FoundationExtensions.h"
 
@@ -197,6 +198,53 @@ NSString *const GtDocumentNodeDidChange = @"GtDocumentNodeDidChange";
   thunk();
 }
 
+- (IBAction)export:(id)sender
+{
+  NSSavePanel *panel = [NSSavePanel savePanel];
+
+  [panel setAllowedFileTypes:@[(id)kUTTypePNG, (id)kUTTypeJPEG]];
+  [panel setCanCreateDirectories:YES];
+  [panel setCanSelectHiddenExtension:YES];
+  [panel setExtensionHidden:NO];
+  [panel setPrompt:@"Export"];
+  [panel setNameFieldLabel:@"Export As:"];
+
+  [panel beginSheetModalForWindow:self.windowController.window
+   completionHandler:^(NSInteger result)
+    {
+      if (result != NSFileHandlingPanelOKButton)
+	return;
+
+      NSURL *url = [panel URL];
+
+      CFStringRef type = UTTypeCreatePreferredIdentifierForTag(
+			kUTTagClassFilenameExtension,
+		 	(__bridge CFStringRef)[[url path] pathExtension],
+			kUTTypeImage);
+      if (type == NULL)
+	return;
+
+      CGImageRef im
+        = [(MgLayer *)self.windowController.tree.node copyImage];
+
+      if (im != NULL)
+	{
+	  CFDataRef data = MgImageCreateData(im, type);
+
+	  if (data != NULL)
+	    {
+	      [(__bridge NSData *)data writeToURL:url atomically:YES];
+
+	      CFRelease(data);
+	    }
+
+	  CGImageRelease(im);
+	}
+
+      CFRelease(type);
+    }];
+}
+
 static void
 makeNameUnique(MgNode *node, MgNode *parent)
 {
@@ -267,6 +315,18 @@ makeSelectionArray(NSMapTable *added)
   return selection;
 }
 
+- (IBAction)selectAll:(id)sender
+{
+  NSMutableSet *set = [NSMutableSet set];
+
+  [self.windowController.tree foreachNode:^(GtTreeNode *node, BOOL *stop)
+    {
+      [set addObject:node];
+    }];
+
+  self.windowController.selection = [set allObjects];
+}
+
 - (IBAction)selectNone:(id)sender
 {
   self.windowController.selection = @[];
@@ -301,8 +361,17 @@ makeSelectionArray(NSMapTable *added)
   NSPasteboard *pboard = [NSPasteboard generalPasteboard];
 
   [pboard clearContents];
-  [pboard writeObjects:[self.windowController.selection mappedArray:
-			^id(id obj) {return ((GtTreeNode *)obj).node;}]];
+  [pboard writeObjects:[self.windowController.selection
+			mappedArray:^id(id obj) {
+			  return ((GtTreeNode *)obj).node;}]];
+}
+
+- (IBAction)copyDocument:(id)sender
+{
+  NSPasteboard *pboard = [NSPasteboard generalPasteboard];
+
+  [pboard clearContents];
+  [pboard writeObjects:@[self.windowController.tree.node]];
 }
 
 static NSArray *

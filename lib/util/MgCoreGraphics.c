@@ -24,6 +24,8 @@
 
 #import "MgCoreGraphics.h"
 
+#import <ImageIO/ImageIO.h>
+
 #import "MgMacros.h"
 
 CGColorRef
@@ -200,4 +202,27 @@ MgImageCreateByDrawing(size_t w, size_t h, bool opaque,
   CGContextRelease(ctx);
 
   return im;
+}
+
+CFDataRef
+MgImageCreateData(CGImageRef im, CFStringRef type)
+{
+  CFMutableDataRef data = CFDataCreateMutable(NULL, 0);
+  if (data == NULL)
+    return NULL;
+
+  CGImageDestinationRef dest
+    = CGImageDestinationCreateWithData(data, type, 1, NULL);
+
+  if (dest == NULL)
+    {
+      CFRelease(data);
+      return NULL;
+    }
+
+  CGImageDestinationAddImage(dest, im, NULL);
+  CGImageDestinationFinalize(dest);
+  CFRelease(dest);
+
+  return data;
 }

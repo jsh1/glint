@@ -67,6 +67,8 @@
 
 - (void)renderInContext:(CGContextRef)ctx;
 
+- (CGImageRef)copyImage CF_RETURNS_RETAINED;
+
 /** Methods for subclasses to override. **/
 
 - (BOOL)contentContainsPoint:(CGPoint)lp;

@@ -42,15 +42,19 @@ extern NSString *const GtDocumentNodeDidChange;
 
 - (void)registerUndo:(void (^)())thunk;
 
+- (IBAction)export:(id)sender;
+
 - (BOOL)addObjectsFromPasteboard:(NSPasteboard *)pboard
     asImages:(BOOL)flag atDocumentPoint:(CGPoint)p;
 - (BOOL)canAddObjectsFromPasteboard:(NSPasteboard *)pboard
     asImages:(BOOL)flag;
 
+- (IBAction)selectAll:(id)sender;
 - (IBAction)selectNone:(id)sender;
 - (IBAction)delete:(id)sender;
 - (IBAction)cut:(id)sender;
 - (IBAction)copy:(id)sender;
+- (IBAction)copyDocument:(id)sender;
 - (IBAction)paste:(id)sender;
 - (BOOL)canPaste;
 - (IBAction)pasteAsImage:(id)sender;

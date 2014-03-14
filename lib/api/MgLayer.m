@@ -25,6 +25,7 @@
 #import "MgLayerInternal.h"
 
 #import "MgCoderExtensions.h"
+#import "MgCoreGraphics.h"
 #import "MgNodeInternal.h"
 
 #import <Foundation/Foundation.h>
@@ -466,6 +467,22 @@
 - (void)_renderLayerMaskWithState:(MgLayerRenderState *)rs
 {
   /* FIXME: render mask to an image and clip to it. */
+}
+
+- (CGImageRef)copyImage
+{
+  CGRect bounds = self.bounds;
+
+  return MgImageCreateByDrawing(bounds.size.width, bounds.size.height, false,
+    ^(CGContextRef ctx)
+    {
+      CGContextTranslateCTM(ctx, 0, bounds.size.height);
+      CGContextScaleCTM(ctx, 1, -1);
+      CGContextTranslateCTM(ctx, bounds.origin.x, bounds.origin.y);
+      CGAffineTransform m = [self parentTransform];
+      CGContextConcatCTM(ctx, CGAffineTransformInvert(m));
+      [self renderInContext:ctx];
+    });
 }
 
 /** NSCopying methods. **/

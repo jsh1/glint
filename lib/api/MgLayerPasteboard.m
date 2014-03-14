@@ -63,22 +63,11 @@
 	  [self renderInContext:ctx];
 	});
 
-      NSMutableData *data = [NSMutableData data];
-
-      CGImageDestinationRef dest = CGImageDestinationCreateWithData(
-			(__bridge CFMutableDataRef)data,
-			(__bridge CFStringRef)type, 1, NULL);
-
-      if (dest != NULL)
-	{
-	  CGImageDestinationAddImage(dest, im, NULL);
-	  CGImageDestinationFinalize(dest);
-	  CFRelease(dest);
-	}
+      CFDataRef data = MgImageCreateData(im, (__bridge CFStringRef)type);
 
       CGImageRelease(im);
 
-      return data;
+      return CFBridgingRelease(data);
     }
 
   return [super pasteboardPropertyListForType:type];
