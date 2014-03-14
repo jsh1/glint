@@ -66,38 +66,6 @@ NSString *const GtDocumentNodeDidChange = @"GtDocumentNodeDidChange";
   self.documentSize = CGSizeMake(width, height);
   self.documentNode = root;
 
-#if 1
-  MgImageLayer *image_layer = [MgImageLayer node];
-  image_layer.position = CGPointMake(700, 400);
-  image_layer.bounds = CGRectMake(0, 0, 512, 512);
-  image_layer.rotation = -10 * (M_PI / 180);
-  image_layer.name = @"Image Layer";
-  image_layer.imageProvider = [MgImageProvider imageProviderWithURL:
-			       [NSURL fileURLWithPath:
-				@"/Library/User Pictures/Animals/Parrot.tif"]];
-  [root addSublayer:image_layer];
-
-#if 1
-  MgGroupLayer *image_group = [MgGroupLayer node];
-  image_group.position = CGPointMake(-200, 300);
-  image_group.bounds = CGRectMake(0, 0, 512, 512);
-  image_group.alpha = .25;
-  image_group.name = @"Image Group";
-  [image_group addSublayer:image_layer];
-  [root addSublayer:image_group];
-#endif
-
-  MgRectLayer *rect_layer = [MgRectLayer node];
-  rect_layer.position = CGPointMake(350, 300);
-  rect_layer.bounds = CGRectMake(0, 0, 400, 250);
-  rect_layer.cornerRadius = 8;
-  rect_layer.alpha = .5;
-  rect_layer.name = @"Layer 3";
-  rect_layer.fillColor = [[NSColor blueColor] CGColor];
-  rect_layer.name = @"Rect Fill";
-  [root addSublayer:rect_layer];
-#endif
-
   return self;
 }
 
