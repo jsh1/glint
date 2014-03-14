@@ -395,19 +395,9 @@ fract(CGFloat x)
 		      pasteboard_classes(flag) options:nil];
 
   GtTreeNode *parent_group = nil;
-  GtTreeNode *parent_layer = nil;
 
   for (GtTreeNode *tn in self.windowController.selection)
     {
-      GtTreeNode *ln = [tn containingLayer];
-      if (ln != nil)
-	{
-	  if (parent_layer == nil)
-	    parent_layer = ln;
-	  else
-	    parent_layer = [parent_layer ancestorSharedWith:ln];
-	}
-
       GtTreeNode *pn = [tn containingGroup];
       if (pn != nil)
 	{
@@ -418,8 +408,6 @@ fract(CGFloat x)
 	}
     }
 
-  if (parent_layer == nil)
-    parent_layer = self.windowController.tree;
   if (parent_group == nil)
     parent_group = self.windowController.tree;
 
