@@ -49,6 +49,9 @@
    addObserver:self selector:@selector(contentViewBoundsDidChange:)
    name:NSViewFrameDidChangeNotification object:self.contentView];
 
+  [self.contentView registerForDraggedTypes:
+   @[(id)kUTTypeFileURL, (id)kUTTypeImage]];
+
   CGRect bounds = [self.contentView bounds];
   self.contentView.viewCenter = CGPointMake(CGRectGetMidX(bounds),
 					    CGRectGetMidY(bounds));

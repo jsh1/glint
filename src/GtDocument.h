@@ -42,6 +42,11 @@ extern NSString *const GtDocumentNodeDidChange;
 
 - (void)registerUndo:(void (^)())thunk;
 
+- (BOOL)addObjectsFromPasteboard:(NSPasteboard *)pboard
+    asImages:(BOOL)flag atDocumentPoint:(CGPoint)p;
+- (BOOL)canAddObjectsFromPasteboard:(NSPasteboard *)pboard
+    asImages:(BOOL)flag;
+
 - (IBAction)selectNone:(id)sender;
 - (IBAction)delete:(id)sender;
 - (IBAction)cut:(id)sender;

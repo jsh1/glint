@@ -126,6 +126,12 @@ NSString *const GtDocumentNodeDidChange = @"GtDocumentNodeDidChange";
     }
 }
 
+- (CGPoint)documentCenter
+{
+  return CGPointMake(_documentSize.width * .5,
+		     _documentSize.height * .5);
+}
+
 + (BOOL)automaticallyNotifiesObserversOfDocumentNode
 {
   return NO;
@@ -331,8 +337,20 @@ makeSelectionArray(NSMapTable *added)
 			^id(id obj) {return ((GtTreeNode *)obj).node;}]];
 }
 
-- (void)pasteObjects:(NSArray *)objects
+static NSArray *
+pasteboard_classes(bool as_images)
 {
+  return (!as_images
+	  ? @[[MgNode class], [NSURL class], [NSImage class]]
+	  : @[[NSImage class]]);
+}
+
+- (BOOL)addObjectsFromPasteboard:(NSPasteboard *)pboard
+    asImages:(BOOL)flag atDocumentPoint:(CGPoint)p
+{
+  NSArray *objects = [pboard readObjectsForClasses:
+		      pasteboard_classes(flag) options:nil];
+
   GtTreeNode *parent_group = nil;
   GtTreeNode *parent_layer = nil;
 
@@ -371,7 +389,11 @@ makeSelectionArray(NSMapTable *added)
 
       MgImageLayer *layer = [MgImageLayer node];
       layer.imageProvider = image_provider;
-      layer.name = @"Pasted Image";
+      NSURL *url = [image_provider URL];
+      if (url != nil)
+	layer.name = [[[url path] lastPathComponent] stringByDeletingPathExtension];
+      else
+	layer.name = @"Pasted Image";
       makeNameUnique(layer, parent_group.node);
 
       CGImageRef im = [image_provider mg_providedImage];
@@ -381,7 +403,7 @@ makeSelectionArray(NSMapTable *added)
 	size = CGSizeMake(CGImageGetWidth(im), CGImageGetHeight(im));
 
       layer.bounds = CGRectMake(0, 0, size.width, size.height);
-      layer.position = CGPointMake(size.width*.5, size.height*.5);
+      layer.position = p;
 
       [self node:parent_group insertObject:layer atIndex:NSIntegerMax
        forKey:@"sublayers"];
@@ -418,47 +440,38 @@ makeSelectionArray(NSMapTable *added)
     }
 
   self.windowController.selection = makeSelectionArray(added);
+
+  return [added count] != 0;
+}
+
+- (BOOL)canAddObjectsFromPasteboard:(NSPasteboard *)pboard
+    asImages:(BOOL)flag
+{
+  return [pboard canReadObjectForClasses:pasteboard_classes(flag) options:nil];
 }
 
 - (IBAction)pasteAsImage:(id)sender
 {
-  NSPasteboard *pboard = [NSPasteboard generalPasteboard];
-
-  NSArray *objects = [pboard readObjectsForClasses:
-		      @[[NSImage class]] options:nil];
-
-  [self pasteObjects:objects];
+  [self addObjectsFromPasteboard:[NSPasteboard generalPasteboard]
+   asImages:YES atDocumentPoint:[self documentCenter]];
 }
 
 - (BOOL)canPasteAsImage
 {
-  NSPasteboard *pboard = [NSPasteboard generalPasteboard];
-
-  return [pboard canReadObjectForClasses:@[[NSImage class]] options:nil];
+  return [self canAddObjectsFromPasteboard:
+	  [NSPasteboard generalPasteboard] asImages:YES];
 }
 
 - (IBAction)paste:(id)sender
 {
-  NSPasteboard *pboard = [NSPasteboard generalPasteboard];
-
-  /* FIXME: shouldn't be using NSImage here (and above)? Reading the
-     data directly would let us avoid recompressing the data when
-     saving the document. */
-
-  NSArray *classes = @[[MgNode class], [NSURL class], [NSImage class]];
-
-  NSArray *objects = [pboard readObjectsForClasses:classes options:nil];
-
-  [self pasteObjects:objects];
+  [self addObjectsFromPasteboard:[NSPasteboard generalPasteboard]
+   asImages:NO atDocumentPoint:[self documentCenter]];
 }
 
 - (BOOL)canPaste
 {
-  NSPasteboard *pboard = [NSPasteboard generalPasteboard];
-
-  NSArray *classes = @[[MgNode class], [NSURL class], [NSImage class]];
-
-  return [pboard canReadObjectForClasses:classes options:nil];
+  return [self canAddObjectsFromPasteboard:
+	  [NSPasteboard generalPasteboard] asImages:YES];
 }
 
 - (void)addSublayer:(MgLayer *(^)(MgGroupLayer *parent_group))block

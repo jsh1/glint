@@ -715,4 +715,26 @@
   self.viewScale = s;
 }
 
+- (NSDragOperation)draggingEntered:(id <NSDraggingInfo>)sender
+{
+  NSPasteboard *pboard = [sender draggingPasteboard];
+
+  if ([self.controller.document
+       canAddObjectsFromPasteboard:pboard asImages:NO])
+    return NSDragOperationCopy;
+  else
+    return NSDragOperationNone;
+}
+
+- (BOOL)performDragOperation:(id <NSDraggingInfo>)sender
+{
+  NSPasteboard *pboard = [sender draggingPasteboard];
+
+  NSPoint p = [self convertPoint:[sender draggingLocation] fromView:nil];
+  CGPoint dp = [self convertPointToDocument:p];
+
+  return [self.controller.document addObjectsFromPasteboard:pboard
+	  asImages:NO atDocumentPoint:dp];
+}
+
 @end
