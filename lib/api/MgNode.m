@@ -185,56 +185,6 @@ static NSUInteger version_counter;
     }
 }
 
-struct foreach_node
-{
-  struct foreach_node *next;
-  size_t len;
-  __unsafe_unretained MgNode *node;
-};
-
-static void
-foreach_path_to_node(MgNode *node, MgNode *root, bool reversed,
-		     struct foreach_node *lst, void (^block)(NSArray *p))
-{
-  /* Cons 'node' onto 'lst' for the lifetime of this stack frame. */
-
-  struct foreach_node n = {lst, lst ? lst->len + 1 : 1, node};
-  lst = &n;
-
-  if (root != nil ? (node == root) : ([node->_references count] == 0))
-    {
-      /* 'lst' is in order from root to self. */
-
-      size_t count = lst->len;
-      __unsafe_unretained id *objects = STACK_ALLOC(id, count);
-
-      if (objects != nil)
-	{
-	  for (size_t i = 0; lst != NULL; i++, lst = lst->next)
-	    objects[reversed ? i : (count - i - 1)] = lst->node;
-
-	  block([NSArray arrayWithObjects:objects count:count]);
-
-	  STACK_FREE(id, count, objects);
-	}
-    }
-  else
-    {
-      for (id ptr in node->_references)
-	foreach_path_to_node(ptr, root, reversed, lst, block);
-    }
-}
-
-- (void)foreachPathToNode:(MgNode *)root handler:(void (^)(NSArray *p))block;
-{
-  foreach_path_to_node(self, root, false, NULL, block);
-}
-
-- (void)foreachPathFromNode:(MgNode *)root handler:(void (^)(NSArray *p))block;
-{
-  foreach_path_to_node(self, root, true, NULL, block);
-}
-
 - (void)foreachNode:(void (^)(MgNode *node))block
 {
 }

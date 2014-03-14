@@ -169,18 +169,6 @@
   return NO;
 }
 
-- (MgLayer *)hitTestContent:(CGPoint)lp
-{
-  for (MgLayer *node in self.sublayers)
-    {
-      MgLayer *hit = [node hitTest:lp];
-      if (hit != nil)
-	return hit;
-    }
-
-  return nil;
-}
-
 /** Rendering. **/
 
 - (void)_renderLayerWithState:(MgLayerRenderState *)rs

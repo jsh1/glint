@@ -57,14 +57,6 @@
 - (CGPoint)convertPointToParent:(CGPoint)p;
 - (CGPoint)convertPointFromParent:(CGPoint)p;
 
-/** Hit-testing and related. **/
-
-/* Hit-testing. Does a depth-first search from top-to-bottom finding
-   the deepest node that contains point 'p'. Point 'p' is defined in
-   the coordinate space containing the receiver. */
-
-- (MgLayer *)hitTest:(CGPoint)p;
-
 /* Returns true if the receiver or any of its descendants contain point
    'p'. Point 'p' is defined in the coordinate space containing the
    receiver. */
@@ -78,6 +70,5 @@
 /** Methods for subclasses to override. **/
 
 - (BOOL)contentContainsPoint:(CGPoint)lp;
-- (MgLayer *)hitTestContent:(CGPoint)lp;
 
 @end

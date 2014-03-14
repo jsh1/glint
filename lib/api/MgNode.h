@@ -43,12 +43,6 @@
 
 @property(nonatomic, readonly) NSUInteger version;
 
-/* Passing nil 'root' does what you'd expect: traces all paths until
-   a node with no references (one of the global roots) is found. */
-
-- (void)foreachPathToNode:(MgNode *)root handler:(void (^)(NSArray *p))block;
-- (void)foreachPathFromNode:(MgNode *)root handler:(void (^)(NSArray *p))block;
-
 /* Calls `block(node)' for each node referred to by the receiver. (Note
    that this includes all kinds of nodes, e.g. including animations.)  */
 

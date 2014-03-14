@@ -381,7 +381,7 @@
   CGPoint lp = [self convertPointFromParent:p];
 
   MgLayer *mask = self.mask;
-  if (mask != nil && [mask hitTest:lp] == nil)
+  if (mask != nil && ![mask containsPoint:lp])
     return NO;
 
   if (CGRectContainsPoint(self.bounds, lp))
@@ -396,29 +396,6 @@
 - (BOOL)contentContainsPoint:(CGPoint)lp
 {
   return NO;
-}
-
-- (MgLayer *)hitTest:(CGPoint)p
-{
-  CGPoint lp = [self convertPointFromParent:p];
-
-  MgLayer *mask = self.mask;
-  if (mask != nil && [mask hitTest:lp] == nil)
-    return nil;
-
-  MgLayer *node = [self hitTestContent:lp];
-  if (node != nil)
-    return node;
-
-  if (CGRectContainsPoint(self.bounds, lp))
-    return self;
-
-  return nil;
-}
-
-- (MgLayer *)hitTestContent:(CGPoint)lp
-{
-  return nil;
 }
 
 /** Rendering. **/
