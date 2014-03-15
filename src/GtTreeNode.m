@@ -125,17 +125,6 @@
   return YES;
 }
 
-- (GtTreeNode *)containingLayer
-{
-  for (GtTreeNode *n = self.parent; n != nil; n = n.parent)
-    {
-      if ([n.node isKindOfClass:[MgLayer class]])
-	return n;
-    }
-
-  return nil;
-}
-
 - (GtTreeNode *)containingGroup
 {
   for (GtTreeNode *n = self.parent; n != nil; n = n.parent)

@@ -33,6 +33,9 @@
 # error Requires Objective C ARC enabled.
 #endif
 
+NSString *const MgNodeType = @"org.unfactored.mg-node";
+NSString *const MgArchiveType = @"org.unfactored.mg-archive";
+
 static NSUInteger version_counter;
 
 @implementation MgNode

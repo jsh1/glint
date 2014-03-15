@@ -24,6 +24,9 @@
 
 #import "MgBase.h"
 
+extern NSString *const MgNodeType;	/* UTI: org.unfactored.mg-node */
+extern NSString *const MgArchiveType;	/* UTI: org.unfactored.mg-archive */
+
 @interface MgNode : NSObject <NSCopying, NSSecureCoding>
 
 + (instancetype)node;

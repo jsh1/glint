@@ -40,6 +40,18 @@
 				<string>public.data</string>
 			</array>
 			<key>UTTypeDescription</key>
+			<string>Magnesium Node</string>
+			<key>UTTypeIconFile</key>
+			<string></string>
+			<key>UTTypeIdentifier</key>
+			<string>org.unfactored.mg-node</string>
+		</dict>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>org.unfactored.mg-node</string>
+			</array>
+			<key>UTTypeDescription</key>
 			<string>Magnesium Archive</string>
 			<key>UTTypeIconFile</key>
 			<string></string>

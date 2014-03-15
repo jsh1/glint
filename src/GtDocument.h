@@ -33,6 +33,7 @@ extern NSString *const GtDocumentNodeDidChange;
 @property(nonatomic, readonly, strong) GtWindowController *windowController;
 
 @property(nonatomic, assign) CGSize documentSize;
+@property(nonatomic, assign, readonly) CGPoint documentCenter;
 @property(nonatomic, strong) MgLayer *documentNode;
 
 - (void)disableUndo;
@@ -44,10 +45,14 @@ extern NSString *const GtDocumentNodeDidChange;
 
 - (IBAction)export:(id)sender;
 
-- (BOOL)addObjectsFromPasteboard:(NSPasteboard *)pboard
-    asImages:(BOOL)flag atDocumentPoint:(CGPoint)p;
 - (BOOL)canAddObjectsFromPasteboard:(NSPasteboard *)pboard
     asImages:(BOOL)flag;
+
+- (BOOL)addObjectsFromPasteboard:(NSPasteboard *)pboard
+    asImages:(BOOL)flag atDocumentPoint:(CGPoint)p;
+- (BOOL)addObjectsFromPasteboard:(NSPasteboard *)pboard
+    asImages:(BOOL)flag atDocumentPoint:(CGPoint)p
+    intoNode:(GtTreeNode *)parent atIndex:(NSInteger)idx;
 
 - (IBAction)selectAll:(id)sender;
 - (IBAction)selectNone:(id)sender;

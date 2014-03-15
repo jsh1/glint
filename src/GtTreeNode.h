@@ -50,7 +50,6 @@
 
 - (BOOL)foreachNode:(void (^)(GtTreeNode *node, BOOL *stop))thunk;
 
-- (GtTreeNode *)containingLayer;
 - (GtTreeNode *)containingGroup;
 
 - (BOOL)isDescendantOf:(GtTreeNode *)tn;

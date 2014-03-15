@@ -28,9 +28,7 @@
 
 #import <AppKit/NSPasteboard.h>
 
-@interface MgNode (MgNodePasteboard)
-    <NSPasteboardReading, NSPasteboardWriting>
-
+@interface MgNode (MgNodePasteboard) <NSPasteboardReading, NSPasteboardWriting>
 @end
 
 #endif

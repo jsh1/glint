@@ -30,7 +30,14 @@
 
 #import "AppKitExtensions.h"
 
+static NSString *const GtTreeViewItemType = @"org.unfactored.gt-tree-view-item";
+
 @implementation GtTreeViewController
+{
+  NSArray *_dragItems;			/* NSArray<GtTreeNode> */
+  NSPasteboard *_dragPasteboard;
+  NSDragOperation _dragOperation;
+}
 
 + (NSString *)viewNibName
 {
@@ -51,6 +58,10 @@
 
   [self.windowController addObserver:self forKeyPath:@"selection" options:0
    context:NULL];
+
+  [self.outlineView registerForDraggedTypes:
+   @[GtTreeViewItemType, MgNodeType, MgArchiveType,
+     (id)kUTTypeFileURL, (id)kUTTypeImage]];
 
   for (NSTableColumn *col in [self.outlineView tableColumns])
     [[col dataCell] setVerticallyCentered:YES];
@@ -161,11 +172,138 @@ expandItem(NSOutlineView *ov, GtTreeNode *tn)
   [self.document node:item setValue:object forKey:ident];
 }
 
+- (BOOL)outlineView:(NSOutlineView *)ov writeItems:(NSArray *)items
+    toPasteboard:(NSPasteboard *)pboard
+{
+  [pboard declareTypes:@[GtTreeViewItemType] owner:self];
+
+  _dragItems = [items copy];
+  _dragPasteboard = pboard;
+
+  return YES;
+}
+
+- (NSDragOperation)outlineView:(NSOutlineView *)ov
+    validateDrop:(id<NSDraggingInfo>)info proposedItem:(id)item
+    proposedChildIndex:(NSInteger)idx
+{
+  NSPasteboard *pboard = [info draggingPasteboard];
+  NSDragOperation op = NSDragOperationNone;
+
+  GtTreeNode *parent = item != nil ? item : self.windowController.tree;
+
+  while (parent != nil && ![parent.node isKindOfClass:[MgGroupLayer class]])
+    {
+      if ([parent.parentKey isEqualToString:@"sublayers"])
+	idx = parent.parentIndex;
+      else
+	idx = NSNotFound;
+
+      parent = parent.parent;
+    }
+
+  if (![parent.node isKindOfClass:[MgGroupLayer class]])
+    return NSDragOperationNone;
+
+  if (idx < 0 || idx == NSNotFound)
+    idx = [parent.children count];
+
+  /* FIXME: support dropping images into libraries as well. */
+
+  NSString *type = [pboard availableTypeFromArray:[ov registeredDraggedTypes]];
+
+  if ([type isEqualToString:GtTreeViewItemType])
+    {
+      if (_dragItems == nil)
+	op = NSDragOperationNone;
+      else
+	op = NSDragOperationMove;
+    }
+  else
+    {
+      op = NSDragOperationCopy;
+    }
+
+  if (op != NSDragOperationNone)
+    {
+      if (parent == self.windowController.tree)
+	parent = nil;
+      [ov setDropItem:parent dropChildIndex:idx];
+    }
+
+  _dragOperation = op;
+  return op;
+}
+
+- (BOOL)outlineView:(NSOutlineView *)ov acceptDrop:(id<NSDraggingInfo>)info
+    item:(id)item childIndex:(NSInteger)idx
+{
+  NSPasteboard *pboard = [info draggingPasteboard];
+  GtDocument *document = self.document;
+
+  GtTreeNode *parent = item != nil ? item : self.windowController.tree;
+
+  NSString *type = [pboard availableTypeFromArray:@[GtTreeViewItemType]];
+
+  if (idx < 0 || idx == NSNotFound)
+    idx = [parent.children count];
+
+  if ([type isEqualToString:GtTreeViewItemType])
+    {
+      if (_dragItems == nil)
+	return NO;
+
+      for (GtTreeNode *tn in _dragItems)
+	{
+	  [document removeTreeNodeFromParent:tn];
+
+	  NSString *key = nil;
+	  if ([tn.node isKindOfClass:[MgLayer class]])
+	    key = @"sublayers";
+	  else
+	    continue;
+
+	  [document node:parent insertObject:tn.node atIndex:idx forKey:key];
+	}
+
+      return YES;
+    }
+  else
+    {
+      CGPoint p = document.documentCenter;
+
+      if ([parent.node isKindOfClass:[MgLayer class]])
+	{
+	  CGRect r = ((MgLayer *)parent.node).bounds;
+	  p = CGPointMake(CGRectGetMidX(r), CGRectGetMidY(r));
+	}
+
+      return [document addObjectsFromPasteboard:pboard asImages:NO
+	      atDocumentPoint:p intoNode:parent atIndex:idx];
+    }
+}
+
 /** NSOutlineViewDelegate methods. **/
 
 - (void)outlineViewSelectionDidChange:(NSNotification *)notification
 {
   self.windowController.selection = [self.outlineView selectedItems];
+}
+
+/** NSPasteboardOwner methods. **/
+
+- (void)pasteboard:(NSPasteboard *)sender provideDataForType:(NSString *)type
+{
+}
+
+- (void)pasteboardChangedOwner:(NSPasteboard *)sender
+{
+  if (_dragPasteboard == sender)
+    {
+      _dragItems = nil;
+      _dragPasteboard = nil;
+      _dragOperation = NSDragOperationNone;
+    }
 }
 
 @end

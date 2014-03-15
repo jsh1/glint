@@ -43,7 +43,7 @@
 - (NSArray *)writableTypesForPasteboard:(NSPasteboard *)pboard
 {
   return [[super writableTypesForPasteboard:pboard]
-	  arrayByAddingObject:@"public.png"];
+	  arrayByAddingObjectsFromArray:@[(id)kUTTypePNG, (id)kUTTypeJPEG]];
 }
 
 - (id)pasteboardPropertyListForType:(NSString *)type

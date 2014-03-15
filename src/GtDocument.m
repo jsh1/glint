@@ -374,10 +374,9 @@ makeSelectionArray(NSMapTable *added)
   [pboard writeObjects:@[self.windowController.tree.node]];
 }
 
-static NSArray *
-pasteboard_classes(bool as_images)
+- (NSArray *)pasteboardClassesAsImage:(BOOL)flag
 {
-  return (!as_images
+  return (!flag
 	  ? @[[MgNode class], [NSURL class], [NSImage class]]
 	  : @[[NSImage class]]);
 }
@@ -391,27 +390,51 @@ fract(CGFloat x)
 - (BOOL)addObjectsFromPasteboard:(NSPasteboard *)pboard
     asImages:(BOOL)flag atDocumentPoint:(CGPoint)p
 {
-  NSArray *objects = [pboard readObjectsForClasses:
-		      pasteboard_classes(flag) options:nil];
-
-  GtTreeNode *parent_group = nil;
+  GtTreeNode *parent = nil;
+  NSInteger idx = NSIntegerMax;
 
   for (GtTreeNode *tn in self.windowController.selection)
     {
-      GtTreeNode *pn = [tn containingGroup];
+      GtTreeNode *pn = tn;
+      NSInteger pn_idx = NSNotFound;
+      while (pn != nil && ![pn.node isKindOfClass:[MgGroupLayer class]])
+	{
+	  pn_idx = pn.parentIndex;
+	  pn = pn.parent;
+	}
+
       if (pn != nil)
 	{
-	  if (parent_group == nil)
-	    parent_group = pn;
+	  if (parent == nil)
+	    {
+	      parent = pn;
+	      idx = pn_idx;
+	    }
 	  else
-	    parent_group = [parent_group ancestorSharedWith:pn];
+	    {
+	      parent = [parent ancestorSharedWith:pn];
+	      idx = NSIntegerMax;
+	    }
 	}
     }
 
-  if (parent_group == nil)
-    parent_group = self.windowController.tree;
+  if (parent == nil)
+    parent = self.windowController.tree;
+
+  return [self addObjectsFromPasteboard:pboard asImages:flag
+	  atDocumentPoint:p intoNode:parent atIndex:idx];
+}
+
+- (BOOL)addObjectsFromPasteboard:(NSPasteboard *)pboard
+    asImages:(BOOL)flag atDocumentPoint:(CGPoint)p
+    intoNode:(GtTreeNode *)parent atIndex:(NSInteger)idx_
+{
+  NSArray *classes = [self pasteboardClassesAsImage:flag];
+  NSArray *objects = [pboard readObjectsForClasses:classes options:nil];
 
   NSMapTable *added = [NSMapTable strongToStrongObjectsMapTable];
+
+  __block NSInteger idx = idx_;
 
   void (^paste_image)(MgImageProvider *) = ^(MgImageProvider *image_provider)
     {
@@ -425,7 +448,7 @@ fract(CGFloat x)
 	layer.name = [[[url path] lastPathComponent] stringByDeletingPathExtension];
       else
 	layer.name = @"Pasted Image";
-      makeNameUnique(layer, parent_group.node);
+      makeNameUnique(layer, parent.node);
 
       CGImageRef im = [image_provider mg_providedImage];
 
@@ -437,20 +460,20 @@ fract(CGFloat x)
       layer.position = CGPointMake(round(p.x) + fract(size.width*.5),
 				   round(p.y) + fract(size.height*.5));
 
-      [self node:parent_group insertObject:layer atIndex:NSIntegerMax
+      [self node:parent insertObject:layer atIndex:idx++
        forKey:@"sublayers"];
 
-      [added setObject:parent_group forKey:layer];
+      [added setObject:parent forKey:layer];
     };
 
   for (id object in objects)
     {
       if ([object isKindOfClass:[MgLayer class]])
 	{
-	  [self node:parent_group insertObject:object atIndex:NSIntegerMax
+	  [self node:parent insertObject:object atIndex:idx++
 	   forKey:@"sublayers"];
 
-	  [added setObject:parent_group forKey:object];
+	  [added setObject:parent forKey:object];
 	}
       else if ([object isKindOfClass:[NSImage class]])
 	{
@@ -479,13 +502,15 @@ fract(CGFloat x)
 - (BOOL)canAddObjectsFromPasteboard:(NSPasteboard *)pboard
     asImages:(BOOL)flag
 {
-  return [pboard canReadObjectForClasses:pasteboard_classes(flag) options:nil];
+  NSArray *classes = [self pasteboardClassesAsImage:flag];
+
+  return [pboard canReadObjectForClasses:classes options:nil];
 }
 
 - (IBAction)pasteAsImage:(id)sender
 {
   [self addObjectsFromPasteboard:[NSPasteboard generalPasteboard]
-   asImages:YES atDocumentPoint:[self documentCenter]];
+   asImages:YES atDocumentPoint:self.documentCenter];
 }
 
 - (BOOL)canPasteAsImage
@@ -497,7 +522,7 @@ fract(CGFloat x)
 - (IBAction)paste:(id)sender
 {
   [self addObjectsFromPasteboard:[NSPasteboard generalPasteboard]
-   asImages:NO atDocumentPoint:[self documentCenter]];
+   asImages:NO atDocumentPoint:self.documentCenter];
 }
 
 - (BOOL)canPaste

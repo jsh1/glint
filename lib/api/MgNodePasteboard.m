@@ -34,7 +34,7 @@
 
 - (NSArray *)writableTypesForPasteboard:(NSPasteboard *)pboard
 {
-  return @[@"org.unfactored.mg-archive"];
+  return @[MgArchiveType, MgNodeType];
 }
 
 - (NSPasteboardWritingOptions)writingOptionsForType:(NSString *)type
@@ -45,7 +45,8 @@
 
 - (id)pasteboardPropertyListForType:(NSString *)type
 {
-  if ([type isEqualToString:@"org.unfactored.mg-archive"])
+  if (UTTypeConformsTo((__bridge CFStringRef)type,
+		       (__bridge CFStringRef)MgNodeType))
     {
       return [NSKeyedArchiver archivedDataWithRootObject:self];
     }
@@ -57,13 +58,14 @@
 
 + (NSArray *)readableTypesForPasteboard:(NSPasteboard *)pboard
 {
-  return @[@"org.unfactored.mg-archive"];
+  return @[MgNodeType, MgArchiveType];
 }
 
 + (NSPasteboardReadingOptions)readingOptionsForType:(NSString *)type
     pasteboard:(NSPasteboard *)pboard
 {
-  if ([type isEqualToString:@"org.unfactored.mg-archive"])
+  if (UTTypeConformsTo((__bridge CFStringRef)type,
+		       (__bridge CFStringRef)MgNodeType))
     {
       return NSPasteboardReadingAsKeyedArchive;
     }
