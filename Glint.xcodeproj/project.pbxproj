@@ -24,6 +24,8 @@
 		572A5B2318C4CE2000AB8086 /* GtAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 572A5B2218C4CE2000AB8086 /* GtAppDelegate.m */; };
 		572A5B2518C4CEE700AB8086 /* defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 572A5B2418C4CEE700AB8086 /* defaults.plist */; };
 		572A5B2818C4CF6200AB8086 /* GtWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 572A5B2618C4CF6200AB8086 /* GtWindow.xib */; };
+		572B2F7B18D605F700BF4B1C /* Glint.icns in Resources */ = {isa = PBXBuildFile; fileRef = 572B2F7918D605F700BF4B1C /* Glint.icns */; };
+		572B2F7C18D605F700BF4B1C /* GlintDocument.icns in Resources */ = {isa = PBXBuildFile; fileRef = 572B2F7A18D605F700BF4B1C /* GlintDocument.icns */; };
 		5738567818C746D80010CFB7 /* GtTreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 5738567718C746D80010CFB7 /* GtTreeNode.m */; };
 		5738567B18C74CCC0010CFB7 /* AppKitExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5738567A18C74CCC0010CFB7 /* AppKitExtensions.m */; };
 		575ACEF018CFCFE100161C70 /* MgCoreAnimationLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 575ACED018CFCFE100161C70 /* MgCoreAnimationLayer.m */; };
@@ -87,6 +89,8 @@
 		572A5B2218C4CE2000AB8086 /* GtAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtAppDelegate.m; path = src/GtAppDelegate.m; sourceTree = "<group>"; };
 		572A5B2418C4CEE700AB8086 /* defaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = defaults.plist; path = resources/defaults.plist; sourceTree = "<group>"; };
 		572A5B2718C4CF6200AB8086 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = resources/en.lproj/GtWindow.xib; sourceTree = "<group>"; };
+		572B2F7918D605F700BF4B1C /* Glint.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = Glint.icns; path = resources/Glint.icns; sourceTree = "<group>"; };
+		572B2F7A18D605F700BF4B1C /* GlintDocument.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = GlintDocument.icns; path = resources/GlintDocument.icns; sourceTree = "<group>"; };
 		5738567618C746D80010CFB7 /* GtTreeNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtTreeNode.h; path = src/GtTreeNode.h; sourceTree = "<group>"; };
 		5738567718C746D80010CFB7 /* GtTreeNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtTreeNode.m; path = src/GtTreeNode.m; sourceTree = "<group>"; };
 		5738567918C74CCC0010CFB7 /* AppKitExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppKitExtensions.h; path = src/AppKitExtensions.h; sourceTree = "<group>"; };
@@ -301,6 +305,8 @@
 			children = (
 				5714A8BB18BD322900ED67EE /* Glint-Info.plist */,
 				572A5B2418C4CEE700AB8086 /* defaults.plist */,
+				572B2F7918D605F700BF4B1C /* Glint.icns */,
+				572B2F7A18D605F700BF4B1C /* GlintDocument.icns */,
 				5714A8CE18BD322900ED67EE /* Images.xcassets */,
 				5714A8BC18BD322900ED67EE /* InfoPlist.strings */,
 			);
@@ -363,8 +369,10 @@
 				5721E87718C6745A000DA2C3 /* GtTreeView.xib in Resources */,
 				572A5B2818C4CF6200AB8086 /* GtWindow.xib in Resources */,
 				5714A8CF18BD322900ED67EE /* Images.xcassets in Resources */,
+				572B2F7B18D605F700BF4B1C /* Glint.icns in Resources */,
 				57618DBB18C5D1F5004108D8 /* GtViewerView.xib in Resources */,
 				572A5B2518C4CEE700AB8086 /* defaults.plist in Resources */,
+				572B2F7C18D605F700BF4B1C /* GlintDocument.icns in Resources */,
 				5714A8BE18BD322900ED67EE /* InfoPlist.strings in Resources */,
 				5714A8CD18BD322900ED67EE /* MainMenu.xib in Resources */,
 			);
@@ -508,7 +516,6 @@
 		5714A8E518BD322900ED67EE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "src/Glint-Prefix.pch";
@@ -521,7 +528,6 @@
 		5714A8E618BD322900ED67EE /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "src/Glint-Prefix.pch";
