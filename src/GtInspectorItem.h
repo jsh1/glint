@@ -22,24 +22,24 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#ifndef GT_BASE_H
-#define GT_BASE_H
+#import "GtBase.h"
 
-#include "Mg.h"
+@interface GtInspectorItem : NSObject
 
-#ifdef __OBJC__
-#import <AppKit/AppKit.h>
-#endif
++ (instancetype)inspectorTreeForClass:(Class)cls;
 
-#ifdef __OBJC__
-@class GtAppDelegate, GtDocument, GtInspectorBoolControl,
-    GtInspectorColorControl, GtInspectorControl,
-    GtInspectorNumberControl, GtInspectorItem,
-    GtInspectorStringControl, GtInspectorViewController,
-    GtNumericTextField, GtOutlineView, GtSplitView,
-    GtSplitViewController, GtTreeViewController, GtTreeNode,
-    GtViewController, GtViewerView, GtViewerViewController,
-    GtWindowController;
-#endif
+@property(nonatomic, assign, readonly, getter=isLeaf) BOOL leaf;
 
-#endif /* GT_BASE_H */
+@property(nonatomic, copy) NSString *displayName;
+
+@property(nonatomic, copy) NSString *key;
+@property(nonatomic, copy) NSString *type;
+@property(nonatomic, copy) NSString *subtype;
+@property(nonatomic, copy) NSString *units;
+@property(nonatomic, assign) double min, max, increment;
+@property(nonatomic, assign) double sliderMin, sliderMax;
+@property(nonatomic, copy) NSArray *values;
+
+@property(nonatomic, copy) NSArray *subitems;
+
+@end

@@ -1106,6 +1106,11 @@ CA
                                     <action selector="toggleView:" target="-1" id="xlb-Qv-nCt"/>
                                 </connections>
                             </menuItem>
+                            <menuItem title="Inspector Panel" tag="2" keyEquivalent="2" id="VPf-Od-GO8">
+                                <connections>
+                                    <action selector="toggleView:" target="-1" id="Fa5-0b-k4b"/>
+                                </connections>
+                            </menuItem>
                             <menuItem isSeparatorItem="YES" id="gw0-9v-Zde"/>
                             <menuItem title="Bring All to Front" id="LE2-aR-0XJ">
                                 <modifierMask key="keyEquivalentModifierMask"/>

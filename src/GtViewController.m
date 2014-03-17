@@ -40,6 +40,38 @@
 @synthesize superviewController = _superviewController;
 @synthesize viewHasBeenLoaded = _viewHasBeenLoaded;
 
++ (GtViewController *)viewControllerWithDictionary:(NSDictionary *)dict
+    windowController:(GtWindowController *)windowController
+{
+  Class cls = NSClassFromString(dict[@"class"]);
+  if (![cls isSubclassOfClass:self])
+    return nil;
+
+  GtViewController *c = [[cls alloc] initWithWindowController:
+			 windowController];
+
+  for (NSString *key in dict)
+    {
+      if ([key isEqualToString:@"class"])
+	continue;
+
+      if ([key isEqualToString:@"subviewControllers"])
+	{
+	  for (NSDictionary *sub_dict in dict[key])
+	    {
+	      GtViewController *sc = [self viewControllerWithDictionary:
+				sub_dict windowController:windowController];
+	      if (sc != nil)
+		[c addSubviewController:sc];
+	    }
+	}
+      else
+	[c setValue:dict[key] forKey:key];
+    }
+
+  return c;
+}
+
 + (NSString *)viewNibName
 {
   return nil;
@@ -75,6 +107,11 @@
 - (GtDocument *)document
 {
   return _windowController.document;
+}
+
+- (NSString *)title
+{
+  return NSStringFromClass([self class]);
 }
 
 - (NSString *)identifier
@@ -188,7 +225,7 @@
   if (parent == nil)
     return;
 
-  if (![parent _isSubviewControllerVisible:controller])
+  if (![self subviewControllerIsVisible:controller])
     [self showSubviewController:controller];
   else
     [self hideSubviewController:controller];
@@ -227,7 +264,7 @@
 
 - (NSView *)initialFirstResponder
 {
-  return nil;
+  return [self view];
 }
 
 - (void)viewDidLoad

@@ -27,6 +27,7 @@
 #import "GtAppDelegate.h"
 #import "GtColor.h"
 #import "GtDocument.h"
+#import "GtInspectorViewController.h"
 #import "GtSplitViewController.h"
 #import "GtTreeNode.h"
 #import "GtTreeViewController.h"
@@ -87,29 +88,29 @@
    addObserver:self selector:@selector(windowWillClose:)
    name:NSWindowWillCloseNotification object:window];
 
-  /* FIXME: replace by something else. */
+  NSString *path = [[NSBundle mainBundle]
+		    pathForResource:@"view-controllers" ofType:@"json"];
+  if (path != nil)
+    {
+      NSData *data = [NSData dataWithContentsOfFile:path];
 
-  GtSplitViewController *split = [[GtSplitViewController alloc]
-				  initWithWindowController:self];
-  GtTreeViewController *tree = [[GtTreeViewController alloc]
-				initWithWindowController:self];
-  GtViewerViewController *viewer = [[GtViewerViewController alloc]
-				    initWithWindowController:self];
+      if (data != nil)
+	{
+	  NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:
+				data options:0 error:nil];
 
-  split.vertical = YES;
-  split.indexOfResizableSubview = 1;
-  split.identifierSuffix = @".main";
+	  _viewController = [GtViewController viewControllerWithDictionary:
+			     dict windowController:self];
+	}
+    }
 
-  [split addSubviewController:tree];
-  [split addSubviewController:viewer];
-
-  [split addToContainerView:self.mainView];
-
-  _viewController = split;
+  [_viewController addToContainerView:self.mainView];
 
   [self applySavedWindowState];
 
-  [window setInitialFirstResponder:[viewer initialFirstResponder]];
+  [window setInitialFirstResponder:
+   [[self viewControllerWithClass:
+     [GtViewerViewController class]] initialFirstResponder]];
 
   [window makeFirstResponder:[window initialFirstResponder]];
 
@@ -395,6 +396,9 @@ viewControllerClass(id sender)
 
     case 1:
       return [GtTreeViewController class];
+
+    case 2:
+      return [GtInspectorViewController class];
 
     default:
       return Nil;

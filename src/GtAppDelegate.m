@@ -38,17 +38,15 @@
     return nil;
 
   NSString *path = [[NSBundle mainBundle]
-		    pathForResource:@"defaults" ofType:@"plist"];
+		    pathForResource:@"defaults" ofType:@"json"];
   if (path != nil)
     {
       NSData *data = [NSData dataWithContentsOfFile:path];
 
       if (data != nil)
 	{
-	  NSDictionary *dict = [NSPropertyListSerialization
-				propertyListWithData:data options:
-				NSPropertyListImmutable format:nil
-				error:nil];
+	  NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:
+				data options:0 error:nil];
 	  if (dict != nil)
 	    [[NSUserDefaults standardUserDefaults] registerDefaults:dict];
 	}

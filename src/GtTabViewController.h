@@ -22,24 +22,15 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#ifndef GT_BASE_H
-#define GT_BASE_H
+#import "GtViewController.h"
 
-#include "Mg.h"
+@interface GtTabViewController : GtViewController
 
-#ifdef __OBJC__
-#import <AppKit/AppKit.h>
-#endif
+@property(nonatomic, assign) NSInteger indexOfSelectedView;
 
-#ifdef __OBJC__
-@class GtAppDelegate, GtDocument, GtInspectorBoolControl,
-    GtInspectorColorControl, GtInspectorControl,
-    GtInspectorNumberControl, GtInspectorItem,
-    GtInspectorStringControl, GtInspectorViewController,
-    GtNumericTextField, GtOutlineView, GtSplitView,
-    GtSplitViewController, GtTreeViewController, GtTreeNode,
-    GtViewController, GtViewerView, GtViewerViewController,
-    GtWindowController;
-#endif
+@property(nonatomic, weak) IBOutlet NSSegmentedControl *segmentedControl;
+@property(nonatomic, weak) IBOutlet NSView *contentView;
 
-#endif /* GT_BASE_H */
+- (IBAction)controlAction:(id)sender;
+
+@end

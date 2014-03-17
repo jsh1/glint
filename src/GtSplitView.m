@@ -24,6 +24,8 @@
 
 #import "GtSplitView.h"
 
+#import "GtColor.h"
+
 @implementation GtSplitView
 
 @synthesize indexOfResizableSubview = _indexOfResizableSubview;
@@ -57,8 +59,21 @@
 
 - (void)drawDividerInRect:(NSRect)rect
 {
-  [[[self window] backgroundColor] setFill];
-  [NSBezierPath fillRect:rect];
+  NSRect subR = rect;
+  if (![self isVertical])
+    {
+      subR.size.height = 1;
+      [[NSColor lightGrayColor] setFill];
+      [NSBezierPath fillRect:subR];
+      subR.origin.y += 1;
+      [[NSColor whiteColor] setFill];
+      [NSBezierPath fillRect:subR];
+    }
+  else
+    {
+      [[[self window] backgroundColor] setFill];
+      [NSBezierPath fillRect:rect];
+    }
 }
 
 - (NSDictionary *)savedViewState

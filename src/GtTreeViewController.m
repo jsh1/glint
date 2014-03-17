@@ -44,6 +44,11 @@ static NSString *const GtTreeViewItemType = @"org.unfactored.gt-tree-view-item";
   return @"GtTreeView";
 }
 
+- (NSString *)title
+{
+  return @"Objects";
+}
+
 - (void)viewDidLoad
 {
   [[NSNotificationCenter defaultCenter]

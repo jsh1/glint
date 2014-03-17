@@ -1,0 +1,233 @@
+{
+  "MgNode": {
+    "enabled": {
+      "displayName": "Enabled",
+      "type": "bool"
+    },
+    "name": {
+      "displayName": "Name",
+      "type": "string",
+    }
+  },
+
+  "MgLayer": {
+    "position": {
+      "displayName": "Position",
+      "type": "CGPoint",
+      "units": "pixels"
+    },
+    "bounds": {
+      "displayName": "Bounds",
+      "type": "CGRect",
+      "units": "pixels"
+    },
+    "anchor": {
+      "displayName": "Anchor",
+      "type": "CGPoint",
+      "units": "normalized"
+    },
+    "scale": {
+      "displayName": "Scale",
+      "type": "CGFloat",
+      "sliderMin": 0,
+      "sliderMax": 4
+    },
+    "squeeze": {
+      "displayName": "Squeeze",
+      "type": "CGFloat",
+      "sliderMin": 0,
+      "sliderMax": 4
+    },
+    "skew": {
+      "displayName": "Skew",
+      "type": "CGFloat",
+      "sliderMin": 0,
+      "sliderMax": 4
+    },
+    "rotation": {
+      "displayName": "Rotation",
+      "type": "double",
+      "sliderMin": -3.141259,
+      "sliderMax": 3.141259
+    },
+    "alpha": {
+      "displayName": "Alpha",
+      "type": "float",
+      "min": 0,
+      "max": 1
+    },
+    "blendMode": {
+      "displayName": "Blend Mode",
+      "type": "enum",
+      "values": ["Normal", "Multiply", "Screen", "Overlay", "Darken",
+		 "Lighten", "Color Dodge", "Color Burn", "Soft Light",
+		 "Hard Light", "Difference", "Exclusion", "Hue",
+		 "Saturation", "Color", "Luminosity", "Clear",
+		 "Copy", "Source In", "Source Out", "Source Atop",
+		 "Destination Over", "Destination In", "Destination Out",
+		 "Destination Atop", "Xor", "Plus Darker", "Plus Lighter"]
+    }
+  },
+
+  "MgGroupLayer": {
+    "group": {
+      "displayName": "Group Compositing",
+      "type": "bool"
+    }
+  },
+
+  "MgRectLayer": {
+    "cornerRadius": {
+      "displayName": "Corner Radius",
+      "type": "CGFloat",
+      "units": "pixels",
+      "min": 0,
+      "sliderMax": 100
+    },
+    "drawingMode": {
+      "displayName": "Drawing Mode",
+      "type": "enum",
+      "values": ["Fill", "EO Fill", "Stroke", "Fill Stroke", "EO Fill Stroke"]
+    },
+    "fillColor": {
+      "displayName": "Fill Color",
+      "type": "CGColor"
+    },
+    "strokeColor": {
+      "displayName": "Stroke Color",
+      "type": "CGColor"
+    },
+    "lineWidth": {
+      "displayName": "Line Width",
+      "type": "CGFloat",
+      "units": "pixels",
+      "min": 0,
+      "sliderMax": 20
+    }
+  },
+
+  "MgPathLayer": {
+    "displayName": "Path",
+    "path": {
+      "type": "CGPath"
+    },
+    "drawingMode": {
+      "displayName": "Drawing Mode",
+      "type": "enum",
+      "values": ["Fill", "EO Fill", "Stroke", "Fill Stroke", "EO Fill Stroke"]
+    },
+    "fillColor": {
+      "displayName": "Fill Color",
+      "type": "CGColor"
+    },
+    "strokeColor": {
+      "displayName": "Stroke Color",
+      "type": "CGColor"
+    },
+    "lineWidth": {
+      "displayName": "Line Width",
+      "type": "CGFloat",
+      "units": "pixels",
+      "min": 0,
+      "sliderMax": 20
+    },
+    "miterLimit": {
+      "displayName": "Miter Limit",
+      "type": "CGFloat",
+      "min": 0,
+      "sliderMax": 20
+    },
+    "lineCap": {
+      "displayName": "Line Cap",
+      "type": "enum",
+      "values": ["Butt", "Round", "Square"]
+    },
+    "lineJoin": {
+      "displayName": "Line Join",
+      "type": "enum",
+      "values": ["Miter", "Round", "Bevel"]
+    },
+    "lineDashPhase": {
+      "displayName": "Dash Phase",
+      "type": "CGFloat",
+      "min": 0,
+      "sliderMax": 20
+    },
+    "lineDashPattern": {
+      "displayName": "Dash Pattern",
+      "type": "NSArray",
+      "subtype": "CGFloat",
+      "min": 0,
+      "sliderMax": 20
+    }
+  },
+
+  "MgImageLayer": {
+    "imageProvider": {
+      "displayName": "Image",
+      "type": "MgImageProvider"
+    },
+    "cropRect": {
+      "displayName": "Crop",
+      "type": "CGRect",
+      "units": "pixels"
+    },
+    "centerRect": {
+      "displayName": "Center",
+      "type": "CGRect",
+      "units": "pixels"
+    },
+    "repeats": {
+      "displayName": "Repeated",
+      "type": "bool"
+    }
+  },
+
+  "MgGradientLayer": {
+    "colors": {
+      "displayName": "Colors",
+      "type": "NSArray",
+      "subtype": "CGColor"
+    },
+    "locations": {
+      "displayName": "Locations",
+      "type": "NSArray",
+      "subtype": "CGFloat",
+      "units": "normalized"
+    },
+    "radial": {
+      "displayName": "Radial",
+      "type": "bool"
+    },
+    "startPoint": {
+      "displayName": "Start Point",
+      "type": "CGPoint",
+      "units": "pixels"
+    },
+    "endPoint": {
+      "displayName": "End Point",
+      "type": "CGPoint",
+      "units": "pixels"
+    },
+    "startRadius": {
+      "displayName": "Start Radius",
+      "type": "CGFloat",
+      "units": "pixels",
+      "only_if": "radial"
+    },
+    "endRadius": {
+      "displayName": "End Radius",
+      "type": "CGFloat",
+      "units": "pixels",
+      "only_if": "radial"
+    },
+    "drawsBeforeStart": {
+      "displayName": "Draws Before Start",
+      "type": "bool"
+    },
+    "drawsAfterEnd": {
+      "displayName": "Draws After End",
+      "type": "bool"
+    }
+  }
+}

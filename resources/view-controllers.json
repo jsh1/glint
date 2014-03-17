@@ -1,0 +1,34 @@
+{
+  "class": "GtSplitViewController",
+  "identifierSuffix": ".main",
+  "vertical": true,
+  "indexOfResizableSubview": 1,
+  "subviewControllers": [
+    {
+      "class": "GtSplitViewController",
+      "identifierSuffix": ".project",
+      "vertical": false,
+      "subviewControllers": [
+	{
+	  "class": "GtTabViewController",
+	  "subviewControllers": [
+	    {
+	      "class": "GtTreeViewController"
+	    }
+	  ]
+	},
+        {
+	  "class": "GtTabViewController",
+	  "subviewControllers": [
+	    {
+	      "class": "GtInspectorViewController"
+	    }
+	  ]
+	}
+      ]
+    },
+    {
+      "class": "GtViewerViewController"
+    }
+  ]
+}

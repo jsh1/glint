@@ -22,24 +22,14 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#ifndef GT_BASE_H
-#define GT_BASE_H
+#import "GtViewController.h"
 
-#include "Mg.h"
+@interface GtInspectorViewController : GtViewController
+    <NSOutlineViewDataSource, NSOutlineViewDelegate>
 
-#ifdef __OBJC__
-#import <AppKit/AppKit.h>
-#endif
+@property(nonatomic, weak) IBOutlet NSOutlineView *outlineView;
 
-#ifdef __OBJC__
-@class GtAppDelegate, GtDocument, GtInspectorBoolControl,
-    GtInspectorColorControl, GtInspectorControl,
-    GtInspectorNumberControl, GtInspectorItem,
-    GtInspectorStringControl, GtInspectorViewController,
-    GtNumericTextField, GtOutlineView, GtSplitView,
-    GtSplitViewController, GtTreeViewController, GtTreeNode,
-    GtViewController, GtViewerView, GtViewerViewController,
-    GtWindowController;
-#endif
+- (id)inspectedValueForKey:(NSString *)key;
+- (void)setInspectedValue:(id)value forKey:(NSString *)key;
 
-#endif /* GT_BASE_H */
+@end

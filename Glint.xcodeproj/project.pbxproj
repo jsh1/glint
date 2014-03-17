@@ -22,10 +22,25 @@
 		572A5B1F18C4CD4100AB8086 /* GtViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 572A5B1B18C4CD4100AB8086 /* GtViewController.m */; };
 		572A5B2018C4CD4100AB8086 /* GtWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 572A5B1D18C4CD4100AB8086 /* GtWindowController.m */; };
 		572A5B2318C4CE2000AB8086 /* GtAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 572A5B2218C4CE2000AB8086 /* GtAppDelegate.m */; };
-		572A5B2518C4CEE700AB8086 /* defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 572A5B2418C4CEE700AB8086 /* defaults.plist */; };
 		572A5B2818C4CF6200AB8086 /* GtWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 572A5B2618C4CF6200AB8086 /* GtWindow.xib */; };
 		572B2F7B18D605F700BF4B1C /* Glint.icns in Resources */ = {isa = PBXBuildFile; fileRef = 572B2F7918D605F700BF4B1C /* Glint.icns */; };
 		572B2F7C18D605F700BF4B1C /* GlintDocument.icns in Resources */ = {isa = PBXBuildFile; fileRef = 572B2F7A18D605F700BF4B1C /* GlintDocument.icns */; };
+		572BFA9618D72256000E9B84 /* GtInspectorControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 572BFA9118D72255000E9B84 /* GtInspectorControl.m */; };
+		572BFA9718D72256000E9B84 /* GtInspectorItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 572BFA9318D72255000E9B84 /* GtInspectorItem.m */; };
+		572BFA9818D72256000E9B84 /* GtInspectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 572BFA9518D72255000E9B84 /* GtInspectorViewController.m */; };
+		572BFA9B18D72263000E9B84 /* GtInspectorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 572BFA9918D72263000E9B84 /* GtInspectorView.xib */; };
+		572BFA9E18D72722000E9B84 /* GtTabView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 572BFA9C18D72722000E9B84 /* GtTabView.xib */; };
+		572BFAA118D72815000E9B84 /* GtTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 572BFAA018D72815000E9B84 /* GtTabViewController.m */; };
+		572BFAA318D73E6D000E9B84 /* view-controllers.json in Resources */ = {isa = PBXBuildFile; fileRef = 572BFAA218D73E6D000E9B84 /* view-controllers.json */; };
+		572BFAA518D74089000E9B84 /* defaults.json in Resources */ = {isa = PBXBuildFile; fileRef = 572BFAA418D74089000E9B84 /* defaults.json */; };
+		572BFAB018D74E21000E9B84 /* GtInspectorBoolControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 572BFAA718D74E21000E9B84 /* GtInspectorBoolControl.m */; };
+		572BFAB118D74E21000E9B84 /* GtInspectorColorControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 572BFAA918D74E21000E9B84 /* GtInspectorColorControl.m */; };
+		572BFAB218D74E21000E9B84 /* GtInspectorEnumControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 572BFAAB18D74E21000E9B84 /* GtInspectorEnumControl.m */; };
+		572BFAB318D74E21000E9B84 /* GtInspectorNumberControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 572BFAAD18D74E21000E9B84 /* GtInspectorNumberControl.m */; };
+		572BFAB418D74E21000E9B84 /* GtInspectorStringControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 572BFAAF18D74E21000E9B84 /* GtInspectorStringControl.m */; };
+		572BFAB718D751E5000E9B84 /* classes.json in Resources */ = {isa = PBXBuildFile; fileRef = 572BFAB518D751E5000E9B84 /* classes.json */; };
+		572BFAB818D751E5000E9B84 /* inspector.json in Resources */ = {isa = PBXBuildFile; fileRef = 572BFAB618D751E5000E9B84 /* inspector.json */; };
+		572BFABB18D76363000E9B84 /* GtNumericTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 572BFABA18D76363000E9B84 /* GtNumericTextField.m */; };
 		5738567818C746D80010CFB7 /* GtTreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 5738567718C746D80010CFB7 /* GtTreeNode.m */; };
 		5738567B18C74CCC0010CFB7 /* AppKitExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5738567A18C74CCC0010CFB7 /* AppKitExtensions.m */; };
 		575ACEF018CFCFE100161C70 /* MgCoreAnimationLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 575ACED018CFCFE100161C70 /* MgCoreAnimationLayer.m */; };
@@ -87,10 +102,35 @@
 		572A5B1D18C4CD4100AB8086 /* GtWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtWindowController.m; path = src/GtWindowController.m; sourceTree = "<group>"; };
 		572A5B2118C4CE2000AB8086 /* GtAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtAppDelegate.h; path = src/GtAppDelegate.h; sourceTree = "<group>"; };
 		572A5B2218C4CE2000AB8086 /* GtAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtAppDelegate.m; path = src/GtAppDelegate.m; sourceTree = "<group>"; };
-		572A5B2418C4CEE700AB8086 /* defaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = defaults.plist; path = resources/defaults.plist; sourceTree = "<group>"; };
 		572A5B2718C4CF6200AB8086 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = resources/en.lproj/GtWindow.xib; sourceTree = "<group>"; };
 		572B2F7918D605F700BF4B1C /* Glint.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = Glint.icns; path = resources/Glint.icns; sourceTree = "<group>"; };
 		572B2F7A18D605F700BF4B1C /* GlintDocument.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = GlintDocument.icns; path = resources/GlintDocument.icns; sourceTree = "<group>"; };
+		572BFA9018D72255000E9B84 /* GtInspectorControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtInspectorControl.h; path = src/GtInspectorControl.h; sourceTree = "<group>"; };
+		572BFA9118D72255000E9B84 /* GtInspectorControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtInspectorControl.m; path = src/GtInspectorControl.m; sourceTree = "<group>"; };
+		572BFA9218D72255000E9B84 /* GtInspectorItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtInspectorItem.h; path = src/GtInspectorItem.h; sourceTree = "<group>"; };
+		572BFA9318D72255000E9B84 /* GtInspectorItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtInspectorItem.m; path = src/GtInspectorItem.m; sourceTree = "<group>"; };
+		572BFA9418D72255000E9B84 /* GtInspectorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtInspectorViewController.h; path = src/GtInspectorViewController.h; sourceTree = "<group>"; };
+		572BFA9518D72255000E9B84 /* GtInspectorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtInspectorViewController.m; path = src/GtInspectorViewController.m; sourceTree = "<group>"; };
+		572BFA9A18D72263000E9B84 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = resources/en.lproj/GtInspectorView.xib; sourceTree = "<group>"; };
+		572BFA9D18D72722000E9B84 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = resources/en.lproj/GtTabView.xib; sourceTree = "<group>"; };
+		572BFA9F18D72814000E9B84 /* GtTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtTabViewController.h; path = src/GtTabViewController.h; sourceTree = "<group>"; };
+		572BFAA018D72815000E9B84 /* GtTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtTabViewController.m; path = src/GtTabViewController.m; sourceTree = "<group>"; };
+		572BFAA218D73E6D000E9B84 /* view-controllers.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "view-controllers.json"; path = "resources/view-controllers.json"; sourceTree = "<group>"; };
+		572BFAA418D74089000E9B84 /* defaults.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = defaults.json; path = resources/defaults.json; sourceTree = "<group>"; };
+		572BFAA618D74E21000E9B84 /* GtInspectorBoolControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtInspectorBoolControl.h; path = src/GtInspectorBoolControl.h; sourceTree = "<group>"; };
+		572BFAA718D74E21000E9B84 /* GtInspectorBoolControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtInspectorBoolControl.m; path = src/GtInspectorBoolControl.m; sourceTree = "<group>"; };
+		572BFAA818D74E21000E9B84 /* GtInspectorColorControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtInspectorColorControl.h; path = src/GtInspectorColorControl.h; sourceTree = "<group>"; };
+		572BFAA918D74E21000E9B84 /* GtInspectorColorControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtInspectorColorControl.m; path = src/GtInspectorColorControl.m; sourceTree = "<group>"; };
+		572BFAAA18D74E21000E9B84 /* GtInspectorEnumControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtInspectorEnumControl.h; path = src/GtInspectorEnumControl.h; sourceTree = "<group>"; };
+		572BFAAB18D74E21000E9B84 /* GtInspectorEnumControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtInspectorEnumControl.m; path = src/GtInspectorEnumControl.m; sourceTree = "<group>"; };
+		572BFAAC18D74E21000E9B84 /* GtInspectorNumberControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtInspectorNumberControl.h; path = src/GtInspectorNumberControl.h; sourceTree = "<group>"; };
+		572BFAAD18D74E21000E9B84 /* GtInspectorNumberControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtInspectorNumberControl.m; path = src/GtInspectorNumberControl.m; sourceTree = "<group>"; };
+		572BFAAE18D74E21000E9B84 /* GtInspectorStringControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtInspectorStringControl.h; path = src/GtInspectorStringControl.h; sourceTree = "<group>"; };
+		572BFAAF18D74E21000E9B84 /* GtInspectorStringControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtInspectorStringControl.m; path = src/GtInspectorStringControl.m; sourceTree = "<group>"; };
+		572BFAB518D751E5000E9B84 /* classes.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = classes.json; path = resources/classes.json; sourceTree = "<group>"; };
+		572BFAB618D751E5000E9B84 /* inspector.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = inspector.json; path = resources/inspector.json; sourceTree = "<group>"; };
+		572BFAB918D76363000E9B84 /* GtNumericTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtNumericTextField.h; path = src/GtNumericTextField.h; sourceTree = "<group>"; };
+		572BFABA18D76363000E9B84 /* GtNumericTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtNumericTextField.m; path = src/GtNumericTextField.m; sourceTree = "<group>"; };
 		5738567618C746D80010CFB7 /* GtTreeNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtTreeNode.h; path = src/GtTreeNode.h; sourceTree = "<group>"; };
 		5738567718C746D80010CFB7 /* GtTreeNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtTreeNode.m; path = src/GtTreeNode.m; sourceTree = "<group>"; };
 		5738567918C74CCC0010CFB7 /* AppKitExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppKitExtensions.h; path = src/AppKitExtensions.h; sourceTree = "<group>"; };
@@ -257,12 +297,32 @@
 				5721E87918C69363000DA2C3 /* GtColor.m */,
 				5714A8C518BD322900ED67EE /* GtDocument.h */,
 				5714A8C618BD322900ED67EE /* GtDocument.m */,
+				572BFA9018D72255000E9B84 /* GtInspectorControl.h */,
+				572BFA9118D72255000E9B84 /* GtInspectorControl.m */,
+				572BFAA618D74E21000E9B84 /* GtInspectorBoolControl.h */,
+				572BFAA718D74E21000E9B84 /* GtInspectorBoolControl.m */,
+				572BFAA818D74E21000E9B84 /* GtInspectorColorControl.h */,
+				572BFAA918D74E21000E9B84 /* GtInspectorColorControl.m */,
+				572BFAAA18D74E21000E9B84 /* GtInspectorEnumControl.h */,
+				572BFAAB18D74E21000E9B84 /* GtInspectorEnumControl.m */,
+				572BFAAC18D74E21000E9B84 /* GtInspectorNumberControl.h */,
+				572BFAAD18D74E21000E9B84 /* GtInspectorNumberControl.m */,
+				572BFAAE18D74E21000E9B84 /* GtInspectorStringControl.h */,
+				572BFAAF18D74E21000E9B84 /* GtInspectorStringControl.m */,
+				572BFA9218D72255000E9B84 /* GtInspectorItem.h */,
+				572BFA9318D72255000E9B84 /* GtInspectorItem.m */,
+				572BFA9418D72255000E9B84 /* GtInspectorViewController.h */,
+				572BFA9518D72255000E9B84 /* GtInspectorViewController.m */,
+				572BFAB918D76363000E9B84 /* GtNumericTextField.h */,
+				572BFABA18D76363000E9B84 /* GtNumericTextField.m */,
 				5721E87B18C693E4000DA2C3 /* GtOutlineView.h */,
 				5721E87C18C693E4000DA2C3 /* GtOutlineView.m */,
 				572A5B1818C4CD4100AB8086 /* GtSplitView.h */,
 				572A5B1918C4CD4100AB8086 /* GtSplitView.m */,
 				5721E87E18C6A2DF000DA2C3 /* GtSplitViewController.h */,
 				5721E87F18C6A2DF000DA2C3 /* GtSplitViewController.m */,
+				572BFA9F18D72814000E9B84 /* GtTabViewController.h */,
+				572BFAA018D72815000E9B84 /* GtTabViewController.m */,
 				5738567618C746D80010CFB7 /* GtTreeNode.h */,
 				5738567718C746D80010CFB7 /* GtTreeNode.m */,
 				5721E87218C67439000DA2C3 /* GtTreeViewController.h */,
@@ -293,6 +353,8 @@
 			isa = PBXGroup;
 			children = (
 				5714A8CB18BD322900ED67EE /* MainMenu.xib */,
+				572BFA9918D72263000E9B84 /* GtInspectorView.xib */,
+				572BFA9C18D72722000E9B84 /* GtTabView.xib */,
 				5721E87518C6745A000DA2C3 /* GtTreeView.xib */,
 				57618DB918C5D1F5004108D8 /* GtViewerView.xib */,
 				572A5B2618C4CF6200AB8086 /* GtWindow.xib */,
@@ -303,8 +365,11 @@
 		57E776BE18BD3609007CD31F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				572BFAB518D751E5000E9B84 /* classes.json */,
+				572BFAA418D74089000E9B84 /* defaults.json */,
+				572BFAB618D751E5000E9B84 /* inspector.json */,
+				572BFAA218D73E6D000E9B84 /* view-controllers.json */,
 				5714A8BB18BD322900ED67EE /* Glint-Info.plist */,
-				572A5B2418C4CEE700AB8086 /* defaults.plist */,
 				572B2F7918D605F700BF4B1C /* Glint.icns */,
 				572B2F7A18D605F700BF4B1C /* GlintDocument.icns */,
 				5714A8CE18BD322900ED67EE /* Images.xcassets */,
@@ -368,13 +433,18 @@
 			files = (
 				5721E87718C6745A000DA2C3 /* GtTreeView.xib in Resources */,
 				572A5B2818C4CF6200AB8086 /* GtWindow.xib in Resources */,
+				572BFA9E18D72722000E9B84 /* GtTabView.xib in Resources */,
+				572BFAB718D751E5000E9B84 /* classes.json in Resources */,
 				5714A8CF18BD322900ED67EE /* Images.xcassets in Resources */,
 				572B2F7B18D605F700BF4B1C /* Glint.icns in Resources */,
+				572BFAA518D74089000E9B84 /* defaults.json in Resources */,
 				57618DBB18C5D1F5004108D8 /* GtViewerView.xib in Resources */,
-				572A5B2518C4CEE700AB8086 /* defaults.plist in Resources */,
 				572B2F7C18D605F700BF4B1C /* GlintDocument.icns in Resources */,
+				572BFAB818D751E5000E9B84 /* inspector.json in Resources */,
+				572BFAA318D73E6D000E9B84 /* view-controllers.json in Resources */,
 				5714A8BE18BD322900ED67EE /* InfoPlist.strings in Resources */,
 				5714A8CD18BD322900ED67EE /* MainMenu.xib in Resources */,
+				572BFA9B18D72263000E9B84 /* GtInspectorView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -387,20 +457,27 @@
 			files = (
 				579CAFD918C3F63A0051454F /* MgCoderExtensions.m in Sources */,
 				5721E87D18C693E4000DA2C3 /* GtOutlineView.m in Sources */,
+				572BFA9618D72256000E9B84 /* GtInspectorControl.m in Sources */,
+				572BFA9818D72256000E9B84 /* GtInspectorViewController.m in Sources */,
 				5721E87118C6212D000DA2C3 /* FoundationExtensions.m in Sources */,
+				572BFAB218D74E21000E9B84 /* GtInspectorEnumControl.m in Sources */,
 				5721E88018C6A2DF000DA2C3 /* GtSplitViewController.m in Sources */,
 				575ACEFA18CFCFE100161C70 /* MgNodePasteboard.m in Sources */,
 				575ACEF818CFCFE100161C70 /* MgLayerPasteboard.m in Sources */,
 				572A5B2018C4CD4100AB8086 /* GtWindowController.m in Sources */,
+				572BFABB18D76363000E9B84 /* GtNumericTextField.m in Sources */,
 				579CAFD118C381BD0051454F /* MgCoreGraphics.c in Sources */,
 				575ACF0018CFD00100161C70 /* MgGroupLayer.m in Sources */,
 				575ACEF718CFCFE100161C70 /* MgLayer.m in Sources */,
 				57B111B718D0BB8C00A41A64 /* GtViewerOverlayLayer.m in Sources */,
 				572A5B1F18C4CD4100AB8086 /* GtViewController.m in Sources */,
+				572BFAB418D74E21000E9B84 /* GtInspectorStringControl.m in Sources */,
 				57618DBE18C5D538004108D8 /* CoreAnimationExtensions.m in Sources */,
 				575ACEF318CFCFE100161C70 /* MgGradientLayer.m in Sources */,
 				572A5B2318C4CE2000AB8086 /* GtAppDelegate.m in Sources */,
 				575ACEFB18CFCFE100161C70 /* MgPathLayer.m in Sources */,
+				572BFAB318D74E21000E9B84 /* GtInspectorNumberControl.m in Sources */,
+				572BFA9718D72256000E9B84 /* GtInspectorItem.m in Sources */,
 				5714A8C718BD322900ED67EE /* GtDocument.m in Sources */,
 				5721E87A18C69363000DA2C3 /* GtColor.m in Sources */,
 				5738567818C746D80010CFB7 /* GtTreeNode.m in Sources */,
@@ -409,8 +486,11 @@
 				57618DB718C5D1B6004108D8 /* GtViewerView.m in Sources */,
 				5714A8C018BD322900ED67EE /* main.m in Sources */,
 				575ACEF618CFCFE100161C70 /* MgImageProvider.m in Sources */,
+				572BFAB118D74E21000E9B84 /* GtInspectorColorControl.m in Sources */,
 				575ACEF018CFCFE100161C70 /* MgCoreAnimationLayer.m in Sources */,
+				572BFAA118D72815000E9B84 /* GtTabViewController.m in Sources */,
 				5738567B18C74CCC0010CFB7 /* AppKitExtensions.m in Sources */,
+				572BFAB018D74E21000E9B84 /* GtInspectorBoolControl.m in Sources */,
 				575ACEF518CFCFE100161C70 /* MgImageLayer.m in Sources */,
 				57618DB818C5D1B6004108D8 /* GtViewerViewController.m in Sources */,
 				575ACEF118CFCFE100161C70 /* MgDrawingLayer.m in Sources */,
@@ -454,6 +534,22 @@
 				572A5B2718C4CF6200AB8086 /* en */,
 			);
 			name = GtWindow.xib;
+			sourceTree = "<group>";
+		};
+		572BFA9918D72263000E9B84 /* GtInspectorView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				572BFA9A18D72263000E9B84 /* en */,
+			);
+			name = GtInspectorView.xib;
+			sourceTree = "<group>";
+		};
+		572BFA9C18D72722000E9B84 /* GtTabView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				572BFA9D18D72722000E9B84 /* en */,
+			);
+			name = GtTabView.xib;
 			sourceTree = "<group>";
 		};
 		57618DB918C5D1F5004108D8 /* GtViewerView.xib */ = {

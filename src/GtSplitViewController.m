@@ -53,6 +53,17 @@
   [self setView:view];
 }
 
+- (NSView *)initialFirstResponder
+{
+  for (GtViewController *c in self.subviewControllers)
+    {
+      if ([self _isSubviewControllerVisible:c])
+	return [c view];
+    }
+
+  return [super initialFirstResponder];
+}
+
 - (void)viewWillAppear
 {
   GtSplitView *view = (GtSplitView *)[self view];
@@ -63,7 +74,9 @@
     {
       NSView *sub = [c view];
       [sub setFrame:[view bounds]];
+      [c viewWillAppear];
       [view addSubview:sub];
+      [c viewDidAppear];
     }
 
   [view adjustSubviews];
@@ -80,6 +93,8 @@
   NSDictionary *state = [(GtSplitView *)[self view] savedViewState];
   if (state != nil)
     dict[ident] = state;
+
+  [super addSavedViewState:dict];
 }
 
 - (void)applySavedViewState:(NSDictionary *)dict
@@ -91,6 +106,8 @@
   NSDictionary *state = dict[ident];
   if (state != nil)
     [(GtSplitView *)[self view] applySavedViewState:state];
+
+  [super applySavedViewState:dict];
 }
 
 - (BOOL)_isSubviewControllerVisible:(GtViewController *)c

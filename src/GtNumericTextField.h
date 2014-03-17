@@ -22,24 +22,24 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#ifndef GT_BASE_H
-#define GT_BASE_H
+#import "GtBase.h"
 
-#include "Mg.h"
+typedef NS_ENUM(NSInteger, GtNumericTextFieldType)
+{
+  GtNumericTextFieldTypeUnknown,
+  GtNumericTextFieldTypePixels,
+  GtNumericTextFieldTypeAngle,
+  GtNumericTextFieldTypeScale,
+};
 
-#ifdef __OBJC__
-#import <AppKit/AppKit.h>
-#endif
+@interface GtNumericTextField : NSTextField
 
-#ifdef __OBJC__
-@class GtAppDelegate, GtDocument, GtInspectorBoolControl,
-    GtInspectorColorControl, GtInspectorControl,
-    GtInspectorNumberControl, GtInspectorItem,
-    GtInspectorStringControl, GtInspectorViewController,
-    GtNumericTextField, GtOutlineView, GtSplitView,
-    GtSplitViewController, GtTreeViewController, GtTreeNode,
-    GtViewController, GtViewerView, GtViewerViewController,
-    GtWindowController;
-#endif
+@property(nonatomic, assign) GtNumericTextFieldType type;
 
-#endif /* GT_BASE_H */
+@property(nonatomic, assign) id objectValue;
+
+@property(nonatomic, assign) double minValue;
+@property(nonatomic, assign) double maxValue;
+@property(nonatomic, assign) double increment;
+
+@end

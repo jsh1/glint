@@ -1,0 +1,51 @@
+{
+  "MgLayer": {
+    "displayName": "Layer",
+    "properties": [
+      "position", "bounds", "anchor",
+      "rotation", "scale", "squeeze", "skew",
+      "alpha", "blendMode"
+    ]
+  },
+
+  "MgGroupLayer": {
+    "displayName": "Group",
+    "properties": [
+      "group"
+    ]
+  },
+
+  "MgRectLayer": {
+    "displayName": "Rect",
+    "properties": [
+      "cornerRadius", "drawingMode",
+      "fillColor", "strokeColor", "lineWidth"
+    ]
+  },
+
+  "MgPathLayer": {
+    "displayName": "Path",
+    "properties": [
+      "path", "drawingMode", "fillColor", "strokeColor",
+      "lineWidth", "miterLimit", "lineCap", "lineJoin",
+      "lineDashPhase", "lineDashPattern"
+    ]
+  },
+
+  "MgImageLayer": {
+    "displayName": "Image",
+    "properties": [
+      "imageProvider", "cropRect", "centerRect", "repeats"
+    ]
+  },
+
+  "MgGradientLayer": {
+    "displayName": "Gradient",
+    "properties": [
+      "radial", "colors", "locations",
+      "startPoint", "endPoint",
+      "startRadius", "endRadius",
+      "drawsBeforeStart", "drawsAfterEnd"
+    ]
+  }
+}

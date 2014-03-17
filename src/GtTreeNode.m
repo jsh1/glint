@@ -151,7 +151,7 @@ static size_t
 tree_depth(GtTreeNode *tn)
 {
   size_t depth = 0;
-  while (tn->_parent != nil)
+  while (tn != nil)
     tn = tn->_parent, depth++;
   return depth;
 }

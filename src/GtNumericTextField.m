@@ -22,24 +22,18 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#ifndef GT_BASE_H
-#define GT_BASE_H
+#import "GtNumericTextField.h"
 
-#include "Mg.h"
+@implementation GtNumericTextField
 
-#ifdef __OBJC__
-#import <AppKit/AppKit.h>
-#endif
+- (void)setObjectValue:(id)value
+{
+  [super setObjectValue:value];
+}
 
-#ifdef __OBJC__
-@class GtAppDelegate, GtDocument, GtInspectorBoolControl,
-    GtInspectorColorControl, GtInspectorControl,
-    GtInspectorNumberControl, GtInspectorItem,
-    GtInspectorStringControl, GtInspectorViewController,
-    GtNumericTextField, GtOutlineView, GtSplitView,
-    GtSplitViewController, GtTreeViewController, GtTreeNode,
-    GtViewController, GtViewerView, GtViewerViewController,
-    GtWindowController;
-#endif
+- (id)objectValue
+{
+  return [super objectValue];
+}
 
-#endif /* GT_BASE_H */
+@end

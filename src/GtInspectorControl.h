@@ -22,24 +22,29 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#ifndef GT_BASE_H
-#define GT_BASE_H
+#import "GtBase.h"
 
-#include "Mg.h"
+@interface GtInspectorControl : NSView
 
-#ifdef __OBJC__
-#import <AppKit/AppKit.h>
-#endif
++ (instancetype)controlForItem:(GtInspectorItem *)item
+    controller:(GtInspectorViewController *)controller;
 
-#ifdef __OBJC__
-@class GtAppDelegate, GtDocument, GtInspectorBoolControl,
-    GtInspectorColorControl, GtInspectorControl,
-    GtInspectorNumberControl, GtInspectorItem,
-    GtInspectorStringControl, GtInspectorViewController,
-    GtNumericTextField, GtOutlineView, GtSplitView,
-    GtSplitViewController, GtTreeViewController, GtTreeNode,
-    GtViewController, GtViewerView, GtViewerViewController,
-    GtWindowController;
-#endif
++ (CGFloat)controlHeightForItem:(GtInspectorItem *)item;
 
-#endif /* GT_BASE_H */
++ (CGFloat)controlWidth;
+
+/* designated initializer, should only be called by subclasses. */
+
+- (id)initWithItem:(GtInspectorItem *)item
+    controller:(GtInspectorViewController *)controller;
+
+@property(nonatomic, retain, readonly) GtInspectorItem *item;
+@property(nonatomic, weak, readonly) GtInspectorViewController *controller;
+
+@property(nonatomic, retain) id objectValue;
+
+- (void)layoutSubviews;
+
+- (IBAction)takeValue:(id)sender;
+
+@end

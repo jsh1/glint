@@ -26,7 +26,12 @@
 
 @interface GtViewController : NSViewController
 
++ (GtViewController *)viewControllerWithDictionary:(NSDictionary *)dict
+    windowController:(GtWindowController *)windowController;
+
 + (NSString *)viewNibName;
+
+@property(nonatomic, copy, readonly) NSString *title;
 
 - (NSString *)identifier;
 
