@@ -24,8 +24,6 @@
 
 #import "GtBase.h"
 
-@protocol GtTreeNodeOwner;
-
 @interface GtTreeNode : NSObject
 
 - (id)initWithNode:(MgNode *)node parent:(GtTreeNode *)parent

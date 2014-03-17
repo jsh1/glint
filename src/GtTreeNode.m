@@ -175,15 +175,13 @@ tree_depth(GtTreeNode *tn)
   while (n2_depth > n1_depth)
     n2 = n2->_parent, n2_depth--;
 
-  while (n1 != nil)
+  while (n1 != n2)
     {
-      if (n1 == n2)
-	return n1;
       n1 = n1->_parent;
       n2 = n2->_parent;
     }
 
-  return nil;
+  return n1;
 }
 
 - (CGAffineTransform)rootTransform
