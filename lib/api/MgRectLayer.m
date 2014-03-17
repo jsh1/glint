@@ -312,4 +312,26 @@
   return self;
 }
 
+/** NSKeyValueCoding methods. **/
+
+- (id)valueForUndefinedKey:(NSString *)key
+{
+  if ([key isEqualToString:@"fillColor"])
+    return (__bridge id)[self fillColor];
+  else if ([key isEqualToString:@"strokeColor"])
+    return (__bridge id)[self strokeColor];
+  else
+    return [super valueForUndefinedKey:key];
+}
+
+- (void)setValue:(id)value forUndefinedKey:(NSString *)key
+{
+  if ([key isEqualToString:@"fillColor"])
+    [self setFillColor:(__bridge CGColorRef)value];
+  else if ([key isEqualToString:@"strokeColor"])
+    [self setStrokeColor:(__bridge CGColorRef)value];
+  else
+    [super setValue:value forUndefinedKey:key];
+}
+
 @end

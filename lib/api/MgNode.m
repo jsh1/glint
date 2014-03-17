@@ -52,6 +52,15 @@ static NSUInteger version_counter;
   return [[self alloc] init];
 }
 
++ (BOOL)accessInstanceVariablesDirectly
+{
+  /* -valueForUndefinedKey: and -setValue:forUndefinedKey: aren't called
+     unless this method returns false. And if those methods aren't called
+     we can't manually call our accessor methods for CF object types. */
+
+  return NO;
+}
+
 - (id)init
 {
   self = [super init];
