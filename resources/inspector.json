@@ -2,7 +2,7 @@
   "MgLayer": {
     "displayName": "Layer",
     "properties": [
-      "position", "bounds", "anchor",
+      "position", "size", "anchor",
       "rotation", "scale", "squeeze", "skew",
       "alpha", "blendMode"
     ]
@@ -35,7 +35,7 @@
   "MgImageLayer": {
     "displayName": "Image",
     "properties": [
-      "imageProvider", "cropRect", "centerRect", "repeats"
+      "imageProvider", "repeats", "centerRect", "cropRect"
     ]
   },
 

@@ -28,6 +28,7 @@
                                 <autoresizingMask key="autoresizingMask"/>
                                 <size key="intercellSpacing" width="3" height="2"/>
                                 <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <tableViewGridLines key="gridStyleMask" dashed="YES"/>
                                 <color key="gridColor" white="0.80000000000000004" alpha="0.5" colorSpace="deviceWhite"/>
                                 <tableColumns>
                                     <tableColumn identifier="key" width="110" minWidth="16" maxWidth="1000" id="msS-h1-rOD">

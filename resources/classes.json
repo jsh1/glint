@@ -16,6 +16,16 @@
       "type": "CGPoint",
       "units": "pixels"
     },
+    "size": {
+      "displayName": "Size",
+      "type": "CGSize",
+      "units": "pixels"
+    },
+    "origin": {
+      "displayName": "Origin",
+      "type": "CGPoint",
+      "units": "pixels"
+    },
     "bounds": {
       "displayName": "Bounds",
       "type": "CGRect",

@@ -31,10 +31,51 @@
 
 #define CONTROL_HEIGHT 20
 
+typedef NS_ENUM(NSInteger, GtInspectorNumberControlType)
+{
+  GtInspectorNumberControlTypeScalar,
+  GtInspectorNumberControlTypePoint,
+  GtInspectorNumberControlTypeSize,
+  GtInspectorNumberControlTypeRect,
+};
+
 @implementation GtInspectorNumberControl
 {
-  NSSlider *_slider;
-  GtNumericTextField *_numberField;
+  GtInspectorNumberControlType _type;
+  NSInteger _rowCount;
+  NSMutableArray *_sliders;		/* NSArray<NSSlider> */
+  NSMutableArray *_numberFields;	/* NSArray<GtNumericTextField> */
+}
+
+static GtInspectorNumberControlType
+control_type(GtInspectorItem *item)
+{
+  NSString *type = item.type;
+  if ([type isEqualToString:@"CGPoint"])
+    return GtInspectorNumberControlTypePoint;
+  else if ([type isEqualToString:@"CGSize"])
+    return GtInspectorNumberControlTypeSize;
+  else if ([type isEqualToString:@"CGRect"])
+    return GtInspectorNumberControlTypeRect;
+  else
+    return GtInspectorNumberControlTypeScalar;
+}
+
+static NSInteger
+control_row_count(GtInspectorNumberControlType type)
+{
+  switch (type)
+    {
+    case GtInspectorNumberControlTypeScalar:
+      return 1;
+
+    case GtInspectorNumberControlTypePoint:
+    case GtInspectorNumberControlTypeSize:
+      return 2;
+
+    case GtInspectorNumberControlTypeRect:
+      return 4;
+    }
 }
 
 + (instancetype)controlForItem:(GtInspectorItem *)item
@@ -45,7 +86,7 @@
 
 + (CGFloat)controlHeightForItem:(GtInspectorItem *)item
 {
-  return CONTROL_HEIGHT;
+  return CONTROL_HEIGHT * control_row_count(control_type(item));
 }
 
 - (id)initWithItem:(GtInspectorItem *)item
@@ -55,62 +96,136 @@
   if (self == nil)
     return nil;
 
-  _slider = [[NSSlider alloc] initWithFrame:NSZeroRect];
+  _type = control_type(item);
+  _rowCount = control_row_count(_type);
 
-  [[_slider cell] setControlSize:NSMiniControlSize];
-  [_slider setContinuous:YES];
-  [_slider setNumberOfTickMarks:5];
-  [_slider setTickMarkPosition:NSTickMarkBelow];
-  [_slider setMinValue:fmax(item.min, item.sliderMin)];
-  [_slider setMaxValue:fmin(item.max, item.sliderMax)];
-  [_slider setAction:@selector(takeValue:)];
-  [_slider setTarget:self];
+  _sliders = [NSMutableArray array];
+  _numberFields = [NSMutableArray array];
 
-  [self addSubview:_slider];
+  CGFloat slider_min = fmax(item.min, item.sliderMin);
+  CGFloat slider_max = fmin(item.max, item.sliderMax);
 
-  _numberField = [[GtNumericTextField alloc] initWithFrame:NSZeroRect];
+  if (!isfinite(slider_min))
+    slider_min = 0;
+  if (!isfinite(slider_max))
+    {
+      if ([item.units isEqual:@"pixels"])
+	slider_max = 1024;
+      else
+	slider_max = 1;
+    }
 
-  [[_numberField cell] setControlSize:NSSmallControlSize];
-  [[_numberField cell] setVerticallyCentered:YES];
-  [_numberField setAlignment:NSCenterTextAlignment];
-  [_numberField setFont:
-   [NSFont systemFontOfSize:[NSFont smallSystemFontSize]]];
-  [_numberField setDrawsBackground:NO];
-  [_numberField setBordered:NO];
-  [_numberField setMinValue:item.min];
-  [_numberField setMaxValue:item.max];
-  [_numberField setIncrement:item.increment];
-  [_numberField setAction:@selector(takeValue:)];
-  [_numberField setTarget:self];
+  for (NSInteger i = 0; i < _rowCount; i++)
+    {
+      NSSlider *slider = [[NSSlider alloc] initWithFrame:NSZeroRect];
 
-  [self addSubview:_numberField];
+      [[slider cell] setControlSize:NSMiniControlSize];
+      [slider setContinuous:YES];
+      [slider setNumberOfTickMarks:5];
+      [slider setTickMarkPosition:NSTickMarkBelow];
+      [slider setMinValue:slider_min];
+      [slider setMaxValue:slider_max];
+      [slider setAction:@selector(takeValue:)];
+      [slider setTarget:self];
+
+      [_sliders addObject:slider];
+      [self addSubview:slider];
+
+      GtNumericTextField *field = [[GtNumericTextField alloc]
+				   initWithFrame:NSZeroRect];
+
+      [[field cell] setControlSize:NSSmallControlSize];
+      [[field cell] setVerticallyCentered:YES];
+      [field setAlignment:NSCenterTextAlignment];
+      [field setFont:
+       [NSFont systemFontOfSize:[NSFont smallSystemFontSize]]];
+      [field setDrawsBackground:NO];
+      [field setBordered:NO];
+      [field setMinValue:item.min];
+      [field setMaxValue:item.max];
+      [field setIncrement:item.increment];
+      [field setAction:@selector(takeValue:)];
+      [field setTarget:self];
+
+      [_numberFields addObject:field];
+      [self addSubview:field];
+    }
 
   return self;
 }
 
 - (id)objectValue
 {
-  return _numberField.objectValue;
+  if (_type == GtInspectorNumberControlTypeScalar)
+    {
+      return [_numberFields[0] objectValue];
+    }
+  else
+    {
+      CGFloat vec[_rowCount];
+      for (NSInteger i = 0; i < _rowCount; i++)
+	vec[i] = [[_numberFields[i] objectValue] doubleValue];
+
+      if (_type == GtInspectorNumberControlTypePoint)
+	return [NSValue valueWithBytes:vec objCType:@encode(CGPoint)];
+      else if (_type == GtInspectorNumberControlTypeSize)
+	return [NSValue valueWithBytes:vec objCType:@encode(CGSize)];
+      else if (_type == GtInspectorNumberControlTypeRect)
+	return [NSValue valueWithBytes:vec objCType:@encode(CGRect)];
+      else
+	return nil;
+    }
 }
 
 - (void)setObjectValue:(id)obj
 {
-  _numberField.objectValue = obj;
-  _slider.objectValue = obj;
+  if (obj == nil)
+    {
+      for (NSInteger i = 0; i < _rowCount; i++)
+	[_numberFields[i] setObjectValue:nil];
+    }
+  else if (_type == GtInspectorNumberControlTypeScalar)
+    {
+      [_numberFields[0] setObjectValue:obj];
+    }
+  else
+    {
+      CGFloat vec[_rowCount];
+      [obj getValue:vec];
+
+      for (NSInteger i = 0; i < _rowCount; i++)
+	[_numberFields[i] setObjectValue:@(vec[i])];
+    }
+
+  for (NSInteger i = 0; i < _rowCount; i++)
+    [_sliders[i] setObjectValue:[_numberFields[i] objectValue]];
 }
 
 - (void)layoutSubviews
 {
-  [_numberField setFrame:[self leftColumnRect]];
-  [_slider setFrame:[self rightColumnRect]];
+  NSRect lc = [self leftColumnRect];
+  NSRect rc = [self rightColumnRect];
+
+  CGFloat y = lc.origin.y + lc.size.height;
+  for (NSInteger i = 0; i < _rowCount; i++)
+    {
+      y -= CONTROL_HEIGHT;
+      [_numberFields[i] setFrame:
+       NSMakeRect(lc.origin.x, y, lc.size.width, CONTROL_HEIGHT)];
+      [_sliders[i] setFrame:
+       NSMakeRect(rc.origin.x, y, rc.size.width, CONTROL_HEIGHT)];
+    }
 }
 
 - (IBAction)takeValue:(id)sender
 {
-  if (sender == _slider)
-    [_numberField takeObjectValueFrom:sender];
-  else if (sender == _numberField)
-    [_slider takeObjectValueFrom:sender];
+  for (NSInteger i = 0; i < _rowCount; i++)
+    {  
+      if (sender == _sliders[i])
+	[_numberFields[i] takeObjectValueFrom:sender];
+      else if (sender == _numberFields[i])
+	[_sliders[i] takeObjectValueFrom:sender];
+    }
 
   [super takeValue:sender];
 }
