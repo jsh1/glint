@@ -100,7 +100,8 @@
     "drawingMode": {
       "displayName": "Drawing Mode",
       "type": "enum",
-      "values": ["Fill", "EO Fill", "Stroke", "Fill Stroke", "EO Fill Stroke"]
+      "values": ["Fill", "EO Fill", "Stroke", "Fill Stroke", "EO Fill Stroke"],
+      "displayOrder": [0, 2, 3]
     },
     "fillColor": {
       "displayName": "Fill Color",

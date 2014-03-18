@@ -16,8 +16,8 @@
 		5721E87418C67439000DA2C3 /* GtTreeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5721E87318C67439000DA2C3 /* GtTreeViewController.m */; };
 		5721E87718C6745A000DA2C3 /* GtTreeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5721E87518C6745A000DA2C3 /* GtTreeView.xib */; };
 		5721E87A18C69363000DA2C3 /* GtColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 5721E87918C69363000DA2C3 /* GtColor.m */; };
-		5721E87D18C693E4000DA2C3 /* GtOutlineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5721E87C18C693E4000DA2C3 /* GtOutlineView.m */; };
 		5721E88018C6A2DF000DA2C3 /* GtSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5721E87F18C6A2DF000DA2C3 /* GtSplitViewController.m */; };
+		5725D96918D8C82500DECE97 /* GtTreeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5725D96818D8C82500DECE97 /* GtTreeView.m */; };
 		572A5B1E18C4CD4100AB8086 /* GtSplitView.m in Sources */ = {isa = PBXBuildFile; fileRef = 572A5B1918C4CD4100AB8086 /* GtSplitView.m */; };
 		572A5B1F18C4CD4100AB8086 /* GtViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 572A5B1B18C4CD4100AB8086 /* GtViewController.m */; };
 		572A5B2018C4CD4100AB8086 /* GtWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 572A5B1D18C4CD4100AB8086 /* GtWindowController.m */; };
@@ -89,10 +89,10 @@
 		5721E87618C6745A000DA2C3 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = resources/en.lproj/GtTreeView.xib; sourceTree = "<group>"; };
 		5721E87818C69362000DA2C3 /* GtColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtColor.h; path = src/GtColor.h; sourceTree = "<group>"; };
 		5721E87918C69363000DA2C3 /* GtColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtColor.m; path = src/GtColor.m; sourceTree = "<group>"; };
-		5721E87B18C693E4000DA2C3 /* GtOutlineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtOutlineView.h; path = src/GtOutlineView.h; sourceTree = "<group>"; };
-		5721E87C18C693E4000DA2C3 /* GtOutlineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtOutlineView.m; path = src/GtOutlineView.m; sourceTree = "<group>"; };
 		5721E87E18C6A2DF000DA2C3 /* GtSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtSplitViewController.h; path = src/GtSplitViewController.h; sourceTree = "<group>"; };
 		5721E87F18C6A2DF000DA2C3 /* GtSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtSplitViewController.m; path = src/GtSplitViewController.m; sourceTree = "<group>"; };
+		5725D96718D8C82500DECE97 /* GtTreeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtTreeView.h; path = src/GtTreeView.h; sourceTree = "<group>"; };
+		5725D96818D8C82500DECE97 /* GtTreeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtTreeView.m; path = src/GtTreeView.m; sourceTree = "<group>"; };
 		572A5B1718C4CD4100AB8086 /* GtBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtBase.h; path = src/GtBase.h; sourceTree = "<group>"; };
 		572A5B1818C4CD4100AB8086 /* GtSplitView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtSplitView.h; path = src/GtSplitView.h; sourceTree = "<group>"; };
 		572A5B1918C4CD4100AB8086 /* GtSplitView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtSplitView.m; path = src/GtSplitView.m; sourceTree = "<group>"; };
@@ -315,8 +315,6 @@
 				572BFA9518D72255000E9B84 /* GtInspectorViewController.m */,
 				572BFAB918D76363000E9B84 /* GtNumericTextField.h */,
 				572BFABA18D76363000E9B84 /* GtNumericTextField.m */,
-				5721E87B18C693E4000DA2C3 /* GtOutlineView.h */,
-				5721E87C18C693E4000DA2C3 /* GtOutlineView.m */,
 				572A5B1818C4CD4100AB8086 /* GtSplitView.h */,
 				572A5B1918C4CD4100AB8086 /* GtSplitView.m */,
 				5721E87E18C6A2DF000DA2C3 /* GtSplitViewController.h */,
@@ -325,6 +323,8 @@
 				572BFAA018D72815000E9B84 /* GtTabViewController.m */,
 				5738567618C746D80010CFB7 /* GtTreeNode.h */,
 				5738567718C746D80010CFB7 /* GtTreeNode.m */,
+				5725D96718D8C82500DECE97 /* GtTreeView.h */,
+				5725D96818D8C82500DECE97 /* GtTreeView.m */,
 				5721E87218C67439000DA2C3 /* GtTreeViewController.h */,
 				5721E87318C67439000DA2C3 /* GtTreeViewController.m */,
 				572A5B1A18C4CD4100AB8086 /* GtViewController.h */,
@@ -456,7 +456,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				579CAFD918C3F63A0051454F /* MgCoderExtensions.m in Sources */,
-				5721E87D18C693E4000DA2C3 /* GtOutlineView.m in Sources */,
 				572BFA9618D72256000E9B84 /* GtInspectorControl.m in Sources */,
 				572BFA9818D72256000E9B84 /* GtInspectorViewController.m in Sources */,
 				5721E87118C6212D000DA2C3 /* FoundationExtensions.m in Sources */,
@@ -477,6 +476,7 @@
 				572A5B2318C4CE2000AB8086 /* GtAppDelegate.m in Sources */,
 				575ACEFB18CFCFE100161C70 /* MgPathLayer.m in Sources */,
 				572BFAB318D74E21000E9B84 /* GtInspectorNumberControl.m in Sources */,
+				5725D96918D8C82500DECE97 /* GtTreeView.m in Sources */,
 				572BFA9718D72256000E9B84 /* GtInspectorItem.m in Sources */,
 				5714A8C718BD322900ED67EE /* GtDocument.m in Sources */,
 				5721E87A18C69363000DA2C3 /* GtColor.m in Sources */,

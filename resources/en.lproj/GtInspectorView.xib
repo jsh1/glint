@@ -23,7 +23,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="347" height="529"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" multipleSelection="NO" autosaveColumns="NO" rowHeight="22" viewBased="YES" indentationPerLevel="8" outlineTableColumn="msS-h1-rOD" id="hUD-cy-MKd" customClass="GtOutlineView">
+                            <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" multipleSelection="NO" autosaveColumns="NO" rowHeight="22" viewBased="YES" indentationPerLevel="8" outlineTableColumn="msS-h1-rOD" id="hUD-cy-MKd">
                                 <rect key="frame" x="0.0" y="0.0" width="356" height="529"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <size key="intercellSpacing" width="3" height="2"/>

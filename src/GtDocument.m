@@ -390,7 +390,7 @@ fract(CGFloat x)
     asImages:(BOOL)flag atDocumentPoint:(CGPoint)p
 {
   GtTreeNode *parent = nil;
-  NSInteger idx = NSIntegerMax;
+  NSInteger idx = [parent.children count];
 
   for (GtTreeNode *tn in self.windowController.selection)
     {
@@ -412,7 +412,7 @@ fract(CGFloat x)
 	  else
 	    {
 	      parent = [parent ancestorSharedWith:pn];
-	      idx = NSIntegerMax;
+	      idx = [parent.children count];
 	    }
 	}
     }

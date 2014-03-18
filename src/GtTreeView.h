@@ -22,15 +22,7 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "GtOutlineView.h"
+#import "GtBase.h"
 
-#import "GtColor.h"
-
-@implementation GtOutlineView
-
-- (NSArray *)_alternatingRowBackgroundColors
-{
-  return [GtColor controlAlternatingRowBackgroundColors];
-}
-
+@interface GtTreeView : NSOutlineView
 @end

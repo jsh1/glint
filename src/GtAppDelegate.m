@@ -30,6 +30,9 @@
 #import "CoreAnimationExtensions.h"
 
 @implementation GtAppDelegate
+{
+  NSMenu *_copiedObjectMenu;
+}
 
 - (id)init
 {
@@ -53,6 +56,11 @@
     }
 
   return self;
+}
+
+- (void)showObjectContextMenuWithEvent:(NSEvent *)e forView:(NSView *)view
+{
+  [NSMenu popUpContextMenu:_objectContextMenu withEvent:e forView:view];
 }
 
 /** NSApplicationDelegate methods. */

@@ -27,7 +27,8 @@
 @interface GtAppDelegate : NSObject <NSApplicationDelegate, NSMenuDelegate>
 
 @property(nonatomic, weak) IBOutlet NSMenu *objectMenu;
-@property(nonatomic, weak) IBOutlet NSMenu *objectBlendMenu;
-@property(nonatomic, weak) IBOutlet NSMenu *objectAlphaMenu;
+@property(nonatomic, strong) IBOutlet NSMenu *objectContextMenu;
+
+- (void)showObjectContextMenuWithEvent:(NSEvent *)e forView:(NSView *)view;
 
 @end

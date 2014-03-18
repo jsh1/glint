@@ -41,23 +41,6 @@
   return color;
 }
 
-+ (NSArray *)controlAlternatingRowBackgroundColors
-{
-  static NSArray *colors;
-
-  if (colors == nil)
-    {
-      colors = @[
-	[NSColor colorWithCalibratedHue:BG_HUE
-	 saturation:.01 brightness:.93 alpha:1],
-	[NSColor colorWithCalibratedHue:BG_HUE
-	 saturation:.03 brightness:.88 alpha:1],
-      ];
-    }
-
-  return colors;
-}
-
 + (NSColor *)viewerBackgroundColor
 {
   static NSColor *color;

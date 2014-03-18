@@ -22,7 +22,42 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "GtBase.h"
+#import "GtTreeView.h"
 
-@interface GtOutlineView : NSOutlineView
+#import "GtAppDelegate.h"
+
+#import "AppKitExtensions.h"
+
+@implementation GtTreeView
+
+/* The standard NSOutlineView context menu doesn't give us an easy way
+   to switch the "clickedRow" into our selection state, so just override
+   it with our own menu logic. */
+
+- (void)mouseDown:(NSEvent *)e
+{
+  if (([e modifierFlags] & NSControlKeyMask) != 0)
+    [self showContextMenuWithEvent:e];
+  else
+    [super mouseDown:e];
+}
+
+- (void)rightMouseDown:(NSEvent *)e
+{
+  [self showContextMenuWithEvent:e];
+}
+
+- (void)showContextMenuWithEvent:(NSEvent *)e
+{
+  NSPoint p = [self convertPoint:[e locationInWindow] fromView:nil];
+
+  NSInteger row = [self rowAtPoint:p];
+
+  if (row >= 0 && ![[self selectedRowIndexes] containsIndex:row])
+    [self setSelectedRow:row];
+
+  [(GtAppDelegate *)[NSApp delegate]
+   showObjectContextMenuWithEvent:e forView:self];
+}
+
 @end

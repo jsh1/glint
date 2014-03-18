@@ -24,6 +24,7 @@
 
 #import "GtViewerView.h"
 
+#import "GtAppDelegate.h"
 #import "GtColor.h"
 #import "GtDocument.h"
 #import "GtTreeNode.h"
@@ -673,6 +674,20 @@
 	}
     }
 
+  if ([e type] == NSRightMouseDown
+      || ([e modifierFlags] & NSControlKeyMask) != 0)
+    {
+      /* Show context menu. */
+
+      if (!inside)
+	[self modifySelectionForNode:node withEvent:e];
+
+      [(GtAppDelegate *)[NSApp delegate]
+       showObjectContextMenuWithEvent:e forView:self];
+
+      return;
+    }
+
   /* If we clicked outside the selection, update the selection state
      immediately to reflect what was clicked (even if that's nothing). */
 
@@ -688,6 +703,11 @@
 
   if (!dragged && inside && node != nil)
     [self modifySelectionForNode:node withEvent:e];
+}
+
+- (void)rightMouseDown:(NSEvent *)e
+{
+  [self mouseDown:e];
 }
 
 - (void)mouseMoved:(NSEvent *)e

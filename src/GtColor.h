@@ -28,8 +28,6 @@
 
 + (NSColor *)windowBackgroundColor;
 
-+ (NSArray *)controlAlternatingRowBackgroundColors;
-
 + (NSColor *)viewerBackgroundColor;
 + (NSColor *)viewerBorderColor;
 

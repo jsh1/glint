@@ -55,8 +55,8 @@ static NSMutableSet *image_provider_classes;
   if (self == nil)
     return nil;
 
-  _cropRect = CGRectNull;
-  _centerRect = CGRectNull;
+  _cropRect = CGRectZero;
+  _centerRect = CGRectZero;
 
   return self;
 }
@@ -151,7 +151,7 @@ static NSMutableSet *image_provider_classes;
   bool release_im = false;
 
   CGRect crop = self.cropRect;
-  if (!CGRectIsNull(crop))
+  if (!CGRectIsEmpty(crop))
     {
       im = CGImageCreateWithImageInRect(im, crop);
       release_im = true;
