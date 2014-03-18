@@ -32,6 +32,9 @@
 #import "GtInspectorStringControl.h"
 #import "GtInspectorViewController.h"
 
+#define LEFT_COLUMN_WIDTH 50
+#define RIGHT_COLUMN_X_INSET 8
+
 @implementation GtInspectorControl
 {
   GtInspectorItem *_item;
@@ -80,11 +83,6 @@ controlClass(GtInspectorItem *item)
     return 0;
 }
 
-+ (CGFloat)controlWidth
-{
-  return 50;
-}
-
 - (id)initWithItem:(GtInspectorItem *)item
     controller:(GtInspectorViewController *)controller
 {
@@ -121,6 +119,20 @@ controlClass(GtInspectorItem *item)
 - (IBAction)takeValue:(id)sender
 {
   [_controller setInspectedValue:self.objectValue forKey:self.item.key];
+}
+
+- (CGRect)leftColumnRect
+{
+  NSRect r1, r2;
+  NSDivideRect([self bounds], &r1, &r2, LEFT_COLUMN_WIDTH, NSMinXEdge);
+  return r1;
+}
+
+- (CGRect)rightColumnRect
+{
+  NSRect r1, r2;
+  NSDivideRect([self bounds], &r1, &r2, LEFT_COLUMN_WIDTH, NSMinXEdge);
+  return NSInsetRect(r2, RIGHT_COLUMN_X_INSET, 0);
 }
 
 @end

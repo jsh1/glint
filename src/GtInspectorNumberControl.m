@@ -29,6 +29,8 @@
 
 #import "AppKitExtensions.h"
 
+#define CONTROL_HEIGHT 20
+
 @implementation GtInspectorNumberControl
 {
   NSSlider *_slider;
@@ -43,7 +45,7 @@
 
 + (CGFloat)controlHeightForItem:(GtInspectorItem *)item
 {
-  return 20;
+  return CONTROL_HEIGHT;
 }
 
 - (id)initWithItem:(GtInspectorItem *)item
@@ -99,13 +101,8 @@
 
 - (void)layoutSubviews
 {
-  NSRect r = [self bounds];
-
-  NSRect r1, r2;
-  NSDivideRect(r, &r1, &r2, [GtInspectorControl controlWidth], NSMinXEdge);
-
-  [_numberField setFrame:r1];
-  [_slider setFrame:NSInsetRect(r2, 8, 0)];
+  [_numberField setFrame:[self leftColumnRect]];
+  [_slider setFrame:[self rightColumnRect]];
 }
 
 - (IBAction)takeValue:(id)sender

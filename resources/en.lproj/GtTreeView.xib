@@ -19,15 +19,15 @@
                 <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="24" horizontalPageScroll="10" verticalLineScroll="24" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="i2s-Q0-X2z">
                     <rect key="frame" x="0.0" y="0.0" width="367" height="669"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                    <clipView key="contentView" id="yK3-nO-G9M">
+                    <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="yK3-nO-G9M">
                         <rect key="frame" x="0.0" y="0.0" width="367" height="669"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <outlineView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" autosaveColumns="NO" rowHeight="22" indentationPerLevel="16" outlineTableColumn="Qch-1X-m8f" id="li0-AE-MQv" customClass="GtOutlineView">
+                            <outlineView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" autosaveColumns="NO" rowHeight="22" indentationPerLevel="16" outlineTableColumn="Qch-1X-m8f" id="li0-AE-MQv" customClass="GtOutlineView">
                                 <rect key="frame" x="0.0" y="0.0" width="367" height="669"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <size key="intercellSpacing" width="3" height="2"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                 <tableColumns>
                                     <tableColumn identifier="enabled" width="20" minWidth="10" maxWidth="100" id="0e8-kR-jaO">
@@ -62,7 +62,7 @@
                                 </connections>
                             </outlineView>
                         </subviews>
-                        <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="windowBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </clipView>
                     <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="kRb-gC-8OM">
                         <rect key="frame" x="1" y="612" width="365" height="16"/>

@@ -40,7 +40,7 @@
 
 + (CGFloat)controlHeightForItem:(GtInspectorItem *)item
 {
-  return 20;
+  return BUTTON_HEIGHT;
 }
 
 - (id)initWithItem:(GtInspectorItem *)item
@@ -83,14 +83,11 @@
 
 - (void)layoutSubviews
 {
-  NSRect r = [self bounds];
-
-  NSRect r1, r2;
-  NSDivideRect(r, &r1, &r2, [GtInspectorControl controlWidth], NSMinXEdge);
+  NSRect r = [self leftColumnRect];
 
   NSRect br = NSMakeRect(0, 0, BUTTON_WIDTH, BUTTON_HEIGHT);
-  br.origin.x = round((r1.size.width - BUTTON_WIDTH) * .5);
-  br.origin.y = round((r1.size.height - BUTTON_HEIGHT) * .5);
+  br.origin.x = round((r.size.width - BUTTON_WIDTH) * .5);
+  br.origin.y = round((r.size.height - BUTTON_HEIGHT) * .5);
 
   [_button setFrame:br];
 }

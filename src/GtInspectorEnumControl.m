@@ -24,30 +24,94 @@
 
 #import "GtInspectorEnumControl.h"
 
+#import "GtInspectorItem.h"
+
+#define BUTTON_HEIGHT 22
+
 @implementation GtInspectorEnumControl
+{
+  NSPopUpButton *_button;
+}
 
 + (instancetype)controlForItem:(GtInspectorItem *)item
     controller:(GtInspectorViewController *)controller
 {
-  return nil;
+  return [[self alloc] initWithItem:item controller:controller];
 }
 
 + (CGFloat)controlHeightForItem:(GtInspectorItem *)item
 {
-  return 0;
+  return BUTTON_HEIGHT;
+}
+
+- (id)initWithItem:(GtInspectorItem *)item
+    controller:(GtInspectorViewController *)controller
+{
+  self = [super initWithItem:item controller:controller];
+  if (self == nil)
+    return nil;
+
+  _button = [[NSPopUpButton alloc] initWithFrame:NSZeroRect];
+
+  [[_button cell] setControlSize:NSSmallControlSize];
+  [[_button cell] setArrowPosition:NSPopUpArrowAtBottom];
+  [_button setBezelStyle:NSSmallSquareBezelStyle];
+  [_button setFont:[NSFont systemFontOfSize:[NSFont smallSystemFontSize]]];
+  [_button setAlignment:NSCenterTextAlignment];
+  [_button setAction:@selector(takeValue:)];
+  [_button setTarget:self];
+
+  NSArray *order = item.displayOrder;
+  if (order != nil)
+    {
+      NSArray *values = item.values;
+      for (NSNumber *n in order)
+	{
+	  NSInteger x = [n integerValue];
+	  if (x >= 0)
+	    {
+	      [_button addItemWithTitle:values[x]];
+	      [[[_button itemArray] lastObject] setTag:x];
+	    }
+	  else
+	    [[_button menu] addItem:[NSMenuItem separatorItem]];
+	}
+    }
+  else
+    {
+      NSInteger idx = 0;
+      for (NSString *name in item.values)
+	{
+	  if ([name length] != 0)
+	    {
+	      [_button addItemWithTitle:name];
+	      [[[_button itemArray] lastObject] setTag:idx];
+	    }
+	  idx++;
+	}
+    }
+
+  [self addSubview:_button];
+
+  return self;
 }
 
 - (id)objectValue
 {
-  return nil;
+  return @([[_button selectedItem] tag]);
 }
 
 - (void)setObjectValue:(id)obj
 {
+  if (obj == nil)
+    [_button selectItem:nil];
+  else
+    [_button selectItemWithTag:[obj integerValue]];
 }
 
 - (void)layoutSubviews
 {
+  [_button setFrame:[self rightColumnRect]];
 }
 
 @end

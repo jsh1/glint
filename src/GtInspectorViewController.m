@@ -118,13 +118,11 @@ common_superclass(Class c1, Class c2)
 
   while (c1 != c2)
     {
-      if (c1 == c2)
-	return c1;
       c1 = [c1 superclass];
       c2 = [c2 superclass];
     }
 
-  return Nil;
+  return c1;
 }
 
 - (void)updateSelection

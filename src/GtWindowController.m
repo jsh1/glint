@@ -104,6 +104,8 @@
 	}
     }
 
+  [window setBackgroundColor:[GtColor windowBackgroundColor]];
+
   [_viewController addToContainerView:self.mainView];
 
   [self applySavedWindowState];

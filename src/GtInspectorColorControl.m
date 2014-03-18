@@ -24,30 +24,70 @@
 
 #import "GtInspectorColorControl.h"
 
+#define COLOR_WELL_WIDTH 40
+#define COLOR_WELL_HEIGHT 20
+
 @implementation GtInspectorColorControl
+{
+  NSColorWell *_colorWell;
+}
+
++ (void)initialize
+{
+  if (self == [GtInspectorColorControl class])
+    {
+      [[NSColorPanel sharedColorPanel] setShowsAlpha:YES];
+    }
+}
 
 + (instancetype)controlForItem:(GtInspectorItem *)item
     controller:(GtInspectorViewController *)controller
 {
-  return nil;
+  return [[self alloc] initWithItem:item controller:controller];
 }
 
 + (CGFloat)controlHeightForItem:(GtInspectorItem *)item
 {
-  return 0;
+  return COLOR_WELL_HEIGHT;
+}
+
+- (id)initWithItem:(GtInspectorItem *)item
+    controller:(GtInspectorViewController *)controller
+{
+  self = [super initWithItem:item controller:controller];
+  if (self == nil)
+    return nil;
+
+  _colorWell = [[NSColorWell alloc] initWithFrame:NSZeroRect];
+
+  [[_colorWell cell] setControlSize:NSSmallControlSize];
+  [_colorWell setAction:@selector(takeValue:)];
+  [_colorWell setTarget:self];
+
+  [self addSubview:_colorWell];
+
+  return self;
 }
 
 - (id)objectValue
 {
-  return nil;
+  return (__bridge id)[[_colorWell color] CGColor];
 }
 
 - (void)setObjectValue:(id)obj
 {
+  [_colorWell setColor:[NSColor colorWithCGColor:(__bridge CGColorRef)obj]];
 }
 
 - (void)layoutSubviews
 {
+  NSRect r = [self leftColumnRect];
+
+  NSRect cr = NSMakeRect(0, 0, COLOR_WELL_WIDTH, COLOR_WELL_HEIGHT);
+  cr.origin.x = round((r.size.width - COLOR_WELL_WIDTH) * .5);
+  cr.origin.y = round((r.size.height - COLOR_WELL_HEIGHT) * .5);
+
+  [_colorWell setFrame:cr];
 }
 
 @end

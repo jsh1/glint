@@ -31,8 +31,6 @@
 
 + (CGFloat)controlHeightForItem:(GtInspectorItem *)item;
 
-+ (CGFloat)controlWidth;
-
 /* designated initializer, should only be called by subclasses. */
 
 - (id)initWithItem:(GtInspectorItem *)item
@@ -46,5 +44,10 @@
 - (void)layoutSubviews;
 
 - (IBAction)takeValue:(id)sender;
+
+/* Values for laying out controls. */
+
+@property(nonatomic, assign, readonly) CGRect leftColumnRect;
+@property(nonatomic, assign, readonly) CGRect rightColumnRect;
 
 @end

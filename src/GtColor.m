@@ -28,6 +28,19 @@
 
 @implementation GtColor
 
++ (NSColor *)windowBackgroundColor
+{
+  static NSColor *color;
+
+  if (color == nil)
+    {
+      color = [NSColor colorWithCalibratedHue:BG_HUE
+	       saturation:.02 brightness:.9 alpha:1];
+    }
+
+  return color;
+}
+
 + (NSArray *)controlAlternatingRowBackgroundColors
 {
   static NSArray *colors;

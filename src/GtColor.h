@@ -26,6 +26,8 @@
 
 @interface GtColor : NSColor
 
++ (NSColor *)windowBackgroundColor;
+
 + (NSArray *)controlAlternatingRowBackgroundColors;
 
 + (NSColor *)viewerBackgroundColor;

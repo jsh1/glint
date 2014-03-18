@@ -39,6 +39,7 @@
 @property(nonatomic, assign) double min, max, increment;
 @property(nonatomic, assign) double sliderMin, sliderMax;
 @property(nonatomic, copy) NSArray *values;
+@property(nonatomic, copy) NSArray *displayOrder;
 
 @property(nonatomic, copy) NSArray *subitems;
 
