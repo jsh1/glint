@@ -30,7 +30,8 @@
 
 @property(nonatomic, assign) CGPoint position;
 @property(nonatomic, assign) CGPoint anchor;
-@property(nonatomic, assign) CGRect bounds;
+@property(nonatomic, assign) CGSize size;
+@property(nonatomic, assign) CGPoint origin;
 
 @property(nonatomic, assign) CGFloat scale;
 @property(nonatomic, assign) CGFloat squeeze;
@@ -50,6 +51,10 @@
    coordinate space. */
 
 @property(nonatomic, readonly) CGAffineTransform parentTransform;
+
+/* Convenience methods to access the `size' and `origin' properties. */
+
+@property(nonatomic, assign) CGRect bounds;
 
 /* Returns the new point created by mapping 'p' either into or out of
    the coordinate space containing the receiver. */

@@ -34,7 +34,8 @@
 {
   CGPoint _position;
   CGPoint _anchor;
-  CGRect _bounds;
+  CGSize _size;
+  CGPoint _origin;
   CGFloat _scale;
   CGFloat _squeeze;
   CGFloat _skew;
@@ -51,7 +52,8 @@
     return nil;
 
   _anchor = CGPointMake((CGFloat).5, (CGFloat).5);
-  _bounds = CGRectZero;
+  _size = CGSizeZero;
+  _origin = CGPointZero;
   _scale = 1;
   _squeeze = 1;
 
@@ -103,24 +105,45 @@
     }
 }
 
-+ (BOOL)automaticallyNotifiesObserversOfBounds
++ (BOOL)automaticallyNotifiesObserversOfSize
 {
   return NO;
 }
 
-- (CGRect)bounds
+- (CGSize)size
 {
-  return _bounds;
+  return _size;
 }
 
-- (void)setBounds:(CGRect)r
+- (void)setSize:(CGSize)s
 {
-  if (!CGRectEqualToRect(_bounds, r))
+  if (!CGSizeEqualToSize(_size, s))
     {
-      [self willChangeValueForKey:@"bounds"];
-      _bounds = r;
+      [self willChangeValueForKey:@"size"];
+      _size = s;
       [self incrementVersion];
-      [self didChangeValueForKey:@"bounds"];
+      [self didChangeValueForKey:@"size"];
+    }
+}
+
++ (BOOL)automaticallyNotifiesObserversOfOrigin
+{
+  return NO;
+}
+
+- (CGPoint)origin
+{
+  return _origin;
+}
+
+- (void)setOrigin:(CGPoint)p
+{
+  if (!CGPointEqualToPoint(_origin, p))
+    {
+      [self willChangeValueForKey:@"origin"];
+      _origin = p;
+      [self incrementVersion];
+      [self didChangeValueForKey:@"origin"];
     }
 }
 
@@ -274,13 +297,24 @@
 
      and the easy one: m' = m . translation(position.x, position.y). */
 
-  double ax = _bounds.origin.x + _anchor.x * _bounds.size.width;
-  double ay = _bounds.origin.y + _anchor.y * _bounds.size.height;
+  double ax = _origin.x + _anchor.x * _size.width;
+  double ay = _origin.y + _anchor.y * _size.height;
 
   double tx = m11 * -ax + m21 * -ay + _position.x;
   double ty = m12 * -ax + m22 * -ay + _position.y;
 
   return CGAffineTransformMake(m11, m12, m21, m22, tx, ty);
+}
+
+- (CGRect)bounds
+{
+  return (CGRect){_origin, _size};
+}  
+
+- (void)setBounds:(CGRect)r
+{
+  [self setOrigin:r.origin];
+  [self setSize:r.size];
 }
 
 + (BOOL)automaticallyNotifiesObserversOfAlpha
@@ -471,14 +505,15 @@
 
 - (CGImageRef)copyImage
 {
-  CGRect bounds = self.bounds;
+  CGPoint origin = self.origin;
+  CGSize size = self.size;
 
-  return MgImageCreateByDrawing(bounds.size.width, bounds.size.height, false,
+  return MgImageCreateByDrawing(size.width, size.height, false,
     ^(CGContextRef ctx)
     {
-      CGContextTranslateCTM(ctx, 0, bounds.size.height);
+      CGContextTranslateCTM(ctx, 0, size.height);
       CGContextScaleCTM(ctx, 1, -1);
-      CGContextTranslateCTM(ctx, bounds.origin.x, bounds.origin.y);
+      CGContextTranslateCTM(ctx, origin.x, origin.y);
       CGAffineTransform m = [self parentTransform];
       CGContextConcatCTM(ctx, CGAffineTransformInvert(m));
       [self renderInContext:ctx];
@@ -493,7 +528,8 @@
 
   copy->_position = _position;
   copy->_anchor = _anchor;
-  copy->_bounds = _bounds;
+  copy->_size = _size;
+  copy->_origin = _origin;
   copy->_scale = _scale;
   copy->_squeeze = _squeeze;
   copy->_skew = _skew;
@@ -517,8 +553,11 @@
   if (_anchor.x != (CGFloat).5 || _anchor.y != (CGFloat).5)
     [c mg_encodeCGPoint:_anchor forKey:@"anchor"];
 
-  if (!CGRectIsNull(_bounds))
-    [c mg_encodeCGRect:_bounds forKey:@"bounds"];
+  if (_size.width != 0 || _size.height != 0)
+    [c mg_encodeCGSize:_size forKey:@"size"];
+
+  if (_origin.x != 0 || _origin.y != 0)
+    [c mg_encodeCGPoint:_origin forKey:@"origin"];
 
   if (_scale != 1)
     [c encodeDouble:_scale forKey:@"scale"];
@@ -556,10 +595,20 @@
   else
     _anchor = CGPointMake((CGFloat).5, (CGFloat).5);
 
+  if ([c containsValueForKey:@"size"])
+    _size = [c mg_decodeCGSizeForKey:@"size"];
+
+  if ([c containsValueForKey:@"origin"])
+    _origin = [c mg_decodeCGPointForKey:@"origin"];
+
+  /* FIXME: backwards-compat, remove. */
+
   if ([c containsValueForKey:@"bounds"])
-    _bounds = [c mg_decodeCGRectForKey:@"bounds"];
-  else
-    _bounds = CGRectNull;
+    {
+      CGRect r = [c mg_decodeCGRectForKey:@"bounds"];
+      _size = r.size;
+      _origin = r.origin;
+    }
 
   if ([c containsValueForKey:@"scale"])
     _scale = [c decodeDoubleForKey:@"scale"];
