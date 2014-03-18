@@ -61,7 +61,7 @@ NSString *const GtDocumentNodeDidChange = @"GtDocumentNodeDidChange";
   MgGroupLayer *root = [MgGroupLayer node];
 
   root.name = @"Root";
-  root.bounds = CGRectMake(0, 0, width, height);
+  root.size = CGSizeMake(width, height);
   root.position = CGPointMake(width * .5, height * .5);
 
   self.documentSize = CGSizeMake(width, height);
@@ -273,11 +273,10 @@ makeNameUnique(MgNode *node, MgNode *parent)
 static void
 initializeLayerFromContainer(MgLayer *layer, MgLayer *container)
 {
-  CGRect bounds = (container != nil ? container.bounds
-		   : CGRectMake(0, 0, 512, 512));
+  CGSize size = container != nil ? container.size : CGSizeMake(512, 512);
 
-  layer.bounds = bounds;
-  layer.position = CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds));
+  layer.size = size;
+  layer.position = CGPointMake(size.width * .5, size.height * .5);
 }
 
 static NSArray *
@@ -456,7 +455,7 @@ fract(CGFloat x)
       if (im != NULL)
 	size = CGSizeMake(CGImageGetWidth(im), CGImageGetHeight(im));
 
-      layer.bounds = CGRectMake(0, 0, size.width, size.height);
+      layer.size = size;
       layer.position = CGPointMake(round(p.x) + fract(size.width*.5),
 				   round(p.y) + fract(size.height*.5));
 
@@ -674,7 +673,7 @@ fract(CGFloat x)
 	  if (im != NULL)
 	    size = CGSizeMake(CGImageGetWidth(im), CGImageGetHeight(im));
 
-	  layer.bounds = CGRectMake(0, 0, size.width, size.height);
+	  layer.size = size;
 
 	  CGRect r = parent_group.bounds;
 	  layer.position = CGPointMake(CGRectGetMidX(r), CGRectGetMidY(r));

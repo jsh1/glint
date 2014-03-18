@@ -197,7 +197,7 @@
 
   _documentContainer.scale = scale;
   _documentContainer.position = center;
-  _documentContainer.bounds = CGRectMake(0, 0, size.width, size.height);
+  _documentContainer.size = size;
   _documentContainer.sublayers = @[document.documentNode];
 
   _overlayLayer.bounds = bounds;
@@ -306,7 +306,8 @@
       bool is_rect;
       CGPoint position;
       CGPoint anchor;
-      CGRect bounds;
+      CGSize size;
+      CGPoint origin;
       CGFloat cornerRadius;
       CGFloat scale;
       CGFloat squeeze;
@@ -322,7 +323,8 @@
       old_state[i].is_rect = [layer isKindOfClass:[MgRectLayer class]];
       old_state[i].position = layer.position;
       old_state[i].anchor = layer.anchor;
-      old_state[i].bounds = layer.bounds;
+      old_state[i].size = layer.size;
+      old_state[i].origin = layer.origin;
       old_state[i].cornerRadius = (old_state[i].is_rect
 				   ? ((MgRectLayer *)layer).cornerRadius : 0);
       old_state[i].scale = layer.scale;
@@ -374,11 +376,11 @@
 	  CGPoint np1 = [node convertPointFromRoot:
 			 [self convertPointToDocument:p1]];
 	  CGPoint nc;
-	  nc.x = (old_state[node_idx].bounds.origin.x
-		  + old_state[node_idx].bounds.size.width
+	  nc.x = (old_state[node_idx].origin.x
+		  + old_state[node_idx].size.width
 		  * old_state[node_idx].anchor.x);
-	  nc.y = (old_state[node_idx].bounds.origin.y
-		  + old_state[node_idx].bounds.size.height
+	  nc.y = (old_state[node_idx].origin.y
+		  + old_state[node_idx].size.height
 		  * old_state[node_idx].anchor.y);
 
 	  double ang0 = atan2(np0.y - nc.y, np0.x - nc.x);
@@ -396,11 +398,11 @@
 	  CGPoint np1 = [node convertPointFromRoot:
 			 [self convertPointToDocument:p1]];
 	  CGPoint nc;
-	  nc.x = (old_state[node_idx].bounds.origin.x
-		  + old_state[node_idx].bounds.size.width
+	  nc.x = (old_state[node_idx].origin.x
+		  + old_state[node_idx].size.width
 		  * old_state[node_idx].anchor.x);
-	  nc.y = (old_state[node_idx].bounds.origin.y
-		  + old_state[node_idx].bounds.size.height
+	  nc.y = (old_state[node_idx].origin.y
+		  + old_state[node_idx].size.height
 		  * old_state[node_idx].anchor.y);
 	  if (adornment == GtViewerAdornmentScale)
 	    arg = fabs((np1.y - nc.y) / (np0.y - nc.y));
@@ -440,14 +442,14 @@
 		case GtViewerAdornmentResizeTopLeft:
 		case GtViewerAdornmentResizeLeft:
 		case GtViewerAdornmentResizeBottomLeft:
-		  ns->bounds.size.width -= ndx;
+		  ns->size.width -= ndx;
 		  ns->position.x += ndx * (1 - ns->anchor.x);
 		  break;
 
 		case GtViewerAdornmentResizeTopRight:
 		case GtViewerAdornmentResizeRight:
 		case GtViewerAdornmentResizeBottomRight:
-		  ns->bounds.size.width += ndx;
+		  ns->size.width += ndx;
 		  ns->position.x += ndx * ns->anchor.x;
 		  break;
 
@@ -460,14 +462,14 @@
 		case GtViewerAdornmentResizeTopLeft:
 		case GtViewerAdornmentResizeTop:
 		case GtViewerAdornmentResizeTopRight:
-		  ns->bounds.size.height -= ndy;
+		  ns->size.height -= ndy;
 		  ns->position.y += ndy * ns->anchor.y;
 		  break;
 
 		case GtViewerAdornmentResizeBottomLeft:
 		case GtViewerAdornmentResizeBottom:
 		case GtViewerAdornmentResizeBottomRight:
-		  ns->bounds.size.height += ndy;
+		  ns->size.height += ndy;
 		  ns->position.y += ndy * (1 - ns->anchor.y);
 		  break;
 
@@ -487,8 +489,8 @@
 
 		case GtViewerAdornmentAnchor:
 		  ns->position = [layer convertPointFromParent:ns->position];
-		  ns->anchor.x += ndx / ns->bounds.size.width;
-		  ns->anchor.y += ndy / ns->bounds.size.height;
+		  ns->anchor.x += ndx / ns->size.width;
+		  ns->anchor.y += ndy / ns->size.height;
 		  ns->position.x += ndx;
 		  ns->position.y += ndy;
 		  ns->position = [layer convertPointToParent:ns->position];
@@ -526,7 +528,8 @@
 
 	  layer.position = ns->position;
 	  layer.anchor = ns->anchor;
-	  layer.bounds = ns->bounds;
+	  layer.size = ns->size;
+	  layer.origin = ns->origin;
 	  if (ns->is_rect)
 	    ((MgRectLayer *)layer).cornerRadius = ns->cornerRadius;
 	  layer.scale = ns->scale;
@@ -549,7 +552,8 @@
 
 	  layer.position = os->position;
 	  layer.anchor = os->anchor;
-	  layer.bounds = os->bounds;
+	  layer.size = os->size;
+	  layer.origin = os->origin;
 	  if (os->is_rect)
 	    ((MgRectLayer *)layer).cornerRadius = os->cornerRadius;
 	  layer.scale = os->scale;
@@ -559,7 +563,8 @@
 
 	  [document node:node setValue:BOX(ns->position) forKey:@"position"];
 	  [document node:node setValue:BOX(ns->anchor) forKey:@"anchor"];
-	  [document node:node setValue:BOX(ns->bounds) forKey:@"bounds"];
+	  [document node:node setValue:BOX(ns->size) forKey:@"size"];
+	  [document node:node setValue:BOX(ns->origin) forKey:@"origin"];
 	  if (ns->is_rect)
 	    [document node:node setValue:@(ns->cornerRadius) forKey:@"cornerRadius"];
 	  [document node:node setValue:@(ns->scale) forKey:@"scale"];
