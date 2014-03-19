@@ -123,6 +123,45 @@ static NSMapTable *_classTable;
   return obj;
 }
 
+static GtInspectorItem *
+inspectorItem(NSDictionary *class_dict, NSDictionary *inspector_dict)
+{
+  GtInspectorItem *item = [[GtInspectorItem alloc] init];
+
+  item.displayName = inspector_dict[@"displayName"];
+
+  NSMutableArray *subitems = [NSMutableArray array];
+
+  for (id obj in inspector_dict[@"properties"])
+    {
+      if ([obj isKindOfClass:[NSString class]])
+	{
+	  NSString *key = obj;
+
+	  NSDictionary *key_dict = class_dict[key];
+	  if (key_dict == nil)
+	    continue;			/* FIXME: use objc metadata? */
+
+	  GtInspectorItem *key_item = [[GtInspectorItem alloc] init];
+
+	  key_item.key = key;
+
+	  for (NSString *key in key_dict)
+	    [key_item setValue:key_dict[key] forKey:key];
+
+	  [subitems addObject:key_item];
+	}
+      else if ([obj isKindOfClass:[NSDictionary class]])
+	{
+	  [subitems addObject:inspectorItem(class_dict, obj)];
+	}
+    }
+
+  item.subitems = subitems;
+
+  return item;
+}
+
 + (void)addInspectorItemsForClass:(Class)cls toArray:(NSMutableArray *)array
 {
   if (cls == nil)
@@ -132,37 +171,11 @@ static NSMapTable *_classTable;
 
   NSString *class_name = NSStringFromClass(cls);
 
-  NSDictionary *inspector_dict = _inspectorDict[class_name];
-  if ([inspector_dict count] == 0)
-    return;
-
   NSDictionary *class_dict = _classesDict[class_name];
+  NSDictionary *inspector_dict = _inspectorDict[class_name];
 
-  GtInspectorItem *item = [[self alloc] init];
-
-  item.displayName = inspector_dict[@"displayName"];
-
-  NSMutableArray *subitems = [NSMutableArray array];
-
-  for (NSString *key in inspector_dict[@"properties"])
-    {
-      NSDictionary *key_dict = class_dict[key];
-      if (key_dict == nil)
-	continue;			/* FIXME: use objc metadata? */
-
-      GtInspectorItem *key_item = [[self alloc] init];
-
-      key_item.key = key;
-
-      for (NSString *key in key_dict)
-	[key_item setValue:key_dict[key] forKey:key];
-
-      [subitems addObject:key_item];
-    }
-
-  item.subitems = subitems;
-
-  [array addObject:item];
+  if (class_dict != nil && inspector_dict != nil)
+    [array addObject:inspectorItem(class_dict, inspector_dict)];
 }
 
 @end
