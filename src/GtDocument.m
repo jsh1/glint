@@ -596,6 +596,8 @@ fract(CGFloat x)
 {
   NSInteger tag = [sender tag];
 
+  MgLayer *root_layer = _documentNode;
+
   [self addSublayer:^MgLayer * (MgGroupLayer *parent_group)
     {
       MgLayer *layer = nil;
@@ -633,7 +635,8 @@ fract(CGFloat x)
 	return nil;
 
       makeNameUnique(layer, parent_group);
-      initializeLayerFromContainer(layer, parent_group);
+      MgLayer *container = parent_group != root_layer ? parent_group : nil;
+      initializeLayerFromContainer(layer, container);
 
       return layer;
     }];
