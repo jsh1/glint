@@ -83,7 +83,6 @@
 
 - (BOOL)_isSubviewControllerVisible:(GtViewController *)controller;
 - (void)_showSubviewController:(GtViewController *)controller;
-+ (BOOL)_canHideSubviewControllers;
-- (void)_hideSubviewController:(GtViewController *)controller;
+- (BOOL)_hideSubviewController:(GtViewController *)controller;
 
 @end

@@ -139,7 +139,7 @@
   [self adjustSubviews];
 }
 
-- (void)setSubview:(NSView *)subview collapsed:(BOOL)flag
+- (BOOL)setSubview:(NSView *)subview collapsed:(BOOL)flag
 {
   if (flag != [subview isHidden])
     {
@@ -157,7 +157,7 @@
 	    }
 
 	  if (all_hidden)
-	    return;
+	    return NO;
 	}
 
       [subview setHidden:flag];
@@ -166,6 +166,8 @@
       [self adjustSubviews];
       _collapsingSubview = nil;
     }
+
+  return YES;
 }
 
 - (void)resizeSubviewsWithOldSize:(NSSize)sz

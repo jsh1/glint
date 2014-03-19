@@ -120,14 +120,9 @@
   [(GtSplitView *)[self view] setSubview:[c view] collapsed:NO];
 }
 
-+ (BOOL)_canHideSubviewControllers;
+- (BOOL)_hideSubviewController:(GtViewController *)c
 {
-  return YES;
-}
-
-- (void)_hideSubviewController:(GtViewController *)c
-{
-  [(GtSplitView *)[self view] setSubview:[c view] collapsed:YES];
+  return [(GtSplitView *)[self view] setSubview:[c view] collapsed:YES];
 }
 
 /** NSSplitViewDelegate methods. **/

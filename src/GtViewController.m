@@ -210,11 +210,8 @@
   while (controller != nil && controller != self)
     {
       GtViewController *parent = controller->_superviewController;
-      if ([[parent class] _canHideSubviewControllers])
-	{
-	  [parent _hideSubviewController:controller];
-	  break;
-	}
+      if ([parent _hideSubviewController:controller])
+	break;
       controller = parent;
     }
 }
@@ -253,13 +250,9 @@
 {
 }
 
-+ (BOOL)_canHideSubviewControllers
+- (BOOL)_hideSubviewController:(GtViewController *)controller
 {
   return NO;
-}
-
-- (void)_hideSubviewController:(GtViewController *)controller
-{
 }
 
 - (NSView *)initialFirstResponder

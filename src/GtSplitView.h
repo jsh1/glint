@@ -36,7 +36,7 @@
 - (NSDictionary *)savedViewState;
 - (void)applySavedViewState:(NSDictionary *)dict;
 
-- (void)setSubview:(NSView *)subview collapsed:(BOOL)flag;
+- (BOOL)setSubview:(NSView *)subview collapsed:(BOOL)flag;
 
 - (BOOL)shouldAdjustSizeOfSubview:(NSView *)subview;
 
