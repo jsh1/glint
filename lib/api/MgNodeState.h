@@ -22,31 +22,36 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#ifndef MG_H
-#define MG_H
+#import "MgNode.h"
 
-#include "MgBase.h"
+@interface MgNodeState : NSObject <NSCopying, NSSecureCoding>
 
-#ifdef __OBJC__
-# import "MgCoreAnimationLayer.h"
-# import "MgDrawingLayer.h"
-# import "MgGradientLayer.h"
-# import "MgGradientLayerState.h"
-# import "MgGroupLayer.h"
-# import "MgGroupLayerState.h"
-# import "MgImageLayer.h"
-# import "MgImageLayerState.h"
-# import "MgImageProvider.h"
-# import "MgLayer.h"
-# import "MgLayerState.h"
-# import "MgModuleLayer.h"
-# import "MgModuleState.h"
-# import "MgNode.h"
-# import "MgNodeState.h"
-# import "MgPathLayer.h"
-# import "MgPathLayerState.h"
-# import "MgRectLayer.h"
-# import "MgRectLayerState.h"
-#endif
++ (instancetype)state;
 
-#endif /* MG_H */
++ (instancetype)defaultState;
+
++ (NSSet *)allProperties;
+
+- (id)init;
+
+- (void)setDefaults;
+
+/* The state this is part of. */
+
+@property(nonatomic, weak) MgModuleState *moduleState;
+
+/* The state that this state derives from. Any values not defined by
+   this state will be dereferenced in its superstate. */
+
+@property(nonatomic, weak) MgNodeState *superstate;
+
+/* Returns true if the receiver explicitly defines a value for the
+   property with name 'key'. */
+
+- (BOOL)hasValueForKey:(NSString *)key;
+
+/** MgNode properties. **/
+
+@property(nonatomic, assign, getter=isEnabled) BOOL enabled;
+
+@end

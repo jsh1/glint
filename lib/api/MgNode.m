@@ -24,6 +24,9 @@
 
 #import "MgNodeInternal.h"
 
+#import "MgNodeState.h"
+#import "MgModuleState.h"
+
 #import <Foundation/Foundation.h>
 #import <libkern/OSAtomic.h>
 
@@ -40,16 +43,22 @@ static NSUInteger version_counter;
 
 @implementation MgNode
 {
+  NSMutableArray *_states;
+  MgNodeState *_state;
   NSString *_name;
   NSPointerArray *_references;
   NSUInteger _version;
   uint32_t _mark;			/* for graph traversal */
-  BOOL _enabled;
 }
 
 + (instancetype)node
 {
   return [[self alloc] init];
+}
+
++ (Class)stateClass
+{
+  return [MgNodeState class];
 }
 
 + (BOOL)accessInstanceVariablesDirectly
@@ -67,10 +76,132 @@ static NSUInteger version_counter;
   if (self == nil)
     return nil;
 
-  _enabled = YES;
   _version = 1;
 
+  Class state_class = [[self class] stateClass];
+
+  _state = [state_class state];
+  _state.superstate = [state_class defaultState];
+
+  _states = [NSMutableArray arrayWithObject:_state];
+
   return self;
+}
+
++ (BOOL)automaticallyNotifiesObserversOfStates
+{
+  return NO;
+}
+
+- (NSArray *)states
+{
+  return _states != nil ? _states : @[];
+}
+
+- (void)setStates:(NSArray *)array
+{
+  if (![_states isEqual:array])
+    {
+      [self willChangeValueForKey:@"states"];
+      _states = [array mutableCopy];
+      [self incrementVersion];
+      [self didChangeValueForKey:@"states"];
+    }
+}
+
+- (void)addState:(MgNodeState *)state
+{
+  [self willChangeValueForKey:@"states"];
+  if (_states == nil)
+    _states = [NSMutableArray array];
+  [_states addObject:state];
+  [self incrementVersion];
+  [self didChangeValueForKey:@"states"];
+}
+
++ (BOOL)automaticallyNotifiesObserversOfState
+{
+  return NO;
+}
+
+- (MgNodeState *)state
+{
+  return _state;
+}
+
+- (void)setState:(MgNodeState *)state
+{
+  if (_state != state)
+    {
+      [self willChangeValueForKey:@"state"];
+      _state = state;
+      [self incrementVersion];
+      [self didChangeValueForKey:@"state"];
+    }
+}
+
+- (MgNodeState *)moduleState:(MgModuleState *)moduleState
+{
+  while (1)
+    {
+      for (MgNodeState *state in _states)
+	{
+	  if (state.moduleState == moduleState)
+	    return state;
+	}
+
+      if (moduleState == nil)
+	break;
+
+      moduleState = moduleState.superstate;
+    }
+
+  return nil;
+}
+
+- (MgNodeState *)addModuleState:(MgModuleState *)moduleState
+{
+  for (MgNodeState *state in _states)
+    {
+      if (state.moduleState == moduleState)
+	return state;
+    }
+
+  MgNodeState *state = [[[self class] stateClass] state];
+
+  state.superstate = [self addModuleState:moduleState.superstate];
+
+  [self addState:state];
+
+  return state;
+}
+
+- (void)applyModuleState:(MgModuleState *)moduleState
+{
+  /* MgModuleLayer overrides -applyModuleState:mark: to terminate the
+     recursion, so we apply the state to the root object here to avoid
+     that. */
+
+  self.state = [self moduleState:moduleState];
+
+  uint32_t mark = [MgNode nextMark];
+
+  [self foreachNode:^(MgNode *child)
+    {
+      [child applyModuleState:moduleState mark:mark];
+    }
+   mark:mark];
+}
+
+- (void)applyModuleState:(MgModuleState *)moduleState mark:(uint32_t)mark
+{
+  self.state = [self moduleState:moduleState];
+
+  [self foreachNode:^(MgNode *child)
+    {
+      [child applyModuleState:moduleState mark:mark];
+    }
+   mark:mark];
 }
 
 + (BOOL)automaticallyNotifiesObserversOfEnabled
@@ -78,17 +209,18 @@ static NSUInteger version_counter;
   return NO;
 }
 
-- (BOOL)enabled
+- (BOOL)isEnabled
 {
-  return _enabled;
+  return self.state.enabled;
 }
 
 - (void)setEnabled:(BOOL)flag
 {
-  if (_enabled != flag)
+  MgNodeState *state = self.state;
+  if (state.enabled != flag)
     {
       [self willChangeValueForKey:@"enabled"];
-      _enabled = flag;
+      state.enabled = flag;
       [self incrementVersion];
       [self didChangeValueForKey:@"enabled"];
     }
@@ -228,7 +360,22 @@ static NSUInteger version_counter;
 {
   MgNode *copy = [[[self class] alloc] init];
 
-  copy->_enabled = _enabled;
+  /* FIXME: this is inherently wrong. Perhaps we should flatten the
+     state tree into a new base-state? */
+
+  copy->_states = [NSMutableArray array];
+
+  for (MgNodeState *state in _states)
+    {
+      MgNodeState *state_copy = [state copy];
+
+      [copy->_states addObject:state_copy];
+
+      if (state == _state)
+	copy->_state = state_copy;
+    }
+
+  copy->_name = [_name copy];
 
   return copy;
 }
@@ -242,8 +389,8 @@ static NSUInteger version_counter;
 
 - (void)encodeWithCoder:(NSCoder *)c
 {
-  if (!_enabled)
-    [c encodeBool:_enabled forKey:@"enabled"];
+  [c encodeObject:_states forKey:@"states"];
+  [c encodeObject:_state forKey:@"state"];
 
   if (_name != nil)
     [c encodeObject:_name forKey:@"name"];
@@ -255,10 +402,9 @@ static NSUInteger version_counter;
   if (self == nil)
     return nil;
 
-  if ([c containsValueForKey:@"enabled"])
-    _enabled = [c decodeBoolForKey:@"enabled"];
-  else
-    _enabled = YES;
+  _states = [[c decodeObjectOfClass:[NSArray class] forKey:@"states"]
+	     mutableCopy];
+  _state = [c decodeObjectOfClass:[MgNodeState class] forKey:@"state"];
 
   if ([c containsValueForKey:@"name"])
     _name = [[c decodeObjectOfClass:[NSString class] forKey:@"name"] copy];

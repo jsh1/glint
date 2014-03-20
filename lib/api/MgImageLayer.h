@@ -27,6 +27,7 @@
 @interface MgImageLayer : MgLayer
 
 + (void)registerImageProviderClass:(Class)cls;
++ (NSSet *)imageProviderClasses;
 
 @property(nonatomic, strong) id<MgImageProvider> imageProvider;
 

@@ -28,38 +28,17 @@
 #import "MgCoreGraphics.h"
 #import "MgLayerInternal.h"
 #import "MgNodeInternal.h"
+#import "MgPathLayerState.h"
 
 #import <Foundation/Foundation.h>
 
+#define STATE ((MgPathLayerState *)(self.state))
+
 @implementation MgPathLayer
+
++ (Class)stateClass
 {
-  id _path;				/* CGPathRef */
-  CGPathDrawingMode _drawingMode;
-  id _fillColor;			/* CGColorRef */
-  id _strokeColor;			/* CGColorRef */
-  CGFloat _lineWidth;
-  CGFloat _miterLimit;
-  CGLineCap _lineCap;
-  CGLineJoin _lineJoin;
-  CGFloat _lineDashPhase;
-  NSArray *_lineDashPattern;
-}
-
-- (id)init
-{
-  self = [super init];
-  if (self == nil)
-    return nil;
-
-  _drawingMode = kCGPathFill;
-  _fillColor = (__bridge id)MgBlackColor();
-  _strokeColor = (__bridge id)MgBlackColor();
-  _lineWidth = 1;
-  _miterLimit = 10;
-  _lineCap = kCGLineCapButt;
-  _lineJoin = kCGLineJoinMiter;
-
-  return self;
+  return [MgPathLayerState class];
 }
 
 + (BOOL)automaticallyNotifiesObserversOfPath
@@ -69,15 +48,17 @@
 
 - (CGPathRef)path
 {
-  return (__bridge CGPathRef)_path;
+  return STATE.path;
 }
 
 - (void)setPath:(CGPathRef)x
 {
-  if (_path != (__bridge id)x)
+  MgPathLayerState *state = STATE;
+
+  if (state.path != x)
     {
       [self willChangeValueForKey:@"path"];
-      _path = (__bridge id)x;
+      state.path = x;
       [self incrementVersion];
       [self didChangeValueForKey:@"path"];
     }
@@ -90,15 +71,17 @@
 
 - (CGPathDrawingMode)drawingMode
 {
-  return _drawingMode;
+  return STATE.drawingMode;
 }
 
 - (void)setDrawingMode:(CGPathDrawingMode)x
 {
-  if (_drawingMode != x)
+  MgPathLayerState *state = STATE;
+
+  if (state.drawingMode != x)
     {
       [self willChangeValueForKey:@"drawingMode"];
-      _drawingMode = x;
+      state.drawingMode = x;
       [self incrementVersion];
       [self didChangeValueForKey:@"drawingMode"];
     }
@@ -111,15 +94,17 @@
 
 - (CGColorRef)fillColor
 {
-  return (__bridge CGColorRef)_fillColor;
+  return STATE.fillColor;
 }
 
 - (void)setFillColor:(CGColorRef)x
 {
-  if (_fillColor != (__bridge id)x)
+  MgPathLayerState *state = STATE;
+
+  if (state.fillColor != x)
     {
       [self willChangeValueForKey:@"fillColor"];
-      _fillColor = (__bridge id)x;
+      state.fillColor = x;
       [self incrementVersion];
       [self didChangeValueForKey:@"fillColor"];
     }
@@ -132,15 +117,17 @@
 
 - (CGColorRef)strokeColor
 {
-  return (__bridge CGColorRef)_strokeColor;
+  return STATE.strokeColor;
 }
 
 - (void)setStrokeColor:(CGColorRef)x
 {
-  if (_strokeColor != (__bridge id)x)
+  MgPathLayerState *state = STATE;
+
+  if (state.strokeColor != x)
     {
       [self willChangeValueForKey:@"strokeColor"];
-      _strokeColor = (__bridge id)x;
+      state.strokeColor = x;
       [self incrementVersion];
       [self didChangeValueForKey:@"strokeColor"];
     }
@@ -153,15 +140,17 @@
 
 - (CGFloat)lineWidth
 {
-  return _lineWidth;
+  return STATE.lineWidth;
 }
 
 - (void)setLineWidth:(CGFloat)x
 {
-  if (_lineWidth != x)
+  MgPathLayerState *state = STATE;
+
+  if (state.lineWidth != x)
     {
       [self willChangeValueForKey:@"lineWidth"];
-      _lineWidth = x;
+      state.lineWidth = x;
       [self incrementVersion];
       [self didChangeValueForKey:@"lineWidth"];
     }
@@ -174,15 +163,17 @@
 
 - (CGFloat)miterLimit
 {
-  return _miterLimit;
+  return STATE.miterLimit;
 }
 
 - (void)setMiterLimit:(CGFloat)x
 {
-  if (_miterLimit != x)
+  MgPathLayerState *state = STATE;
+
+  if (state.miterLimit != x)
     {
       [self willChangeValueForKey:@"miterLimit"];
-      _miterLimit = x;
+      state.miterLimit = x;
       [self incrementVersion];
       [self didChangeValueForKey:@"miterLimit"];
     }
@@ -195,15 +186,17 @@
 
 - (CGLineCap)lineCap
 {
-  return _lineCap;
+  return STATE.lineCap;
 }
 
 - (void)setLineCap:(CGLineCap)x
 {
-  if (_lineCap != x)
+  MgPathLayerState *state = STATE;
+
+  if (state.lineCap != x)
     {
       [self willChangeValueForKey:@"lineCap"];
-      _lineCap = x;
+      state.lineCap = x;
       [self incrementVersion];
       [self didChangeValueForKey:@"lineCap"];
     }
@@ -216,15 +209,17 @@
 
 - (CGLineJoin)lineJoin
 {
-  return _lineJoin;
+  return STATE.lineJoin;
 }
 
 - (void)setLineJoin:(CGLineJoin)x
 {
-  if (_lineJoin != x)
+  MgPathLayerState *state = STATE;
+
+  if (state.lineJoin != x)
     {
       [self willChangeValueForKey:@"lineJoin"];
-      _lineJoin = x;
+      state.lineJoin = x;
       [self incrementVersion];
       [self didChangeValueForKey:@"lineJoin"];
     }
@@ -237,15 +232,17 @@
 
 - (CGFloat)lineDashPhase
 {
-  return _lineDashPhase;
+  return STATE.lineDashPhase;
 }
 
 - (void)setLineDashPhase:(CGFloat)x
 {
-  if (_lineDashPhase != x)
+  MgPathLayerState *state = STATE;
+
+  if (state.lineDashPhase != x)
     {
       [self willChangeValueForKey:@"lineDashPhase"];
-      _lineDashPhase = x;
+      state.lineDashPhase = x;
       [self incrementVersion];
       [self didChangeValueForKey:@"lineDashPhase"];
     }
@@ -258,15 +255,17 @@
 
 - (NSArray *)lineDashPattern
 {
-  return _lineDashPattern != nil ? _lineDashPattern : @[];
+  return STATE.lineDashPattern;
 }
 
 - (void)setLineDashPattern:(NSArray *)array
 {
-  if (_lineDashPattern != array && ![_lineDashPattern isEqual:array])
+  MgPathLayerState *state = STATE;
+
+  if (![state.lineDashPattern isEqual:array])
     {
       [self willChangeValueForKey:@"lineDashPattern"];
-      _lineDashPattern = [array copy];
+      state.lineDashPattern = array;
       [self incrementVersion];
       [self didChangeValueForKey:@"lineDashPattern"];
     }
@@ -362,112 +361,6 @@
   CGContextClip(rs->ctx);
 
   CGPathRelease(sp);
-}
-
-/** NSCopying methods. **/
-
-- (id)copyWithZone:(NSZone *)zone
-{
-  MgPathLayer *copy = [super copyWithZone:zone];
-
-  copy->_path = _path;
-  copy->_drawingMode = _drawingMode;
-  copy->_fillColor = _fillColor;
-  copy->_strokeColor = _strokeColor;
-  copy->_lineWidth = _lineWidth;
-  copy->_miterLimit = _miterLimit;
-  copy->_lineCap = _lineCap;
-  copy->_lineJoin = _lineJoin;
-  copy->_lineDashPhase = _lineDashPhase;
-  copy->_lineDashPattern = _lineDashPattern;
-
-  return copy;
-}
-
-/** NSCoding methods. **/
-
-- (void)encodeWithCoder:(NSCoder *)c
-{
-  [super encodeWithCoder:c];
-
-  if (_path != nil)
-    [c mg_encodeCGPath:(__bridge CGPathRef)_path forKey:@"path"];
-
-  if (_drawingMode != kCGPathFill)
-    [c encodeInt:_drawingMode forKey:@"drawingMode"];
-
-  if (_fillColor != nil)
-    [c mg_encodeCGColor:(__bridge CGColorRef)_fillColor forKey:@"fillColor"];
-
-  if (_strokeColor != nil)
-    [c mg_encodeCGColor:(__bridge CGColorRef)_strokeColor forKey:@"strokeColor"];
-
-  if (_lineWidth != 1)
-    [c encodeDouble:_lineWidth forKey:@"lineWidth"];
-
-  if (_miterLimit != 10)
-    [c encodeDouble:_miterLimit forKey:@"miterLimit"];
-
-  if (_lineCap != kCGLineCapButt)
-    [c encodeInt:_lineCap forKey:@"lineCap"];
-
-  if (_lineJoin != kCGLineJoinMiter)
-    [c encodeInt:_lineJoin forKey:@"lineJoin"];
-
-  if (_lineDashPhase != 0)
-    [c encodeDouble:_lineDashPhase forKey:@"lineDashPhase"];
-
-  if (_lineDashPattern != nil)
-    [c encodeObject:_lineDashPattern forKey:@"lineDashPattern"];
-}
-
-- (id)initWithCoder:(NSCoder *)c
-{
-  self = [super initWithCoder:c];
-  if (self == nil)
-    return nil;
-
-  if ([c containsValueForKey:@"path"])
-    _path = (__bridge id)[c mg_decodeCGPathForKey:@"path"];
-
-  if ([c containsValueForKey:@"drawingMode"])
-    _drawingMode = (CGPathDrawingMode)[c decodeIntForKey:@"drawingMode"];
-  else
-    _drawingMode = kCGPathFill;
-
-  if ([c containsValueForKey:@"fillColor"])
-    _fillColor = (__bridge id)[c mg_decodeCGColorForKey:@"fillColor"];
-
-  if ([c containsValueForKey:@"strokeColor"])
-    _strokeColor = (__bridge id)[c mg_decodeCGColorForKey:@"strokeColor"];
-
-  if ([c containsValueForKey:@"lineWidth"])
-    _lineWidth = [c decodeDoubleForKey:@"lineWidth"];
-  else
-    _lineWidth = 1;
-
-  if ([c containsValueForKey:@"miterLimit"])
-    _miterLimit = [c decodeDoubleForKey:@"miterLimit"];
-  else
-    _miterLimit = 10;
-
-  if ([c containsValueForKey:@"lineCap"])
-    _lineCap = [c decodeDoubleForKey:@"lineCap"];
-  else
-    _lineCap = kCGLineCapButt;
-
-  if ([c containsValueForKey:@"lineJoin"])
-    _lineJoin = [c decodeDoubleForKey:@"lineJoin"];
-  else
-    _lineJoin = kCGLineJoinMiter;
-
-  if ([c containsValueForKey:@"lineDashPhase"])
-    _lineDashPhase = [c decodeDoubleForKey:@"lineDashPhase"];
-
-  if ([c containsValueForKey:@"lineDashPattern"])
-    _lineDashPattern = [c decodeObjectOfClass:[NSArray class] forKey:@"lineDashPattern"];
-
-  return self;
 }
 
 /** NSKeyValueCoding methods. **/

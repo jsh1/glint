@@ -22,31 +22,22 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#ifndef MG_H
-#define MG_H
+#import "MgLayerState.h"
 
-#include "MgBase.h"
+@interface MgGradientLayerState : MgLayerState
 
-#ifdef __OBJC__
-# import "MgCoreAnimationLayer.h"
-# import "MgDrawingLayer.h"
-# import "MgGradientLayer.h"
-# import "MgGradientLayerState.h"
-# import "MgGroupLayer.h"
-# import "MgGroupLayerState.h"
-# import "MgImageLayer.h"
-# import "MgImageLayerState.h"
-# import "MgImageProvider.h"
-# import "MgLayer.h"
-# import "MgLayerState.h"
-# import "MgModuleLayer.h"
-# import "MgModuleState.h"
-# import "MgNode.h"
-# import "MgNodeState.h"
-# import "MgPathLayer.h"
-# import "MgPathLayerState.h"
-# import "MgRectLayer.h"
-# import "MgRectLayerState.h"
-#endif
+@property(nonatomic, copy) NSArray *colors;
+@property(nonatomic, copy) NSArray *locations;
 
-#endif /* MG_H */
+@property(nonatomic, getter=isRadial) BOOL radial;
+
+@property(nonatomic, assign) CGPoint startPoint;
+@property(nonatomic, assign) CGPoint endPoint;
+
+@property(nonatomic, assign) CGFloat startRadius;
+@property(nonatomic, assign) CGFloat endRadius;
+
+@property(nonatomic, assign) BOOL drawsBeforeStart;
+@property(nonatomic, assign) BOOL drawsAfterEnd;
+
+@end

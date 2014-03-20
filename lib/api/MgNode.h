@@ -31,13 +31,40 @@ extern NSString *const MgArchiveType;	/* UTI: org.unfactored.mg-archive */
 
 + (instancetype)node;
 
++ (Class)stateClass;
+
 /* Designated initializer. */
 
 - (id)init;
 
-/* This property is never animatable. */
+/* The current state of the receiver. */
+
+@property(nonatomic, strong) MgNodeState *state;
+
+/* All states implemented by the receiver. */
+
+@property(nonatomic, copy) NSArray *states;
+
+/* Returns the closest substate matching moduleState implemented by
+   the receiver. */
+
+- (MgNodeState *)moduleState:(MgModuleState *)moduleState;
+
+/* If necessary, adds a state to the receiver for `moduleState'. */
+
+- (MgNodeState *)addModuleState:(MgModuleState *)moduleState;
+
+/* Applies `moduleState' to the subtree rooted at the receiver. */
+
+- (void)applyModuleState:(MgModuleState *)moduleState;
+
+/* True if the receiver is enabled. This property is never animatable,
+   but is local to each state. */
 
 @property(nonatomic, assign, getter=isEnabled) BOOL enabled;
+
+/* The name of the receiver. This property is global, i.e. does not
+   vary by state. */
 
 @property(nonatomic, copy) NSString *name;
 

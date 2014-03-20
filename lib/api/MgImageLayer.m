@@ -25,21 +25,23 @@
 #import "MgImageLayer.h"
 
 #import "MgCoderExtensions.h"
+#import "MgImageLayerState.h"
 #import "MgImageProvider.h"
 #import "MgLayerInternal.h"
 #import "MgNodeInternal.h"
 
 #import <Foundation/Foundation.h>
 
+#define STATE ((MgImageLayerState *)(self.state))
+
 @implementation MgImageLayer
-{
-  id<MgImageProvider> _imageProvider;
-  CGRect _cropRect;
-  CGRect _centerRect;
-  BOOL _repeats;
-}
 
 static NSMutableSet *image_provider_classes;
+
++ (Class)stateClass
+{
+  return [MgImageLayerState class];
+}
 
 + (void)registerImageProviderClass:(Class)cls
 {
@@ -49,16 +51,12 @@ static NSMutableSet *image_provider_classes;
   [image_provider_classes addObject:cls];
 }
 
-- (id)init
++ (NSSet *)imageProviderClasses
 {
-  self = [super init];
-  if (self == nil)
-    return nil;
+  if (image_provider_classes == nil)
+    [MgImageLayer registerImageProviderClass:[MgImageProvider class]];
 
-  _cropRect = CGRectZero;
-  _centerRect = CGRectZero;
-
-  return self;
+  return image_provider_classes;
 }
 
 + (BOOL)automaticallyNotifiesObserversOfImageProvider
@@ -68,15 +66,17 @@ static NSMutableSet *image_provider_classes;
 
 - (id<MgImageProvider>)imageProvider
 {
-  return _imageProvider;
+  return STATE.imageProvider;
 }
 
 - (void)setImageProvider:(id<MgImageProvider>)p
 {
-  if (_imageProvider != p)
+  MgImageLayerState *state = STATE;
+
+  if (state.imageProvider != p)
     {
       [self willChangeValueForKey:@"imageProvider"];
-      _imageProvider = p;
+      state.imageProvider = p;
       [self incrementVersion];
       [self didChangeValueForKey:@"imageProvider"];
     }
@@ -89,15 +89,17 @@ static NSMutableSet *image_provider_classes;
 
 - (CGRect)cropRect
 {
-  return _cropRect;
+  return STATE.cropRect;
 }
 
 - (void)setCropRect:(CGRect)r
 {
-  if (!CGRectEqualToRect(_cropRect, r))
+  MgImageLayerState *state = STATE;
+
+  if (!CGRectEqualToRect(state.cropRect, r))
     {
       [self willChangeValueForKey:@"cropRect"];
-      _cropRect = r;
+      state.cropRect = r;
       [self incrementVersion];
       [self didChangeValueForKey:@"cropRect"];
     }
@@ -110,15 +112,17 @@ static NSMutableSet *image_provider_classes;
 
 - (CGRect)centerRect
 {
-  return _centerRect;
+  return STATE.centerRect;
 }
 
 - (void)setCenterRect:(CGRect)r
 {
-  if (!CGRectEqualToRect(_centerRect, r))
+  MgImageLayerState *state = STATE;
+
+  if (!CGRectEqualToRect(state.centerRect, r))
     {
       [self willChangeValueForKey:@"centerRect"];
-      _centerRect = r;
+      state.centerRect = r;
       [self incrementVersion];
       [self didChangeValueForKey:@"centerRect"];
     }
@@ -131,15 +135,17 @@ static NSMutableSet *image_provider_classes;
 
 - (BOOL)repeats
 {
-  return _repeats;
+  return STATE.repeats;
 }
 
 - (void)setRepeats:(BOOL)flag
 {
-  if (_repeats != flag)
+  MgImageLayerState *state = STATE;
+
+  if (state.repeats != flag)
     {
       [self willChangeValueForKey:@"repeats"];
-      _repeats = flag;
+      state.repeats = flag;
       [self incrementVersion];
       [self didChangeValueForKey:@"repeats"];
     }
@@ -191,74 +197,6 @@ static NSMutableSet *image_provider_classes;
      CGContextClipToMask() and hope it does the right thing? */
 
   CGContextClipToRect(rs->ctx, self.bounds);
-}
-
-/** NSCopying methods. **/
-
-- (id)copyWithZone:(NSZone *)zone
-{
-  MgImageLayer *copy = [super copyWithZone:zone];
-
-  copy->_imageProvider = _imageProvider;
-  copy->_cropRect = _cropRect;
-  copy->_centerRect = _centerRect;
-  copy->_repeats = _repeats;
-
-  return copy;
-}
-
-/** NSCoding methods. **/
-
-- (void)encodeWithCoder:(NSCoder *)c
-{
-  [super encodeWithCoder:c];
-
-  if (_imageProvider != nil
-      && [_imageProvider conformsToProtocol:@protocol(NSSecureCoding)])
-    {
-      [c encodeObject:_imageProvider forKey:@"imageProvider"];
-    }
-
-  if (!CGRectIsNull(_cropRect))
-    [c mg_encodeCGRect:_cropRect forKey:@"cropRect"];
-
-  if (!CGRectIsNull(_centerRect))
-    [c mg_encodeCGRect:_centerRect forKey:@"centerRect"];
-
-  if (_repeats)
-    [c encodeBool:_repeats forKey:@"repeats"];
-}
-
-- (id)initWithCoder:(NSCoder *)c
-{
-  self = [super initWithCoder:c];
-  if (self == nil)
-    return nil;
-
-  if (image_provider_classes == nil)
-    [MgImageLayer registerImageProviderClass:[MgImageProvider class]];
-
-  if (image_provider_classes != nil
-      && [c containsValueForKey:@"imageProvider"])
-    {
-      _imageProvider = [c decodeObjectOfClasses:image_provider_classes
-			forKey:@"imageProvider"];
-    }
-
-  if ([c containsValueForKey:@"cropRect"])
-    _cropRect = [c mg_decodeCGRectForKey:@"cropRect"];
-  else
-    _cropRect = CGRectNull;
-
-  if ([c containsValueForKey:@"centerRect"])
-    _centerRect = [c mg_decodeCGRectForKey:@"centerRect"];
-  else
-    _centerRect = CGRectNull;
-
-  if ([c containsValueForKey:@"repeats"])
-    _repeats = [c decodeBoolForKey:@"repeats"];
-
-  return self;
 }
 
 @end

@@ -28,30 +28,17 @@
 #import "MgCoreGraphics.h"
 #import "MgLayerInternal.h"
 #import "MgNodeInternal.h"
+#import "MgRectLayerState.h"
 
 #import <Foundation/Foundation.h>
 
+#define STATE ((MgRectLayerState *)(self.state))
+
 @implementation MgRectLayer
+
++ (Class)stateClass
 {
-  CGFloat _cornerRadius;
-  CGPathDrawingMode _drawingMode;
-  id _fillColor;			/* CGColorRef */
-  id _strokeColor;			/* CGColorref */
-  CGFloat _lineWidth;
-}
-
-- (id)init
-{
-  self = [super init];
-  if (self == nil)
-    return nil;
-
-  _drawingMode = kCGPathFill;
-  _fillColor = (__bridge id)MgBlackColor();
-  _strokeColor = (__bridge id)MgBlackColor();
-  _lineWidth = 1;
-
-  return self;
+  return [MgRectLayerState class];
 }
 
 + (BOOL)automaticallyNotifiesObserversOfCornerRadius
@@ -61,15 +48,17 @@
 
 - (CGFloat)cornerRadius
 {
-  return _cornerRadius;
+  return STATE.cornerRadius;
 }
 
 - (void)setCornerRadius:(CGFloat)x
 {
-  if (_cornerRadius != x)
+  MgRectLayerState *state = STATE;
+
+  if (state.cornerRadius != x)
     {
       [self willChangeValueForKey:@"cornerRadius"];
-      _cornerRadius = x;
+      state.cornerRadius = x;
       [self incrementVersion];
       [self didChangeValueForKey:@"cornerRadius"];
     }
@@ -82,15 +71,17 @@
 
 - (CGPathDrawingMode)drawingMode
 {
-  return _drawingMode;
+  return STATE.drawingMode;
 }
 
 - (void)setDrawingMode:(CGPathDrawingMode)x
 {
-  if (_drawingMode != x)
+  MgRectLayerState *state = STATE;
+
+  if (state.drawingMode != x)
     {
       [self willChangeValueForKey:@"drawingMode"];
-      _drawingMode = x;
+      state.drawingMode = x;
       [self incrementVersion];
       [self didChangeValueForKey:@"drawingMode"];
     }
@@ -103,15 +94,17 @@
 
 - (CGColorRef)fillColor
 {
-  return (__bridge CGColorRef)_fillColor;
+  return STATE.fillColor;
 }
 
 - (void)setFillColor:(CGColorRef)x
 {
-  if (_fillColor != (__bridge id)x)
+  MgRectLayerState *state = STATE;
+
+  if (state.fillColor != x)
     {
       [self willChangeValueForKey:@"fillColor"];
-      _fillColor = (__bridge id)x;
+      state.fillColor = x;
       [self incrementVersion];
       [self didChangeValueForKey:@"fillColor"];
     }
@@ -124,15 +117,17 @@
 
 - (CGColorRef)strokeColor
 {
-  return (__bridge CGColorRef)_strokeColor;
+  return STATE.strokeColor;
 }
 
 - (void)setStrokeColor:(CGColorRef)x
 {
-  if (_strokeColor != (__bridge id)x)
+  MgRectLayerState *state = STATE;
+
+  if (state.strokeColor != x)
     {
       [self willChangeValueForKey:@"strokeColor"];
-      _strokeColor = (__bridge id)x;
+      state.strokeColor = x;
       [self incrementVersion];
       [self didChangeValueForKey:@"strokeColor"];
     }
@@ -145,15 +140,17 @@
 
 - (CGFloat)lineWidth
 {
-  return _lineWidth;
+  return STATE.lineWidth;
 }
 
 - (void)setLineWidth:(CGFloat)x
 {
-  if (_lineWidth != x)
+  MgRectLayerState *state = STATE;
+
+  if (state.lineWidth != x)
     {
       [self willChangeValueForKey:@"lineWidth"];
-      _lineWidth = x;
+      state.lineWidth = x;
       [self incrementVersion];
       [self didChangeValueForKey:@"lineWidth"];
     }
@@ -245,71 +242,6 @@
 
   CGPathRelease(sp);
   CGPathRelease(p);
-}
-
-/** NSCopying methods. **/
-
-- (id)copyWithZone:(NSZone *)zone
-{
-  MgRectLayer *copy = [super copyWithZone:zone];
-
-  copy->_cornerRadius = _cornerRadius;
-  copy->_drawingMode = _drawingMode;
-  copy->_fillColor = _fillColor;
-  copy->_strokeColor = _strokeColor;
-  copy->_lineWidth = _lineWidth;
-
-  return copy;
-}
-
-/** NSCoding methods. **/
-
-- (void)encodeWithCoder:(NSCoder *)c
-{
-  [super encodeWithCoder:c];
-
-  if (_cornerRadius != 0)
-    [c encodeDouble:_cornerRadius forKey:@"cornerRadius"];
-
-  if (_drawingMode != kCGPathFill)
-    [c encodeInt:_drawingMode forKey:@"drawingMode"];
-
-  if (_fillColor != nil)
-    [c mg_encodeCGColor:(__bridge CGColorRef)_fillColor forKey:@"fillColor"];
-
-  if (_strokeColor != nil)
-    [c mg_encodeCGColor:(__bridge CGColorRef)_strokeColor forKey:@"strokeColor"];
-
-  if (_lineWidth != 1)
-    [c encodeDouble:_lineWidth forKey:@"lineWidth"];
-}
-
-- (id)initWithCoder:(NSCoder *)c
-{
-  self = [super initWithCoder:c];
-  if (self == nil)
-    return nil;
-
-  if ([c containsValueForKey:@"cornerRadius"])
-    _cornerRadius = [c decodeDoubleForKey:@"cornerRadius"];
-
-  if ([c containsValueForKey:@"drawingMode"])
-    _drawingMode = (CGPathDrawingMode)[c decodeIntForKey:@"drawingMode"];
-  else
-    _drawingMode = kCGPathFill;
-
-  if ([c containsValueForKey:@"fillColor"])
-    _fillColor = (__bridge id)[c mg_decodeCGColorForKey:@"fillColor"];
-
-  if ([c containsValueForKey:@"strokeColor"])
-    _strokeColor = (__bridge id)[c mg_decodeCGColorForKey:@"strokeColor"];
-
-  if ([c containsValueForKey:@"lineWidth"])
-    _lineWidth = [c decodeDoubleForKey:@"lineWidth"];
-  else
-    _lineWidth = 1;
-
-  return self;
 }
 
 /** NSKeyValueCoding methods. **/

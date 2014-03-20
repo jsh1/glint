@@ -22,31 +22,18 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#ifndef MG_H
-#define MG_H
+#import "MgBase.h"
 
-#include "MgBase.h"
+@interface MgModuleState : NSObject <NSSecureCoding>
 
-#ifdef __OBJC__
-# import "MgCoreAnimationLayer.h"
-# import "MgDrawingLayer.h"
-# import "MgGradientLayer.h"
-# import "MgGradientLayerState.h"
-# import "MgGroupLayer.h"
-# import "MgGroupLayerState.h"
-# import "MgImageLayer.h"
-# import "MgImageLayerState.h"
-# import "MgImageProvider.h"
-# import "MgLayer.h"
-# import "MgLayerState.h"
-# import "MgModuleLayer.h"
-# import "MgModuleState.h"
-# import "MgNode.h"
-# import "MgNodeState.h"
-# import "MgPathLayer.h"
-# import "MgPathLayerState.h"
-# import "MgRectLayer.h"
-# import "MgRectLayerState.h"
-#endif
++ (instancetype)moduleState;
 
-#endif /* MG_H */
+/* Designated initializer. */
+
+- (id)init;
+
+@property(nonatomic, copy) NSString *name;
+
+@property(nonatomic, weak) MgModuleState *superstate;
+
+@end

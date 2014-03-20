@@ -26,6 +26,8 @@
 
 @interface MgNode ()
 
+- (void)applyModuleState:(MgModuleState *)moduleState mark:(uint32_t)mark;
+
 @property(nonatomic, readwrite) NSUInteger version;
 
 /* Bump the version of this node (and implicitly of all its ancestors). */

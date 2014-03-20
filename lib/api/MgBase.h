@@ -80,8 +80,10 @@
 @class NSArray, NSMutableArray, NSData, NSMutableData, NSDictionary,
     NSMutableDictionary, NSSet, NSMutableSet, NSIndexSet, NSMutableIndexSet,
     NSPointerArray, NSURL;
-@class MgDrawingLayer, MgLayer, MgGradientLayer, MgGroupLayer,
-    MgImageLayer, MgImageProvider, MgNode, MgPathLayer, MgRectLayer;
+@class MgDrawingLayer, MgGradientLayer, MgGradientLayerState, MgGroupLayer,
+    MgGroupLayerState, MgImageLayer, MgImageLayerState, MgImageProvider,
+    MgLayer, MgLayerState, MgModuleLayer, MgModuleState, MgNode, MgNodeState,
+    MgPathLayer, MgPathLayerState, MgRectLayer, MgRectLayerState;
 
 @protocol MgImageProvider;
 

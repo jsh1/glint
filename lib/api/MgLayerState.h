@@ -22,31 +22,23 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#ifndef MG_H
-#define MG_H
+#import "MgNodeState.h"
 
-#include "MgBase.h"
+@interface MgLayerState : MgNodeState
 
-#ifdef __OBJC__
-# import "MgCoreAnimationLayer.h"
-# import "MgDrawingLayer.h"
-# import "MgGradientLayer.h"
-# import "MgGradientLayerState.h"
-# import "MgGroupLayer.h"
-# import "MgGroupLayerState.h"
-# import "MgImageLayer.h"
-# import "MgImageLayerState.h"
-# import "MgImageProvider.h"
-# import "MgLayer.h"
-# import "MgLayerState.h"
-# import "MgModuleLayer.h"
-# import "MgModuleState.h"
-# import "MgNode.h"
-# import "MgNodeState.h"
-# import "MgPathLayer.h"
-# import "MgPathLayerState.h"
-# import "MgRectLayer.h"
-# import "MgRectLayerState.h"
-#endif
+/** MgLayer properties. **/
 
-#endif /* MG_H */
+@property(nonatomic, assign) CGPoint position;
+@property(nonatomic, assign) CGPoint anchor;
+@property(nonatomic, assign) CGSize size;
+@property(nonatomic, assign) CGPoint origin;
+
+@property(nonatomic, assign) CGFloat scale;
+@property(nonatomic, assign) CGFloat squeeze;
+@property(nonatomic, assign) CGFloat skew;
+@property(nonatomic, assign) double rotation;
+
+@property(nonatomic, assign) float alpha;
+@property(nonatomic, assign) CGBlendMode blendMode;
+
+@end

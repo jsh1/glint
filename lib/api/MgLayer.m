@@ -26,41 +26,21 @@
 
 #import "MgCoderExtensions.h"
 #import "MgCoreGraphics.h"
+#import "MgLayerState.h"
 #import "MgNodeInternal.h"
 
 #import <Foundation/Foundation.h>
 
+#define STATE ((MgLayerState *)(self.state))
+
 @implementation MgLayer
 {
-  CGPoint _position;
-  CGPoint _anchor;
-  CGSize _size;
-  CGPoint _origin;
-  CGFloat _scale;
-  CGFloat _squeeze;
-  CGFloat _skew;
-  double _rotation;
-  float _alpha;
-  CGBlendMode _blendMode;
   MgLayer *_mask;
 }
 
-- (id)init
++ (Class)stateClass
 {
-  self = [super init];
-  if (self == nil)
-    return nil;
-
-  _anchor = CGPointMake((CGFloat).5, (CGFloat).5);
-  _size = CGSizeZero;
-  _origin = CGPointZero;
-  _scale = 1;
-  _squeeze = 1;
-
-  _alpha = 1;
-  _blendMode = kCGBlendModeNormal;
-
-  return self;
+  return [MgLayerState class];
 }
 
 + (BOOL)automaticallyNotifiesObserversOfPosition
@@ -70,15 +50,17 @@
 
 - (CGPoint)position
 {
-  return _position;
+  return STATE.position;
 }
 
 - (void)setPosition:(CGPoint)p
 {
-  if (!CGPointEqualToPoint(_position, p))
+  MgLayerState *state = STATE;
+
+  if (!CGPointEqualToPoint(state.position, p))
     {
       [self willChangeValueForKey:@"position"];
-      _position = p;
+      state.position = p;
       [self incrementVersion];
       [self didChangeValueForKey:@"position"];
     }
@@ -91,15 +73,17 @@
 
 - (CGPoint)anchor
 {
-  return _anchor;
+  return STATE.anchor;
 }
 
 - (void)setAnchor:(CGPoint)p
 {
-  if (!CGPointEqualToPoint(_anchor, p))
+  MgLayerState *state = STATE;
+
+  if (!CGPointEqualToPoint(state.anchor, p))
     {
       [self willChangeValueForKey:@"anchor"];
-      _anchor = p;
+      state.anchor = p;
       [self incrementVersion];
       [self didChangeValueForKey:@"anchor"];
     }
@@ -112,15 +96,17 @@
 
 - (CGSize)size
 {
-  return _size;
+  return STATE.size;
 }
 
 - (void)setSize:(CGSize)s
 {
-  if (!CGSizeEqualToSize(_size, s))
+  MgLayerState *state = STATE;
+
+  if (!CGSizeEqualToSize(state.size, s))
     {
       [self willChangeValueForKey:@"size"];
-      _size = s;
+      state.size = s;
       [self incrementVersion];
       [self didChangeValueForKey:@"size"];
     }
@@ -133,15 +119,17 @@
 
 - (CGPoint)origin
 {
-  return _origin;
+  return STATE.origin;
 }
 
 - (void)setOrigin:(CGPoint)p
 {
-  if (!CGPointEqualToPoint(_origin, p))
+  MgLayerState *state = STATE;
+
+  if (!CGPointEqualToPoint(state.origin, p))
     {
       [self willChangeValueForKey:@"origin"];
-      _origin = p;
+      state.origin = p;
       [self incrementVersion];
       [self didChangeValueForKey:@"origin"];
     }
@@ -154,15 +142,17 @@
 
 - (CGFloat)scale
 {
-  return _scale;
+  return STATE.scale;
 }
 
 - (void)setScale:(CGFloat)x
 {
-  if (_scale != x)
+  MgLayerState *state = STATE;
+
+  if (state.scale != x)
     {
       [self willChangeValueForKey:@"scale"];
-      _scale = x;
+      state.scale = x;
       [self incrementVersion];
       [self didChangeValueForKey:@"scale"];
     }
@@ -175,15 +165,17 @@
 
 - (CGFloat)squeeze
 {
-  return _squeeze;
+  return STATE.squeeze;
 }
 
 - (void)setSqueeze:(CGFloat)x
 {
-  if (_squeeze != x)
+  MgLayerState *state = STATE;
+
+  if (state.squeeze != x)
     {
       [self willChangeValueForKey:@"squeeze"];
-      _squeeze = x;
+      state.squeeze = x;
       [self incrementVersion];
       [self didChangeValueForKey:@"squeeze"];
     }
@@ -196,15 +188,17 @@
 
 - (CGFloat)skew
 {
-  return _skew;
+  return STATE.skew;
 }
 
 - (void)setSkew:(CGFloat)x
 {
-  if (_skew != x)
+  MgLayerState *state = STATE;
+
+  if (state.skew != x)
     {
       [self willChangeValueForKey:@"skew"];
-      _skew = x;
+      state.skew = x;
       [self incrementVersion];
       [self didChangeValueForKey:@"skew"];
     }
@@ -217,15 +211,17 @@
 
 - (double)rotation
 {
-  return _rotation;
+  return STATE.rotation;
 }
 
 - (void)setRotation:(double)x
 {
-  if (_rotation != x)
+  MgLayerState *state = STATE;
+
+  if (state.rotation != x)
     {
       [self willChangeValueForKey:@"rotation"];
-      _rotation = x;
+      state.rotation = x;
       [self incrementVersion];
       [self didChangeValueForKey:@"rotation"];
     }
@@ -263,15 +259,16 @@
 	
      of course that might be backwards. */
 
-  double m22 = _scale;
-  double m11 = m22 * _squeeze;
+  double m22 = self.scale;
+  double m11 = m22 * self.squeeze;
   double m12 = 0;
-  double m21 = m11 * _skew;
+  double m21 = m11 * self.skew;
 
-  if (_rotation != 0)
+  double rotation = self.rotation;
+  if (rotation != 0)
     {
-      double sn = sin(_rotation);
-      double cs = cos(_rotation);
+      double sn = sin(rotation);
+      double cs = cos(rotation);
 
       double m11_ = m11 * cs  + m12 * sn;
       double m12_ = m11 * -sn + m12 * cs;
@@ -297,24 +294,31 @@
 
      and the easy one: m' = m . translation(position.x, position.y). */
 
-  double ax = _origin.x + _anchor.x * _size.width;
-  double ay = _origin.y + _anchor.y * _size.height;
+  CGPoint position = self.position;
+  CGPoint anchor = self.anchor;
+  CGSize size = self.size;
+  CGPoint origin = self.origin;
 
-  double tx = m11 * -ax + m21 * -ay + _position.x;
-  double ty = m12 * -ax + m22 * -ay + _position.y;
+  double ax = origin.x + anchor.x * size.width;
+  double ay = origin.y + anchor.y * size.height;
+
+  double tx = m11 * -ax + m21 * -ay + position.x;
+  double ty = m12 * -ax + m22 * -ay + position.y;
 
   return CGAffineTransformMake(m11, m12, m21, m22, tx, ty);
 }
 
 - (CGRect)bounds
 {
-  return (CGRect){_origin, _size};
+  MgLayerState *state = STATE;
+
+  return (CGRect){state.origin, state.size};
 }  
 
 - (void)setBounds:(CGRect)r
 {
-  [self setOrigin:r.origin];
-  [self setSize:r.size];
+  self.origin = r.origin;
+  self.size = r.size;
 }
 
 + (BOOL)automaticallyNotifiesObserversOfAlpha
@@ -324,15 +328,17 @@
 
 - (float)alpha
 {
-  return _alpha;
+  return STATE.alpha;
 }
 
 - (void)setAlpha:(float)x
 {
-  if (_alpha != x)
+  MgLayerState *state = STATE;
+
+  if (state.alpha != x)
     {
       [self willChangeValueForKey:@"alpha"];
-      _alpha = x;
+      state.alpha = x;
       [self incrementVersion];
       [self didChangeValueForKey:@"alpha"];
     }
@@ -345,15 +351,17 @@
 
 - (CGBlendMode)blendMode
 {
-  return _blendMode;
+  return STATE.blendMode;
 }
 
 - (void)setBlendMode:(CGBlendMode)x
 {
-  if (_blendMode != x)
+  MgLayerState *state = STATE;
+
+  if (state.blendMode != x)
     {
       [self willChangeValueForKey:@"blendMode"];
-      _blendMode = x;
+      state.blendMode = x;
       [self incrementVersion];
       [self didChangeValueForKey:@"blendMode"];
     }
@@ -526,16 +534,6 @@
 {
   MgLayer *copy = [super copyWithZone:zone];
 
-  copy->_position = _position;
-  copy->_anchor = _anchor;
-  copy->_size = _size;
-  copy->_origin = _origin;
-  copy->_scale = _scale;
-  copy->_squeeze = _squeeze;
-  copy->_skew = _skew;
-  copy->_rotation = _rotation;
-  copy->_alpha = _alpha;
-  copy->_blendMode = _blendMode;
   copy->_mask = _mask;
 
   return copy;
@@ -547,36 +545,6 @@
 {
   [super encodeWithCoder:c];
 
-  if (_position.x != 0 || _position.y != 0)
-    [c mg_encodeCGPoint:_position forKey:@"position"];
-
-  if (_anchor.x != (CGFloat).5 || _anchor.y != (CGFloat).5)
-    [c mg_encodeCGPoint:_anchor forKey:@"anchor"];
-
-  if (_size.width != 0 || _size.height != 0)
-    [c mg_encodeCGSize:_size forKey:@"size"];
-
-  if (_origin.x != 0 || _origin.y != 0)
-    [c mg_encodeCGPoint:_origin forKey:@"origin"];
-
-  if (_scale != 1)
-    [c encodeDouble:_scale forKey:@"scale"];
-
-  if (_squeeze != 1)
-    [c encodeDouble:_squeeze forKey:@"squeeze"];
-
-  if (_skew != 0)
-    [c encodeDouble:_skew forKey:@"skew"];
-
-  if (_rotation != 0)
-    [c encodeDouble:_rotation forKey:@"rotation"];
-
-  if (_alpha != 1)
-    [c encodeFloat:_alpha forKey:@"alpha"];
-
-  if (_blendMode != kCGBlendModeNormal)
-    [c encodeInt:_blendMode forKey:@"blendMode"];
-
   if (_mask != nil)
     [c encodeObject:_mask forKey:@"mask"];
 }
@@ -586,55 +554,6 @@
   self = [super initWithCoder:c];
   if (self == nil)
     return nil;
-
-  if ([c containsValueForKey:@"position"])
-    _position = [c mg_decodeCGPointForKey:@"position"];
-
-  if ([c containsValueForKey:@"anchor"])
-    _anchor = [c mg_decodeCGPointForKey:@"anchor"];
-  else
-    _anchor = CGPointMake((CGFloat).5, (CGFloat).5);
-
-  if ([c containsValueForKey:@"size"])
-    _size = [c mg_decodeCGSizeForKey:@"size"];
-
-  if ([c containsValueForKey:@"origin"])
-    _origin = [c mg_decodeCGPointForKey:@"origin"];
-
-  /* FIXME: backwards-compat, remove. */
-
-  if ([c containsValueForKey:@"bounds"])
-    {
-      CGRect r = [c mg_decodeCGRectForKey:@"bounds"];
-      _size = r.size;
-      _origin = r.origin;
-    }
-
-  if ([c containsValueForKey:@"scale"])
-    _scale = [c decodeDoubleForKey:@"scale"];
-  else
-    _scale = 1;
-
-  if ([c containsValueForKey:@"squeeze"])
-    _squeeze = [c decodeDoubleForKey:@"squeeze"];
-  else
-    _squeeze = 1;
-
-  if ([c containsValueForKey:@"skew"])
-    _skew = [c decodeDoubleForKey:@"skew"];
-
-  if ([c containsValueForKey:@"rotation"])
-    _rotation = [c decodeDoubleForKey:@"rotation"];
-
-  if ([c containsValueForKey:@"alpha"])
-    _alpha = [c decodeFloatForKey:@"alpha"];
-  else
-    _alpha = 1;
-
-  if ([c containsValueForKey:@"blendMode"])
-    _blendMode = (CGBlendMode)[c decodeIntForKey:@"blendMode"];
-  else
-    _blendMode = kCGBlendModeNormal;
 
   if ([c containsValueForKey:@"mask"])
     {

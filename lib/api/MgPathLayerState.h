@@ -22,31 +22,22 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#ifndef MG_H
-#define MG_H
+#import "MgLayerState.h"
 
-#include "MgBase.h"
+@interface MgPathLayerState : MgLayerState
 
-#ifdef __OBJC__
-# import "MgCoreAnimationLayer.h"
-# import "MgDrawingLayer.h"
-# import "MgGradientLayer.h"
-# import "MgGradientLayerState.h"
-# import "MgGroupLayer.h"
-# import "MgGroupLayerState.h"
-# import "MgImageLayer.h"
-# import "MgImageLayerState.h"
-# import "MgImageProvider.h"
-# import "MgLayer.h"
-# import "MgLayerState.h"
-# import "MgModuleLayer.h"
-# import "MgModuleState.h"
-# import "MgNode.h"
-# import "MgNodeState.h"
-# import "MgPathLayer.h"
-# import "MgPathLayerState.h"
-# import "MgRectLayer.h"
-# import "MgRectLayerState.h"
-#endif
+@property(nonatomic) CGPathRef path;
 
-#endif /* MG_H */
+@property(nonatomic, assign) CGPathDrawingMode drawingMode;
+
+@property(nonatomic) CGColorRef fillColor;
+
+@property(nonatomic) CGColorRef strokeColor;
+@property(nonatomic, assign) CGFloat lineWidth;
+@property(nonatomic, assign) CGFloat miterLimit;
+@property(nonatomic, assign) CGLineCap lineCap;
+@property(nonatomic, assign) CGLineJoin lineJoin;
+@property(nonatomic, assign) CGFloat lineDashPhase;
+@property(nonatomic, copy) NSArray *lineDashPattern;
+
+@end

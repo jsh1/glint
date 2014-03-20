@@ -26,25 +26,23 @@
 
 #import "MgCoderExtensions.h"
 #import "MgCoreGraphics.h"
+#import "MgGradientLayerState.h"
 #import "MgLayerInternal.h"
 #import "MgNodeInternal.h"
 
 #import <Foundation/Foundation.h>
 
+#define STATE ((MgGradientLayerState *)(self.state))
+
 @implementation MgGradientLayer
 {
-  NSArray *_colors;
-  NSArray *_locations;
-  BOOL _radial;
-  CGPoint _startPoint;
-  CGPoint _endPoint;
-  CGFloat _startRadius;
-  CGFloat _endRadius;
-  BOOL _drawsBeforeStart;
-  BOOL _drawsAfterEnd;
-
   /* Cached. */
   id _gradient;				/* CGGradientRef */
+}
+
++ (Class)stateClass
+{
+  return [MgGradientLayerState class];
 }
 
 + (BOOL)automaticallyNotifiesObserversOfColors
@@ -52,17 +50,25 @@
   return NO;
 }
 
+- (void)setState:(MgNodeState *)state
+{
+  _gradient = nil;
+  [super setState:state];
+}
+
 - (NSArray *)colors
 {
-  return _colors != nil ? _colors : @[];
+  return STATE.colors;
 }
 
 - (void)setColors:(NSArray *)array
 {
-  if (_colors != array && ![_colors isEqual:array])
+  MgGradientLayerState *state = STATE;
+
+  if (state.colors != array && ![state.colors isEqual:array])
     {
       [self willChangeValueForKey:@"colors"];
-      _colors = [array copy];
+      state.colors = [array copy];
       _gradient = nil;
       [self incrementVersion];
       [self didChangeValueForKey:@"colors"];
@@ -76,15 +82,17 @@
 
 - (NSArray *)locations
 {
-  return _locations != nil ? _locations : @[];
+  return STATE.locations;
 }
 
 - (void)setLocations:(NSArray *)array
 {
-  if (_locations != array && ![_locations isEqual:array])
+  MgGradientLayerState *state = STATE;
+
+  if (state.locations != array && ![state.locations isEqual:array])
     {
       [self willChangeValueForKey:@"locations"];
-      _locations = [array copy];
+      state.locations = [array copy];
       _gradient = nil;
       [self incrementVersion];
       [self didChangeValueForKey:@"locations"];
@@ -98,15 +106,17 @@
 
 - (BOOL)isRadial
 {
-  return _radial;
+  return STATE.radial;
 }
 
 - (void)setRadial:(BOOL)flag
 {
-  if (_radial != flag)
+  MgGradientLayerState *state = STATE;
+
+  if (state.radial != flag)
     {
       [self willChangeValueForKey:@"radial"];
-      _radial = flag;
+      state.radial = flag;
       [self incrementVersion];
       [self didChangeValueForKey:@"radial"];
     }
@@ -119,15 +129,17 @@
 
 - (CGPoint)startPoint
 {
-  return _startPoint;
+  return STATE.startPoint;
 }
 
 - (void)setStartPoint:(CGPoint)p
 {
-  if (!CGPointEqualToPoint(_startPoint, p))
+  MgGradientLayerState *state = STATE;
+
+  if (!CGPointEqualToPoint(state.startPoint, p))
     {
       [self willChangeValueForKey:@"startPoint"];
-      _startPoint = p;
+      state.startPoint = p;
       [self incrementVersion];
       [self didChangeValueForKey:@"startPoint"];
     }
@@ -140,15 +152,17 @@
 
 - (CGPoint)endPoint
 {
-  return _endPoint;
+  return STATE.endPoint;
 }
 
 - (void)setEndPoint:(CGPoint)p
 {
-  if (!CGPointEqualToPoint(_endPoint, p))
+  MgGradientLayerState *state = STATE;
+
+  if (!CGPointEqualToPoint(state.endPoint, p))
     {
       [self willChangeValueForKey:@"endPoint"];
-      _endPoint = p;
+      state.endPoint = p;
       [self incrementVersion];
       [self didChangeValueForKey:@"endPoint"];
     }
@@ -161,15 +175,17 @@
 
 - (CGFloat)startRadius
 {
-  return _startRadius;
+  return STATE.startRadius;
 }
 
 - (void)setStartRadius:(CGFloat)x
 {
-  if (_startRadius != x)
+  MgGradientLayerState *state = STATE;
+
+  if (state.startRadius != x)
     {
       [self willChangeValueForKey:@"startRadius"];
-      _startRadius = x;
+      state.startRadius = x;
       [self incrementVersion];
       [self didChangeValueForKey:@"startRadius"];
     }
@@ -182,15 +198,17 @@
 
 - (CGFloat)endRadius
 {
-  return _endRadius;
+  return STATE.endRadius;
 }
 
 - (void)setEndRadius:(CGFloat)x
 {
-  if (_endRadius != x)
+  MgGradientLayerState *state = STATE;
+
+  if (state.endRadius != x)
     {
       [self willChangeValueForKey:@"endRadius"];
-      _endRadius = x;
+      state.endRadius = x;
       [self incrementVersion];
       [self didChangeValueForKey:@"endRadius"];
     }
@@ -203,15 +221,17 @@
 
 - (BOOL)drawsBeforeStart
 {
-  return _drawsBeforeStart;
+  return STATE.drawsBeforeStart;
 }
 
 - (void)setDrawsBeforeStart:(BOOL)flag
 {
-  if (_drawsBeforeStart != flag)
+  MgGradientLayerState *state = STATE;
+
+  if (state.drawsBeforeStart != flag)
     {
       [self willChangeValueForKey:@"drawsBeforeStart"];
-      _drawsBeforeStart = flag;
+      state.drawsBeforeStart = flag;
       [self incrementVersion];
       [self didChangeValueForKey:@"drawsBeforeStart"];
     }
@@ -224,15 +244,17 @@
 
 - (BOOL)drawsAfterEnd
 {
-  return _drawsAfterEnd;
+  return STATE.drawsAfterEnd;
 }
 
 - (void)setDrawsAfterEnd:(BOOL)flag
 {
-  if (_drawsAfterEnd != flag)
+  MgGradientLayerState *state = STATE;
+
+  if (state.drawsAfterEnd != flag)
     {
       [self willChangeValueForKey:@"drawsAfterEnd"];
-      _drawsAfterEnd = flag;
+      state.drawsAfterEnd = flag;
       [self incrementVersion];
       [self didChangeValueForKey:@"drawsAfterEnd"];
     }
@@ -278,94 +300,5 @@
 }
 
 /* FIXME: implement _renderLayerMaskWithState: */
-
-/** NSCopying methods. **/
-
-- (id)copyWithZone:(NSZone *)zone
-{
-  MgGradientLayer *copy = [super copyWithZone:zone];
-
-  copy->_colors = _colors;
-  copy->_locations = _locations;
-  copy->_radial = _radial;
-  copy->_startPoint = _startPoint;
-  copy->_endPoint = _endPoint;
-  copy->_startRadius = _startRadius;
-  copy->_endRadius = _endRadius;
-  copy->_drawsBeforeStart = _drawsBeforeStart;
-  copy->_drawsAfterEnd = _drawsAfterEnd;
-
-  return copy;
-}
-
-/** NSCoding methods. **/
-
-- (void)encodeWithCoder:(NSCoder *)c
-{
-  [super encodeWithCoder:c];
-
-  if (_colors != nil)
-    [c encodeObject:_colors forKey:@"colors"];
-
-  if (_locations != nil)
-    [c encodeObject:_locations forKey:@"locations"];
-
-  if (_radial)
-    [c encodeBool:_radial forKey:@"radial"];
-
-  if (_startPoint.x != 0 || _startPoint.y != 0)
-    [c mg_encodeCGPoint:_startPoint forKey:@"startPoint"];
-
-  if (_endPoint.x != 0 || _endPoint.y != 0)
-    [c mg_encodeCGPoint:_endPoint forKey:@"endPoint"];
-
-  if (_startRadius != 0)
-    [c encodeDouble:_startRadius forKey:@"startRadius"];
-
-  if (_endRadius != 0)
-    [c encodeDouble:_endRadius forKey:@"endRadius"];
-
-  if (_drawsBeforeStart)
-    [c encodeBool:_drawsBeforeStart forKey:@"drawsBeforeStart"];
-
-  if (_drawsAfterEnd)
-    [c encodeBool:_drawsAfterEnd forKey:@"drawsAfterEnd"];
-}
-
-- (id)initWithCoder:(NSCoder *)c
-{
-  self = [super initWithCoder:c];
-  if (self == nil)
-    return nil;
-
-  if ([c containsValueForKey:@"colors"])
-    _colors = [c decodeObjectOfClass:[NSArray class] forKey:@"colors"];
-
-  if ([c containsValueForKey:@"locations"])
-    _locations = [c decodeObjectOfClass:[NSArray class] forKey:@"locations"];
-
-  if ([c containsValueForKey:@"radial"])
-    _radial = [c decodeBoolForKey:@"radial"];
-
-  if ([c containsValueForKey:@"startPoint"])
-    _startPoint = [c mg_decodeCGPointForKey:@"startPoint"];
-
-  if ([c containsValueForKey:@"endPoint"])
-    _endPoint = [c mg_decodeCGPointForKey:@"endPoint"];
-
-  if ([c containsValueForKey:@"startRadius"])
-    _startRadius = [c decodeDoubleForKey:@"startRadius"];
-
-  if ([c containsValueForKey:@"endRadius"])
-    _endRadius = [c decodeDoubleForKey:@"endRadius"];
-
-  if ([c containsValueForKey:@"drawsBeforeStart"])
-    _drawsBeforeStart = [c decodeBoolForKey:@"drawsBeforeStart"];
-
-  if ([c containsValueForKey:@"drawsAfterEnd"])
-    _drawsAfterEnd = [c decodeBoolForKey:@"drawsAfterEnd"];
-
-  return self;
-}
 
 @end

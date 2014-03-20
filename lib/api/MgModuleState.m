@@ -22,31 +22,48 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#ifndef MG_H
-#define MG_H
+#import "MgModuleState.h"
 
-#include "MgBase.h"
+#import "MgNode.h"
+#import "MgModuleLayer.h"
 
-#ifdef __OBJC__
-# import "MgCoreAnimationLayer.h"
-# import "MgDrawingLayer.h"
-# import "MgGradientLayer.h"
-# import "MgGradientLayerState.h"
-# import "MgGroupLayer.h"
-# import "MgGroupLayerState.h"
-# import "MgImageLayer.h"
-# import "MgImageLayerState.h"
-# import "MgImageProvider.h"
-# import "MgLayer.h"
-# import "MgLayerState.h"
-# import "MgModuleLayer.h"
-# import "MgModuleState.h"
-# import "MgNode.h"
-# import "MgNodeState.h"
-# import "MgPathLayer.h"
-# import "MgPathLayerState.h"
-# import "MgRectLayer.h"
-# import "MgRectLayerState.h"
-#endif
+#import <Foundation/Foundation.h>
 
-#endif /* MG_H */
+@implementation MgModuleState
+
++ (instancetype)moduleState
+{
+  return [[self alloc] init];
+}
+
+- (id)init
+{
+  return [super init];
+}
+
+/** NSSecureCoding methods. **/
+
++ (BOOL)supportsSecureCoding
+{
+  return YES;
+}
+
+- (void)encodeWithCoder:(NSCoder *)c
+{
+  if (_name != nil)
+    [c encodeObject:_name forKey:@"name"];
+}
+
+- (id)initWithCoder:(NSCoder *)c
+{
+  self = [self init];
+  if (self == nil)
+    return nil;
+
+  if ([c containsValueForKey:@"name"])
+    _name = [[c decodeObjectOfClass:[NSString class] forKey:@"name"] copy];
+
+  return self;
+}
+
+@end

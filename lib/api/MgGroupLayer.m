@@ -25,15 +25,22 @@
 #import "MgGroupLayer.h"
 
 #import "MgCoderExtensions.h"
+#import "MgGroupLayerState.h"
 #import "MgLayerInternal.h"
 #import "MgNodeInternal.h"
 
 #import <Foundation/Foundation.h>
 
+#define STATE ((MgGroupLayerState *)(self.state))
+
 @implementation MgGroupLayer
 {
-  BOOL _group;
   NSMutableArray *_sublayers;
+}
+
++ (Class)stateClass
+{
+  return [MgGroupLayerState class];
 }
 
 + (BOOL)automaticallyNotifiesObserversOfGroup
@@ -41,17 +48,19 @@
   return NO;
 }
 
-- (BOOL)group
+- (BOOL)isGroup
 {
-  return _group;
+  return STATE.group;
 }
 
 - (void)setGroup:(BOOL)flag
 {
-  if (_group != flag)
+  MgGroupLayerState *state = STATE;
+
+  if (state.group != flag)
     {
       [self willChangeValueForKey:@"group"];
-      _group = flag;
+      state.group = flag;
       [self incrementVersion];
       [self didChangeValueForKey:@"group"];
     }
@@ -206,8 +215,6 @@
 {
   MgGroupLayer *copy = [super copyWithZone:zone];
 
-  copy->_group = _group;
-
   if ([_sublayers count] != 0)
     {
       for (MgLayer *node in _sublayers)
@@ -225,9 +232,6 @@
 {
   [super encodeWithCoder:c];
 
-  if (_group)
-    [c encodeBool:_group forKey:@"group"];
-
   if ([_sublayers count] != 0)
     [c encodeObject:_sublayers forKey:@"sublayers"];
 }
@@ -237,9 +241,6 @@
   self = [super initWithCoder:c];
   if (self == nil)
     return nil;
-
-  if ([c containsValueForKey:@"group"])
-    _group = [c decodeBoolForKey:@"group"];
 
   if ([c containsValueForKey:@"sublayers"])
     {

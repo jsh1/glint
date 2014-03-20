@@ -22,31 +22,26 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#ifndef MG_H
-#define MG_H
+#import "MgGroupLayer.h"
 
-#include "MgBase.h"
+@interface MgModuleLayer : MgGroupLayer
 
-#ifdef __OBJC__
-# import "MgCoreAnimationLayer.h"
-# import "MgDrawingLayer.h"
-# import "MgGradientLayer.h"
-# import "MgGradientLayerState.h"
-# import "MgGroupLayer.h"
-# import "MgGroupLayerState.h"
-# import "MgImageLayer.h"
-# import "MgImageLayerState.h"
-# import "MgImageProvider.h"
-# import "MgLayer.h"
-# import "MgLayerState.h"
-# import "MgModuleLayer.h"
-# import "MgModuleState.h"
-# import "MgNode.h"
-# import "MgNodeState.h"
-# import "MgPathLayer.h"
-# import "MgPathLayerState.h"
-# import "MgRectLayer.h"
-# import "MgRectLayerState.h"
-#endif
+/* The states of this module. Modifying this property does not
+   currently modify the underlying MgNodeState properties for each item
+   in the subgraph defined by the receiver. */
 
-#endif /* MG_H */
+@property(nonatomic, copy) NSArray *moduleStates;
+
+- (void)addModuleState:(MgModuleState *)state;
+- (void)removeModuleState:(MgModuleState *)state;
+
+- (void)insertModuleState:(MgModuleState *)state atIndex:(NSInteger)idx;
+- (void)removeModuleStateAtIndex:(NSInteger)idx;
+
+- (MgModuleState *)moduleStateWithName:(NSString *)name;
+
+/* The current state of this module. */
+
+@property(nonatomic, strong) MgModuleState *moduleState;
+
+@end
