@@ -34,7 +34,7 @@ extern NSString *const GtDocumentNodeDidChange;
 
 @property(nonatomic, assign) CGSize documentSize;
 @property(nonatomic, assign, readonly) CGPoint documentCenter;
-@property(nonatomic, strong) MgLayer *documentNode;
+@property(nonatomic, strong) MgModuleLayer *documentNode;
 
 - (void)disableUndo;
 - (void)reenableUndo;
@@ -81,6 +81,9 @@ extern NSString *const GtDocumentNodeDidChange;
 - (IBAction)setAlpha:(id)sender;
 - (NSInteger)setAlphaState:(id)sender;
 
+- (IBAction)addModuleState:(id)sender;
+- (IBAction)removeModuleState:(id)sender;
+
 - (void)removeTreeNodeFromParent:(GtTreeNode *)tn;
 - (void)replaceTreeNode:(GtTreeNode *)tn with:(MgNode *)node;
 
@@ -93,5 +96,8 @@ extern NSString *const GtDocumentNodeDidChange;
     forKey:(NSString *)key;
 - (void)node:(GtTreeNode *)tn moveObject:(id)value atIndex:(NSInteger)idx
     by:(NSInteger)delta forKey:(NSString *)key;
+
+- (void)module:(MgModuleLayer *)node state:(MgModuleState *)state
+    setValue:(id)value forKey:(NSString *)key;
 
 @end

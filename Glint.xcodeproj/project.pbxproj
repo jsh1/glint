@@ -62,6 +62,8 @@
 		579CAFD118C381BD0051454F /* MgCoreGraphics.c in Sources */ = {isa = PBXBuildFile; fileRef = 579CAFCF18C381BD0051454F /* MgCoreGraphics.c */; };
 		579CAFD918C3F63A0051454F /* MgCoderExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 579CAFD818C3F63A0051454F /* MgCoderExtensions.m */; };
 		57B111B718D0BB8C00A41A64 /* GtViewerOverlayLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 57B111B618D0BB8C00A41A64 /* GtViewerOverlayLayer.m */; };
+		57DE109E18DDA99F00B8EC27 /* GtStateListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 57DE109D18DDA99F00B8EC27 /* GtStateListViewController.m */; };
+		57DE10A318DDF15900B8EC27 /* GtStateListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 57DE10A118DDF15900B8EC27 /* GtStateListView.xib */; };
 		57E776B318BD3478007CD31F /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57E776B218BD3478007CD31F /* Quartz.framework */; };
 		57E776B418BD347D007CD31F /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5714A8B618BD322900ED67EE /* AppKit.framework */; };
 		57E776B618BD3488007CD31F /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57E776B518BD3487007CD31F /* ImageIO.framework */; };
@@ -185,6 +187,9 @@
 		579CAFD818C3F63A0051454F /* MgCoderExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgCoderExtensions.m; sourceTree = "<group>"; };
 		57B111B518D0BB8C00A41A64 /* GtViewerOverlayLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtViewerOverlayLayer.h; path = src/GtViewerOverlayLayer.h; sourceTree = "<group>"; };
 		57B111B618D0BB8C00A41A64 /* GtViewerOverlayLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtViewerOverlayLayer.m; path = src/GtViewerOverlayLayer.m; sourceTree = "<group>"; };
+		57DE109C18DDA99F00B8EC27 /* GtStateListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtStateListViewController.h; path = src/GtStateListViewController.h; sourceTree = "<group>"; };
+		57DE109D18DDA99F00B8EC27 /* GtStateListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtStateListViewController.m; path = src/GtStateListViewController.m; sourceTree = "<group>"; };
+		57DE10A218DDF15900B8EC27 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = resources/en.lproj/GtStateListView.xib; sourceTree = "<group>"; };
 		57E776B218BD3478007CD31F /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = System/Library/Frameworks/Quartz.framework; sourceTree = SDKROOT; };
 		57E776B518BD3487007CD31F /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		57E776B718BD348D007CD31F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -364,6 +369,8 @@
 				572A5B1918C4CD4100AB8086 /* GtSplitView.m */,
 				5721E87E18C6A2DF000DA2C3 /* GtSplitViewController.h */,
 				5721E87F18C6A2DF000DA2C3 /* GtSplitViewController.m */,
+				57DE109C18DDA99F00B8EC27 /* GtStateListViewController.h */,
+				57DE109D18DDA99F00B8EC27 /* GtStateListViewController.m */,
 				572BFA9F18D72814000E9B84 /* GtTabViewController.h */,
 				572BFAA018D72815000E9B84 /* GtTabViewController.m */,
 				5738567618C746D80010CFB7 /* GtTreeNode.h */,
@@ -399,6 +406,7 @@
 			children = (
 				5714A8CB18BD322900ED67EE /* MainMenu.xib */,
 				572BFA9918D72263000E9B84 /* GtInspectorView.xib */,
+				57DE10A118DDF15900B8EC27 /* GtStateListView.xib */,
 				572BFA9C18D72722000E9B84 /* GtTabView.xib */,
 				5721E87518C6745A000DA2C3 /* GtTreeView.xib */,
 				57618DB918C5D1F5004108D8 /* GtViewerView.xib */,
@@ -478,6 +486,7 @@
 			files = (
 				5721E87718C6745A000DA2C3 /* GtTreeView.xib in Resources */,
 				572A5B2818C4CF6200AB8086 /* GtWindow.xib in Resources */,
+				57DE10A318DDF15900B8EC27 /* GtStateListView.xib in Resources */,
 				572BFA9E18D72722000E9B84 /* GtTabView.xib in Resources */,
 				572BFAB718D751E5000E9B84 /* classes.json in Resources */,
 				5714A8CF18BD322900ED67EE /* Images.xcassets in Resources */,
@@ -500,6 +509,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				57DE109E18DDA99F00B8EC27 /* GtStateListViewController.m in Sources */,
 				579CAFD918C3F63A0051454F /* MgCoderExtensions.m in Sources */,
 				572BFA9618D72256000E9B84 /* GtInspectorControl.m in Sources */,
 				572BFA9818D72256000E9B84 /* GtInspectorViewController.m in Sources */,
@@ -612,6 +622,14 @@
 				57618DBA18C5D1F5004108D8 /* en */,
 			);
 			name = GtViewerView.xib;
+			sourceTree = "<group>";
+		};
+		57DE10A118DDF15900B8EC27 /* GtStateListView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				57DE10A218DDF15900B8EC27 /* en */,
+			);
+			name = GtStateListView.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

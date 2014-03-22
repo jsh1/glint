@@ -28,7 +28,7 @@
 #import "GtColor.h"
 #import "GtDocument.h"
 #import "GtInspectorViewController.h"
-#import "GtSplitViewController.h"
+#import "GtStateListViewController.h"
 #import "GtTreeNode.h"
 #import "GtTreeViewController.h"
 #import "GtViewController.h"
@@ -42,6 +42,7 @@
   GtViewController *_viewController;
   GtTreeNode *_tree;
   NSArray *_selection;
+  GtTreeNode *_currentModule;
 }
 
 - (void)invalidate
@@ -70,6 +71,8 @@
     {
       _tree = [[GtTreeNode alloc] initWithNode:rootNode
 	       parent:nil parentKey:nil parentIndex:NSNotFound];
+
+      self.currentModule = _tree;
     }
 
   return _tree;
@@ -182,6 +185,26 @@
       [self willChangeValueForKey:@"selection"];
       _selection = [array copy];
       [self didChangeValueForKey:@"selection"];
+    }
+}
+
++ (BOOL)automaticallyNotifiesObserversOfCurrentModule
+{
+  return NO;
+}
+
+- (GtTreeNode *)currentModule
+{
+  return _currentModule;
+}
+
+- (void)setCurrentModule:(GtTreeNode *)module
+{
+  if (_currentModule != module)
+    {
+      [self willChangeValueForKey:@"currentModule"];
+      _currentModule = module;
+      [self didChangeValueForKey:@"currentModule"];
     }
 }
 
@@ -401,6 +424,9 @@ viewControllerClass(id sender)
 
     case 2:
       return [GtInspectorViewController class];
+
+    case 3:
+      return [GtStateListViewController class];
 
     default:
       return Nil;

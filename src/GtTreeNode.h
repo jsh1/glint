@@ -49,6 +49,7 @@
 - (BOOL)foreachNode:(void (^)(GtTreeNode *node, BOOL *stop))thunk;
 
 - (GtTreeNode *)containingGroup;
+- (GtTreeNode *)containingModule;
 
 - (BOOL)isDescendantOf:(GtTreeNode *)tn;
 - (GtTreeNode *)ancestorSharedWith:(GtTreeNode *)tn;

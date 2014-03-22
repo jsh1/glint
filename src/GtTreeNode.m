@@ -136,6 +136,17 @@
   return nil;
 }
 
+- (GtTreeNode *)containingModule
+{
+  for (GtTreeNode *n = self.parent; n != nil; n = n.parent)
+    {
+      if ([n.node isKindOfClass:[MgModuleLayer class]])
+	return n;
+    }
+
+  return nil;
+}
+
 - (BOOL)isDescendantOf:(GtTreeNode *)tn
 {
   for (GtTreeNode *n = self; n != nil; n = n.parent)

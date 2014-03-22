@@ -22,44 +22,11 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "GtBase.h"
+#import "GtViewController.h"
 
-@interface GtWindowController : NSWindowController <NSSplitViewDelegate>
+@interface GtStateListViewController : GtViewController
+    <NSTableViewDataSource, NSTableViewDelegate>
 
-@property(nonatomic, weak) IBOutlet NSView *mainView;
-
-@property(nonatomic, weak, readonly) GtDocument *document;
-
-@property(nonatomic, strong, readonly) GtTreeNode *tree;
-
-/* Selected GtTreeNode references. */
-
-@property(nonatomic, copy) NSArray *selection;
-
-/* Node's object is of type MgModuleLayer. */
-
-@property(nonatomic, strong) GtTreeNode *currentModule;
-
-- (id)viewControllerWithClass:(Class)cls;
-
-- (void)invalidate;
-
-- (void)saveWindowState;
-- (void)applySavedWindowState;
-
-- (IBAction)nextNode:(id)sender;
-- (IBAction)previousNode:(id)sender;
-- (IBAction)parentNode:(id)sender;
-- (IBAction)childNode:(id)sender;
-
-- (IBAction)zoomIn:(id)sender;
-- (IBAction)zoomOut:(id)sender;
-- (IBAction)zoomTo:(id)sender;		/* zoom(2^[sender tag]) */
-- (IBAction)zoomToFit:(id)sender;
-- (IBAction)zoomToFill:(id)sender;
-
-- (IBAction)showView:(id)sender;
-- (IBAction)toggleView:(id)sender;
-- (NSInteger)viewState:(id)sender;
+@property(nonatomic, weak) IBOutlet NSTableView *tableView;
 
 @end

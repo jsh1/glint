@@ -39,7 +39,7 @@ NSString *const GtDocumentNodeDidChange = @"GtDocumentNodeDidChange";
 {
   GtWindowController *_windowController;
   CGSize _documentSize;
-  MgLayer *_documentNode;
+  MgModuleLayer *_documentNode;
   int _undoDisable;
 }
 
@@ -58,7 +58,7 @@ NSString *const GtDocumentNodeDidChange = @"GtDocumentNodeDidChange";
   CGFloat width = [defaults doubleForKey:@"GtDefaultDocumentWidth"];
   CGFloat height = [defaults doubleForKey:@"GtDefaultDocumentHeight"];
 
-  MgGroupLayer *root = [MgGroupLayer node];
+  MgModuleLayer *root = [MgModuleLayer node];
 
   root.name = @"Root";
   root.size = CGSizeMake(width, height);
@@ -106,12 +106,12 @@ NSString *const GtDocumentNodeDidChange = @"GtDocumentNodeDidChange";
   return NO;
 }
 
-- (MgLayer *)documentNode
+- (MgModuleLayer *)documentNode
 {
   return _documentNode;
 }
 
-- (void)setDocumentNode:(MgLayer *)node
+- (void)setDocumentNode:(MgModuleLayer *)node
 {
   if (_documentNode != node)
     {
@@ -158,7 +158,7 @@ NSString *const GtDocumentNodeDidChange = @"GtDocumentNodeDidChange";
 
       self.documentSize = [unarchiver mg_decodeCGSizeForKey:@"documentSize"];
       self.documentNode = [unarchiver decodeObjectOfClass:
-			   [MgLayer class]
+			   [MgModuleLayer class]
 			   forKey:NSKeyedArchiveRootObjectKey];
 
       [unarchiver finishDecoding];
@@ -961,6 +961,85 @@ fract(CGFloat x)
   return on && off ? NSMixedState : on ? NSOnState : NSOffState;
 }
 
+- (IBAction)addModuleState:(id)sender
+{
+  GtTreeNode *module = self.windowController.currentModule;
+  MgModuleLayer *layer = (MgModuleLayer *)module.node;
+
+  MgModuleState *state = [MgModuleState moduleState];
+
+  for (int i = 1;; i++)
+    {
+      NSString *name = [NSString stringWithFormat:@"State %d", i];
+
+      BOOL unique = YES;
+
+      for (MgModuleState *state in layer.moduleStates)
+	{
+	  if ([state.name isEqualToString:name])
+	    {
+	      unique = NO;
+	      break;
+	    }
+	}
+
+      if (unique)
+	{
+	  state.name = name;
+	  break;
+	}
+    }
+
+  [self node:module insertObject:state
+   atIndex:NSIntegerMax forKey:@"moduleStates"];
+
+  [self node:module setValue:state forKey:@"moduleState"];
+}
+
+- (IBAction)removeModuleState:(id)sender
+{
+  GtTreeNode *module = self.windowController.currentModule;
+  MgModuleLayer *layer = (MgModuleLayer *)module.node;
+
+  MgModuleState *state = layer.moduleState;
+  if (state == nil)
+      return;
+
+  NSInteger idx = [layer.moduleStates indexOfObjectIdenticalTo:state];
+  if (idx == NSNotFound)
+    return;
+
+  MgModuleState *new_state = idx == 0 ? nil : layer.moduleStates[idx-1];
+  [self node:module setValue:new_state forKey:@"moduleState"];
+
+  [self node:module removeObject:state atIndex:idx forKey:@"moduleStates"];
+
+  [module foreachNode:^(GtTreeNode *node, BOOL *stop)
+    {
+      NSInteger idx = 0;
+      for (MgNodeState *node_state in node.node.states)
+	{
+	  if (node_state.moduleState != state)
+	    {
+	      idx++;
+	      continue;
+	    }
+
+	  [self node:node removeObject:node_state
+	   atIndex:idx forKey:@"states"];
+	  break;
+	}
+    }];
+}
+
+- (BOOL)canRemoveModuleState
+{
+  GtTreeNode *module = self.windowController.currentModule;
+  MgModuleLayer *layer = (MgModuleLayer *)module.node;
+
+  return layer.moduleState != nil;
+}
+
 - (void)removeTreeNodeFromParent:(GtTreeNode *)tn
 {
   GtTreeNode *parent = tn.parent;
@@ -1019,6 +1098,83 @@ documentNodeChanged(GtDocument *self, GtTreeNode *tn)
    userInfo:@{@"treeItem": tn}];
 }
 
+- (void)node:(GtTreeNode *)tn addNodeState:(MgNodeState *)state
+{
+  MgNode *node = tn.node;
+
+  [self registerUndo:^
+    {
+      [self node:tn removeNodeState:state];
+    }];
+
+  NSMutableArray *array = [NSMutableArray arrayWithArray:node.states];
+  [array addObject:state];
+  node.states = array;
+}
+
+- (void)node:(GtTreeNode *)tn removeNodeState:(MgNodeState *)state
+{
+  MgNode *node = tn.node;
+
+  NSInteger idx = [node.states indexOfObjectIdenticalTo:state];
+
+  if (idx != NSNotFound)
+    {
+      [self registerUndo:^
+        {
+	  [self node:tn addNodeState:state];
+	}];
+
+      NSMutableArray *array = [NSMutableArray arrayWithArray:node.states];
+      [array removeObjectAtIndex:idx];
+      node.states = array;
+    }
+}
+
+- (MgNodeState *)node:(GtTreeNode *)tn addModuleState:(MgModuleState *)
+    module_state inModule:(GtTreeNode *)module
+{
+  MgNode *node = tn.node;
+
+  for (MgNodeState *state in node.states)
+    {
+      if (state.moduleState == module_state)
+	return state;
+    }
+
+  MgNodeState *state = [[[node class] stateClass] state];
+
+  /* Recursively builds the superstate chain on demand. */
+
+  state.moduleState = module_state;
+  state.superstate = [self node:tn addModuleState:module_state.superstate
+		      inModule:module];
+
+  [self node:tn addNodeState:state];
+
+  return state;
+}
+
+- (void)node:(GtTreeNode *)tn ensureNodeStateForKey:(NSString *)key
+{
+  MgNode *node = tn.node;
+
+  if ([[[[node class] stateClass] allProperties] containsObject:key])
+    {
+      /* State-managed property. */
+
+      GtTreeNode *module = [tn containingModule];
+
+      if (module != nil)
+	{
+	  MgModuleLayer *module_layer = (MgModuleLayer *)module.node;
+
+	  node.state = [self node:tn addModuleState:
+			module_layer.moduleState inModule:module];
+	}
+    }
+}
+
 - (void)node:(GtTreeNode *)tn setValue:(id)value forKey:(NSString *)key
 {
   MgNode *node = tn.node;
@@ -1027,6 +1183,8 @@ documentNodeChanged(GtDocument *self, GtTreeNode *tn)
 
   if (oldValue != value && ![oldValue isEqual:value])
     {
+      [self node:tn ensureNodeStateForKey:key];
+
       [self registerUndo:^
         {
 	  [self node:tn setValue:oldValue forKey:key];
@@ -1055,6 +1213,8 @@ documentNodeChanged(GtDocument *self, GtTreeNode *tn)
   assert(idx >= 0);
 
   MgNode *node = tn.node;
+
+  [self node:tn ensureNodeStateForKey:key];
 
   NSArray *array = [node valueForKey:key];
 
@@ -1130,6 +1290,8 @@ indexOfObjectInArray(NSArray *array, id value, NSInteger idx)
   if (idx == NSNotFound)
     return;
 
+  [self node:tn ensureNodeStateForKey:key];
+
   [self registerUndo:^
     {
       [self node:tn replaceObject:value atIndex:idx
@@ -1154,6 +1316,8 @@ indexOfObjectInArray(NSArray *array, id value, NSInteger idx)
   if (idx == NSNotFound)
     return;
 
+  [self node:tn ensureNodeStateForKey:key];
+
   [self registerUndo:^
     {
       [self node:tn insertObject:oldValue atIndex:idx forKey:key];
@@ -1176,6 +1340,8 @@ indexOfObjectInArray(NSArray *array, id value, NSInteger idx)
   idx = indexOfObjectInArray(array, value, idx);
   if (idx == NSNotFound)
     return;
+
+  [self node:tn ensureNodeStateForKey:key];
 
   NSInteger count = [array count];
 
@@ -1214,6 +1380,22 @@ indexOfObjectInArray(NSArray *array, id value, NSInteger idx)
     }
 
   documentGraphChanged(self);
+}
+
+- (void)module:(MgModuleLayer *)node state:(MgModuleState *)state
+    setValue:(id)value forKey:(NSString *)key
+{
+  id oldValue = [state valueForKey:key];
+
+  if (oldValue != value && ![oldValue isEqual:value])
+    {
+      [self registerUndo:^
+        {
+	  [self module:node state:state setValue:oldValue forKey:key];
+	}];
+
+      [state setValue:value forKey:key];
+    }
 }
 
 - (BOOL)validateUserInterfaceItem:(id <NSValidatedUserInterfaceItem>)item
@@ -1280,6 +1462,11 @@ indexOfObjectInArray(NSArray *array, id value, NSInteger idx)
   if (action == @selector(pasteAsImage:))
     {
       return [self canPasteAsImage];
+    }
+
+  if (action == @selector(removeModuleState:))
+    {
+      return [self canRemoveModuleState];
     }
 
   return YES;

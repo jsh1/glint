@@ -54,24 +54,11 @@
 
 - (void)viewDidLoad
 {
+  [self updateSegments];
 }
 
 - (void)viewWillAppear
 {
-  NSSegmentedControl *control = self.segmentedControl;
-  NSArray *controllers = self.subviewControllers;
-  NSInteger count = [controllers count];
-
-  [control setSegmentCount:count];
-
-  for (NSInteger i = 0; i < count; i++)
-    {
-      GtViewController *c = controllers[i];
-      [control setLabel:[c title] forSegment:i];
-    }
-
-  [control sizeToFit];
-
   [self updateSelectedView];
 }
 
@@ -117,12 +104,33 @@
     }  
 }
 
+- (void)updateSegments
+{
+  NSArray *array = self.subviewControllers;
+  NSInteger count = [array count];
+
+  NSSegmentedControl *control = self.segmentedControl;
+
+  [control setSegmentCount:count];
+
+  for (NSInteger i = 0; i < count; i++)
+    {
+      GtViewController *c = array[i];
+      [control setLabel:[c title] forSegment:i];
+    }
+
+  [control sizeToFit];
+}
+
 - (void)updateSelectedView
 {
   NSArray *array = self.subviewControllers;
   NSInteger count = [array count];
-  NSInteger idx = _indexOfSelectedView;
 
+  if ([self.segmentedControl segmentCount] != count)
+    [self updateSegments];
+
+  NSInteger idx = _indexOfSelectedView;
   GtViewController *c = idx >= 0 && idx < count ? array[idx] : nil;
 
   if (_selectedViewController != c)

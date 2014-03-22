@@ -11,6 +11,7 @@
       "subviewControllers": [
 	{
 	  "class": "GtTabViewController",
+	  "identifierSuffix": ".tab-1",
 	  "subviewControllers": [
 	    {
 	      "class": "GtTreeViewController"
@@ -19,9 +20,13 @@
 	},
         {
 	  "class": "GtTabViewController",
+	  "identifierSuffix": ".tab-2",
 	  "subviewControllers": [
 	    {
 	      "class": "GtInspectorViewController"
+	    },
+	    {
+	      "class": "GtStateListViewController"
 	    }
 	  ]
 	}

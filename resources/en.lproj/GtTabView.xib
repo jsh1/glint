@@ -26,6 +26,9 @@
                             <segment label="Foo"/>
                         </segments>
                     </segmentedCell>
+                    <connections>
+                        <action selector="controlAction:" target="-2" id="FAp-tK-dIT"/>
+                    </connections>
                 </segmentedControl>
                 <customView id="kf8-A2-wvh">
                     <rect key="frame" x="0.0" y="0.0" width="359" height="487"/>

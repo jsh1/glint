@@ -44,14 +44,14 @@
 
 - (void)reloadDataForRow:(NSInteger)row;
 
+- (void)setSelectedRow:(NSInteger)row;
+
 @end
 
 @interface NSOutlineView (AppKitExtensions)
 
 - (NSArray *)selectedItems;
 - (void)setSelectedItems:(NSArray *)array;
-
-- (void)setSelectedRow:(NSInteger)row;
 
 - (void)callPreservingSelectedRows:(void (^)(void))thunk;
 

@@ -735,6 +735,28 @@ CA
                         </connections>
                     </menu>
                 </menuItem>
+                <menuItem title="States" id="iej-5j-Wce">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <menu key="submenu" title="States" id="igy-rB-tta">
+                        <items>
+                            <menuItem title="Add State" keyEquivalent="n" id="UHa-2t-m1h">
+                                <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
+                                <connections>
+                                    <action selector="addModuleState:" target="-1" id="CHa-lI-Jrb"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Remove State" id="6g1-8z-PZ1">
+                                <string key="keyEquivalent" base64-UTF8="YES">
+CA
+</string>
+                                <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
+                                <connections>
+                                    <action selector="removeModuleState:" target="-1" id="mqs-oJ-kda"/>
+                                </connections>
+                            </menuItem>
+                        </items>
+                    </menu>
+                </menuItem>
                 <menuItem title="Format" id="jxT-CU-nIS">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Format" id="GEO-Iw-cKr">
@@ -1108,6 +1130,11 @@ CA
                             <menuItem title="Inspector Panel" tag="2" keyEquivalent="2" id="VPf-Od-GO8">
                                 <connections>
                                     <action selector="toggleView:" target="-1" id="Fa5-0b-k4b"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="State Panel" tag="3" keyEquivalent="3" id="5ui-gv-zFE">
+                                <connections>
+                                    <action selector="toggleView:" target="-1" id="t4Z-VL-zFr"/>
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="gw0-9v-Zde"/>
