@@ -31,6 +31,8 @@
 
 @implementation MgNodeState
 {
+  BOOL _defaultState;
+
   BOOL _enabled;
 
   struct {
@@ -65,6 +67,7 @@
       if (obj == nil)
 	{
 	  obj = [[self alloc] init];
+	  obj->_defaultState = YES;
 	  [obj setDefaults];
 	  [table setObject:obj forKey:self];
 	}
@@ -196,15 +199,17 @@
   _defines.enabled = true;
 }
 
-/** NSCopying methods. **/
+/** MgGraphCopying methods. **/
 
-- (id)copyWithZone:(NSZone *)zone
+- (id)graphCopy:(NSMapTable *)map
 {
+  if (_defaultState)
+    return self;
+
   MgNodeState *copy = [[[self class] alloc] init];
 
-  /* FIXME: ignoring _moduleState? Not copying _superstate? */
-
-  copy->_superstate = _superstate;
+  copy->_moduleState = [_moduleState mg_conditionalGraphCopy:map];
+  copy->_superstate = [_superstate mg_graphCopy:map];
   copy->_enabled = _enabled;
   copy->_defines = _defines;
 
@@ -225,7 +230,7 @@
 
   /* FIXME: should we archive the default state, in case it changes? */
 
-  if (_superstate != nil && _superstate != [[self class] defaultState])
+  if (_superstate != nil && !_superstate->_defaultState)
     [c encodeObject:_superstate forKey:@"superstate"];
 
   if (_defines.enabled)

@@ -66,11 +66,11 @@
   _defines.group = true;
 }
 
-/** NSCopying methods. **/
+/** MgGraphCopying methods. **/
 
-- (id)copyWithZone:(NSZone *)zone
+- (id)graphCopy:(NSMapTable *)map
 {
-  MgGroupLayerState *copy = [super copyWithZone:zone];
+  MgGroupLayerState *copy = [super graphCopy:map];
 
   copy->_group = _group;
   copy->_defines = _defines;

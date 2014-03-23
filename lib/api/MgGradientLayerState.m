@@ -220,11 +220,11 @@
   _defines.drawsAfterEnd = true;
 }
 
-/** NSCopying methods. **/
+/** MgGraphCopying methods. **/
 
-- (id)copyWithZone:(NSZone *)zone
+- (id)graphCopy:(NSMapTable *)map
 {
-  MgGradientLayerState *copy = [super copyWithZone:zone];
+  MgGradientLayerState *copy = [super graphCopy:map];
 
   copy->_colors = _colors;
   copy->_locations = _locations;

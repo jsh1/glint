@@ -87,5 +87,33 @@
 
 @protocol MgImageProvider;
 
+/* Graph copying scheme, i.e. to avoid copying each object more
+   than once.
+
+   -graphCopy: should be implemented by classes as an unconditional
+   copy, but calling -mg_graphCopy: for sub-objects.
+
+   -mg_graphCopy is the convenience entry-point to call for the
+   top-level object, i.e. it allocates a table, calls -mg_graphCopy:
+   and returns the result.
+
+   -mg_graphCopy: dereferences the table to test if each copied object
+   has already been duplicated, if not a copy is made and inserted into
+   the table.
+
+   -mg_conditionalGraphCopy: is similar, but doesn't copy the object
+   if it's not already been copied and inserted into the table, in
+   which case it returns the original object. */
+
+@interface NSObject (MgGraphCopying)
+- (id)mg_graphCopy;
+- (id)mg_graphCopy:(NSMapTable *)map;
+- (id)mg_conditionalGraphCopy:(NSMapTable *)map;
+@end
+
+@protocol MgGraphCopying
+- (id)graphCopy:(NSMapTable *)map;
+@end
+
 #endif /* __OBJC__ */
 #endif /* MG_BASE_H */

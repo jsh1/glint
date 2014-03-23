@@ -240,11 +240,11 @@
   _defines.blendMode = true;
 }
 
-/** NSCopying methods. **/
+/** MgGraphCopying methods. **/
 
-- (id)copyWithZone:(NSZone *)zone
+- (id)graphCopy:(NSMapTable *)map
 {
-  MgLayerState *copy = [super copyWithZone:zone];
+  MgLayerState *copy = [super graphCopy:map];
 
   copy->_position = _position;
   copy->_anchor = _anchor;

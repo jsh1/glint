@@ -354,20 +354,17 @@ static NSUInteger version_counter;
   return OSAtomicIncrement32(&counter);
 }
 
-/** NSCopying methods. **/
+/** MgGraphCopying methods. **/
 
-- (id)copyWithZone:(NSZone *)zone
+- (id)graphCopy:(NSMapTable *)map
 {
   MgNode *copy = [[[self class] alloc] init];
-
-  /* FIXME: this is inherently wrong. Perhaps we should flatten the
-     state tree into a new base-state? */
 
   copy->_states = [NSMutableArray array];
 
   for (MgNodeState *state in _states)
     {
-      MgNodeState *state_copy = [state copy];
+      MgNodeState *state_copy = [state mg_graphCopy:map];
 
       [copy->_states addObject:state_copy];
 

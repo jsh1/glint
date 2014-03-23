@@ -85,7 +85,7 @@
       for (MgLayer *node in _sublayers)
 	[node removeReference:self];
 
-      _sublayers = [array copy];
+      _sublayers = [array mutableCopy];
 
       for (MgLayer *node in _sublayers)
 	[node addReference:self];
@@ -209,18 +209,24 @@
     }
 }
 
-/** NSCopying methods. **/
+/** MgGraphCopying methods. **/
 
-- (id)copyWithZone:(NSZone *)zone
+- (id)graphCopy:(NSMapTable *)map
 {
-  MgGroupLayer *copy = [super copyWithZone:zone];
+  MgGroupLayer *copy = [super graphCopy:map];
 
   if ([_sublayers count] != 0)
     {
-      for (MgLayer *node in _sublayers)
-	[node addReference:copy];
+      NSMutableArray *array = [NSMutableArray array];
 
-      copy->_sublayers = [_sublayers copy];
+      for (MgLayer *node in _sublayers)
+	{
+	  MgLayer *node_copy = [node mg_graphCopy:map];
+	  [array addObject:node_copy];
+	  [node_copy addReference:copy];
+	}
+
+      copy->_sublayers = array;
     }
 
   return copy;
@@ -259,7 +265,7 @@
 
       if (valid)
 	{
-	  _sublayers = [array copy];
+	  _sublayers = [array mutableCopy];
 
 	  for (MgLayer *node in _sublayers)
 	    [node addReference:self];

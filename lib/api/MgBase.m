@@ -22,36 +22,55 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "MgNode.h"
+#import "MgBase.h"
 
-@interface MgNodeState : NSObject <MgGraphCopying, NSSecureCoding>
+#import <Foundation/Foundation.h>
 
-+ (instancetype)state;
+@implementation MgNode (MgGraphCopying)
 
-+ (instancetype)defaultState;
+- (id)mg_graphCopy
+{
+  return [self mg_graphCopy:[NSMapTable strongToStrongObjectsMapTable]];
+}
 
-+ (NSSet *)allProperties;
+- (id)mg_graphCopy:(NSMapTable *)map
+{
+  id copy = [map objectForKey:self];
 
-- (id)init;
+  __unsafe_unretained id null_object = (__bridge id)kCFNull;
 
-- (void)setDefaults;
+  if (copy == nil)
+    {
+      if ([self conformsToProtocol:@protocol(MgGraphCopying)])
+	copy = [(id<MgGraphCopying>)self graphCopy:table];
+      else
+	copy = [self copy];
 
-/* The state this is part of. */
+      if (copy == nil)
+	copy = null_object;
 
-@property(nonatomic, weak) MgModuleState *moduleState;
+      [map setObject:copy forKey:self];
+    }
 
-/* The state that this state derives from. Any values not defined by
-   this state will be dereferenced in its superstate. */
+  if (copy == null_object)
+    copy = nil;
 
-@property(nonatomic, weak) MgNodeState *superstate;
+  return copy;
+}
 
-/* Returns true if the receiver explicitly defines a value for the
-   property with name 'key'. */
+- (id)mg_graphConditionalCopy:(NSMapTable *)map
+{
+  id copy = [map objectForKey:self];
 
-- (BOOL)hasValueForKey:(NSString *)key;
+  __unsafe_unretained id null_object = (__bridge id)kCFNull;
 
-/** MgNode properties. **/
+  if (copy == nil)
+    return self;
 
-@property(nonatomic, assign, getter=isEnabled) BOOL enabled;
+  if (copy == null_object)
+    copy = nil;
+
+  return copy;
+}
 
 @end

@@ -142,25 +142,22 @@
      tree. */
 }
 
-/** NSCopying methods. **/
+/** MgGraphCopying methods. **/
 
-- (id)copyWithZone:(NSZone *)zone
+- (id)graphCopy:(NSMapTable *)map
 {
-  MgModuleLayer *copy = [super copyWithZone:zone];
+  /* Copy our states before calling super, this is so any conditional
+     calls to copy the states from our sublayers (which will happen
+     within the call to super) will find the copied objects. */
 
   NSMutableArray *array = [NSMutableArray array];
-
   for (MgModuleState *state in _moduleStates)
-    {
-      MgModuleState *state_copy = [state copy];
+    [array addObject:[state mg_graphCopy:map]];
 
-      [array addObject:state_copy];
-
-      if (state == _moduleState)
-	copy->_moduleState = state_copy;
-    }
+  MgModuleLayer *copy = [super graphCopy:map];
 
   copy->_moduleStates = array;
+  copy->_moduleState = [_moduleState mg_graphCopy:map];
 
   return copy;
 }

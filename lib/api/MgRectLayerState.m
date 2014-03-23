@@ -145,11 +145,11 @@
   _defines.lineWidth = true;
 }
 
-/** NSCopying methods. **/
+/** MgGraphCopying methods. **/
 
-- (id)copyWithZone:(NSZone *)zone
+- (id)graphCopy:(NSMapTable *)map
 {
-  MgRectLayerState *copy = [super copyWithZone:zone];
+  MgRectLayerState *copy = [super graphCopy:map];
 
   copy->_cornerRadius = _cornerRadius;
   copy->_drawingMode = _drawingMode;

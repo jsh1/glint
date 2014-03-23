@@ -240,11 +240,11 @@
   _defines.lineDashPattern = true;
 }
 
-/** NSCopying methods. **/
+/** MgGraphCopying methods. **/
 
-- (id)copyWithZone:(NSZone *)zone
+- (id)graphCopy:(NSMapTable *)map
 {
-  MgPathLayerState *copy = [super copyWithZone:zone];
+  MgPathLayerState *copy = [super graphCopy:map];
 
   copy->_path = _path;
   copy->_drawingMode = _drawingMode;

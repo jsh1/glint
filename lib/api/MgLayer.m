@@ -528,13 +528,14 @@
     });
 }
 
-/** NSCopying methods. **/
+/** MgGraphCopying methods. **/
 
-- (id)copyWithZone:(NSZone *)zone
+- (id)graphCopy:(NSMapTable *)map
 {
-  MgLayer *copy = [super copyWithZone:zone];
+  MgLayer *copy = [super graphCopy:map];
 
-  copy->_mask = _mask;
+  if (_mask != nil)
+    copy->_mask = [_mask mg_graphCopy:map];
 
   return copy;
 }

@@ -127,11 +127,11 @@
   _defines.repeats = true;
 }
 
-/** NSCopying methods. **/
+/** MgGraphCopying methods. **/
 
-- (id)copyWithZone:(NSZone *)zone
+- (id)graphCopy:(NSMapTable *)map
 {
-  MgImageLayerState *copy = [super copyWithZone:zone];
+  MgImageLayerState *copy = [super graphCopy:map];
 
   copy->_imageProvider = _imageProvider;
   copy->_cropRect = _cropRect;
