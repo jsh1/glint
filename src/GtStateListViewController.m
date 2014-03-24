@@ -52,11 +52,20 @@ static NSString *const GtStateListViewItemType = @"org.unfactored.gt-state-list-
   return @"States";
 }
 
-- (void)viewDidLoad
+- (id)initWithWindowController:(GtWindowController *)windowController
 {
+  self = [super initWithWindowController:windowController];
+  if (self == nil)
+    return nil;
+
   [self.windowController addObserver:self forKeyPath:@"currentModule"
    options:0 context:NULL];
 
+  return self;
+}
+
+- (void)viewDidLoad
+{
   [self.tableView registerForDraggedTypes:@[GtStateListViewItemType]];
 
   for (NSTableColumn *col in [self.tableView tableColumns])

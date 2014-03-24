@@ -49,8 +49,12 @@ static NSString *const GtTreeViewItemType = @"org.unfactored.gt-tree-view-item";
   return @"Objects";
 }
 
-- (void)viewDidLoad
+- (id)initWithWindowController:(GtWindowController *)windowController
 {
+  self = [super initWithWindowController:windowController];
+  if (self == nil)
+    return nil;
+
   [[NSNotificationCenter defaultCenter]
    addObserver:self selector:@selector(documentGraphDidChange:)
    name:GtDocumentGraphDidChange object:self.document];
@@ -64,6 +68,11 @@ static NSString *const GtTreeViewItemType = @"org.unfactored.gt-tree-view-item";
   [self.windowController addObserver:self forKeyPath:@"selection" options:0
    context:NULL];
 
+  return self;
+}
+
+- (void)viewDidLoad
+{
   [self.outlineView registerForDraggedTypes:
    @[GtTreeViewItemType, MgNodeType, MgArchiveType,
      (id)kUTTypeFileURL, (id)kUTTypeImage]];

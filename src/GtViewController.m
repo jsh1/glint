@@ -95,6 +95,9 @@
   for (GtViewController *obj in _subviewControllers)
     [obj invalidate];
 
+  _windowController = nil;
+  _subviewControllers = nil;
+
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   [NSRunLoop cancelPreviousPerformRequestsWithTarget:self];
 }

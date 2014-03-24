@@ -52,11 +52,20 @@
   return @"Inspector";
 }
 
-- (void)viewDidLoad
+- (id)initWithWindowController:(GtWindowController *)windowController
 {
+  self = [super initWithWindowController:windowController];
+  if (self == nil)
+    return nil;
+
   [self.windowController addObserver:self forKeyPath:@"selection" options:0
    context:NULL];
 
+  return self;
+}
+
+- (void)viewDidLoad
+{
   NSInteger colIndex = 0;
   for (NSTableColumn *col in [self.outlineView tableColumns])
     {
