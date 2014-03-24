@@ -754,6 +754,25 @@ CA
                                     <action selector="removeModuleState:" target="-1" id="mqs-oJ-kda"/>
                                 </connections>
                             </menuItem>
+                            <menuItem isSeparatorItem="YES" id="J3W-nM-sr4"/>
+                            <menuItem title="Parent State" keyEquivalent="" id="I41-eg-hHH">
+                                <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
+                                <connections>
+                                    <action selector="parentModuleState:" target="-1" id="dev-HP-RLs"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Next State" keyEquivalent="" id="yPO-CM-BEN">
+                                <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
+                                <connections>
+                                    <action selector="nextModuleState:" target="-1" id="IwV-QC-eX9"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Previous State" keyEquivalent="" id="Q0S-ag-Vjb">
+                                <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
+                                <connections>
+                                    <action selector="previousModuleState:" target="-1" id="FdI-Zh-iUU"/>
+                                </connections>
+                            </menuItem>
                         </items>
                     </menu>
                 </menuItem>

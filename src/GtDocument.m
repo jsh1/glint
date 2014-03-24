@@ -1003,7 +1003,7 @@ fract(CGFloat x)
 
   MgModuleState *state = layer.moduleState;
   if (state == nil)
-      return;
+    return;
 
   NSInteger idx = [layer.moduleStates indexOfObjectIdenticalTo:state];
   if (idx == NSNotFound)
@@ -1030,6 +1030,58 @@ fract(CGFloat x)
 	  break;
 	}
     }];
+}
+
+- (IBAction)nextModuleState:(id)sender
+{
+  GtTreeNode *module = self.windowController.currentModule;
+  MgModuleLayer *layer = (MgModuleLayer *)module.node;
+  MgModuleState *state = layer.moduleState;
+
+  if (state == nil)
+    state = [layer.moduleStates firstObject];
+  else
+    {
+      NSArray *array = layer.moduleStates;
+      NSInteger idx = [array indexOfObjectIdenticalTo:state];
+      if (idx == NSNotFound || idx + 1 >= [array count])
+	return;
+      state = array[idx+1];
+    }
+
+  [self node:module setValue:state forKey:@"moduleState"];
+}
+
+- (IBAction)previousModuleState:(id)sender
+{
+  GtTreeNode *module = self.windowController.currentModule;
+  MgModuleLayer *layer = (MgModuleLayer *)module.node;
+  MgModuleState *state = layer.moduleState;
+
+  if (state == nil)
+    return;
+
+  NSArray *array = layer.moduleStates;
+  NSInteger idx = [array indexOfObjectIdenticalTo:state];
+  if (idx == NSNotFound)
+    return;
+
+  if (idx == 0)
+    state = nil;
+  else
+    state = array[idx-1];
+
+  [self node:module setValue:state forKey:@"moduleState"];
+}
+
+- (IBAction)parentModuleState:(id)sender
+{
+  GtTreeNode *module = self.windowController.currentModule;
+  MgModuleLayer *layer = (MgModuleLayer *)module.node;
+  MgModuleState *state = layer.moduleState;
+
+  if (state != nil)
+    [self node:module setValue:state.superstate forKey:@"moduleState"];
 }
 
 - (BOOL)canRemoveModuleState
