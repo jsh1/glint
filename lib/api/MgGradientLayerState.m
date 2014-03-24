@@ -59,18 +59,28 @@
 {
   [super setDefaults];
 
-  self.colors = @[];
-  self.locations = @[];
-  self.radial = NO;
-  self.startPoint = CGPointZero;
-  self.endPoint = CGPointZero;
-  self.startRadius = 0;
-  self.endRadius = 0;
-  self.drawsBeforeStart = NO;
-  self.drawsAfterEnd = NO;
+  _colors = @[];
+  _locations = @[];
+  _radial = NO;
+  _startPoint = CGPointZero;
+  _endPoint = CGPointZero;
+  _startRadius = 0;
+  _endRadius = 0;
+  _drawsBeforeStart = NO;
+  _drawsAfterEnd = NO;
+
+  _defines.colors = true;
+  _defines.locations = true;
+  _defines.radial = true;
+  _defines.startPoint = true;
+  _defines.endPoint = true;
+  _defines.startRadius = true;
+  _defines.endRadius = true;
+  _defines.drawsBeforeStart = true;
+  _defines.drawsAfterEnd = true;
 }
 
-- (BOOL)hasValueForKey:(NSString *)key
+- (BOOL)definesValueForKey:(NSString *)key
 {
   if ([key isEqualToString:@"colors"])
     return _defines.colors;
@@ -91,7 +101,31 @@
   else if ([key isEqualToString:@"drawsAfterEnd"])
     return _defines.drawsAfterEnd;
   else
-    return [super hasValueForKey:key];
+    return [super definesValueForKey:key];
+}
+
+- (void)setDefinesValue:(BOOL)flag forKey:(NSString *)key
+{
+  if ([key isEqualToString:@"colors"])
+    _defines.colors = flag;
+  else if ([key isEqualToString:@"locations"])
+    _defines.locations = flag;
+  else if ([key isEqualToString:@"radial"])
+    _defines.radial = flag;
+  else if ([key isEqualToString:@"startPoint"])
+    _defines.startPoint = flag;
+  else if ([key isEqualToString:@"endPoint"])
+    _defines.endPoint = flag;
+  else if ([key isEqualToString:@"startRadius"])
+    _defines.startRadius = flag;
+  else if ([key isEqualToString:@"endRadius"])
+    _defines.endRadius = flag;
+  else if ([key isEqualToString:@"drawsBeforeStart"])
+    _defines.drawsBeforeStart = flag;
+  else if ([key isEqualToString:@"drawsAfterEnd"])
+    _defines.drawsAfterEnd = flag;
+  else
+    [super setDefinesValue:flag forKey:key];
 }
 
 - (NSArray *)colors
@@ -104,8 +138,10 @@
 
 - (void)setColors:(NSArray *)array
 {
-  _colors = [array copy];
-  _defines.colors = true;
+  if (_defines.colors)
+    _colors = [array copy];
+  else
+    SUPERSTATE.colors = array;
 }
 
 - (NSArray *)locations
@@ -118,8 +154,10 @@
 
 - (void)setLocations:(NSArray *)array
 {
-  _locations = [array copy];
-  _defines.locations = true;
+  if (_defines.locations)
+    _locations = [array copy];
+  else
+    SUPERSTATE.locations = array;
 }
 
 - (BOOL)isRadial
@@ -132,8 +170,10 @@
 
 - (void)setRadial:(BOOL)flag
 {
-  _radial = flag;
-  _defines.radial = true;
+  if (_defines.radial)
+    _radial = flag;
+  else
+    SUPERSTATE.radial = flag;
 }
 
 - (CGPoint)startPoint
@@ -146,8 +186,10 @@
 
 - (void)setStartPoint:(CGPoint)p
 {
-  _startPoint = p;
-  _defines.startPoint = true;
+  if (_defines.startPoint)
+    _startPoint = p;
+  else
+    SUPERSTATE.startPoint = p;
 }
 
 - (CGPoint)endPoint
@@ -160,8 +202,10 @@
 
 - (void)setEndPoint:(CGPoint)p
 {
-  _endPoint = p;
-  _defines.endPoint = true;
+  if (_defines.endPoint)
+    _endPoint = p;
+  else
+    SUPERSTATE.endPoint = p;
 }
 
 - (CGFloat)startRadius
@@ -174,8 +218,10 @@
 
 - (void)setStartRadius:(CGFloat)x
 {
-  _startRadius = x;
-  _defines.startRadius = true;
+  if (_defines.startRadius)
+    _startRadius = x;
+  else
+    SUPERSTATE.startRadius = x;
 }
 
 - (CGFloat)endRadius
@@ -188,8 +234,10 @@
 
 - (void)setEndRadius:(CGFloat)x
 {
-  _endRadius = x;
-  _defines.endRadius = true;
+  if (_defines.endRadius)
+    _endRadius = x;
+  else
+    SUPERSTATE.endRadius = x;
 }
 
 - (BOOL)drawsBeforeStart
@@ -202,8 +250,10 @@
 
 - (void)setDrawsBeforeStart:(BOOL)flag
 {
-  _drawsBeforeStart = flag;
-  _defines.drawsBeforeStart = true;
+  if (_defines.drawsBeforeStart)
+    _drawsBeforeStart = flag;
+  else
+    SUPERSTATE.drawsBeforeStart = flag;
 }
 
 - (BOOL)drawsAfterEnd
@@ -216,8 +266,10 @@
 
 - (void)setDrawsAfterEnd:(BOOL)flag
 {
-  _drawsAfterEnd = flag;
-  _defines.drawsAfterEnd = true;
+  if (_defines.drawsAfterEnd)
+    _drawsAfterEnd = flag;
+  else
+    SUPERSTATE.drawsAfterEnd = flag;
 }
 
 /** MgGraphCopying methods. **/

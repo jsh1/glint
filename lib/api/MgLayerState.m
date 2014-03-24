@@ -62,19 +62,30 @@
 {
   [super setDefaults];
 
-  self.position = CGPointZero;
-  self.anchor = CGPointMake((CGFloat).5, (CGFloat).5);
-  self.size = CGSizeZero;
-  self.origin = CGPointZero;
-  self.scale = 1;
-  self.squeeze = 1;
-  self.skew = 0;
-  self.rotation = 0;
-  self.alpha = 1;
-  self.blendMode = kCGBlendModeNormal;
+  _position = CGPointZero;
+  _anchor = CGPointMake((CGFloat).5, (CGFloat).5);
+  _size = CGSizeZero;
+  _origin = CGPointZero;
+  _scale = 1;
+  _squeeze = 1;
+  _skew = 0;
+  _rotation = 0;
+  _alpha = 1;
+  _blendMode = kCGBlendModeNormal;
+
+  _defines.position = true;
+  _defines.anchor = true;
+  _defines.size = true;
+  _defines.origin = true;
+  _defines.scale = true;
+  _defines.squeeze = true;
+  _defines.skew = true;
+  _defines.rotation = true;
+  _defines.alpha = true;
+  _defines.blendMode = true;
 }
 
-- (BOOL)hasValueForKey:(NSString *)key
+- (BOOL)definesValueForKey:(NSString *)key
 {
   if ([key isEqualToString:@"position"])
     return _defines.position;
@@ -97,7 +108,33 @@
   else if ([key isEqualToString:@"blendMode"])
     return _defines.blendMode;
   else
-    return [super hasValueForKey:key];
+    return [super definesValueForKey:key];
+}
+
+- (void)setDefinesValue:(BOOL)flag forKey:(NSString *)key
+{
+  if ([key isEqualToString:@"position"])
+    _defines.position = flag;
+  else if ([key isEqualToString:@"anchor"])
+    _defines.anchor = flag;
+  else if ([key isEqualToString:@"size"])
+    _defines.size = flag;
+  else if ([key isEqualToString:@"origin"])
+    _defines.origin = flag;
+  else if ([key isEqualToString:@"scale"])
+    _defines.scale = flag;
+  else if ([key isEqualToString:@"squeeze"])
+    _defines.squeeze = flag;
+  else if ([key isEqualToString:@"skew"])
+    _defines.skew = flag;
+  else if ([key isEqualToString:@"rotation"])
+    _defines.rotation = flag;
+  else if ([key isEqualToString:@"alpha"])
+    _defines.alpha = flag;
+  else if ([key isEqualToString:@"blendMode"])
+    _defines.blendMode = flag;
+  else
+    [super setDefinesValue:flag forKey:key];
 }
 
 - (CGPoint)position
@@ -110,8 +147,10 @@
 
 - (void)setPosition:(CGPoint)p
 {
-  _position = p;
-  _defines.position = true;
+  if (_defines.position)
+    _position = p;
+  else
+    SUPERSTATE.position = p;
 }
 
 - (CGPoint)anchor
@@ -124,8 +163,10 @@
 
 - (void)setAnchor:(CGPoint)p
 {
-  _anchor = p;
-  _defines.anchor = true;
+  if (_defines.anchor)
+    _anchor = p;
+  else
+    SUPERSTATE.anchor = p;
 }
 
 - (CGSize)size
@@ -138,8 +179,10 @@
 
 - (void)setSize:(CGSize)s
 {
-  _size = s;
-  _defines.size = true;
+  if (_defines.size)
+    _size = s;
+  else
+    SUPERSTATE.size = s;
 }
 
 - (CGPoint)origin
@@ -152,8 +195,10 @@
 
 - (void)setOrigin:(CGPoint)p
 {
-  _origin = p;
-  _defines.origin = true;
+  if (_defines.origin)
+    _origin = p;
+  else
+    SUPERSTATE.origin = p;
 }
 
 - (CGFloat)scale
@@ -166,8 +211,10 @@
 
 - (void)setScale:(CGFloat)x
 {
-  _scale = x;
-  _defines.scale = true;
+  if (_defines.scale)
+    _scale = x;
+  else
+    SUPERSTATE.scale = x;
 }
 
 - (CGFloat)squeeze
@@ -180,8 +227,10 @@
 
 - (void)setSqueeze:(CGFloat)x
 {
-  _squeeze = x;
-  _defines.squeeze = true;
+  if (_defines.squeeze)
+    _squeeze = x;
+  else
+    SUPERSTATE.squeeze = x;
 }
 
 - (CGFloat)skew
@@ -194,8 +243,10 @@
 
 - (void)setSkew:(CGFloat)x
 {
-  _skew = x;
-  _defines.skew = true;
+  if (_defines.skew)
+    _skew = x;
+  else
+    SUPERSTATE.skew = x;
 }
 
 - (double)rotation
@@ -208,8 +259,10 @@
 
 - (void)setRotation:(double)x
 {
-  _rotation = x;
-  _defines.rotation = true;
+  if (_defines.rotation)
+    _rotation = x;
+  else
+    SUPERSTATE.rotation = x;
 }
 
 - (float)alpha
@@ -222,8 +275,10 @@
 
 - (void)setAlpha:(float)x
 {
-  _alpha = x;
-  _defines.alpha = true;
+  if (_defines.alpha)
+    _alpha = x;
+  else
+    SUPERSTATE.alpha = x;
 }
 
 - (CGBlendMode)blendMode
@@ -236,8 +291,10 @@
 
 - (void)setBlendMode:(CGBlendMode)x
 {
-  _blendMode = x;
-  _defines.blendMode = true;
+  if (_defines.blendMode)
+    _blendMode = x;
+  else
+    SUPERSTATE.blendMode = x;
 }
 
 /** MgGraphCopying methods. **/

@@ -48,7 +48,8 @@
 /* Returns true if the receiver explicitly defines a value for the
    property with name 'key'. */
 
-- (BOOL)hasValueForKey:(NSString *)key;
+- (BOOL)definesValueForKey:(NSString *)key;
+- (void)setDefinesValue:(BOOL)flag forKey:(NSString *)key;
 
 /** MgNode properties. **/
 

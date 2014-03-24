@@ -62,19 +62,30 @@
 {
   [super setDefaults];
 
-  self.path = NULL;
-  self.drawingMode = kCGPathFill;
-  self.fillColor = MgBlackColor();
-  self.strokeColor = MgBlackColor();
-  self.lineWidth = 1;
-  self.miterLimit = 10;
-  self.lineCap = kCGLineCapButt;
-  self.lineJoin = kCGLineJoinMiter;
-  self.lineDashPhase = 0;
-  self.lineDashPattern = nil;
+  _path = nil;
+  _drawingMode = kCGPathFill;
+  _fillColor = (__bridge id)MgBlackColor();
+  _strokeColor = (__bridge id)MgBlackColor();
+  _lineWidth = 1;
+  _miterLimit = 10;
+  _lineCap = kCGLineCapButt;
+  _lineJoin = kCGLineJoinMiter;
+  _lineDashPhase = 0;
+  _lineDashPattern = nil;
+
+  _defines.path = true;
+  _defines.drawingMode = true;
+  _defines.fillColor = true;
+  _defines.strokeColor = true;
+  _defines.lineWidth = true;
+  _defines.miterLimit = true;
+  _defines.lineCap = true;
+  _defines.lineJoin = true;
+  _defines.lineDashPhase = true;
+  _defines.lineDashPattern = true;
 }
 
-- (BOOL)hasValueForKey:(NSString *)key
+- (BOOL)definesValueForKey:(NSString *)key
 {
   if ([key isEqualToString:@"path"])
     return _defines.path;
@@ -97,7 +108,33 @@
   else if ([key isEqualToString:@"lineDashPattern"])
     return _defines.lineDashPattern;
   else
-    return [super hasValueForKey:key];
+    return [super definesValueForKey:key];
+}
+
+- (void)setDefinesValue:(BOOL)flag forKey:(NSString *)key
+{
+  if ([key isEqualToString:@"path"])
+    _defines.path = flag;
+  else if ([key isEqualToString:@"drawingMode"])
+    _defines.drawingMode = flag;
+  else if ([key isEqualToString:@"fillColor"])
+    _defines.fillColor = flag;
+  else if ([key isEqualToString:@"strokeColor"])
+    _defines.strokeColor = flag;
+  else if ([key isEqualToString:@"lineWidth"])
+    _defines.lineWidth = flag;
+  else if ([key isEqualToString:@"miterLimit"])
+    _defines.miterLimit = flag;
+  else if ([key isEqualToString:@"lineCap"])
+    _defines.lineCap = flag;
+  else if ([key isEqualToString:@"lineJoin"])
+    _defines.lineJoin = flag;
+  else if ([key isEqualToString:@"lineDashPhase"])
+    _defines.lineDashPhase = flag;
+  else if ([key isEqualToString:@"lineDashPattern"])
+    _defines.lineDashPattern = flag;
+  else
+    [super setDefinesValue:flag forKey:key];
 }
 
 - (CGPathRef)path
@@ -110,8 +147,10 @@
 
 - (void)setPath:(CGPathRef)x
 {
-  _path = (__bridge id)x;
-  _defines.path = true;
+  if (_defines.path)
+    _path = (__bridge id)x;
+  else
+    SUPERSTATE.path = x;
 }
 
 - (CGPathDrawingMode)drawingMode
@@ -124,8 +163,10 @@
 
 - (void)setDrawingMode:(CGPathDrawingMode)x
 {
-  _drawingMode = x;
-  _defines.drawingMode = true;
+  if (_defines.drawingMode)
+    _drawingMode = x;
+  else
+    SUPERSTATE.drawingMode = x;
 }
 
 - (CGColorRef)fillColor
@@ -138,8 +179,10 @@
 
 - (void)setFillColor:(CGColorRef)x
 {
-  _fillColor = (__bridge id)x;
-  _defines.fillColor = true;
+  if (_defines.fillColor)
+    _fillColor = (__bridge id)x;
+  else
+    SUPERSTATE.fillColor = x;
 }
 
 - (CGColorRef)strokeColor
@@ -152,8 +195,10 @@
 
 - (void)setStrokeColor:(CGColorRef)x
 {
-  _strokeColor = (__bridge id)x;
-  _defines.strokeColor = true;
+  if (_defines.strokeColor)
+    _strokeColor = (__bridge id)x;
+  else
+    SUPERSTATE.strokeColor = x;
 }
 
 - (CGFloat)lineWidth
@@ -166,8 +211,10 @@
 
 - (void)setLineWidth:(CGFloat)x
 {
-  _lineWidth = x;
-  _defines.lineWidth = true;
+  if (_defines.lineWidth)
+    _lineWidth = x;
+  else
+    SUPERSTATE.lineWidth = x;
 }
 
 - (CGFloat)miterLimit
@@ -180,8 +227,10 @@
 
 - (void)setMiterLimit:(CGFloat)x
 {
-  _miterLimit = x;
-  _defines.miterLimit = true;
+  if (_defines.miterLimit)
+    _miterLimit = x;
+  else
+    SUPERSTATE.miterLimit = x;
 }
 
 - (CGLineJoin)lineJoin
@@ -194,8 +243,10 @@
 
 - (void)setLineJoin:(CGLineJoin)x
 {
-  _lineJoin = x;
-  _defines.lineJoin = true;
+  if (_defines.lineJoin)
+    _lineJoin = x;
+  else
+    SUPERSTATE.lineJoin = x;
 }
 
 - (CGLineCap)lineCap
@@ -208,8 +259,10 @@
 
 - (void)setLineCap:(CGLineCap)x
 {
-  _lineCap = x;
-  _defines.lineCap = true;
+  if (_defines.lineCap)
+    _lineCap = x;
+  else
+    SUPERSTATE.lineCap = x;
 }
 
 - (CGFloat)lineDashPhase
@@ -222,8 +275,10 @@
 
 - (void)setLineDashPhase:(CGFloat)x
 {
-  _lineDashPhase = x;
-  _defines.lineDashPhase = true;
+  if (_defines.lineDashPhase)
+    _lineDashPhase = x;
+  else
+    SUPERSTATE.lineDashPhase = x;
 }
 
 - (NSArray *)lineDashPattern
@@ -236,8 +291,10 @@
 
 - (void)setLineDashPattern:(NSArray *)array
 {
-  _lineDashPattern = [array copy];
-  _defines.lineDashPattern = true;
+  if (_defines.lineDashPattern)
+    _lineDashPattern = [array copy];
+  else
+    SUPERSTATE.lineDashPattern = array;
 }
 
 /** MgGraphCopying methods. **/

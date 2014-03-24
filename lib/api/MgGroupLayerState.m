@@ -41,15 +41,25 @@
 {
   [super setDefaults];
 
-  self.group = NO;
+  _group = NO;
+
+  _defines.group = true;
 }
 
-- (BOOL)hasValueForKey:(NSString *)key
+- (BOOL)definesValueForKey:(NSString *)key
 {
   if ([key isEqualToString:@"group"])
     return _defines.group;
   else
-    return [super hasValueForKey:key];
+    return [super definesValueForKey:key];
+}
+
+- (void)setDefinesValue:(BOOL)flag forKey:(NSString *)key
+{
+  if ([key isEqualToString:@"group"])
+    _defines.group = flag;
+  else
+    [super setDefinesValue:flag forKey:key];
 }
 
 - (BOOL)isGroup
@@ -62,8 +72,10 @@
 
 - (void)setGroup:(BOOL)flag
 {
-  _group = flag;
-  _defines.group = true;
+  if (_defines.group)
+    _group = flag;
+  else
+    SUPERSTATE.group = flag;
 }
 
 /** MgGraphCopying methods. **/

@@ -51,13 +51,18 @@
 {
   [super setDefaults];
 
-  self.imageProvider = nil;
-  self.cropRect = CGRectZero;
-  self.centerRect = CGRectZero;
-  self.repeats = NO;
+  _imageProvider = nil;
+  _cropRect = CGRectZero;
+  _centerRect = CGRectZero;
+  _repeats = NO;
+
+  _defines.imageProvider = true;
+  _defines.cropRect = true;
+  _defines.centerRect = true;
+  _defines.repeats = true;
 }
 
-- (BOOL)hasValueForKey:(NSString *)key
+- (BOOL)definesValueForKey:(NSString *)key
 {
   if ([key isEqualToString:@"imageProvider"])
     return _defines.imageProvider;
@@ -68,7 +73,21 @@
   else if ([key isEqualToString:@"repeats"])
     return _defines.repeats;
   else
-    return [super hasValueForKey:key];
+    return [super definesValueForKey:key];
+}
+
+- (void)setDefinesValue:(BOOL)flag forKey:(NSString *)key
+{
+  if ([key isEqualToString:@"imageProvider"])
+    _defines.imageProvider = flag;
+  else if ([key isEqualToString:@"cropRect"])
+    _defines.cropRect = flag;
+  else if ([key isEqualToString:@"centerRect"])
+    _defines.centerRect = flag;
+  else if ([key isEqualToString:@"repeats"])
+    _defines.repeats = flag;
+  else
+    [super setDefinesValue:flag forKey:key];
 }
 
 - (id<MgImageProvider>)imageProvider
@@ -81,8 +100,10 @@
 
 - (void)setImageProvider:(id<MgImageProvider>)p
 {
-  _imageProvider = p;
-  _defines.imageProvider = true;
+  if (_defines.imageProvider)
+    _imageProvider = p;
+  else
+    SUPERSTATE.imageProvider = p;
 }
 
 - (CGRect)cropRect
@@ -95,8 +116,10 @@
 
 - (void)setCropRect:(CGRect)r
 {
-  _cropRect = r;
-  _defines.cropRect = true;
+  if (_defines.cropRect)
+    _cropRect = r;
+  else
+    SUPERSTATE.cropRect = r;
 }
 
 - (CGRect)centerRect
@@ -109,8 +132,10 @@
 
 - (void)setCenterRect:(CGRect)r
 {
-  _centerRect = r;
-  _defines.centerRect = true;
+  if (_defines.centerRect)
+    _centerRect = r;
+  else
+    SUPERSTATE.centerRect = r;
 }
 
 - (BOOL)repeats
@@ -123,8 +148,10 @@
 
 - (void)setRepeats:(BOOL)flag
 {
-  _repeats = flag;
-  _defines.repeats = true;
+  if (_defines.repeats)
+    _repeats = flag;
+  else
+    SUPERSTATE.repeats = flag;
 }
 
 /** MgGraphCopying methods. **/

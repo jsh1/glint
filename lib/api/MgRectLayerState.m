@@ -52,14 +52,20 @@
 {
   [super setDefaults];
 
-  self.cornerRadius = 0;
-  self.drawingMode = kCGPathFill;
-  self.fillColor = MgBlackColor();
-  self.strokeColor = MgBlackColor();
-  self.lineWidth = 1;
+  _cornerRadius = 0;
+  _drawingMode = kCGPathFill;
+  _fillColor = (__bridge id)MgBlackColor();
+  _strokeColor = (__bridge id)MgBlackColor();
+  _lineWidth = 1;
+
+  _defines.cornerRadius = true;
+  _defines.drawingMode = true;
+  _defines.fillColor = true;
+  _defines.strokeColor = true;
+  _defines.lineWidth = true;
 }
 
-- (BOOL)hasValueForKey:(NSString *)key
+- (BOOL)definesValueForKey:(NSString *)key
 {
   if ([key isEqualToString:@"cornerRadius"])
     return _defines.cornerRadius;
@@ -72,7 +78,23 @@
   else if ([key isEqualToString:@"lineWidth"])
     return _defines.lineWidth;
   else
-    return [super hasValueForKey:key];
+    return [super definesValueForKey:key];
+}
+
+- (void)setDefinesValue:(BOOL)flag forKey:(NSString *)key
+{
+  if ([key isEqualToString:@"cornerRadius"])
+    _defines.cornerRadius = flag;
+  else if ([key isEqualToString:@"drawingMode"])
+    _defines.drawingMode = flag;
+  else if ([key isEqualToString:@"fillColor"])
+    _defines.fillColor = flag;
+  else if ([key isEqualToString:@"strokeColor"])
+    _defines.strokeColor = flag;
+  else if ([key isEqualToString:@"lineWidth"])
+    _defines.lineWidth = flag;
+  else
+    [super setDefinesValue:flag forKey:key];
 }
 
 - (CGFloat)cornerRadius
@@ -85,8 +107,10 @@
 
 - (void)setCornerRadius:(CGFloat)x
 {
-  _cornerRadius = x;
-  _defines.cornerRadius = true;
+  if (_defines.cornerRadius)
+    _cornerRadius = x;
+  else
+    SUPERSTATE.cornerRadius = x;
 }
 
 - (CGPathDrawingMode)drawingMode
@@ -99,8 +123,10 @@
 
 - (void)setDrawingMode:(CGPathDrawingMode)x
 {
-  _drawingMode = x;
-  _defines.drawingMode = true;
+  if (_defines.drawingMode)
+    _drawingMode = x;
+  else
+    SUPERSTATE.drawingMode = x;
 }
 
 - (CGColorRef)fillColor
@@ -113,8 +139,10 @@
 
 - (void)setFillColor:(CGColorRef)x
 {
-  _fillColor = (__bridge id)x;
-  _defines.fillColor = true;
+  if (_defines.fillColor)
+    _fillColor = (__bridge id)x;
+  else
+    SUPERSTATE.fillColor = x;
 }
 
 - (CGColorRef)strokeColor
@@ -127,8 +155,10 @@
 
 - (void)setStrokeColor:(CGColorRef)x
 {
-  _strokeColor = (__bridge id)x;
-  _defines.strokeColor = true;
+  if (_defines.strokeColor)
+    _strokeColor = (__bridge id)x;
+  else
+    SUPERSTATE.strokeColor = x;
 }
 
 - (CGFloat)lineWidth
@@ -141,8 +171,10 @@
 
 - (void)setLineWidth:(CGFloat)x
 {
-  _lineWidth = x;
-  _defines.lineWidth = true;
+  if (_defines.lineWidth)
+    _lineWidth = x;
+  else
+    SUPERSTATE.lineWidth = x;
 }
 
 /** MgGraphCopying methods. **/

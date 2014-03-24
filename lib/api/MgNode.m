@@ -80,9 +80,7 @@ static NSUInteger version_counter;
 
   Class state_class = [[self class] stateClass];
 
-  _state = [state_class state];
-  _state.superstate = [state_class defaultState];
-
+  _state = [state_class defaultState];
   _states = [NSMutableArray arrayWithObject:_state];
 
   return self;

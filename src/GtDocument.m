@@ -1155,6 +1155,31 @@ documentNodeChanged(GtDocument *self, GtTreeNode *tn)
   return state;
 }
 
+- (void)nodeState:(MgNodeState *)state
+    setDefinesValue:(BOOL)flag forKey:(NSString *)key
+{
+  BOOL oldFlag = [state definesValueForKey:key];
+
+  if (flag != oldFlag)
+    {
+      [self registerUndo:^
+	{
+	  [self nodeState:state setDefinesValue:oldFlag forKey:key];
+	}];
+
+      /* Preserve superstate's value if necessary. */
+
+      id oldValue = nil;
+      if (flag)
+	oldValue = [state valueForKey:key];
+
+      [state setDefinesValue:flag forKey:key];
+
+      if (flag)
+	[state setValue:oldValue forKey:key];
+    }
+}
+
 - (void)node:(GtTreeNode *)tn ensureNodeStateForKey:(NSString *)key
 {
   MgNode *node = tn.node;
@@ -1169,8 +1194,12 @@ documentNodeChanged(GtDocument *self, GtTreeNode *tn)
 	{
 	  MgModuleLayer *module_layer = (MgModuleLayer *)module.node;
 
-	  node.state = [self node:tn addModuleState:
-			module_layer.moduleState inModule:module];
+	  MgNodeState *state = [self node:tn addModuleState:
+				module_layer.moduleState inModule:module];
+
+	  node.state = state;
+
+	  [self nodeState:state setDefinesValue:YES forKey:key];
 	}
     }
 }

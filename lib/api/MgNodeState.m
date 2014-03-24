@@ -31,8 +31,6 @@
 
 @implementation MgNodeState
 {
-  BOOL _defaultState;
-
   BOOL _enabled;
 
   struct {
@@ -47,35 +45,9 @@
 
 + (instancetype)defaultState
 {
-  static dispatch_queue_t queue;
-  static NSMapTable *table;
-  static dispatch_once_t once;
-
-  dispatch_once(&once, ^
-    {
-      queue = dispatch_queue_create("MgNodeState.defaultState",
-				    DISPATCH_QUEUE_CONCURRENT);
-      table = [NSMapTable strongToStrongObjectsMapTable];
-    });
-
-  __block id result = nil;
-
-  dispatch_sync(queue, ^
-    {
-      MgNodeState *obj = [table objectForKey:self];
-
-      if (obj == nil)
-	{
-	  obj = [[self alloc] init];
-	  obj->_defaultState = YES;
-	  [obj setDefaults];
-	  [table setObject:obj forKey:self];
-	}
-
-      result = obj;
-    });
-
-  return result;
+  MgNodeState *state = [[self alloc] init];
+  [state setDefaults];
+  return state;
 }
 
 + (NSSet *)allProperties
@@ -160,7 +132,9 @@
 
 - (void)setDefaults
 {
-  self.enabled = YES;
+  _enabled = YES;
+
+  _defines.enabled = true;
 }
 
 + (BOOL)accessInstanceVariablesDirectly
@@ -177,12 +151,23 @@
   return [super init];
 }
 
-- (BOOL)hasValueForKey:(NSString *)key
+- (BOOL)definesValueForKey:(NSString *)key
 {
   if ([key isEqualToString:@"enabled"])
     return _defines.enabled;
-  else
-    return NO;
+
+  [NSException raise:@"MgNodeState"
+   format:@"does not define property %@", key];
+  return NO;
+}
+
+- (void)setDefinesValue:(BOOL)flag forKey:(NSString *)key
+{
+  if ([key isEqualToString:@"enabled"])
+    _defines.enabled = flag;
+
+  [NSException raise:@"MgNodeState"
+   format:@"does not define property %@", key];
 }
 
 - (BOOL)isEnabled
@@ -195,17 +180,16 @@
 
 - (void)setEnabled:(BOOL)flag
 {
-  _enabled = flag;
-  _defines.enabled = true;
+  if (_defines.enabled)
+    _enabled = flag;
+  else
+    self.superstate.enabled = flag;
 }
 
 /** MgGraphCopying methods. **/
 
 - (id)graphCopy:(NSMapTable *)map
 {
-  if (_defaultState)
-    return self;
-
   MgNodeState *copy = [[[self class] alloc] init];
 
   copy->_moduleState = [_moduleState mg_conditionalGraphCopy:map];
@@ -228,9 +212,7 @@
   if (_moduleState != nil)
     [c encodeConditionalObject:_moduleState forKey:@"moduleState"];
 
-  /* FIXME: should we archive the default state, in case it changes? */
-
-  if (_superstate != nil && !_superstate->_defaultState)
+  if (_superstate != nil)
     [c encodeObject:_superstate forKey:@"superstate"];
 
   if (_defines.enabled)
