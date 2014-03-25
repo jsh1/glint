@@ -41,6 +41,9 @@
 		572BFAB718D751E5000E9B84 /* classes.json in Resources */ = {isa = PBXBuildFile; fileRef = 572BFAB518D751E5000E9B84 /* classes.json */; };
 		572BFAB818D751E5000E9B84 /* inspector.json in Resources */ = {isa = PBXBuildFile; fileRef = 572BFAB618D751E5000E9B84 /* inspector.json */; };
 		572BFABB18D76363000E9B84 /* GtNumericTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 572BFABA18D76363000E9B84 /* GtNumericTextField.m */; };
+		57369C4A18E1E70700A9FD0A /* MgBezierTimingFunction.mm in Sources */ = {isa = PBXBuildFile; fileRef = 57369C4918E1E70700A9FD0A /* MgBezierTimingFunction.mm */; };
+		57369C4D18E1E70E00A9FD0A /* MgTimingFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 57369C4C18E1E70E00A9FD0A /* MgTimingFunction.m */; };
+		57369C5918E23EA000A9FD0A /* MgFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 57369C5818E23EA000A9FD0A /* MgFunction.m */; };
 		5738567818C746D80010CFB7 /* GtTreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 5738567718C746D80010CFB7 /* GtTreeNode.m */; };
 		5738567B18C74CCC0010CFB7 /* AppKitExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5738567A18C74CCC0010CFB7 /* AppKitExtensions.m */; };
 		575ACEF018CFCFE100161C70 /* MgCoreAnimationLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 575ACED018CFCFE100161C70 /* MgCoreAnimationLayer.m */; };
@@ -142,6 +145,13 @@
 		572BFAB618D751E5000E9B84 /* inspector.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = inspector.json; path = resources/inspector.json; sourceTree = "<group>"; };
 		572BFAB918D76363000E9B84 /* GtNumericTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtNumericTextField.h; path = src/GtNumericTextField.h; sourceTree = "<group>"; };
 		572BFABA18D76363000E9B84 /* GtNumericTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtNumericTextField.m; path = src/GtNumericTextField.m; sourceTree = "<group>"; };
+		57369C4718E1E70000A9FD0A /* MgUnitBezier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgUnitBezier.h; sourceTree = "<group>"; };
+		57369C4818E1E70700A9FD0A /* MgBezierTimingFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgBezierTimingFunction.h; sourceTree = "<group>"; };
+		57369C4918E1E70700A9FD0A /* MgBezierTimingFunction.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MgBezierTimingFunction.mm; sourceTree = "<group>"; };
+		57369C4B18E1E70E00A9FD0A /* MgTimingFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgTimingFunction.h; sourceTree = "<group>"; };
+		57369C4C18E1E70E00A9FD0A /* MgTimingFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgTimingFunction.m; sourceTree = "<group>"; };
+		57369C5718E23EA000A9FD0A /* MgFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgFunction.h; sourceTree = "<group>"; };
+		57369C5818E23EA000A9FD0A /* MgFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgFunction.m; sourceTree = "<group>"; };
 		5738567618C746D80010CFB7 /* GtTreeNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtTreeNode.h; path = src/GtTreeNode.h; sourceTree = "<group>"; };
 		5738567718C746D80010CFB7 /* GtTreeNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtTreeNode.m; path = src/GtTreeNode.m; sourceTree = "<group>"; };
 		5738567918C74CCC0010CFB7 /* AppKitExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppKitExtensions.h; path = src/AppKitExtensions.h; sourceTree = "<group>"; };
@@ -278,10 +288,14 @@
 			children = (
 				574D310A18D2737300B1D094 /* Mg.h */,
 				575ACECA18CFCFE100161C70 /* MgBase.h */,
+				57369C4818E1E70700A9FD0A /* MgBezierTimingFunction.h */,
+				57369C4918E1E70700A9FD0A /* MgBezierTimingFunction.mm */,
 				575ACECF18CFCFE100161C70 /* MgCoreAnimationLayer.h */,
 				575ACED018CFCFE100161C70 /* MgCoreAnimationLayer.m */,
 				575ACED118CFCFE100161C70 /* MgDrawingLayer.h */,
 				575ACED218CFCFE100161C70 /* MgDrawingLayer.m */,
+				57369C5718E23EA000A9FD0A /* MgFunction.h */,
+				57369C5818E23EA000A9FD0A /* MgFunction.m */,
 				575ACED518CFCFE100161C70 /* MgGradientLayer.h */,
 				575ACED618CFCFE100161C70 /* MgGradientLayer.m */,
 				57F567CE18DB63B4006E1B3C /* MgGradientLayerState.h */,
@@ -321,6 +335,8 @@
 				575ACEE918CFCFE100161C70 /* MgRectLayer.m */,
 				57F567DA18DB63B4006E1B3C /* MgRectLayerState.h */,
 				57F567DB18DB63B4006E1B3C /* MgRectLayerState.m */,
+				57369C4B18E1E70E00A9FD0A /* MgTimingFunction.h */,
+				57369C4C18E1E70E00A9FD0A /* MgTimingFunction.m */,
 			);
 			path = api;
 			sourceTree = "<group>";
@@ -333,6 +349,7 @@
 				579CAFCF18C381BD0051454F /* MgCoreGraphics.c */,
 				579CAFD018C381BD0051454F /* MgCoreGraphics.h */,
 				579CAFD218C385310051454F /* MgMacros.h */,
+				57369C4718E1E70000A9FD0A /* MgUnitBezier.h */,
 			);
 			path = util;
 			sourceTree = "<group>";
@@ -517,6 +534,8 @@
 				5721E87118C6212D000DA2C3 /* FoundationExtensions.m in Sources */,
 				57F567DF18DB63B4006E1B3C /* MgGradientLayerState.m in Sources */,
 				572BFAB218D74E21000E9B84 /* GtInspectorEnumControl.m in Sources */,
+				57369C4A18E1E70700A9FD0A /* MgBezierTimingFunction.mm in Sources */,
+				57369C4D18E1E70E00A9FD0A /* MgTimingFunction.m in Sources */,
 				5721E88018C6A2DF000DA2C3 /* GtSplitViewController.m in Sources */,
 				575ACEFA18CFCFE100161C70 /* MgNodePasteboard.m in Sources */,
 				575ACEF818CFCFE100161C70 /* MgLayerPasteboard.m in Sources */,
@@ -544,6 +563,7 @@
 				575ACEFC18CFCFE100161C70 /* MgRectLayer.m in Sources */,
 				572A5B1E18C4CD4100AB8086 /* GtSplitView.m in Sources */,
 				57618DB718C5D1B6004108D8 /* GtViewerView.m in Sources */,
+				57369C5918E23EA000A9FD0A /* MgFunction.m in Sources */,
 				5714A8C018BD322900ED67EE /* main.m in Sources */,
 				575ACEF618CFCFE100161C70 /* MgImageProvider.m in Sources */,
 				57F567E218DB63B4006E1B3C /* MgLayerState.m in Sources */,

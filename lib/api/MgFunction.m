@@ -22,34 +22,52 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#ifndef MG_H
-#define MG_H
+#import "MgFunction.h"
 
-#include "MgBase.h"
+@implementation MgFunction
 
-#ifdef __OBJC__
-# import "MgBezierTimingFunction.h"
-# import "MgCoreAnimationLayer.h"
-# import "MgDrawingLayer.h"
-# import "MgFunction.h"
-# import "MgGradientLayer.h"
-# import "MgGradientLayerState.h"
-# import "MgGroupLayer.h"
-# import "MgGroupLayerState.h"
-# import "MgImageLayer.h"
-# import "MgImageLayerState.h"
-# import "MgImageProvider.h"
-# import "MgLayer.h"
-# import "MgLayerState.h"
-# import "MgModuleLayer.h"
-# import "MgModuleState.h"
-# import "MgNode.h"
-# import "MgNodeState.h"
-# import "MgPathLayer.h"
-# import "MgPathLayerState.h"
-# import "MgRectLayer.h"
-# import "MgRectLayerState.h"
-# import "MgTimingFunction.h"
-#endif
+- (NSInteger)domainDimension
+{
+  return 0;
+}
 
-#endif /* MG_H */
+- (NSInteger)rangeDimension
+{
+  return 0;
+}
+
+- (void)evaluate:(const double *)in result:(double *)out
+{
+}
+
+- (double)evaluateScalar:(double)in
+{
+  double out = in;
+  [self evaluate:&in result:&out];
+  return out;
+}
+
+/** NSCopying methods. **/
+
+- (id)copyWithZone:(NSZone *)zone
+{
+  return [[[self class] alloc] init];
+}
+
+/** NSSecureCoding methods. **/
+
++ (BOOL)supportsSecureCoding
+{
+  return YES;
+}
+
+- (void)encodeWithCoder:(NSCoder *)c
+{
+}
+
+- (id)initWithCoder:(NSCoder *)c
+{
+  return [self init];
+}
+
+@end

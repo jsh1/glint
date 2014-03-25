@@ -22,34 +22,57 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#ifndef MG_H
-#define MG_H
+#import "MgBezierTimingFunction.h"
 
-#include "MgBase.h"
+#import "MgCoderExtensions.h"
+#import "MgUnitBezier.h"
 
-#ifdef __OBJC__
-# import "MgBezierTimingFunction.h"
-# import "MgCoreAnimationLayer.h"
-# import "MgDrawingLayer.h"
-# import "MgFunction.h"
-# import "MgGradientLayer.h"
-# import "MgGradientLayerState.h"
-# import "MgGroupLayer.h"
-# import "MgGroupLayerState.h"
-# import "MgImageLayer.h"
-# import "MgImageLayerState.h"
-# import "MgImageProvider.h"
-# import "MgLayer.h"
-# import "MgLayerState.h"
-# import "MgModuleLayer.h"
-# import "MgModuleState.h"
-# import "MgNode.h"
-# import "MgNodeState.h"
-# import "MgPathLayer.h"
-# import "MgPathLayerState.h"
-# import "MgRectLayer.h"
-# import "MgRectLayerState.h"
-# import "MgTimingFunction.h"
-#endif
+#import <Foundation/Foundation.h>
 
-#endif /* MG_H */
+@implementation MgBezierTimingFunction
+
+- (CFTimeInterval)applyToTime:(CFTimeInterval)t epsilon:(double)eps
+{
+  return Mg::UnitBezier(_p0.x, _p0.y, _p1.x, _p1.y).solve(t, eps);
+}
+
+- (CFTimeInterval)applyInverseToTime:(CFTimeInterval)t epsilon:(double)eps
+{
+  return Mg::UnitBezier(_p0.x, _p0.y, _p1.x, _p1.y).invert(t, eps);
+}
+
+/** NSCopying methods. **/
+
+- (id)copyWithZone:(NSZone *)zone
+{
+  MgBezierTimingFunction *copy = [super copyWithZone:zone];
+
+  copy->_p0 = _p0;
+  copy->_p1 = _p1;
+
+  return copy;
+}
+
+/** NSCoding methods. **/
+
+- (void)encodeWithCoder:(NSCoder *)c
+{
+  [super encodeWithCoder:c];
+
+  [c mg_encodeCGPoint:_p0 forKey:@"p0"];
+  [c mg_encodeCGPoint:_p1 forKey:@"p1"];
+}
+
+- (id)initWithCoder:(NSCoder *)c
+{
+  self = [super initWithCoder:c];
+  if (self == nil)
+    return nil;
+
+  _p0 = [c mg_decodeCGPointForKey:@"p0"];
+  _p1 = [c mg_decodeCGPointForKey:@"p1"];
+
+  return self;
+}
+
+@end
