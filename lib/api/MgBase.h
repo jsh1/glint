@@ -83,8 +83,9 @@
 @class MgBezierTimingFunction, MgDrawingLayer, MgFunction, MgGradientLayer,
     MgGradientLayerState, MgGroupLayer, MgGroupLayerState, MgImageLayer,
     MgImageLayerState, MgImageProvider, MgLayer, MgLayerState,
-    MgModuleLayer, MgModuleState, MgNode, MgNodeState, MgPathLayer,
-    MgPathLayerState, MgRectLayer, MgRectLayerState, MgTimingFunction;
+    MgModuleLayer, MgModuleState, MgNode, MgNodeState, MgNodeTransition,
+    MgPathLayer, MgPathLayerState, MgRectLayer, MgRectLayerState,
+    MgTimingFunction;
 
 @protocol MgImageProvider;
 

@@ -44,6 +44,7 @@
 		57369C4A18E1E70700A9FD0A /* MgBezierTimingFunction.mm in Sources */ = {isa = PBXBuildFile; fileRef = 57369C4918E1E70700A9FD0A /* MgBezierTimingFunction.mm */; };
 		57369C4D18E1E70E00A9FD0A /* MgTimingFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 57369C4C18E1E70E00A9FD0A /* MgTimingFunction.m */; };
 		57369C5918E23EA000A9FD0A /* MgFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 57369C5818E23EA000A9FD0A /* MgFunction.m */; };
+		57369C5C18E23F1600A9FD0A /* MgNodeTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 57369C5B18E23F1600A9FD0A /* MgNodeTransition.m */; };
 		5738567818C746D80010CFB7 /* GtTreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 5738567718C746D80010CFB7 /* GtTreeNode.m */; };
 		5738567B18C74CCC0010CFB7 /* AppKitExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5738567A18C74CCC0010CFB7 /* AppKitExtensions.m */; };
 		575ACEF018CFCFE100161C70 /* MgCoreAnimationLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 575ACED018CFCFE100161C70 /* MgCoreAnimationLayer.m */; };
@@ -152,6 +153,8 @@
 		57369C4C18E1E70E00A9FD0A /* MgTimingFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgTimingFunction.m; sourceTree = "<group>"; };
 		57369C5718E23EA000A9FD0A /* MgFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgFunction.h; sourceTree = "<group>"; };
 		57369C5818E23EA000A9FD0A /* MgFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgFunction.m; sourceTree = "<group>"; };
+		57369C5A18E23F1600A9FD0A /* MgNodeTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgNodeTransition.h; sourceTree = "<group>"; };
+		57369C5B18E23F1600A9FD0A /* MgNodeTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgNodeTransition.m; sourceTree = "<group>"; };
 		5738567618C746D80010CFB7 /* GtTreeNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtTreeNode.h; path = src/GtTreeNode.h; sourceTree = "<group>"; };
 		5738567718C746D80010CFB7 /* GtTreeNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtTreeNode.m; path = src/GtTreeNode.m; sourceTree = "<group>"; };
 		5738567918C74CCC0010CFB7 /* AppKitExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppKitExtensions.h; path = src/AppKitExtensions.h; sourceTree = "<group>"; };
@@ -327,6 +330,8 @@
 				575ACEE518CFCFE100161C70 /* MgNodePasteboard.m */,
 				57F567D618DB63B4006E1B3C /* MgNodeState.h */,
 				57F567D718DB63B4006E1B3C /* MgNodeState.m */,
+				57369C5A18E23F1600A9FD0A /* MgNodeTransition.h */,
+				57369C5B18E23F1600A9FD0A /* MgNodeTransition.m */,
 				575ACEE618CFCFE100161C70 /* MgPathLayer.h */,
 				575ACEE718CFCFE100161C70 /* MgPathLayer.m */,
 				57F567D818DB63B4006E1B3C /* MgPathLayerState.h */,
@@ -548,6 +553,7 @@
 				572A5B1F18C4CD4100AB8086 /* GtViewController.m in Sources */,
 				572BFAB418D74E21000E9B84 /* GtInspectorStringControl.m in Sources */,
 				57618DBE18C5D538004108D8 /* CoreAnimationExtensions.m in Sources */,
+				57369C5C18E23F1600A9FD0A /* MgNodeTransition.m in Sources */,
 				575ACEF318CFCFE100161C70 /* MgGradientLayer.m in Sources */,
 				572A5B2318C4CE2000AB8086 /* GtAppDelegate.m in Sources */,
 				57F567E918DBB388006E1B3C /* MgModuleLayer.m in Sources */,

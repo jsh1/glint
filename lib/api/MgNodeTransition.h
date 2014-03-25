@@ -22,35 +22,29 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#ifndef MG_H
-#define MG_H
+#import "MgBase.h"
 
-#include "MgBase.h"
+@interface MgNodeTransition : NSObject <MgGraphCopying, NSSecureCoding>
 
-#ifdef __OBJC__
-# import "MgBezierTimingFunction.h"
-# import "MgCoreAnimationLayer.h"
-# import "MgDrawingLayer.h"
-# import "MgFunction.h"
-# import "MgGradientLayer.h"
-# import "MgGradientLayerState.h"
-# import "MgGroupLayer.h"
-# import "MgGroupLayerState.h"
-# import "MgImageLayer.h"
-# import "MgImageLayerState.h"
-# import "MgImageProvider.h"
-# import "MgLayer.h"
-# import "MgLayerState.h"
-# import "MgModuleLayer.h"
-# import "MgModuleState.h"
-# import "MgNode.h"
-# import "MgNodeState.h"
-# import "MgNodeTransition.h"
-# import "MgPathLayer.h"
-# import "MgPathLayerState.h"
-# import "MgRectLayer.h"
-# import "MgRectLayerState.h"
-# import "MgTimingFunction.h"
-#endif
++ (instancetype)transition;
 
-#endif /* MG_H */
+@property(nonatomic, weak) MgModuleState *fromState;
+@property(nonatomic, weak) MgModuleState *toState;
+@property(nonatomic, assign, getter=isReversible) BOOL reversible;
+
+/** Transition timing. **/
+
+@property(nonatomic, assign) double begin;
+@property(nonatomic, assign) double duration;
+@property(nonatomic, copy) MgFunction *function;
+
+- (double)beginForKey:(NSString *)key;
+- (void)setBeginForKey:(double)t forKey:(NSString *)key;
+
+- (double)durationForKey:(NSString *)key;
+- (void)setDuration:(double)t forKey:(NSString *)key;
+
+- (MgFunction *)functionForKey:(NSString *)key;
+- (void)setFunction:(MgFunction *)fun forKey:(NSString *)key;
+
+@end
