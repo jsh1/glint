@@ -34,6 +34,6 @@
 
 @property(nonatomic, copy) NSString *name;
 
-@property(nonatomic, weak) MgModuleState *superstate;
+@property(nonatomic, strong) MgModuleState *superstate;
 
 @end

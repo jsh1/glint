@@ -38,12 +38,12 @@
 
 /* The state this is part of. */
 
-@property(nonatomic, weak) MgModuleState *moduleState;
+@property(nonatomic, strong) MgModuleState *moduleState;
 
 /* The state that this state derives from. Any values not defined by
    this state will be dereferenced in its superstate. */
 
-@property(nonatomic, weak) MgNodeState *superstate;
+@property(nonatomic, strong) MgNodeState *superstate;
 
 /* Returns true if the receiver explicitly defines a value for the
    property with name 'key'. */
