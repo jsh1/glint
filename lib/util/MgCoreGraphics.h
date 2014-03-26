@@ -34,11 +34,11 @@ MG_EXTERN CGColorRef MgCreateSRGBColor(CGFloat r, CGFloat g, CGFloat b,
 
 MG_EXTERN CGColorSpaceRef MgSRGBColorSpace(void);
 
-MG_EXTERN void MgContextSetLineDash(CGContextRef ctx, CFArrayRef pattern,
+MG_EXTERN void MgContextSetLineDash(CGContextRef ctx, NSArray *pattern,
     CGFloat phase);
 
-MG_EXTERN CGGradientRef MgCreateGradient(CFArrayRef colors,
-    CFArrayRef locations) CF_RETURNS_RETAINED;
+MG_EXTERN CGGradientRef MgCreateGradient(NSArray *colors, NSArray *locations)
+    CF_RETURNS_RETAINED;
 
 MG_EXTERN bool MgAffineTransformIsRectilinear(const CGAffineTransform *m);
 
@@ -52,5 +52,36 @@ MG_EXTERN CGImageRef MgImageCreateByDrawing(size_t w, size_t, bool opaque,
 
 MG_EXTERN CFDataRef MgImageCreateData(CGImageRef im, CFStringRef type)
     CF_RETURNS_RETAINED;
+
+MG_INLINE CGFloat MgFloatMix(CGFloat a, CGFloat b, double t) {
+  return a + (b - a) * t;
+}
+
+MG_INLINE bool MgBoolMix(bool a, bool b, double t) {
+  return t < .5 ? a : b;
+}
+
+MG_INLINE CGPoint MgPointMix(CGPoint a, CGPoint b, double t) {
+  CGPoint c;
+  c.x = MgFloatMix(a.x, b.x, t);
+  c.y = MgFloatMix(a.y, b.y, t);
+  return c;
+}
+
+MG_INLINE CGSize MgSizeMix(CGSize a, CGSize b, double t) {
+  CGSize c;
+  c.width = MgFloatMix(a.width, b.width, t);
+  c.height = MgFloatMix(a.height, b.height, t);
+  return c;
+}
+
+MG_EXTERN CGRect MgRectMix(CGRect a, CGRect b, double t);
+
+MG_EXTERN CGColorRef MgColorMix(CGColorRef a, CGColorRef b, double t)
+    CF_RETURNS_RETAINED;
+
+MG_EXTERN NSArray *MgFloatArrayMix(NSArray *a, NSArray *b, double t);
+
+MG_EXTERN NSArray *MgColorArrayMix(NSArray *a, NSArray *b, double t);
 
 MG_EXTERN_C_END

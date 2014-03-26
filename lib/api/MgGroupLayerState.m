@@ -26,6 +26,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import "MgNodeTransition.h"
+
 #define SUPERSTATE ((MgGroupLayerState *)(self.superstate))
 
 @implementation MgGroupLayerState
@@ -60,6 +62,19 @@
     _defines.group = flag;
   else
     [super setDefinesValue:flag forKey:key];
+}
+
+- (void)applyTransition:(MgNodeTransition *)trans atTime:(double)t
+    to:(MgNodeState *)to_
+{
+  MgGroupLayerState *to = (MgGroupLayerState *)to_;
+  double t_;
+
+  [super applyTransition:trans atTime:t to:to];
+
+  t_ = trans != nil ? [trans evaluateTime:t forKey:@"group"] : t;
+  _group = t_ < .5 ? self.group : to.group;
+  _defines.group = true;
 }
 
 - (BOOL)isGroup

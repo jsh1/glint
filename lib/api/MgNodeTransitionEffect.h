@@ -30,12 +30,10 @@
 @property(nonatomic, assign) CFTimeInterval duration;
 @property(nonatomic, copy) MgFunction *function;
 
-@property(nonatomic, strong) MgNodeState *from;
-@property(nonatomic, strong) MgNodeState *to;
-
 @property(nonatomic, strong) MgNodeTransition *transition;
 @property(nonatomic, assign, getter=isReversed) BOOL reversed;
 
-- (MgNodeState *)evaluateAtTime:(CFTimeInterval)t;
+- (MgNodeState *)evaluateAtTime:(CFTimeInterval)t
+    from:(MgNodeState *)from to:(MgNodeState *)to;
 
 @end

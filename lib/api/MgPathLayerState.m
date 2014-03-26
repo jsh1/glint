@@ -26,6 +26,7 @@
 
 #import "MgCoderExtensions.h"
 #import "MgCoreGraphics.h"
+#import "MgNodeTransition.h"
 
 #import <Foundation/Foundation.h>
 
@@ -135,6 +136,51 @@
     _defines.lineDashPattern = flag;
   else
     [super setDefinesValue:flag forKey:key];
+}
+
+- (void)applyTransition:(MgNodeTransition *)trans atTime:(double)t
+    to:(MgNodeState *)to_
+{
+  MgPathLayerState *to = (MgPathLayerState *)to_;
+  double t_;
+
+  [super applyTransition:trans atTime:t to:to];
+
+  t_ = trans != nil ? [trans evaluateTime:t forKey:@"drawingMode"] : t;
+  _drawingMode = t_ < .5 ? self.drawingMode : to.drawingMode;
+  _defines.drawingMode = true;
+
+  t_ = trans != nil ? [trans evaluateTime:t forKey:@"fillColor"] : t;
+  _fillColor = CFBridgingRelease(MgColorMix(self.fillColor, to.fillColor, t_));
+  _defines.fillColor = true;
+
+  t_ = trans != nil ? [trans evaluateTime:t forKey:@"strokeColor"] : t;
+  _strokeColor = CFBridgingRelease(MgColorMix(self.strokeColor, to.strokeColor, t_));
+  _defines.strokeColor = true;
+
+  t_ = trans != nil ? [trans evaluateTime:t forKey:@"lineWidth"] : t;
+  _lineWidth = MgFloatMix(self.lineWidth, to.lineWidth, t_);
+  _defines.lineWidth = true;
+
+  t_ = trans != nil ? [trans evaluateTime:t forKey:@"miterLimit"] : t;
+  _miterLimit = MgFloatMix(self.miterLimit, to.miterLimit, t_);
+  _defines.miterLimit = true;
+
+  t_ = trans != nil ? [trans evaluateTime:t forKey:@"lineCap"] : t;
+  _lineCap = t_ < .5 ? self.lineCap : to.lineCap;
+  _defines.lineCap = true;
+
+  t_ = trans != nil ? [trans evaluateTime:t forKey:@"lineJoin"] : t;
+  _lineJoin = t_ < .5 ? self.lineJoin : to.lineJoin;
+  _defines.lineJoin = true;
+
+  t_ = trans != nil ? [trans evaluateTime:t forKey:@"lineDashPhase"] : t;
+  _lineDashPhase = MgFloatMix(self.lineDashPhase, to.lineDashPhase, t_);
+  _defines.lineDashPhase = true;
+
+  t_ = trans != nil ? [trans evaluateTime:t forKey:@"lineDashPattern"] : t;
+  _lineDashPattern = MgFloatArrayMix(self.lineDashPattern, to.lineDashPattern, t_);
+  _defines.lineDashPattern = true;
 }
 
 - (CGPathRef)path

@@ -320,8 +320,7 @@
       CGContextSetMiterLimit(rs->ctx, self.miterLimit);
       CGContextSetLineJoin(rs->ctx, self.lineJoin);
       CGContextSetLineCap(rs->ctx, self.lineCap);
-      MgContextSetLineDash(rs->ctx, (__bridge CFArrayRef)self.lineDashPattern,
-			   self.lineDashPhase);
+      MgContextSetLineDash(rs->ctx, self.lineDashPattern, self.lineDashPhase);
       CGContextBeginPath(rs->ctx);
       CGContextAddPath(rs->ctx, self.path);
       CGContextDrawPath(rs->ctx, self.drawingMode);

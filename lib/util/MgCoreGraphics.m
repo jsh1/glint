@@ -24,6 +24,7 @@
 
 #import "MgCoreGraphics.h"
 
+#import <Foundation/Foundation.h>
 #import <ImageIO/ImageIO.h>
 
 #import "MgMacros.h"
@@ -80,15 +81,9 @@ MgSRGBColorSpace(void)
 }
 
 void
-MgContextSetLineDash(CGContextRef ctx, CFArrayRef pattern, CGFloat phase)
+MgContextSetLineDash(CGContextRef ctx, NSArray *pattern, CGFloat phase)
 {
-  if (pattern == NULL)
-    {
-      CGContextSetLineDash(ctx, phase, NULL, 0);
-      return;
-    }
-
-  size_t count = CFArrayGetCount(pattern);
+  size_t count = [pattern count];
   if (count == 0)
     {
       CGContextSetLineDash(ctx, phase, NULL, 0);
@@ -100,10 +95,7 @@ MgContextSetLineDash(CGContextRef ctx, CFArrayRef pattern, CGFloat phase)
     return;
 
   for (size_t i = 0; i < count; i++)
-    {
-      CFNumberGetValue(CFArrayGetValueAtIndex(pattern, i),
-		       kCFNumberCGFloatType, &vec[i]);
-    }
+    vec[i] = [pattern[i] doubleValue];
 
   CGContextSetLineDash(ctx, phase, vec, count);
 
@@ -111,21 +103,21 @@ MgContextSetLineDash(CGContextRef ctx, CFArrayRef pattern, CGFloat phase)
 }
 
 CGGradientRef
-MgCreateGradient(CFArrayRef colors, CFArrayRef locations)
+MgCreateGradient(NSArray *colors, NSArray *locations)
 {
-  if (colors == NULL)
+  size_t count = [colors count];
+  if (count == 0)
     return NULL;
 
-  size_t count = CFArrayGetCount(colors);
-
-  if (locations != NULL && CFArrayGetCount(locations) != count)
-    locations = NULL;
+  if (locations != nil && [locations count] != count)
+    locations = nil;
 
   CGGradientRef grad = NULL;
 
-  if (locations == NULL)
+  if (locations == nil)
     {
-      grad = CGGradientCreateWithColors(MgSRGBColorSpace(), colors, NULL);
+      grad = CGGradientCreateWithColors(MgSRGBColorSpace(),
+					(__bridge CFArrayRef)colors, NULL);
     }
   else
     {
@@ -133,12 +125,10 @@ MgCreateGradient(CFArrayRef colors, CFArrayRef locations)
       if (vec != NULL)
 	{
 	  for (size_t i = 0; i < count; i++)
-	    {
-	      CFNumberGetValue(CFArrayGetValueAtIndex(locations, i),
-			       kCFNumberCGFloatType, &vec[i]);
-	    }
+	    vec[i] = [locations[i] doubleValue];
 
-	  grad = CGGradientCreateWithColors(MgSRGBColorSpace(), colors, vec);
+	  grad = CGGradientCreateWithColors(MgSRGBColorSpace(),
+					    (__bridge CFArrayRef)colors, vec);
 
 	  STACK_FREE(CGFloat, count, vec);
 	}
@@ -225,4 +215,85 @@ MgImageCreateData(CGImageRef im, CFStringRef type)
   CFRelease(dest);
 
   return data;
+}
+
+CGRect
+MgRectMix(CGRect a, CGRect b, double t)
+{
+  CGFloat a_x0 = a.origin.x;
+  CGFloat a_y0 = a.origin.y;
+  CGFloat a_x1 = a_x0 + a.size.width;
+  CGFloat a_y1 = a_y0 + a.size.height;
+
+  CGFloat b_x0 = b.origin.x;
+  CGFloat b_y0 = b.origin.y;
+  CGFloat b_x1 = b_x0 + b.size.width;
+  CGFloat b_y1 = b_y0 + b.size.height;
+
+  CGFloat c_x0 = MgFloatMix(a_x0, b_x0, t);
+  CGFloat c_x1 = MgFloatMix(a_x1, b_x1, t);
+  CGFloat c_y0 = MgFloatMix(a_y0, b_y0, t);
+  CGFloat c_y1 = MgFloatMix(a_y1, b_y1, t);
+
+  return CGRectMake(c_x0, c_y0, c_x1 - c_x0, c_y1 - c_y0);
+}
+
+CGColorRef
+MgColorMix(CGColorRef a, CGColorRef b, double t)
+{
+  /* FIXME: implement this. */
+
+  return NULL;
+}
+
+NSArray *
+MgFloatArrayMix(NSArray *a, NSArray *b, double t)
+{
+  size_t count = [a count];
+  if (count == 0 || [b count] != count)
+    return t < .5 ? a : b;
+
+  __unsafe_unretained id *a_values = STACK_ALLOC_ARC(id, count);
+  __unsafe_unretained id *b_values = STACK_ALLOC_ARC(id, count);
+
+  [a getObjects:a_values];
+  [b getObjects:b_values];
+
+  for (size_t i = 0; i < count; i++)
+    a_values[i] = @(MgFloatMix([a_values[i] doubleValue], [b_values[i] doubleValue], t));
+
+  NSArray *ret = [NSArray arrayWithObjects:a_values count:count];
+
+  STACK_FREE(id, count, b_values);
+  STACK_FREE(id, count, a_values);
+
+  return ret;
+}
+
+NSArray *
+MgColorArrayMix(NSArray *a, NSArray *b, double t)
+{
+  size_t count = [a count];
+  if (count == 0 || [b count] != count)
+    return t < .5 ? a : b;
+
+  __unsafe_unretained id *a_values = STACK_ALLOC_ARC(id, count);
+  __unsafe_unretained id *b_values = STACK_ALLOC_ARC(id, count);
+
+  [a getObjects:a_values];
+  [b getObjects:b_values];
+
+  NSMutableArray *ret = [NSMutableArray arrayWithCapacity:count];
+
+  for (size_t i = 0; i < count; i++)
+    {
+      CGColorRef c = MgColorMix((__bridge CGColorRef)a_values[i],
+				(__bridge CGColorRef)b_values[i], t);
+      [ret addObject:CFBridgingRelease(c)];
+    }
+
+  STACK_FREE(id, count, b_values);
+  STACK_FREE(id, count, a_values);
+
+  return ret;
 }

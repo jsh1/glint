@@ -24,7 +24,9 @@
 
 #import "MgNodeState.h"
 
+#import "MgCoreGraphics.h"
 #import "MgModuleState.h"
+#import "MgNodeTransition.h"
 
 #import <Foundation/Foundation.h>
 #import <objc/runtime.h>
@@ -175,9 +177,21 @@
 - (MgNodeState *)evaluateTransition:(MgNodeTransition *)trans
     atTime:(double)t to:(MgNodeState *)to
 {
-  /* FIXME: implement this. */
+  MgNodeState *dest = [[self class] state];
 
-  return self;
+  dest.superstate = self;
+
+  [dest applyTransition:trans atTime:t to:to];
+
+  return dest;
+}
+
+- (void)applyTransition:(MgNodeTransition *)trans atTime:(double)t
+    to:(MgNodeState *)to
+{
+  double t_ = trans != nil ? [trans evaluateTime:t forKey:@"enabled"] : t;
+  _enabled = MgBoolMix(self.enabled, to.enabled, t_);
+  _defines.enabled = true;
 }
 
 - (BOOL)isEnabled

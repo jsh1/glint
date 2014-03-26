@@ -271,8 +271,7 @@
 {
   if (_gradient == nil)
     {
-      CGGradientRef g = MgCreateGradient((__bridge CFArrayRef)self.colors,
-					 (__bridge CFArrayRef)self.locations);
+      CGGradientRef g = MgCreateGradient(self.colors, self.locations);
       _gradient = CFBridgingRelease(g);
     }
 

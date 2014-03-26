@@ -26,6 +26,7 @@
 
 #import "MgCoderExtensions.h"
 #import "MgCoreGraphics.h"
+#import "MgNodeTransition.h"
 
 #import <Foundation/Foundation.h>
 
@@ -135,6 +136,55 @@
     _defines.blendMode = flag;
   else
     [super setDefinesValue:flag forKey:key];
+}
+
+- (void)applyTransition:(MgNodeTransition *)trans atTime:(double)t
+    to:(MgNodeState *)to_
+{
+  MgLayerState *to = (MgLayerState *)to_;
+  double t_;
+
+  [super applyTransition:trans atTime:t to:to];
+
+  t_ = trans != nil ? [trans evaluateTime:t forKey:@"position"] : t;
+  _position = MgPointMix(self.position, to.position, t_);
+  _defines.position = true;
+
+  t_ = trans != nil ? [trans evaluateTime:t forKey:@"anchor"] : t;
+  _anchor = MgPointMix(self.anchor, to.anchor, t_);
+  _defines.anchor = true;
+
+  t_ = trans != nil ? [trans evaluateTime:t forKey:@"size"] : t;
+  _size = MgSizeMix(self.size, to.size, t_);
+  _defines.size = true;
+
+  t_ = trans != nil ? [trans evaluateTime:t forKey:@"origin"] : t;
+  _origin = MgPointMix(self.origin, to.origin, t_);
+  _defines.origin = true;
+
+  t_ = trans != nil ? [trans evaluateTime:t forKey:@"scale"] : t;
+  _scale = MgFloatMix(self.scale, to.scale, t_);
+  _defines.scale = true;
+
+  t_ = trans != nil ? [trans evaluateTime:t forKey:@"squeeze"] : t;
+  _squeeze = MgFloatMix(self.squeeze, to.squeeze, t_);
+  _defines.squeeze = true;
+
+  t_ = trans != nil ? [trans evaluateTime:t forKey:@"skew"] : t;
+  _skew = MgFloatMix(self.skew, to.skew, t_);
+  _defines.skew = true;
+
+  t_ = trans != nil ? [trans evaluateTime:t forKey:@"rotation"] : t;
+  _rotation = MgFloatMix(self.rotation, to.rotation, t_);
+  _defines.rotation = true;
+
+  t_ = trans != nil ? [trans evaluateTime:t forKey:@"alpha"] : t;
+  _alpha = MgFloatMix(self.alpha, to.alpha, t_);
+  _defines.alpha = true;
+
+  t_ = trans != nil ? [trans evaluateTime:t forKey:@"blendMode"] : t;
+  _blendMode = (t_ < .5) ? self.blendMode : to.blendMode;
+  _defines.blendMode = true;
 }
 
 - (CGPoint)position

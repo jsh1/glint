@@ -63,7 +63,7 @@
 		57618DB818C5D1B6004108D8 /* GtViewerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 57618DB618C5D1B6004108D8 /* GtViewerViewController.m */; };
 		57618DBB18C5D1F5004108D8 /* GtViewerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 57618DB918C5D1F5004108D8 /* GtViewerView.xib */; };
 		57618DBE18C5D538004108D8 /* CoreAnimationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 57618DBD18C5D538004108D8 /* CoreAnimationExtensions.m */; };
-		579CAFD118C381BD0051454F /* MgCoreGraphics.c in Sources */ = {isa = PBXBuildFile; fileRef = 579CAFCF18C381BD0051454F /* MgCoreGraphics.c */; };
+		577AB5B618E32F2700234B50 /* MgCoreGraphics.m in Sources */ = {isa = PBXBuildFile; fileRef = 577AB5B518E32F2700234B50 /* MgCoreGraphics.m */; };
 		579CAFD918C3F63A0051454F /* MgCoderExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 579CAFD818C3F63A0051454F /* MgCoderExtensions.m */; };
 		57B111B718D0BB8C00A41A64 /* GtViewerOverlayLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 57B111B618D0BB8C00A41A64 /* GtViewerOverlayLayer.m */; };
 		57DE109E18DDA99F00B8EC27 /* GtStateListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 57DE109D18DDA99F00B8EC27 /* GtStateListViewController.m */; };
@@ -193,7 +193,7 @@
 		57618DBA18C5D1F5004108D8 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = resources/en.lproj/GtViewerView.xib; sourceTree = "<group>"; };
 		57618DBC18C5D538004108D8 /* CoreAnimationExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CoreAnimationExtensions.h; path = src/CoreAnimationExtensions.h; sourceTree = "<group>"; };
 		57618DBD18C5D538004108D8 /* CoreAnimationExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CoreAnimationExtensions.m; path = src/CoreAnimationExtensions.m; sourceTree = "<group>"; };
-		579CAFCF18C381BD0051454F /* MgCoreGraphics.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = MgCoreGraphics.c; path = lib/util/MgCoreGraphics.c; sourceTree = SOURCE_ROOT; };
+		577AB5B518E32F2700234B50 /* MgCoreGraphics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgCoreGraphics.m; sourceTree = "<group>"; };
 		579CAFD018C381BD0051454F /* MgCoreGraphics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MgCoreGraphics.h; path = lib/util/MgCoreGraphics.h; sourceTree = SOURCE_ROOT; };
 		579CAFD218C385310051454F /* MgMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgMacros.h; sourceTree = "<group>"; };
 		579CAFD718C3F63A0051454F /* MgCoderExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgCoderExtensions.h; sourceTree = "<group>"; };
@@ -351,7 +351,7 @@
 			children = (
 				579CAFD718C3F63A0051454F /* MgCoderExtensions.h */,
 				579CAFD818C3F63A0051454F /* MgCoderExtensions.m */,
-				579CAFCF18C381BD0051454F /* MgCoreGraphics.c */,
+				577AB5B518E32F2700234B50 /* MgCoreGraphics.m */,
 				579CAFD018C381BD0051454F /* MgCoreGraphics.h */,
 				579CAFD218C385310051454F /* MgMacros.h */,
 				57369C4718E1E70000A9FD0A /* MgUnitBezier.h */,
@@ -546,7 +546,6 @@
 				575ACEF818CFCFE100161C70 /* MgLayerPasteboard.m in Sources */,
 				572A5B2018C4CD4100AB8086 /* GtWindowController.m in Sources */,
 				572BFABB18D76363000E9B84 /* GtNumericTextField.m in Sources */,
-				579CAFD118C381BD0051454F /* MgCoreGraphics.c in Sources */,
 				575ACF0018CFD00100161C70 /* MgGroupLayer.m in Sources */,
 				575ACEF718CFCFE100161C70 /* MgLayer.m in Sources */,
 				57B111B718D0BB8C00A41A64 /* GtViewerOverlayLayer.m in Sources */,
@@ -560,6 +559,7 @@
 				57F567E118DB63B4006E1B3C /* MgImageLayerState.m in Sources */,
 				575ACEFB18CFCFE100161C70 /* MgPathLayer.m in Sources */,
 				572BFAB318D74E21000E9B84 /* GtInspectorNumberControl.m in Sources */,
+				577AB5B618E32F2700234B50 /* MgCoreGraphics.m in Sources */,
 				5725D96918D8C82500DECE97 /* GtTreeView.m in Sources */,
 				572BFA9718D72256000E9B84 /* GtInspectorItem.m in Sources */,
 				5714A8C718BD322900ED67EE /* GtDocument.m in Sources */,

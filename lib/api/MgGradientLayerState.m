@@ -25,6 +25,8 @@
 #import "MgGradientLayerState.h"
 
 #import "MgCoderExtensions.h"
+#import "MgCoreGraphics.h"
+#import "MgNodeTransition.h"
 
 #import <Foundation/Foundation.h>
 
@@ -126,6 +128,51 @@
     _defines.drawsAfterEnd = flag;
   else
     [super setDefinesValue:flag forKey:key];
+}
+
+- (void)applyTransition:(MgNodeTransition *)trans atTime:(double)t
+    to:(MgNodeState *)to_
+{
+  MgGradientLayerState *to = (MgGradientLayerState *)to_;
+  double t_;
+
+  [super applyTransition:trans atTime:t to:to];
+
+  t_ = trans != nil ? [trans evaluateTime:t forKey:@"colors"] : t;
+  _colors = MgColorArrayMix(self.colors, to.colors, t_);
+  _defines.colors = true;
+
+  t_ = trans != nil ? [trans evaluateTime:t forKey:@"locations"] : t;
+  _locations = MgFloatArrayMix(self.locations, to.locations, t_);
+  _defines.locations = true;
+
+  t_ = trans != nil ? [trans evaluateTime:t forKey:@"radial"] : t;
+  _radial = t_ < .5 ? self.radial : to.radial;
+  _defines.radial = true;
+
+  t_ = trans != nil ? [trans evaluateTime:t forKey:@"startPoint"] : t;
+  _startPoint = MgPointMix(self.startPoint, to.startPoint, t_);
+  _defines.startPoint = true;
+
+  t_ = trans != nil ? [trans evaluateTime:t forKey:@"endPoint"] : t;
+  _endPoint = MgPointMix(self.endPoint, to.endPoint, t_);
+  _defines.endPoint = true;
+
+  t_ = trans != nil ? [trans evaluateTime:t forKey:@"startRadius"] : t;
+  _startRadius = MgFloatMix(self.startRadius, to.startRadius, t_);
+  _defines.startRadius = true;
+
+  t_ = trans != nil ? [trans evaluateTime:t forKey:@"endRadius"] : t;
+  _endRadius = MgFloatMix(self.endRadius, to.endRadius, t_);
+  _defines.endRadius = true;
+
+  t_ = trans != nil ? [trans evaluateTime:t forKey:@"drawsBeforeStart"] : t;
+  _drawsBeforeStart = MgBoolMix(self.drawsBeforeStart, to.drawsBeforeStart, t_);
+  _defines.drawsBeforeStart = true;
+
+  t_ = trans != nil ? [trans evaluateTime:t forKey:@"drawsAfterEnd"] : t;
+  _drawsAfterEnd = MgBoolMix(self.drawsAfterEnd, to.drawsAfterEnd, t_);
+  _defines.drawsAfterEnd = true;
 }
 
 - (NSArray *)colors

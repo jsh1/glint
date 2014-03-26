@@ -24,9 +24,11 @@
 
 #import "MgImageLayerState.h"
 
+#import "MgCoreGraphics.h"
 #import "MgCoderExtensions.h"
 #import "MgImageLayer.h"
 #import "MgImageProvider.h"
+#import "MgNodeTransition.h"
 
 #import <Foundation/Foundation.h>
 
@@ -88,6 +90,31 @@
     _defines.repeats = flag;
   else
     [super setDefinesValue:flag forKey:key];
+}
+
+- (void)applyTransition:(MgNodeTransition *)trans atTime:(double)t
+    to:(MgNodeState *)to_
+{
+  MgImageLayerState *to = (MgImageLayerState *)to_;
+  double t_;
+
+  [super applyTransition:trans atTime:t to:to];
+
+  t_ = trans != nil ? [trans evaluateTime:t forKey:@"imageProvider"] : t;
+  _imageProvider = t_ < .5 ? self.imageProvider : to.imageProvider;
+  _defines.imageProvider = true;
+
+  t_ = trans != nil ? [trans evaluateTime:t forKey:@"cropRect"] : t;
+  _cropRect = MgRectMix(self.cropRect, to.cropRect, t_);
+  _defines.cropRect = true;
+
+  t_ = trans != nil ? [trans evaluateTime:t forKey:@"centerRect"] : t;
+  _centerRect = MgRectMix(self.centerRect, to.centerRect, t_);
+  _defines.centerRect = true;
+
+  t_ = trans != nil ? [trans evaluateTime:t forKey:@"repeats"] : t;
+  _repeats = t_ < .5 ? self.repeats : to.repeats;
+  _defines.repeats = true;
 }
 
 - (id<MgImageProvider>)imageProvider

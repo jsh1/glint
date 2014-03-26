@@ -56,6 +56,11 @@
 - (MgNodeState *)evaluateTransition:(MgNodeTransition *)trans
     atTime:(double)t to:(MgNodeState *)to;
 
+/* Subclasses should override and call super first. */
+
+- (void)applyTransition:(MgNodeTransition *)trans atTime:(double)t
+    to:(MgNodeState *)to;
+
 /** MgNode properties. **/
 
 @property(nonatomic, assign, getter=isEnabled) BOOL enabled;

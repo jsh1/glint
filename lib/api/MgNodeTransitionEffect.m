@@ -27,6 +27,7 @@
 @implementation MgNodeTransitionEffect
 
 - (MgNodeState *)evaluateAtTime:(CFTimeInterval)t
+    from:(MgNodeState *)from to:(MgNodeState *)to
 {
   t = (t - self.begin) / self.duration;
 
@@ -39,16 +40,16 @@
     t = [fun evaluateScalar:t];
 
   if (!(t > 0))
-    return self.from;
+    return from;
   if (!(t < 1))
     return nil;
 
   MgNodeTransition *trans = self.transition;
 
   if (trans == nil)
-    return [self.from evaluateTransition:nil atTime:t to:self.to];
+    return [from evaluateTransition:nil atTime:t to:to];
   else
-    return [trans evaluateAtTime:t from:self.from to:self.to];
+    return [trans evaluateAtTime:t from:from to:to];
 }
 
 @end

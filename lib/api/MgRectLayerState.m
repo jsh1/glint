@@ -26,6 +26,7 @@
 
 #import "MgCoderExtensions.h"
 #import "MgCoreGraphics.h"
+#import "MgNodeTransition.h"
 
 #import <Foundation/Foundation.h>
 
@@ -95,6 +96,35 @@
     _defines.lineWidth = flag;
   else
     [super setDefinesValue:flag forKey:key];
+}
+
+- (void)applyTransition:(MgNodeTransition *)trans atTime:(double)t
+    to:(MgNodeState *)to_
+{
+  MgRectLayerState *to = (MgRectLayerState *)to_;
+  double t_;
+
+  [super applyTransition:trans atTime:t to:to];
+
+  t_ = trans != nil ? [trans evaluateTime:t forKey:@"cornerRadius"] : t;
+  _cornerRadius = MgFloatMix(self.cornerRadius, to.cornerRadius, t_);
+  _defines.cornerRadius = true;
+
+  t_ = trans != nil ? [trans evaluateTime:t forKey:@"drawingMode"] : t;
+  _drawingMode = t < .5 ? self.drawingMode : to.drawingMode;
+  _defines.drawingMode = true;
+
+  t_ = trans != nil ? [trans evaluateTime:t forKey:@"fillColor"] : t;
+  _fillColor = CFBridgingRelease(MgColorMix(self.fillColor, to.fillColor, t_));
+  _defines.fillColor = true;
+
+  t_ = trans != nil ? [trans evaluateTime:t forKey:@"strokeColor"] : t;
+  _strokeColor = CFBridgingRelease(MgColorMix(self.strokeColor, to.strokeColor, t_));
+  _defines.strokeColor = true;
+
+  t_ = trans != nil ? [trans evaluateTime:t forKey:@"lineWidth"] : t;
+  _lineWidth = MgFloatMix(self.lineWidth, to.lineWidth, t_);
+  _defines.lineWidth = true;
 }
 
 - (CGFloat)cornerRadius
