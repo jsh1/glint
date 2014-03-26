@@ -124,6 +124,8 @@
 	    }
 	}
 
+      free(plist);
+
       [set unionSet:[[self superclass] allProperties]];
 
       return [set copy];
