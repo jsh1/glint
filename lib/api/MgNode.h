@@ -41,7 +41,8 @@ extern NSString *const MgArchiveType;	/* UTI: org.unfactored.mg-archive */
 
 @property(nonatomic, strong) MgNodeState *state;
 
-/* All states implemented by the receiver. */
+/* All states implemented by the receiver, an array of MgNodeState
+   instances. */
 
 @property(nonatomic, copy) NSArray *states;
 
@@ -57,6 +58,11 @@ extern NSString *const MgArchiveType;	/* UTI: org.unfactored.mg-archive */
 /* Applies `moduleState' to the subtree rooted at the receiver. */
 
 - (void)applyModuleState:(MgModuleState *)moduleState;
+
+/* The explicit transitions defined by the receiver, an array of
+   MgNodeTransition instances. */
+
+@property(nonatomic, copy) NSArray *transitions;
 
 /* True if the receiver is enabled. This property is never animatable,
    but is local to each state. */

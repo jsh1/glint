@@ -47,4 +47,11 @@
 - (MgFunction *)functionForKey:(NSString *)key;
 - (void)setFunction:(MgFunction *)fun forKey:(NSString *)key;
 
+/** Evaluation. **/
+
+- (CFTimeInterval)evaluateTime:(CFTimeInterval)t forKey:(NSString *)key;
+
+- (MgNodeState *)evaluateAtTime:(CFTimeInterval)t from:(MgNodeState *)from
+    to:(MgNodeState *)to;
+
 @end

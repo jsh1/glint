@@ -26,6 +26,7 @@
 
 #import "MgFunction.h"
 #import "MgModuleState.h"
+#import "MgNodeState.h"
 
 #import <Foundation/Foundation.h>
 
@@ -147,6 +148,40 @@ MG_HIDDEN_CLASS
     }
 
   timing.function = fun;
+}
+
+- (CFTimeInterval)evaluateTime:(CFTimeInterval)t forKey:(NSString *)key
+{
+  MgNodeTransitionTiming *timing = _keyTiming[key];
+  if (timing == nil)
+    return t;
+
+  t = (t - timing.begin) / timing.duration;
+  
+  MgFunction *fun = timing.function;
+
+  if (fun != nil)
+    t = [fun evaluateScalar:t];
+
+  return t;
+}
+
+- (MgNodeState *)evaluateAtTime:(CFTimeInterval)t from:(MgNodeState *)from
+    to:(MgNodeState *)to
+{
+  t = (t - self.begin) / self.duration;
+
+  MgFunction *fun = self.function;
+
+  if (fun != nil)
+    t = [fun evaluateScalar:t];
+
+  if (!(t > 0))
+    return from;
+  if (!(t < 1))
+    return nil;
+
+  return [from evaluateTransition:self atTime:t to:to];
 }
 
 /** MgGraphCopying methods. **/

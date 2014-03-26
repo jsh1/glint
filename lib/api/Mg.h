@@ -46,6 +46,7 @@
 # import "MgNode.h"
 # import "MgNodeState.h"
 # import "MgNodeTransition.h"
+# import "MgNodeTransitionEffect.h"
 # import "MgPathLayer.h"
 # import "MgPathLayerState.h"
 # import "MgRectLayer.h"

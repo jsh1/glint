@@ -43,8 +43,9 @@ static NSUInteger version_counter;
 
 @implementation MgNode
 {
-  NSMutableArray *_states;
   MgNodeState *_state;
+  NSMutableArray *_states;
+  NSArray *_transitions;
   NSString *_name;
   NSPointerArray *_references;
   NSUInteger _version;
@@ -86,6 +87,27 @@ static NSUInteger version_counter;
   return self;
 }
 
++ (BOOL)automaticallyNotifiesObserversOfState
+{
+  return NO;
+}
+
+- (MgNodeState *)state
+{
+  return _state;
+}
+
+- (void)setState:(MgNodeState *)state
+{
+  if (_state != state)
+    {
+      [self willChangeValueForKey:@"state"];
+      _state = state;
+      [self incrementVersion];
+      [self didChangeValueForKey:@"state"];
+    }
+}
+
 + (BOOL)automaticallyNotifiesObserversOfStates
 {
   return NO;
@@ -115,27 +137,6 @@ static NSUInteger version_counter;
   [_states addObject:state];
   [self incrementVersion];
   [self didChangeValueForKey:@"states"];
-}
-
-+ (BOOL)automaticallyNotifiesObserversOfState
-{
-  return NO;
-}
-
-- (MgNodeState *)state
-{
-  return _state;
-}
-
-- (void)setState:(MgNodeState *)state
-{
-  if (_state != state)
-    {
-      [self willChangeValueForKey:@"state"];
-      _state = state;
-      [self incrementVersion];
-      [self didChangeValueForKey:@"state"];
-    }
 }
 
 - (MgNodeState *)moduleState:(MgModuleState *)moduleState
@@ -200,6 +201,27 @@ static NSUInteger version_counter;
       [child applyModuleState:moduleState mark:mark];
     }
    mark:mark];
+}
+
++ (BOOL)automaticallyNotifiesObserversOfTransitions
+{
+  return NO;
+}
+
+- (NSArray *)transitions
+{
+  return _transitions != nil ? _transitions : @[];
+}
+
+- (void)setTransitions:(NSArray *)array
+{
+  if (![_transitions isEqual:array])
+    {
+      [self willChangeValueForKey:@"transitions"];
+      _transitions = [array copy];
+      [self incrementVersion];
+      [self didChangeValueForKey:@"transitions"];
+    }
 }
 
 + (BOOL)automaticallyNotifiesObserversOfEnabled

@@ -22,42 +22,20 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "MgNode.h"
+#import "MgBase.h"
 
-@interface MgNodeState : NSObject <MgGraphCopying, NSSecureCoding>
+@interface MgNodeTransitionEffect : NSObject
 
-+ (instancetype)state;
+@property(nonatomic, assign) CFTimeInterval begin;
+@property(nonatomic, assign) CFTimeInterval duration;
+@property(nonatomic, copy) MgFunction *function;
 
-+ (instancetype)defaultState;
+@property(nonatomic, strong) MgNodeState *from;
+@property(nonatomic, strong) MgNodeState *to;
 
-+ (NSSet *)allProperties;
+@property(nonatomic, strong) MgNodeTransition *transition;
+@property(nonatomic, assign, getter=isReversed) BOOL reversed;
 
-- (id)init;
-
-- (void)setDefaults;
-
-/* The state this is part of. */
-
-@property(nonatomic, weak) MgModuleState *moduleState;
-
-/* The state that this state derives from. Any values not defined by
-   this state will be dereferenced in its superstate. */
-
-@property(nonatomic, weak) MgNodeState *superstate;
-
-/* Returns true if the receiver explicitly defines a value for the
-   property with name 'key'. */
-
-- (BOOL)definesValueForKey:(NSString *)key;
-- (void)setDefinesValue:(BOOL)flag forKey:(NSString *)key;
-
-/* 'trans' may be nil, in which case property timing is identity. */
-
-- (MgNodeState *)evaluateTransition:(MgNodeTransition *)trans
-    atTime:(double)t to:(MgNodeState *)to;
-
-/** MgNode properties. **/
-
-@property(nonatomic, assign, getter=isEnabled) BOOL enabled;
+- (MgNodeState *)evaluateAtTime:(CFTimeInterval)t;
 
 @end

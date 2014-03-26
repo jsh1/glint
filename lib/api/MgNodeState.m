@@ -170,6 +170,14 @@
    format:@"does not define property %@", key];
 }
 
+- (MgNodeState *)evaluateTransition:(MgNodeTransition *)trans
+    atTime:(double)t to:(MgNodeState *)to
+{
+  /* FIXME: implement this. */
+
+  return self;
+}
+
 - (BOOL)isEnabled
 {
   if (_defines.enabled)
