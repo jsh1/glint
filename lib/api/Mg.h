@@ -46,12 +46,13 @@
 # import "MgNode.h"
 # import "MgNodeState.h"
 # import "MgNodeTransition.h"
-# import "MgNodeTransitionEffect.h"
 # import "MgPathLayer.h"
 # import "MgPathLayerState.h"
 # import "MgRectLayer.h"
 # import "MgRectLayerState.h"
 # import "MgTimingFunction.h"
+# import "MgTransition.h"
+# import "MgTransitionTiming.h"
 #endif
 
 #endif /* MG_H */

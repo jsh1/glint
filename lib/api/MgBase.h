@@ -84,8 +84,8 @@
     MgGradientLayerState, MgGroupLayer, MgGroupLayerState, MgImageLayer,
     MgImageLayerState, MgImageProvider, MgLayer, MgLayerState,
     MgModuleLayer, MgModuleState, MgNode, MgNodeState, MgNodeTransition,
-    MgNodeTransitionEffect, MgPathLayer, MgPathLayerState, MgRectLayer,
-    MgRectLayerState, MgTimingFunction;
+    MgPathLayer, MgPathLayerState, MgRectLayer, MgRectLayerState,
+    MgTimingFunction, MgTransition, MgTransitionTiming;
 
 @protocol MgImageProvider;
 

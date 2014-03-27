@@ -131,12 +131,13 @@
     {
       [self willChangeValueForKey:@"moduleState"];
       _moduleState = state;
-      [self applyModuleState:state];
+      [self applyModuleState:state options:@{}];
       [self didChangeValueForKey:@"moduleState"];
     }
 }
 
-- (void)applyModuleState:(MgModuleState *)moduleState mark:(uint32_t)mark
+- (void)applyModuleState:(MgModuleState *)moduleState
+    options:(NSDictionary *)dict mark:(uint32_t)mark
 {
   /* Do nothing. This represents a new sub-graph with its own state
      tree. */

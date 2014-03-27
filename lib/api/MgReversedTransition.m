@@ -22,57 +22,46 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "MgBase.h"
+#import "MgReversedTransition.h"
 
-#import "MgNode.h"
-
-#import <Foundation/Foundation.h>
-
-@implementation MgNode (MgGraphCopying)
-
-- (id)mg_graphCopy
+@implementation MgReversedTransition
 {
-  return [self mg_graphCopy:[NSMapTable strongToStrongObjectsMapTable]];
+  MgTransition *_transition;
 }
 
-- (id)mg_graphCopy:(NSMapTable *)map
+- (id)initWithTransition:(MgTransition *)trans
 {
-  id copy = [map objectForKey:self];
+  self = [super init];
+  if (self == nil)
+    return nil;
 
-  __unsafe_unretained id null_object = (__bridge id)kCFNull;
+  _transition = trans;
 
-  if (copy == nil)
-    {
-      if ([self conformsToProtocol:@protocol(MgGraphCopying)])
-	copy = [(id<MgGraphCopying>)self graphCopy:map];
-      else
-	copy = [self copy];
-
-      if (copy == nil)
-	copy = null_object;
-
-      [map setObject:copy forKey:self];
-    }
-
-  if (copy == null_object)
-    copy = nil;
-
-  return copy;
+  return self;
 }
 
-- (id)mg_graphConditionalCopy:(NSMapTable *)map
+- (double)begin
 {
-  id copy = [map objectForKey:self];
+  return _transition.begin;
+}
 
-  __unsafe_unretained id null_object = (__bridge id)kCFNull;
+- (double)duration
+{
+  return _transition.duration;
+}
 
-  if (copy == nil)
-    return self;
+- (BOOL)definesTimingForKey:(NSString *)key
+{
+  return [_transition definesTimingForKey:key];
+}
 
-  if (copy == null_object)
-    copy = nil;
+- (double)evaluateTime:(double)t forKey:(NSString *)key
+{
+  t = t - _transition.begin;
+  t = _transition.duration - t;
+  t = t + _transition.begin;
 
-  return copy;
+  return [_transition evaluateTime:t forKey:key];
 }
 
 @end

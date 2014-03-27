@@ -45,6 +45,9 @@
 
 @property(nonatomic, strong) MgNodeState *superstate;
 
+- (BOOL)isDescendantOf:(MgNodeState *)state;
+- (MgNodeState *)ancestorSharedWith:(MgNodeState *)state;
+
 /* Returns true if the receiver explicitly defines a value for the
    property with name 'key'. */
 

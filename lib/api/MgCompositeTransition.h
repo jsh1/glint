@@ -22,57 +22,10 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "MgBase.h"
+#import "MgTransition.h"
 
-#import "MgNode.h"
+@interface MgCompositeTransition : MgTransition
 
-#import <Foundation/Foundation.h>
-
-@implementation MgNode (MgGraphCopying)
-
-- (id)mg_graphCopy
-{
-  return [self mg_graphCopy:[NSMapTable strongToStrongObjectsMapTable]];
-}
-
-- (id)mg_graphCopy:(NSMapTable *)map
-{
-  id copy = [map objectForKey:self];
-
-  __unsafe_unretained id null_object = (__bridge id)kCFNull;
-
-  if (copy == nil)
-    {
-      if ([self conformsToProtocol:@protocol(MgGraphCopying)])
-	copy = [(id<MgGraphCopying>)self graphCopy:map];
-      else
-	copy = [self copy];
-
-      if (copy == nil)
-	copy = null_object;
-
-      [map setObject:copy forKey:self];
-    }
-
-  if (copy == null_object)
-    copy = nil;
-
-  return copy;
-}
-
-- (id)mg_graphConditionalCopy:(NSMapTable *)map
-{
-  id copy = [map objectForKey:self];
-
-  __unsafe_unretained id null_object = (__bridge id)kCFNull;
-
-  if (copy == nil)
-    return self;
-
-  if (copy == null_object)
-    copy = nil;
-
-  return copy;
-}
+- (id)initWithArray:(NSArray *)transitions;
 
 @end

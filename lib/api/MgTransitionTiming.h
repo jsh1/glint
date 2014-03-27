@@ -24,55 +24,13 @@
 
 #import "MgBase.h"
 
-#import "MgNode.h"
+@interface MgTransitionTiming : NSObject <NSCopying, NSSecureCoding>
 
-#import <Foundation/Foundation.h>
+@property(nonatomic, assign) double begin;
+@property(nonatomic, assign) double duration;
 
-@implementation MgNode (MgGraphCopying)
+@property(nonatomic, copy) MgFunction *function;
 
-- (id)mg_graphCopy
-{
-  return [self mg_graphCopy:[NSMapTable strongToStrongObjectsMapTable]];
-}
-
-- (id)mg_graphCopy:(NSMapTable *)map
-{
-  id copy = [map objectForKey:self];
-
-  __unsafe_unretained id null_object = (__bridge id)kCFNull;
-
-  if (copy == nil)
-    {
-      if ([self conformsToProtocol:@protocol(MgGraphCopying)])
-	copy = [(id<MgGraphCopying>)self graphCopy:map];
-      else
-	copy = [self copy];
-
-      if (copy == nil)
-	copy = null_object;
-
-      [map setObject:copy forKey:self];
-    }
-
-  if (copy == null_object)
-    copy = nil;
-
-  return copy;
-}
-
-- (id)mg_graphConditionalCopy:(NSMapTable *)map
-{
-  id copy = [map objectForKey:self];
-
-  __unsafe_unretained id null_object = (__bridge id)kCFNull;
-
-  if (copy == nil)
-    return self;
-
-  if (copy == null_object)
-    copy = nil;
-
-  return copy;
-}
+- (double)evaluate:(double)t;
 
 @end

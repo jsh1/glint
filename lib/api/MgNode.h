@@ -57,7 +57,12 @@ extern NSString *const MgArchiveType;	/* UTI: org.unfactored.mg-archive */
 
 /* Applies `moduleState' to the subtree rooted at the receiver. */
 
-- (void)applyModuleState:(MgModuleState *)moduleState;
+- (void)applyModuleState:(MgModuleState *)moduleState
+    options:(NSDictionary *)dict;
+
+/* The currently active state transition. */
+
+@property(nonatomic, retain) MgTransition *transition;
 
 /* The explicit transitions defined by the receiver, an array of
    MgNodeTransition instances. */

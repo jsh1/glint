@@ -26,6 +26,8 @@
 
 #import "MgNodeState.h"
 #import "MgModuleState.h"
+#import "MgNodeTransition.h"
+#import "MgTransition.h"
 
 #import <Foundation/Foundation.h>
 #import <libkern/OSAtomic.h>
@@ -45,6 +47,7 @@ static NSUInteger version_counter;
 {
   MgNodeState *_state;
   NSMutableArray *_states;
+  MgTransition *_transition;
   NSArray *_transitions;
   NSString *_name;
   NSPointerArray *_references;
@@ -176,31 +179,170 @@ static NSUInteger version_counter;
 }
 
 - (void)applyModuleState:(MgModuleState *)moduleState
+    options:(NSDictionary *)dict
 {
   /* MgModuleLayer overrides -applyModuleState:mark: to terminate the
      recursion, so we apply the state to the root object here to avoid
      that. */
 
-  self.state = [self moduleState:moduleState];
+  [self _setModuleState:moduleState options:dict];
 
   uint32_t mark = [MgNode nextMark];
 
   [self foreachNode:^(MgNode *child)
     {
-      [child applyModuleState:moduleState mark:mark];
+      [child applyModuleState:moduleState options:dict mark:mark];
     }
    mark:mark];
 }
 
-- (void)applyModuleState:(MgModuleState *)moduleState mark:(uint32_t)mark
+- (void)applyModuleState:(MgModuleState *)moduleState
+    options:(NSDictionary *)dict mark:(uint32_t)mark
 {
-  self.state = [self moduleState:moduleState];
+  [self _setModuleState:moduleState options:dict];
 
   [self foreachNode:^(MgNode *child)
     {
-      [child applyModuleState:moduleState mark:mark];
+      [child applyModuleState:moduleState options:dict mark:mark];
     }
    mark:mark];
+}
+
+- (void)_setModuleState:(MgModuleState *)moduleState
+    options:(NSDictionary *)dict
+{
+  MgNodeState *old_state = self.state;
+  MgNodeState *new_state = [self moduleState:moduleState];
+
+  if (old_state == new_state)
+    return;
+
+  MgTransition *trans = nil;
+
+  NSNumber *speed_value = dict[@"speed"];
+
+  if (speed_value == nil || [speed_value doubleValue] != 0)
+    {
+      trans = [self _transitionFrom:old_state to:new_state];
+
+      if (trans == nil)
+	{
+	  /* No explicit transition between the two states, try to
+	     synthesize one piecewise from the path between them. */
+
+	  MgNodeState *root_state = [old_state ancestorSharedWith:new_state];
+
+	  struct node
+	    {
+	      struct node *next;
+	      __unsafe_unretained MgNodeState *state;
+	    };
+
+	  struct node *lst = NULL;
+
+	  for (MgNodeState *state = old_state;
+	       state != root_state; state = state.superstate)
+	    {
+	      struct node *tem = alloca(sizeof(*tem));
+	      tem->next = lst;
+	      tem->state = state;
+	      lst = tem;
+	    }
+
+	  NSMutableArray *transitions = [NSMutableArray array];
+
+	  for (MgNodeState *state = new_state;
+	       state != root_state; state = state.superstate)
+	    {
+	      MgNodeTransition *trans = [self _transitionTo:state];
+	      if (trans != nil)
+		[transitions addObject:trans];
+	    }
+
+	  for (struct node *it = lst; it != NULL; it = it->next)
+	    {
+	      MgNodeTransition *trans = [self _transitionFrom:it->state];
+	      if (trans != nil)
+		[transitions addObject:trans];
+	    }
+
+	  switch ([transitions count])
+	    {
+	    case 0:
+	      break;
+
+	    case 1:
+	      trans = transitions[0];
+	      break;
+
+	    default:
+	      trans = [MgTransition transitionWithArray:transitions];
+	    }
+	}
+
+      if (trans != nil)
+	{
+	  double begin = [dict[@"begin"] doubleValue];
+	  if (begin == 0)
+	    begin = CACurrentMediaTime();
+
+	  double speed = speed_value != nil ? [speed_value doubleValue] : 1;
+
+	  trans = [trans transitionWithBegin:begin speed:speed];
+	}
+    }
+
+  self.state = new_state;
+  self.transition = trans;
+}
+
+- (MgNodeTransition *)_transitionFrom:(MgNodeState *)from to:(MgNodeState *)to
+{
+  MgModuleState *from_s = from.moduleState;
+  MgModuleState *to_s = to.moduleState;
+
+  for (MgNodeTransition *t in self.transitions)
+    {
+      if (t.from == from_s && t.to == to_s)
+	return t;
+
+      if (t.reversible && t.from == to_s && t.to == from_s)
+	return [t reversedTransition];
+    }
+
+  return nil;
+}
+
+- (MgNodeTransition *)_transitionFrom:(MgNodeState *)from
+{
+  MgModuleState *from_s = from.moduleState;
+
+  for (MgNodeTransition *t in self.transitions)
+    {
+      if (t.from == from_s && t.to == nil)
+	return t;
+
+      if (t.reversible && t.from == nil && t.to == from_s)
+	return [t reversedTransition];
+    }
+
+  return nil;
+}
+
+- (MgNodeTransition *)_transitionTo:(MgNodeState *)to
+{
+  MgModuleState *to_s = to.moduleState;
+
+  for (MgNodeTransition *t in self.transitions)
+    {
+      if (t.from == nil && t.to == to_s)
+	return t;
+
+      if (t.reversible && t.from == to_s && t.to == nil)
+	return [t reversedTransition];
+    }
+
+  return nil;
 }
 
 + (BOOL)automaticallyNotifiesObserversOfTransitions

@@ -22,36 +22,20 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "MgBase.h"
+#import "MgTransition.h"
 
-@interface MgNodeTransition : NSObject <MgGraphCopying, NSSecureCoding>
+@interface MgNodeTransition : MgTransition <MgGraphCopying, NSSecureCoding>
 
 + (instancetype)transition;
 
-@property(nonatomic, weak) MgModuleState *fromState;
-@property(nonatomic, weak) MgModuleState *toState;
+@property(nonatomic, strong) MgModuleState *from;
+@property(nonatomic, strong) MgModuleState *to;
+
 @property(nonatomic, assign, getter=isReversible) BOOL reversible;
 
-/** Transition timing. **/
+@property(nonatomic, copy) MgTransitionTiming *timing;
 
-@property(nonatomic, assign) double begin;
-@property(nonatomic, assign) double duration;
-@property(nonatomic, copy) MgFunction *function;
-
-- (double)beginForKey:(NSString *)key;
-- (void)setBeginForKey:(double)t forKey:(NSString *)key;
-
-- (double)durationForKey:(NSString *)key;
-- (void)setDuration:(double)t forKey:(NSString *)key;
-
-- (MgFunction *)functionForKey:(NSString *)key;
-- (void)setFunction:(MgFunction *)fun forKey:(NSString *)key;
-
-/** Evaluation. **/
-
-- (CFTimeInterval)evaluateTime:(CFTimeInterval)t forKey:(NSString *)key;
-
-- (MgNodeState *)evaluateAtTime:(CFTimeInterval)t from:(MgNodeState *)from
-    to:(MgNodeState *)to;
+- (MgTransitionTiming *)timingForKey:(NSString *)key;
+- (void)setTimingForKey:(MgTransitionTiming *)timing forKey:(NSString *)key;
 
 @end

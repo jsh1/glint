@@ -22,57 +22,72 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "MgBase.h"
+#import "MgCompositeTransition.h"
 
-#import "MgNode.h"
-
-#import <Foundation/Foundation.h>
-
-@implementation MgNode (MgGraphCopying)
-
-- (id)mg_graphCopy
+@implementation MgCompositeTransition
 {
-  return [self mg_graphCopy:[NSMapTable strongToStrongObjectsMapTable]];
+  NSArray *_transitions;
+  double _begin;
+  double _duration;
 }
 
-- (id)mg_graphCopy:(NSMapTable *)map
+- (id)initWithArray:(NSArray *)transitions
 {
-  id copy = [map objectForKey:self];
+  self = [super init];
+  if (self == nil)
+    return nil;
 
-  __unsafe_unretained id null_object = (__bridge id)kCFNull;
+  _transitions = [transitions copy];
 
-  if (copy == nil)
+  double start = 0, end = 0;
+  
+  for (MgTransition *trans in _transitions)
     {
-      if ([self conformsToProtocol:@protocol(MgGraphCopying)])
-	copy = [(id<MgGraphCopying>)self graphCopy:map];
-      else
-	copy = [self copy];
+      double begin = trans.begin;
+      double dur = trans.duration;
 
-      if (copy == nil)
-	copy = null_object;
-
-      [map setObject:copy forKey:self];
+      start = fmin(start, begin);
+      end = fmax(end, begin + dur);
     }
 
-  if (copy == null_object)
-    copy = nil;
+  _begin = start;
+  _duration = end - start;
 
-  return copy;
+  return self;
 }
 
-- (id)mg_graphConditionalCopy:(NSMapTable *)map
+- (double)begin
 {
-  id copy = [map objectForKey:self];
+  return _begin;
+}
 
-  __unsafe_unretained id null_object = (__bridge id)kCFNull;
+- (double)duration
+{
+  return _duration;
+}
 
-  if (copy == nil)
-    return self;
+- (BOOL)definesTimingForKey:(NSString *)key
+{
+  for (MgTransition *trans in _transitions)
+    {
+      if ([trans definesTimingForKey:key])
+	return YES;
+    }
 
-  if (copy == null_object)
-    copy = nil;
+  return NO;
+}
 
-  return copy;
+- (double)evaluateTime:(double)t forKey:(NSString *)key
+{
+  for (MgTransition *trans in _transitions)
+    {
+      if ([trans definesTimingForKey:key])
+	{
+	  return [trans evaluateTime:t forKey:key];
+	}
+    }
+
+  return t;
 }
 
 @end

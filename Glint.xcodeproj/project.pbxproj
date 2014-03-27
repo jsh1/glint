@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5708BBC218E483000054D5FE /* MgTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 5708BBBF18E483000054D5FE /* MgTransition.m */; };
+		5708BBC318E483000054D5FE /* MgTransitionTiming.m in Sources */ = {isa = PBXBuildFile; fileRef = 5708BBC118E483000054D5FE /* MgTransitionTiming.m */; };
+		5708BBC618E483070054D5FE /* MgReversedTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 5708BBC518E483070054D5FE /* MgReversedTransition.m */; };
+		5708BBC818E4830D0054D5FE /* MgBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 5708BBC718E4830D0054D5FE /* MgBase.m */; };
+		5708BBCB18E483130054D5FE /* MgCompositeTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 5708BBCA18E483130054D5FE /* MgCompositeTransition.m */; };
+		5708BBCE18E4C2FE0054D5FE /* MgTimedTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 5708BBCD18E4C2FE0054D5FE /* MgTimedTransition.m */; };
 		5714A8BE18BD322900ED67EE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5714A8BC18BD322900ED67EE /* InfoPlist.strings */; };
 		5714A8C018BD322900ED67EE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5714A8BF18BD322900ED67EE /* main.m */; };
 		5714A8C718BD322900ED67EE /* GtDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 5714A8C618BD322900ED67EE /* GtDocument.m */; };
@@ -86,6 +92,17 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5708BBBE18E483000054D5FE /* MgTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgTransition.h; sourceTree = "<group>"; };
+		5708BBBF18E483000054D5FE /* MgTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgTransition.m; sourceTree = "<group>"; };
+		5708BBC018E483000054D5FE /* MgTransitionTiming.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgTransitionTiming.h; sourceTree = "<group>"; };
+		5708BBC118E483000054D5FE /* MgTransitionTiming.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgTransitionTiming.m; sourceTree = "<group>"; };
+		5708BBC418E483070054D5FE /* MgReversedTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgReversedTransition.h; sourceTree = "<group>"; };
+		5708BBC518E483070054D5FE /* MgReversedTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgReversedTransition.m; sourceTree = "<group>"; };
+		5708BBC718E4830D0054D5FE /* MgBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgBase.m; sourceTree = "<group>"; };
+		5708BBC918E483130054D5FE /* MgCompositeTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgCompositeTransition.h; sourceTree = "<group>"; };
+		5708BBCA18E483130054D5FE /* MgCompositeTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgCompositeTransition.m; sourceTree = "<group>"; };
+		5708BBCC18E4C2FE0054D5FE /* MgTimedTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgTimedTransition.h; sourceTree = "<group>"; };
+		5708BBCD18E4C2FE0054D5FE /* MgTimedTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgTimedTransition.m; sourceTree = "<group>"; };
 		5714A8B018BD322900ED67EE /* Glint.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Glint.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5714A8B618BD322900ED67EE /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		5714A8B818BD322900ED67EE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -291,8 +308,11 @@
 			children = (
 				574D310A18D2737300B1D094 /* Mg.h */,
 				575ACECA18CFCFE100161C70 /* MgBase.h */,
+				5708BBC718E4830D0054D5FE /* MgBase.m */,
 				57369C4818E1E70700A9FD0A /* MgBezierTimingFunction.h */,
 				57369C4918E1E70700A9FD0A /* MgBezierTimingFunction.mm */,
+				5708BBC918E483130054D5FE /* MgCompositeTransition.h */,
+				5708BBCA18E483130054D5FE /* MgCompositeTransition.m */,
 				575ACECF18CFCFE100161C70 /* MgCoreAnimationLayer.h */,
 				575ACED018CFCFE100161C70 /* MgCoreAnimationLayer.m */,
 				575ACED118CFCFE100161C70 /* MgDrawingLayer.h */,
@@ -340,8 +360,16 @@
 				575ACEE918CFCFE100161C70 /* MgRectLayer.m */,
 				57F567DA18DB63B4006E1B3C /* MgRectLayerState.h */,
 				57F567DB18DB63B4006E1B3C /* MgRectLayerState.m */,
+				5708BBC418E483070054D5FE /* MgReversedTransition.h */,
+				5708BBC518E483070054D5FE /* MgReversedTransition.m */,
+				5708BBCC18E4C2FE0054D5FE /* MgTimedTransition.h */,
+				5708BBCD18E4C2FE0054D5FE /* MgTimedTransition.m */,
 				57369C4B18E1E70E00A9FD0A /* MgTimingFunction.h */,
 				57369C4C18E1E70E00A9FD0A /* MgTimingFunction.m */,
+				5708BBBE18E483000054D5FE /* MgTransition.h */,
+				5708BBBF18E483000054D5FE /* MgTransition.m */,
+				5708BBC018E483000054D5FE /* MgTransitionTiming.h */,
+				5708BBC118E483000054D5FE /* MgTransitionTiming.m */,
 			);
 			path = api;
 			sourceTree = "<group>";
@@ -551,14 +579,17 @@
 				57B111B718D0BB8C00A41A64 /* GtViewerOverlayLayer.m in Sources */,
 				572A5B1F18C4CD4100AB8086 /* GtViewController.m in Sources */,
 				572BFAB418D74E21000E9B84 /* GtInspectorStringControl.m in Sources */,
+				5708BBCB18E483130054D5FE /* MgCompositeTransition.m in Sources */,
 				57618DBE18C5D538004108D8 /* CoreAnimationExtensions.m in Sources */,
 				57369C5C18E23F1600A9FD0A /* MgNodeTransition.m in Sources */,
 				575ACEF318CFCFE100161C70 /* MgGradientLayer.m in Sources */,
 				572A5B2318C4CE2000AB8086 /* GtAppDelegate.m in Sources */,
+				5708BBCE18E4C2FE0054D5FE /* MgTimedTransition.m in Sources */,
 				57F567E918DBB388006E1B3C /* MgModuleLayer.m in Sources */,
 				57F567E118DB63B4006E1B3C /* MgImageLayerState.m in Sources */,
 				575ACEFB18CFCFE100161C70 /* MgPathLayer.m in Sources */,
 				572BFAB318D74E21000E9B84 /* GtInspectorNumberControl.m in Sources */,
+				5708BBC818E4830D0054D5FE /* MgBase.m in Sources */,
 				577AB5B618E32F2700234B50 /* MgCoreGraphics.m in Sources */,
 				5725D96918D8C82500DECE97 /* GtTreeView.m in Sources */,
 				572BFA9718D72256000E9B84 /* GtInspectorItem.m in Sources */,
@@ -571,14 +602,17 @@
 				57618DB718C5D1B6004108D8 /* GtViewerView.m in Sources */,
 				57369C5918E23EA000A9FD0A /* MgFunction.m in Sources */,
 				5714A8C018BD322900ED67EE /* main.m in Sources */,
+				5708BBC318E483000054D5FE /* MgTransitionTiming.m in Sources */,
 				575ACEF618CFCFE100161C70 /* MgImageProvider.m in Sources */,
 				57F567E218DB63B4006E1B3C /* MgLayerState.m in Sources */,
 				572BFAB118D74E21000E9B84 /* GtInspectorColorControl.m in Sources */,
 				57F567E518DB63B4006E1B3C /* MgRectLayerState.m in Sources */,
 				57F567E018DB63B4006E1B3C /* MgGroupLayerState.m in Sources */,
+				5708BBC618E483070054D5FE /* MgReversedTransition.m in Sources */,
 				575ACEF018CFCFE100161C70 /* MgCoreAnimationLayer.m in Sources */,
 				572BFAA118D72815000E9B84 /* GtTabViewController.m in Sources */,
 				5738567B18C74CCC0010CFB7 /* AppKitExtensions.m in Sources */,
+				5708BBC218E483000054D5FE /* MgTransition.m in Sources */,
 				572BFAB018D74E21000E9B84 /* GtInspectorBoolControl.m in Sources */,
 				575ACEF518CFCFE100161C70 /* MgImageLayer.m in Sources */,
 				57618DB818C5D1B6004108D8 /* GtViewerViewController.m in Sources */,

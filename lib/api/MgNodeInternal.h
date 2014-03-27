@@ -26,7 +26,8 @@
 
 @interface MgNode ()
 
-- (void)applyModuleState:(MgModuleState *)moduleState mark:(uint32_t)mark;
+- (void)applyModuleState:(MgModuleState *)moduleState
+    options:(NSDictionary *)dict mark:(uint32_t)mark;
 
 @property(nonatomic, readwrite) NSUInteger version;
 

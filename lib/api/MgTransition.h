@@ -22,34 +22,22 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "MgNodeTransitionEffect.h"
+#import "MgBase.h"
 
-@implementation MgNodeTransitionEffect
+@interface MgTransition : NSObject
 
-- (MgNodeState *)evaluateAtTime:(CFTimeInterval)t
-    from:(MgNodeState *)from to:(MgNodeState *)to
-{
-  t = (t - self.begin) / self.duration;
++ (instancetype)transitionWithArray:(NSArray *)array;
 
-  if (self.reversed)
-    t = 1 - t;
+- (instancetype)reversedTransition;
+- (instancetype)transitionWithBegin:(double)begin speed:(double)speed;
 
-  MgFunction *fun = self.function;
+@property(nonatomic, assign, readonly) double begin;
+@property(nonatomic, assign, readonly) double duration;
 
-  if (fun != nil)
-    t = [fun evaluateScalar:t];
+/** Evaluation. **/
 
-  if (!(t > 0))
-    return from;
-  if (!(t < 1))
-    return nil;
+- (BOOL)definesTimingForKey:(NSString *)key;
 
-  MgNodeTransition *trans = self.transition;
-
-  if (trans == nil)
-    return [from evaluateTransition:nil atTime:t to:to];
-  else
-    return [trans evaluateAtTime:t from:from to:to];
-}
+- (double)evaluateTime:(double)t forKey:(NSString *)key;
 
 @end

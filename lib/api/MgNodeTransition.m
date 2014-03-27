@@ -27,19 +27,13 @@
 #import "MgFunction.h"
 #import "MgModuleState.h"
 #import "MgNodeState.h"
+#import "MgTransition.h"
+#import "MgTransitionTiming.h"
 
 #import <Foundation/Foundation.h>
 
-MG_HIDDEN_CLASS
-@interface MgNodeTransitionTiming : NSObject <NSCopying, NSSecureCoding>
-@property(nonatomic, assign) double begin;
-@property(nonatomic, assign) double duration;
-@property(nonatomic, copy) MgFunction *function;
-@end
-
 @implementation MgNodeTransition
 {
-  MgNodeTransitionTiming *_timing;
   NSMutableDictionary *_keyTiming;
 }
 
@@ -48,16 +42,20 @@ MG_HIDDEN_CLASS
   return [[self alloc] init];
 }
 
+- (id)init
+{
+  self = [super init];
+  if (self == nil)
+    return nil;
+
+  _keyTiming = [[NSMutableDictionary alloc] init];
+
+  return self;
+}
+
 - (double)begin
 {
   return _timing != nil ? _timing.begin : 0;
-}
-
-- (void)setBegin:(double)x
-{
-  if (_timing == nil)
-    _timing = [[MgNodeTransitionTiming alloc] init];
-  _timing.begin = x;
 }
 
 - (double)duration
@@ -65,123 +63,29 @@ MG_HIDDEN_CLASS
   return _timing != nil ? _timing.duration : 1;
 }
 
-- (void)setDuration:(double)x
+- (MgTransitionTiming *)timingForKey:(NSString *)key
 {
-  if (_timing == nil)
-    _timing = [[MgNodeTransitionTiming alloc] init];
-  _timing.duration = x;
+  return _keyTiming[key];
 }
 
-- (MgFunction *)function
+- (void)setTimingForKey:(MgTransitionTiming *)timing forKey:(NSString *)key
 {
-  return _timing != nil ? _timing.function : 0;
+  _keyTiming[key] = timing;
 }
 
-- (void)setFunction:(MgFunction *)x
+- (BOOL)definesTimingForKey:(NSString *)key
 {
-  if (_timing == nil)
-    _timing = [[MgNodeTransitionTiming alloc] init];
-  _timing.function = x;
+  return _keyTiming[key] != nil;
 }
 
-- (double)beginForKey:(NSString *)key
+- (double)evaluateTime:(double)t forKey:(NSString *)key
 {
-  MgNodeTransitionTiming *timing = _keyTiming[key];
+  MgTransitionTiming *timing = _keyTiming[key];
 
-  return timing != nil ? timing.begin : 0;
-}
-
-- (void)setBeginForKey:(double)t forKey:(NSString *)key
-{
-  MgNodeTransitionTiming *timing = _keyTiming[key];
-
-  if (timing == nil)
-    {
-      timing = [[MgNodeTransitionTiming alloc] init];
-      if (_keyTiming == nil)
-	_keyTiming = [[NSMutableDictionary alloc] init];
-      _keyTiming[key] = timing;
-    }
-
-  timing.begin = t;
-}
-
-- (double)durationForKey:(NSString *)key
-{
-  MgNodeTransitionTiming *timing = _keyTiming[key];
-
-  return timing != nil ? timing.duration : 1;
-}
-
-- (void)setDuration:(double)t forKey:(NSString *)key
-{
-  MgNodeTransitionTiming *timing = _keyTiming[key];
-
-  if (timing == nil)
-    {
-      timing = [[MgNodeTransitionTiming alloc] init];
-      if (_keyTiming == nil)
-	_keyTiming = [[NSMutableDictionary alloc] init];
-      _keyTiming[key] = timing;
-    }
-
-  timing.duration = t;
-}
-
-- (MgFunction *)functionForKey:(NSString *)key
-{
-  MgNodeTransitionTiming *timing = _keyTiming[key];
-
-  return timing.function;
-}
-
-- (void)setFunction:(MgFunction *)fun forKey:(NSString *)key
-{
-  MgNodeTransitionTiming *timing = _keyTiming[key];
-
-  if (timing == nil)
-    {
-      timing = [[MgNodeTransitionTiming alloc] init];
-      if (_keyTiming == nil)
-	_keyTiming = [[NSMutableDictionary alloc] init];
-      _keyTiming[key] = timing;
-    }
-
-  timing.function = fun;
-}
-
-- (CFTimeInterval)evaluateTime:(CFTimeInterval)t forKey:(NSString *)key
-{
-  MgNodeTransitionTiming *timing = _keyTiming[key];
-  if (timing == nil)
-    return t;
-
-  t = (t - timing.begin) / timing.duration;
-  
-  MgFunction *fun = timing.function;
-
-  if (fun != nil)
-    t = [fun evaluateScalar:t];
+  if (timing != nil)
+    t = [timing evaluate:t];
 
   return t;
-}
-
-- (MgNodeState *)evaluateAtTime:(CFTimeInterval)t from:(MgNodeState *)from
-    to:(MgNodeState *)to
-{
-  t = (t - self.begin) / self.duration;
-
-  MgFunction *fun = self.function;
-
-  if (fun != nil)
-    t = [fun evaluateScalar:t];
-
-  if (!(t > 0))
-    return from;
-  if (!(t < 1))
-    return nil;
-
-  return [from evaluateTransition:self atTime:t to:to];
 }
 
 /** MgGraphCopying methods. **/
@@ -190,20 +94,18 @@ MG_HIDDEN_CLASS
 {
   MgNodeTransition *copy = [[[self class] alloc] init];
 
-  copy->_fromState = [_fromState mg_conditionalGraphCopy:map];
-  copy->_toState = [_toState mg_conditionalGraphCopy:map];
+  copy->_from = [_from mg_conditionalGraphCopy:map];
+  copy->_to = [_to mg_conditionalGraphCopy:map];
   copy->_reversible = _reversible;
-
-  if (_timing != nil)
-    copy->_timing = [_timing copy];
+  copy->_timing = [_timing copy];
 
   if (_keyTiming != nil)
     {
-      copy->_keyTiming = [[NSMutableDictionary alloc] init];
+      copy->_keyTiming = [NSMutableDictionary dictionary];
 
       for (NSString *key in _keyTiming)
 	{
-	  MgNodeTransitionTiming *timing = _keyTiming[key];
+	  MgTransitionTiming *timing = _keyTiming[key];
 	  [copy->_keyTiming setObject:[timing copy] forKey:key];
 	}
     }
@@ -220,10 +122,10 @@ MG_HIDDEN_CLASS
 
 - (void)encodeWithCoder:(NSCoder *)c
 {
-  if (_fromState != nil)
-    [c encodeConditionalObject:_fromState forKey:@"fromState"];
-  if (_toState != nil)
-    [c encodeConditionalObject:_toState forKey:@"toState"];
+  if (_from != nil)
+    [c encodeConditionalObject:_from forKey:@"fromState"];
+  if (_to != nil)
+    [c encodeConditionalObject:_to forKey:@"toState"];
   if (_reversible)
     [c encodeBool:_reversible forKey:@"reversible"];
   if (_timing != nil)
@@ -238,23 +140,16 @@ MG_HIDDEN_CLASS
   if (self == nil)
     return nil;
 
-  if ([c containsValueForKey:@"fromState"])
-    {
-      _fromState = [c decodeObjectOfClass:[MgModuleState class]
-		    forKey:@"fromState"];
-    }
-  if ([c containsValueForKey:@"toState"])
-    {
-      _toState = [c decodeObjectOfClass:[MgModuleState class]
-		  forKey:@"toState"];
-    }
-
+  if ([c containsValueForKey:@"from"])
+    _from = [c decodeObjectOfClass:[MgModuleState class] forKey:@"from"];
+  if ([c containsValueForKey:@"to"])
+    _to = [c decodeObjectOfClass:[MgModuleState class] forKey:@"to"];
   if ([c containsValueForKey:@"reversible"])
     _reversible = [c decodeBoolForKey:@"reversible"];
 
   if ([c containsValueForKey:@"timing"])
     {
-      _timing = [[c decodeObjectOfClass:[MgNodeTransitionTiming class]
+      _timing = [[c decodeObjectOfClass:[MgTransitionTiming class]
 		  forKey:@"timing"] mutableCopy];
     }
 
@@ -263,70 +158,6 @@ MG_HIDDEN_CLASS
       _keyTiming = [[c decodeObjectOfClass:[NSDictionary class]
 		     forKey:@"keyTiming"] mutableCopy];
     }
-
-  return self;
-}
-
-@end
-
-@implementation MgNodeTransitionTiming
-
-- (id)init
-{
-  self = [super init];
-  if (self == nil)
-    return nil;
-
-  _begin = 0;
-  _duration = 1;
-
-  return self;
-}
-
-/** NSCopying methods. **/
-
-- (id)copyWithZone:(NSZone *)zone
-{
-  MgNodeTransitionTiming *copy = [[[self class] alloc] init];
-
-  copy->_begin = _begin;
-  copy->_duration = _duration;
-  copy->_function = _function;
-
-  return copy;
-}
-
-/** NSSecureCoding methods. **/
-
-+ (BOOL)supportsSecureCoding
-{
-  return YES;
-}
-
-- (void)encodeWithCoder:(NSCoder *)c
-{
-  if (_begin != 0)
-    [c encodeDouble:_begin forKey:@"begin"];
-  if (_duration != 1)
-    [c encodeDouble:_duration forKey:@"duration"];
-  if (_function != nil)
-    [c encodeObject:_function forKey:@"function"];
-}
-
-- (id)initWithCoder:(NSCoder *)c
-{
-  self = [self init];
-  if (self == nil)
-    return nil;
-
-  if ([c containsValueForKey:@"begin"])
-    _begin = [c decodeDoubleForKey:@"begin"];
-
-  if ([c containsValueForKey:@"duration"])
-    _duration = [c decodeDoubleForKey:@"duration"];
-
-  if ([c containsValueForKey:@"function"])
-    _function = [c decodeObjectOfClass:[MgFunction class] forKey:@"function"];
 
   return self;
 }

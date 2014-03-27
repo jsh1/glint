@@ -1019,15 +1019,22 @@ fract(CGFloat x)
       NSInteger idx = 0;
       for (MgNodeState *node_state in node.node.states)
 	{
-	  if (node_state.moduleState != state)
+	  if (node_state.moduleState == state)
 	    {
-	      idx++;
-	      continue;
+	      [self node:node removeObject:node_state
+	       atIndex:idx forKey:@"states"];
 	    }
-
-	  [self node:node removeObject:node_state
-	   atIndex:idx forKey:@"states"];
-	  break;
+	  idx++;
+	}
+      idx = 0;
+      for (MgNodeTransition *node_trans in node.node.transitions)
+	{
+	  if (node_trans.from == state || node_trans.to == state)
+	    {
+	      [self node:node removeObject:node_trans
+	       atIndex:idx forKey:@"transitions"];
+	    }
+	  idx++;
 	}
     }];
 }

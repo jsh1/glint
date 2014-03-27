@@ -22,18 +22,51 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "MgBase.h"
+#import "MgTransition.h"
 
-@interface MgNodeTransitionEffect : NSObject
+#import "MgCompositeTransition.h"
+#import "MgNodeState.h"
+#import "MgReversedTransition.h"
+#import "MgTimedTransition.h"
 
-@property(nonatomic, assign) CFTimeInterval begin;
-@property(nonatomic, assign) CFTimeInterval duration;
-@property(nonatomic, copy) MgFunction *function;
+#import <Foundation/Foundation.h>
 
-@property(nonatomic, strong) MgNodeTransition *transition;
-@property(nonatomic, assign, getter=isReversed) BOOL reversed;
+@implementation MgTransition
 
-- (MgNodeState *)evaluateAtTime:(CFTimeInterval)t
-    from:(MgNodeState *)from to:(MgNodeState *)to;
++ (instancetype)transitionWithArray:(NSArray *)array
+{
+  return [[MgCompositeTransition alloc] initWithArray:array];
+}
+
+- (instancetype)reversedTransition
+{
+  return [[MgReversedTransition alloc] initWithTransition:self];
+}
+
+- (instancetype)transitionWithBegin:(double)begin speed:(double)speed;
+{
+  MgTimedTransition *tx = [[MgTimedTransition alloc] initWithTransition:self];
+
+  tx.begin = begin;
+  tx.speed = speed;
+
+  return tx;
+}
+
+- (BOOL)definesTimingForKey:(NSString *)key
+{
+  return NO;
+}
+
+- (CFTimeInterval)evaluateTime:(CFTimeInterval)t forKey:(NSString *)key
+{
+  return t;
+}
+
+- (MgNodeState *)evaluateAtTime:(CFTimeInterval)t from:(MgNodeState *)from
+    to:(MgNodeState *)to
+{
+  return nil;
+}
 
 @end
