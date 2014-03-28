@@ -241,9 +241,36 @@ MgRectMix(CGRect a, CGRect b, double t)
 CGColorRef
 MgColorMix(CGColorRef a, CGColorRef b, double t)
 {
-  /* FIXME: implement this. */
+  CGColorSpaceRef space = CGColorGetColorSpace(a);
 
-  return NULL;
+  if (CGColorGetColorSpace(b) == space)
+    {
+      size_t count = CGColorSpaceGetNumberOfComponents(space) + 1;
+
+      const CGFloat *va = CGColorGetComponents(a);
+      const CGFloat *vb = CGColorGetComponents(b);
+
+      CGFloat vc[count];
+      for (size_t i = 0; i < count; i++)
+	vc[i] = MgFloatMix(va[i], vb[i], t);
+
+      return CGColorCreate(space, vc);
+    }
+  else
+    {
+      /* FIXME: will this do the right thing for non-sRGB colors..? */
+
+      CIColor *ca = [CIColor colorWithCGColor:a];
+      CIColor *cb = [CIColor colorWithCGColor:b];
+
+      CGFloat vc[4];
+      vc[0] = MgFloatMix([ca red], [cb red], t);
+      vc[1] = MgFloatMix([ca green], [cb green], t);
+      vc[2] = MgFloatMix([ca blue], [cb blue], t);
+      vc[3] = MgFloatMix([ca alpha], [cb alpha], t);
+
+      return CGColorCreate(MgSRGBColorSpace(), vc);
+    }
 }
 
 NSArray *
