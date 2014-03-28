@@ -205,8 +205,7 @@
 	      [node _renderWithState:&r];
 	    }];
 
-	  rs->next_time = fmax(rs->next_time,
-			       [node markPresentationTime:r.time]);
+	  r.next_time = fmin(r.next_time, [node markPresentationTime:r.time]);
 	}
     }
 
@@ -215,6 +214,8 @@
       CGContextEndTransparencyLayer(r.ctx);
       CGContextRestoreGState(r.ctx);
     }
+
+  rs->next_time = r.next_time;
 }
 
 /** MgGraphCopying methods. **/

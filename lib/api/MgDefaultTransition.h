@@ -22,24 +22,10 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "MgBase.h"
+#import "MgTransition.h"
 
-@interface MgTransition : NSObject
+@interface MgDefaultTransition : MgTransition
 
-+ (instancetype)defaultTransitionWithOptions:(NSDictionary *)dict;
-
-+ (instancetype)transitionWithArray:(NSArray *)array;
-
-- (instancetype)reversedTransition;
-- (instancetype)transitionWithBegin:(double)begin speed:(double)speed;
-
-@property(nonatomic, assign, readonly) double begin;
-@property(nonatomic, assign, readonly) double duration;
-
-/** Evaluation. **/
-
-- (BOOL)definesTimingForKey:(NSString *)key;
-
-- (double)evaluateTime:(double)t forKey:(NSString *)key;
+- (id)initWithOptions:(NSDictionary *)dict;
 
 @end

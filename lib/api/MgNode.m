@@ -225,9 +225,15 @@ static NSUInteger version_counter;
 
   if (speed_value == nil || [speed_value doubleValue] != 0)
     {
-      trans = [self _transitionFrom:old_state to:new_state];
+      NSMutableArray *transitions = [NSMutableArray array];
 
-      if (trans == nil)
+      MgTransition *explicit_trans = [self _transitionFrom:old_state
+				      to:new_state];
+      if (explicit_trans != nil)
+	{
+	  [transitions addObject:explicit_trans];
+	}
+      else
 	{
 	  /* No explicit transition between the two states, try to
 	     synthesize one piecewise from the path between them. */
@@ -251,8 +257,6 @@ static NSUInteger version_counter;
 	      lst = tem;
 	    }
 
-	  NSMutableArray *transitions = [NSMutableArray array];
-
 	  for (MgNodeState *state = new_state;
 	       state != root_state; state = state.superstate)
 	    {
@@ -267,20 +271,14 @@ static NSUInteger version_counter;
 	      if (trans != nil)
 		[transitions addObject:trans];
 	    }
-
-	  switch ([transitions count])
-	    {
-	    case 0:
-	      break;
-
-	    case 1:
-	      trans = transitions[0];
-	      break;
-
-	    default:
-	      trans = [MgTransition transitionWithArray:transitions];
-	    }
 	}
+
+      /* Add the default transition to catch any properties that weren't
+	 yet defined. */
+
+      [transitions addObject:[MgTransition defaultTransitionWithOptions:dict]];
+
+      trans = [MgTransition transitionWithArray:transitions];
 
       if (trans != nil)
 	{

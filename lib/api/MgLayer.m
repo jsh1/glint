@@ -462,7 +462,7 @@
       [self _renderWithState:&rs];
     }];
 
-  rs.next_time = fmax(rs.next_time, [self markPresentationTime:rs.time]);
+  rs.next_time = fmin(rs.next_time, [self markPresentationTime:rs.time]);
 
   return rs.next_time;
 }
@@ -483,16 +483,15 @@
   MgLayer *mask = self.mask;
   if (mask != nil && mask.enabled)
     {
-      MgLayerRenderState rm = r;
+      __block MgLayerRenderState rm = r;
       rm.alpha = 1;
 
       [mask withPresentationTime:r.time handler:^
 	{ 
-	  rs->next_time = fmax(rs->next_time,
-			       [mask markPresentationTime:r.time]);
+	  [mask _renderMaskWithState:&rm];
 	}];
 
-      [mask markPresentationTime:r.time];
+      r.next_time = fmin(r.next_time, [mask markPresentationTime:r.time]);
     }
 
   CGContextSetBlendMode(rs->ctx, self.blendMode);

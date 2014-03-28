@@ -53,6 +53,7 @@
 		57369C5C18E23F1600A9FD0A /* MgNodeTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 57369C5B18E23F1600A9FD0A /* MgNodeTransition.m */; };
 		5738567818C746D80010CFB7 /* GtTreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 5738567718C746D80010CFB7 /* GtTreeNode.m */; };
 		5738567B18C74CCC0010CFB7 /* AppKitExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5738567A18C74CCC0010CFB7 /* AppKitExtensions.m */; };
+		574B593318E5E5B20045BDF1 /* MgDefaultTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 574B593218E5E5B20045BDF1 /* MgDefaultTransition.m */; };
 		575ACEF018CFCFE100161C70 /* MgCoreAnimationLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 575ACED018CFCFE100161C70 /* MgCoreAnimationLayer.m */; };
 		575ACEF118CFCFE100161C70 /* MgDrawingLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 575ACED218CFCFE100161C70 /* MgDrawingLayer.m */; };
 		575ACEF318CFCFE100161C70 /* MgGradientLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 575ACED618CFCFE100161C70 /* MgGradientLayer.m */; };
@@ -176,6 +177,8 @@
 		5738567718C746D80010CFB7 /* GtTreeNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtTreeNode.m; path = src/GtTreeNode.m; sourceTree = "<group>"; };
 		5738567918C74CCC0010CFB7 /* AppKitExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppKitExtensions.h; path = src/AppKitExtensions.h; sourceTree = "<group>"; };
 		5738567A18C74CCC0010CFB7 /* AppKitExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppKitExtensions.m; path = src/AppKitExtensions.m; sourceTree = "<group>"; };
+		574B593118E5E5B20045BDF1 /* MgDefaultTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgDefaultTransition.h; sourceTree = "<group>"; };
+		574B593218E5E5B20045BDF1 /* MgDefaultTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgDefaultTransition.m; sourceTree = "<group>"; };
 		574D310A18D2737300B1D094 /* Mg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mg.h; sourceTree = "<group>"; };
 		575ACECA18CFCFE100161C70 /* MgBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgBase.h; sourceTree = "<group>"; };
 		575ACECF18CFCFE100161C70 /* MgCoreAnimationLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgCoreAnimationLayer.h; sourceTree = "<group>"; };
@@ -315,6 +318,8 @@
 				5708BBCA18E483130054D5FE /* MgCompositeTransition.m */,
 				575ACECF18CFCFE100161C70 /* MgCoreAnimationLayer.h */,
 				575ACED018CFCFE100161C70 /* MgCoreAnimationLayer.m */,
+				574B593118E5E5B20045BDF1 /* MgDefaultTransition.h */,
+				574B593218E5E5B20045BDF1 /* MgDefaultTransition.m */,
 				575ACED118CFCFE100161C70 /* MgDrawingLayer.h */,
 				575ACED218CFCFE100161C70 /* MgDrawingLayer.m */,
 				57369C5718E23EA000A9FD0A /* MgFunction.h */,
@@ -609,6 +614,7 @@
 				57F567E518DB63B4006E1B3C /* MgRectLayerState.m in Sources */,
 				57F567E018DB63B4006E1B3C /* MgGroupLayerState.m in Sources */,
 				5708BBC618E483070054D5FE /* MgReversedTransition.m in Sources */,
+				574B593318E5E5B20045BDF1 /* MgDefaultTransition.m in Sources */,
 				575ACEF018CFCFE100161C70 /* MgCoreAnimationLayer.m in Sources */,
 				572BFAA118D72815000E9B84 /* GtTabViewController.m in Sources */,
 				5738567B18C74CCC0010CFB7 /* AppKitExtensions.m in Sources */,

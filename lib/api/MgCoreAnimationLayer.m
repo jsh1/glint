@@ -31,14 +31,30 @@
 
 /* FIXME: this is junk. Draws using CG, on the main thread, ignoring
    animations. Will be superseded by something that translates the
-   node graph to a layer tree. */
+   node graph to a layer tree.
+
+   Using a CA client-side animation to drive our rendering during
+   Mg transitions, set up a property whose interpolated values will
+   match the current presentation time. */
+
+@interface MgCoreAnimationLayer ()
+@property(nonatomic) double currentTime;
+@end
+
+#define LONG_TIME (3600*24*365*10)
 
 @implementation MgCoreAnimationLayer
 {
   MgLayer *_layer;
+  double _currentTime;
   NSInteger _lastVersion;
   BOOL _addedObserver;
+  BOOL _addedAnimation;
+
+  __weak MgCoreAnimationLayer *_modelLayer;
 }
+
+@synthesize currentTime = _currentTime;
 
 + (id)defaultValueForKey:(NSString *)key
 {
@@ -50,6 +66,14 @@
     return [super defaultValueForKey:key];
 }
 
++ (BOOL)needsDisplayForKey:(NSString *)key
+{
+  if ([key isEqualToString:@"currentTime"])
+    return YES;
+  else
+    return [super needsDisplayForKey:key];
+}
+
 - (id)initWithLayer:(MgCoreAnimationLayer *)layer
 {
   self = [super init];
@@ -58,6 +82,8 @@
 
   _layer = layer->_layer;
   _lastVersion = layer->_lastVersion;
+
+  _modelLayer = layer;
 
   return self;
 }
@@ -109,16 +135,65 @@
     }
 }
 
+- (void)_updateCurrentTime:(CFTimeInterval)t nextTime:(CFTimeInterval)tn
+{
+  if (isfinite(tn))
+    {
+      if (!_addedAnimation)
+	{
+	  CABasicAnimation *anim = [CABasicAnimation animation];
+	  anim.keyPath = @"currentTime";
+	  anim.beginTime = t;
+	  anim.duration = LONG_TIME;
+	  anim.fromValue = @(t);
+	  anim.toValue = @(t + LONG_TIME);
+	  [self addAnimation:anim forKey:@"currentTime"];
+	  _addedAnimation = YES;
+	}
+    }
+  else
+    {
+      if (_addedAnimation)
+	{
+	  [self removeAnimationForKey:@"currentTime"];
+	  _addedAnimation = NO;
+	}
+    }
+}
+
 - (void)drawInContext:(CGContextRef)ctx
 {
+  /* FIXME: -[CALayer modelLayer] seems to be broken for client-side
+     animation copies?
+
+     FIXME: and self.bounds seems to return CGRectZero, wtf!? */
+
+  MgCoreAnimationLayer *model = _modelLayer;
+
+  CFTimeInterval now;
+  if (model == nil)
+    {
+      model = self;
+      now = CACurrentMediaTime();
+    }
+  else
+    {
+      now = self.currentTime;
+    }
+
 #if !TARGET_OS_IPHONE
   CGContextSaveGState(ctx);
-  CGContextTranslateCTM(ctx, 0, self.bounds.size.height);
+  CGContextTranslateCTM(ctx, 0, model.bounds.size.height);
   CGContextScaleCTM(ctx, 1, -1);
 #endif
 
-  [_layer renderInContext:ctx]; 
-  _lastVersion = _layer.version;
+  MgLayer *layer = model->_layer;
+
+  CFTimeInterval next = [layer renderInContext:ctx presentationTime:now]; 
+
+  model->_lastVersion = layer.version;
+
+  [model _updateCurrentTime:now nextTime:next];
 
 #if !TARGET_OS_IPHONE
   CGContextRestoreGState(ctx);

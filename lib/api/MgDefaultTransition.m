@@ -22,77 +22,46 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "MgTransition.h"
-
-#import "MgCompositeTransition.h"
 #import "MgDefaultTransition.h"
-#import "MgNodeState.h"
-#import "MgReversedTransition.h"
-#import "MgTimedTransition.h"
 
-#import <Foundation/Foundation.h>
+#import "MgTimingFunction.h"
 
-@implementation MgTransition
+#define DEFAULT_DURATION 1
+#define DEFAULT_FUNCTION MgTimingFunctionEaseInOut
 
-+ (instancetype)defaultTransitionWithOptions:(NSDictionary *)dict
+@implementation MgDefaultTransition
 {
-  return [[MgDefaultTransition alloc] initWithOptions:dict];
+  double _duration;
+  MgFunction *_function;
 }
 
-+ (instancetype)transitionWithArray:(NSArray *)array
+@synthesize duration = _duration;
+
+- (id)initWithOptions:(NSDictionary *)dict
 {
-  switch ([array count])
-    {
-    case 0:
-      return nil;
+  self = [super init];
+  if (self == nil)
+    return nil;
 
-    case 1:
-      return array[0];
+  _duration = [dict[@"duration"] doubleValue];
+  if (_duration == 0)
+    _duration = DEFAULT_DURATION;
 
-    default:
-      return [[MgCompositeTransition alloc] initWithArray:array];
-    }
-}
+  _function = dict[@"function"];
+  if (_function == nil)
+    _function = [MgTimingFunction functionWithName:DEFAULT_FUNCTION];
 
-- (instancetype)reversedTransition
-{
-  return [[MgReversedTransition alloc] initWithTransition:self];
-}
-
-- (instancetype)transitionWithBegin:(double)begin speed:(double)speed;
-{
-  MgTimedTransition *tx = [[MgTimedTransition alloc] initWithTransition:self];
-
-  tx.begin = begin;
-  tx.speed = speed;
-
-  return tx;
-}
-
-- (double)begin
-{
-  return 0;
-}
-
-- (double)duration
-{
-  return 1;
+  return self;
 }
 
 - (BOOL)definesTimingForKey:(NSString *)key
 {
-  return NO;
+  return YES;
 }
 
-- (CFTimeInterval)evaluateTime:(CFTimeInterval)t forKey:(NSString *)key
+- (double)evaluateTime:(double)t forKey:(NSString *)key
 {
-  return t;
-}
-
-- (MgNodeState *)evaluateAtTime:(CFTimeInterval)t from:(MgNodeState *)from
-    to:(MgNodeState *)to
-{
-  return nil;
+  return [_function evaluateScalar:t / _duration];
 }
 
 @end
