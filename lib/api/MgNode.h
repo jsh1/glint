@@ -63,6 +63,7 @@ extern NSString *const MgArchiveType;	/* UTI: org.unfactored.mg-archive */
 /* The currently active state transition. */
 
 @property(nonatomic, retain) MgTransition *transition;
+@property(nonatomic, retain) MgNodeState *transitionFrom;
 
 /* The explicit transitions defined by the receiver, an array of
    MgNodeTransition instances. */
@@ -105,5 +106,17 @@ extern NSString *const MgArchiveType;	/* UTI: org.unfactored.mg-archive */
 /* Returns a new unused mark value for calling -foreachNode:mark: */
 
 + (uint32_t)nextMark;
+
+/* Calls 'thunk' such that when it queries animatable values of the
+   receiver they will be the values defined by transitions at time 't'.
+   Setting any properties of the receiver will have undefined results. */
+
+- (void)withPresentationTime:(CFTimeInterval)t handler:(void (^)(void))thunk;
+
+/* Tells the runtime that time 't' will not be seen again, i.e. that
+   any temporal events strictly before that time may be discarded.
+   Returns the time at which the receiver's next temporal event occurs. */
+
+- (CFTimeInterval)markPresentationTime:(CFTimeInterval)t;
 
 @end

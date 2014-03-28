@@ -56,12 +56,12 @@
 
 /* 'trans' may be nil, in which case property timing is identity. */
 
-- (MgNodeState *)evaluateTransition:(MgNodeTransition *)trans
-    atTime:(double)t to:(MgNodeState *)to;
+- (MgNodeState *)evaluateTransition:(MgTransition *)trans atTime:(double)t
+    to:(MgNodeState *)to;
 
 /* Subclasses should override and call super first. */
 
-- (void)applyTransition:(MgNodeTransition *)trans atTime:(double)t
+- (void)applyTransition:(MgTransition *)trans atTime:(double)t
     to:(MgNodeState *)to;
 
 /** MgNode properties. **/

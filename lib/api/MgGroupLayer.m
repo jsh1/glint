@@ -187,7 +187,7 @@
 
   BOOL group = self.group;
 
-  MgLayerRenderState r = *rs;
+  __block MgLayerRenderState r = *rs;
   r.alpha = group ? 1 : rs->alpha;
 
   if (group)
@@ -199,7 +199,15 @@
   for (MgLayer *node in self.sublayers)
     {
       if (node.enabled)
-	[node _renderWithState:&r];
+	{
+	  [node withPresentationTime:r.time handler:^
+	    {
+	      [node _renderWithState:&r];
+	    }];
+
+	  rs->next_time = fmax(rs->next_time,
+			       [node markPresentationTime:r.time]);
+	}
     }
 
   if (group)

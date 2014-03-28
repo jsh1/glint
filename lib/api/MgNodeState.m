@@ -222,8 +222,8 @@ state_depth(MgNodeState *s)
    format:@"does not define property %@", key];
 }
 
-- (MgNodeState *)evaluateTransition:(MgNodeTransition *)trans
-    atTime:(double)t to:(MgNodeState *)to
+- (MgNodeState *)evaluateTransition:(MgTransition *)trans atTime:(double)t
+    to:(MgNodeState *)to
 {
   MgNodeState *dest = [[self class] state];
 
@@ -234,7 +234,7 @@ state_depth(MgNodeState *s)
   return dest;
 }
 
-- (void)applyTransition:(MgNodeTransition *)trans atTime:(double)t
+- (void)applyTransition:(MgTransition *)trans atTime:(double)t
     to:(MgNodeState *)to
 {
   double t_ = trans != nil ? [trans evaluateTime:t forKey:@"enabled"] : t;

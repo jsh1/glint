@@ -138,7 +138,7 @@
     [super setDefinesValue:flag forKey:key];
 }
 
-- (void)applyTransition:(MgNodeTransition *)trans atTime:(double)t
+- (void)applyTransition:(MgTransition *)trans atTime:(double)t
     to:(MgNodeState *)to_
 {
   MgLayerState *to = (MgLayerState *)to_;

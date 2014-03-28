@@ -70,7 +70,9 @@
 
 /** Rendering. **/
 
-- (void)renderInContext:(CGContextRef)ctx;
+- (CFTimeInterval)renderInContext:(CGContextRef)ctx;
+- (CFTimeInterval)renderInContext:(CGContextRef)ctx
+    presentationTime:(CFTimeInterval)t;
 
 - (CGImageRef)copyImage CF_RETURNS_RETAINED;
 

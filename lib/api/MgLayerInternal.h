@@ -28,6 +28,8 @@ typedef struct MgLayerRenderState MgLayerRenderState;
 
 struct MgLayerRenderState
 {
+  CFTimeInterval time;
+  CFTimeInterval next_time;
   CGContextRef ctx;
   float alpha;
 };

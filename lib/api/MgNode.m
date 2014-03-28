@@ -48,6 +48,7 @@ static NSUInteger version_counter;
   MgNodeState *_state;
   NSMutableArray *_states;
   MgTransition *_transition;
+  MgNodeState *_transitionFrom;
   NSArray *_transitions;
   NSString *_name;
   NSPointerArray *_references;
@@ -218,6 +219,7 @@ static NSUInteger version_counter;
     return;
 
   MgTransition *trans = nil;
+  MgNodeState *trans_from = nil;
 
   NSNumber *speed_value = dict[@"speed"];
 
@@ -282,6 +284,8 @@ static NSUInteger version_counter;
 
       if (trans != nil)
 	{
+	  trans_from = old_state;
+
 	  double begin = [dict[@"begin"] doubleValue];
 	  if (begin == 0)
 	    begin = CACurrentMediaTime();
@@ -289,11 +293,25 @@ static NSUInteger version_counter;
 	  double speed = speed_value != nil ? [speed_value doubleValue] : 1;
 
 	  trans = [trans transitionWithBegin:begin speed:speed];
+
+	  /* If there's already an active transition running, sample
+	     it at the begin time of the new transition and use that
+	     as the from-state of the new transition. */
+
+	  MgTransition *old_trans = self.transition;
+	  MgNodeState *old_from = self.transitionFrom;
+
+	  if (old_trans != nil && old_from != nil)
+	    {
+	      trans_from = [old_state evaluateTransition:old_trans
+			    atTime:begin to:old_from];
+	    }
 	}
     }
 
   self.state = new_state;
   self.transition = trans;
+  self.transitionFrom = trans_from;
 }
 
 - (MgNodeTransition *)_transitionFrom:(MgNodeState *)from to:(MgNodeState *)to
@@ -514,6 +532,42 @@ static NSUInteger version_counter;
   static int32_t counter;
 
   return OSAtomicIncrement32(&counter);
+}
+
+- (void)withPresentationTime:(CFTimeInterval)t handler:(void (^)(void))thunk
+{
+  MgNodeState *old_state = self.state;
+  MgNodeState *new_state = nil;
+
+  MgTransition *trans = self.transition;
+
+  if (trans != nil)
+    {
+      new_state = [self.transitionFrom evaluateTransition:trans
+		   atTime:t to:old_state];
+    }
+
+  if (new_state != nil)
+    self.state = new_state;
+
+  thunk();
+
+  if (new_state != nil)
+    self.state = old_state;
+}
+
+- (CFTimeInterval)markPresentationTime:(CFTimeInterval)t
+{
+  MgTransition *trans = self.transition;
+
+  if (trans != nil && !(t < trans.begin + trans.duration))
+    {
+      self.transition = nil;
+      self.transitionFrom = nil;
+      trans = nil;
+    }
+
+  return trans == nil ? HUGE_VAL : t;
 }
 
 /** MgGraphCopying methods. **/

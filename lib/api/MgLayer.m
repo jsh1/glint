@@ -443,13 +443,28 @@
 
 /** Rendering. **/
 
-- (void)renderInContext:(CGContextRef)ctx
+- (CFTimeInterval)renderInContext:(CGContextRef)ctx
 {
-  MgLayerRenderState rs;
+  return [self renderInContext:ctx presentationTime:CACurrentMediaTime()];
+}
+
+- (CFTimeInterval)renderInContext:(CGContextRef)ctx
+    presentationTime:(CFTimeInterval)t;
+{
+  __block MgLayerRenderState rs;
+  rs.time = t;
+  rs.next_time = HUGE_VAL;
   rs.ctx = ctx;
   rs.alpha = 1;
 
-  [self _renderWithState:&rs];
+  [self withPresentationTime:rs.time handler:^
+    {
+      [self _renderWithState:&rs];
+    }];
+
+  rs.next_time = fmax(rs.next_time, [self markPresentationTime:rs.time]);
+
+  return rs.next_time;
 }
 
 - (void)_renderWithState:(MgLayerRenderState *)rs
@@ -458,7 +473,7 @@
   if (!(alpha > 0))
     return;
 
-  MgLayerRenderState r = *rs;
+  __block MgLayerRenderState r = *rs;
   r.alpha = alpha;
 
   CGContextSaveGState(r.ctx);
@@ -471,7 +486,13 @@
       MgLayerRenderState rm = r;
       rm.alpha = 1;
 
-      [mask _renderMaskWithState:&rm];
+      [mask withPresentationTime:r.time handler:^
+	{ 
+	  rs->next_time = fmax(rs->next_time,
+			       [mask markPresentationTime:r.time]);
+	}];
+
+      [mask markPresentationTime:r.time];
     }
 
   CGContextSetBlendMode(rs->ctx, self.blendMode);
@@ -480,6 +501,8 @@
   [self _renderLayerWithState:&r];
 
   CGContextRestoreGState(r.ctx);
+
+  rs->next_time = r.next_time;
 }
 
 - (void)_renderLayerWithState:(MgLayerRenderState *)rs
@@ -504,6 +527,8 @@
   [self _renderLayerMaskWithState:&r];
 
   CGContextConcatCTM(r.ctx, CGAffineTransformInvert(m));
+
+  rs->next_time = r.next_time;
 }
 
 - (void)_renderLayerMaskWithState:(MgLayerRenderState *)rs
