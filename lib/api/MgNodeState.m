@@ -216,7 +216,10 @@ state_depth(MgNodeState *s)
 - (void)setDefinesValue:(BOOL)flag forKey:(NSString *)key
 {
   if ([key isEqualToString:@"enabled"])
-    _defines.enabled = flag;
+    {
+      _defines.enabled = flag;
+      return;
+    }
 
   [NSException raise:@"MgNodeState"
    format:@"does not define property %@", key];
