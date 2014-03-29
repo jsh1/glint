@@ -26,8 +26,8 @@
 
 #import "MgTimingFunction.h"
 
-#define DEFAULT_DURATION 1
-#define DEFAULT_FUNCTION MgTimingFunctionEaseInOut
+#define DEFAULT_DURATION .25
+#define DEFAULT_FUNCTION MgTimingFunctionDefault
 
 @implementation MgDefaultTransition
 {

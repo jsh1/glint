@@ -35,6 +35,7 @@
 
 /* For +[MgFunction functionWithName:]. */
 
+extern NSString * const MgTimingFunctionDefault;
 extern NSString * const MgTimingFunctionLinear;
 extern NSString * const MgTimingFunctionEaseIn;
 extern NSString * const MgTimingFunctionEaseOut;

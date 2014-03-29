@@ -28,6 +28,7 @@
 
 #import <Foundation/Foundation.h>
 
+NSString * const MgTimingFunctionDefault = @"default";
 NSString * const MgTimingFunctionLinear = @"linear";
 NSString * const MgTimingFunctionEaseIn = @"ease-in";
 NSString * const MgTimingFunctionEaseOut = @"ease-out";
@@ -42,6 +43,10 @@ NSString * const MgTimingFunctionEaseInOut = @"ease-in-out";
 
   dispatch_once(&once, ^
     {
+      MgBezierTimingFunction *def = [[MgBezierTimingFunction alloc] init];
+      def.p0 = CGPointMake(.25, .1);
+      def.p1 = CGPointMake(.25, 1);
+
       MgBezierTimingFunction *linear = [[MgBezierTimingFunction alloc] init];
       linear.p0 = CGPointMake(0, 0);
       linear.p1 = CGPointMake(1, 1);
@@ -59,6 +64,7 @@ NSString * const MgTimingFunctionEaseInOut = @"ease-in-out";
       e_in_out.p1 = CGPointMake(.58, 1);
 
       functions = @{
+	MgTimingFunctionDefault: def,
 	MgTimingFunctionLinear: linear,
 	MgTimingFunctionEaseIn: e_in,
 	MgTimingFunctionEaseOut: e_out,
