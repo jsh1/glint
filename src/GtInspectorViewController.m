@@ -90,6 +90,9 @@
   for (GtTreeNode *tn in _selection)
     [tn.node removeObserver:self forKeyPath:@"version"];
 
+  [self.outlineView setDelegate:nil];
+  [self.outlineView setDataSource:nil];
+
   _selection = nil;
 
   [super invalidate];

@@ -81,6 +81,9 @@ static NSString *const GtStateListViewItemType = @"org.unfactored.gt-state-list-
 
   [self.windowController removeObserver:self forKeyPath:@"currentModule"];
 
+  [self.tableView setDelegate:nil];
+  [self.tableView setDataSource:nil];
+
   _moduleNode = nil;
   _currentModule = nil;
 

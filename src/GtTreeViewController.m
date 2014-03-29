@@ -92,6 +92,9 @@ static NSString *const GtTreeViewItemType = @"org.unfactored.gt-tree-view-item";
   [self.document removeObserver:self forKeyPath:@"documentNode"];
   [self.windowController removeObserver:self forKeyPath:@"selection"];
 
+  [self.outlineView setDelegate:nil];
+  [self.outlineView setDataSource:nil];
+
   [super invalidate];
 }
 
