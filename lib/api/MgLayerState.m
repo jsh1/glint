@@ -144,7 +144,8 @@
   MgLayerState *to = (MgLayerState *)to_;
   double t_;
 
-  [super applyTransition:trans atTime:t to:to];
+  /* Not calling super, we'll fold super's enabled property into our
+     alpha. */
 
   t_ = trans != nil ? [trans evaluateTime:t forKey:@"position"] : t;
   _position = MgPointMix(self.position, to.position, t_);
@@ -185,6 +186,21 @@
   t_ = trans != nil ? [trans evaluateTime:t forKey:@"blendMode"] : t;
   _blendMode = (t_ < .5) ? self.blendMode : to.blendMode;
   _defines.blendMode = true;
+
+  /* Multiply interpolated "enabled" property into alpha.
+
+     FIXME: kludge? */
+
+  t_ = trans != nil ? [trans evaluateTime:t forKey:@"enabled"] : t;
+  float alpha = MgFloatMix(self.enabled, to.enabled, t_);
+  [self setDefinesValue:YES forKey:@"enabled"];
+  if (alpha > 0)
+    {
+      _alpha *= alpha;
+      self.enabled = YES;
+    }
+  else
+    self.enabled = NO;
 }
 
 - (CGPoint)position
