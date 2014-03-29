@@ -198,15 +198,15 @@
 
   for (MgLayer *node in self.sublayers)
     {
-      if (node.enabled)
-	{
-	  [node withPresentationTime:r.time handler:^
-	    {
-	      [node _renderWithState:&r];
-	    }];
+      [node withPresentationTime:r.time handler:^
+       {
+	 if (node.enabled)
+	   {
+	     [node _renderWithState:&r];
+	   }
+       }];
 
-	  r.next_time = fmin(r.next_time, [node markPresentationTime:r.time]);
-	}
+      r.next_time = fmin(r.next_time, [node markPresentationTime:r.time]);
     }
 
   if (group)

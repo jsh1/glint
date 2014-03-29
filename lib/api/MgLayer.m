@@ -481,17 +481,19 @@
   CGContextConcatCTM(r.ctx, [self parentTransform]);
 
   MgLayer *mask = self.mask;
-  if (mask != nil && mask.enabled)
+  if (mask != nil)
     {
-      __block MgLayerRenderState rm = r;
-      rm.alpha = 1;
-
       [mask withPresentationTime:r.time handler:^
 	{ 
-	  [mask _renderMaskWithState:&rm];
+	  if (mask.enabled)
+	    {
+	      MgLayerRenderState rm = r;
+	      rm.alpha = 1;
+	      [mask _renderMaskWithState:&rm];
+	      r.next_time = fmin(rm.next_time,
+				 [mask markPresentationTime:rm.time]);
+	    }
 	}];
-
-      r.next_time = fmin(r.next_time, [mask markPresentationTime:r.time]);
     }
 
   CGContextSetBlendMode(rs->ctx, self.blendMode);
