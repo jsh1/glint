@@ -11,7 +11,7 @@
       "subviewControllers": [
 	{
 	  "class": "GtTabViewController",
-	  "identifierSuffix": ".tab-1",
+	  "identifierSuffix": ".project-tab[0]",
 	  "subviewControllers": [
 	    {
 	      "class": "GtTreeViewController"
@@ -20,7 +20,7 @@
 	},
         {
 	  "class": "GtTabViewController",
-	  "identifierSuffix": ".tab-2",
+	  "identifierSuffix": ".project-tab[1]",
 	  "subviewControllers": [
 	    {
 	      "class": "GtInspectorViewController"
@@ -33,7 +33,24 @@
       ]
     },
     {
-      "class": "GtViewerViewController"
+      "class": "GtSplitViewController",
+      "identifierSuffix": ".timing",
+      "vertical": false,
+      "indexOfResizableSubview": 0,
+      "subviewControllers": [
+	{
+	  "class": "GtViewerViewController"
+	},
+	{
+	  "class": "GtTabViewController",
+	  "identifierSuffix": ".timing-tab",
+	  "subviewControllers": [
+	    {
+	      "class": "GtTransitionViewController"
+	    }
+	  ]
+	}
+      ]
     }
   ]
 }

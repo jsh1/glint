@@ -29,6 +29,7 @@
 #import "GtDocument.h"
 #import "GtInspectorViewController.h"
 #import "GtStateListViewController.h"
+#import "GtTransitionViewController.h"
 #import "GtTreeNode.h"
 #import "GtTreeViewController.h"
 #import "GtViewController.h"
@@ -427,6 +428,9 @@ viewControllerClass(id sender)
 
     case 3:
       return [GtStateListViewController class];
+
+    case 4:
+      return [GtTransitionViewController class];
 
     default:
       return Nil;
