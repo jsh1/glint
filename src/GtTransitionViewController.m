@@ -25,6 +25,7 @@
 #import "GtTransitionViewController.h"
 
 #import "GtDocument.h"
+#import "GtTransitionTimingView.h"
 #import "GtTreeNode.h"
 #import "GtWindowController.h"
 
@@ -32,8 +33,7 @@
 
 @implementation GtTransitionViewController
 {
-  GtTreeNode *_moduleNode;
-  MgModuleLayer *_currentModule;
+  NSMutableArray *_items;
 }
 
 + (NSString *)viewNibName
@@ -51,6 +51,8 @@
   self = [super initWithWindowController:windowController];
   if (self == nil)
     return nil;
+
+  _items = [[NSMutableArray alloc] init];
 
   [[NSNotificationCenter defaultCenter]
    addObserver:self selector:@selector(documentGraphDidChange:)
@@ -73,11 +75,15 @@
 {
   for (NSTableColumn *col in [self.outlineView tableColumns])
     [[col dataCell] setVerticallyCentered:YES];
+  for (NSTableColumn *col in [self.fromTableView tableColumns])
+    [[col dataCell] setVerticallyCentered:YES];
+  for (NSTableColumn *col in [self.toTableView tableColumns])
+    [[col dataCell] setVerticallyCentered:YES];
 
   [self updateDocumentNode];
 
+  [_items removeAllObjects];
   [self.outlineView reloadData];
-  [self.outlineView expandItem:nil expandChildren:YES];
 }
 
 - (void)invalidate
@@ -103,7 +109,9 @@
 
 - (void)updateDocumentNode
 {
+  [_items removeAllObjects];
   [self.outlineView reloadData];
+
   [self.outlineView expandItem:nil expandChildren:YES];
 }
 
@@ -120,11 +128,10 @@
   [_currentModule addObserver:self forKeyPath:@"moduleState"
    options:0 context:NULL];
 
-  [self.outlineView reloadData];
-  [self.fromTableView reloadData];
-  [self.toTableView reloadData];
-
   [self updateCurrentState];
+
+  [_items removeAllObjects];
+  [self.outlineView reloadData];
 }
 
 - (void)updateCurrentState
@@ -143,12 +150,17 @@
 
   /* FIXME: not right. */
 
+  _fromState = _toState = state;
   [self.fromTableView setSelectedRow:row];
   [self.toTableView setSelectedRow:row];
+
+  [self.fromTableView reloadData];
+  [self.toTableView reloadData];
 }
 
 - (void)documentGraphDidChange:(NSNotification *)note
 {
+  [_items removeAllObjects];
   [self.outlineView reloadData];
 }
 
@@ -181,32 +193,173 @@
     }
 }
 
+static BOOL
+showNodeStateForState(MgNodeState *st, MgModuleState *from, MgModuleState *to)
+{
+  MgModuleState *moduleState = st.moduleState;
+
+  return ((from != nil && moduleState == from)
+	  || (to != nil && moduleState == to));
+}
+
+static BOOL
+showNodeForState(GtTreeNode *tn, MgModuleState *from, MgModuleState *to)
+{
+  for (MgNodeState *st in tn.node.states)
+    {
+      if (showNodeStateForState(st, from, to))
+	return YES;
+    }
+
+  /* FIXME: yow! */
+
+  for (GtTreeNode *child in tn.children)
+    {
+      if (showNodeForState(child, from, to))
+	return YES;
+    }
+
+  return NO;
+}
+
 /** NSOutlineViewDataSource methods. **/
 
 - (NSInteger)outlineView:(NSOutlineView *)ov numberOfChildrenOfItem:(id)item
 {
-  return 0;
+  if (_fromState == _toState)
+    return 0;
+
+  if (item == nil)
+    item = _moduleNode;
+
+  if (![item isKindOfClass:[GtTreeNode class]])
+    return 0;
+
+  NSInteger count = 0;
+
+  for (GtTreeNode *tn in ((GtTreeNode *)item).children)
+    {
+      if (showNodeForState(tn, _fromState, _toState))
+	count++;
+    }
+
+  for (MgNodeState *st in ((GtTreeNode *)item).node.states)
+    {
+      if (showNodeStateForState(st, _fromState, _toState))
+	{
+	  for (NSString *key in [[st class] allProperties])
+	    {
+	      if ([st definesValueForKey:key])
+		count++;
+	    }
+	}
+    }
+
+  return count;
 }
 
 - (id)outlineView:(NSOutlineView *)ov child:(NSInteger)idx ofItem:(id)item
 {
+  if (item == nil)
+    item = _moduleNode;
+
+  if (![item isKindOfClass:[GtTreeNode class]])
+    return nil;
+
+  for (GtTreeNode *tn in ((GtTreeNode *)item).children)
+    {
+      if (showNodeForState(tn, _fromState, _toState)
+	  && idx-- == 0)
+	return tn;
+    }
+
+  for (MgNodeState *st in ((GtTreeNode *)item).node.states)
+    {
+      if (showNodeStateForState(st, _fromState, _toState))
+	{
+	  for (NSString *key in [[st class] allProperties])
+	    {
+	      if ([st definesValueForKey:key] && idx-- == 0)
+		{
+		  NSArray *data = @[item, key];
+		  [_items addObject:data];
+		  return data;
+		}
+	    }
+	}
+    }
+
   return nil;
 }
 
 - (BOOL)outlineView:(NSOutlineView *)ov isItemExpandable:(id)item
 {
-  return NO;
+  return item == nil || [item isKindOfClass:[GtTreeNode class]];
 }
 
-- (id)outlineView:(NSOutlineView *)ov objectValueForTableColumn:
-    (NSTableColumn *)col byItem:(id)item
+/** NSOutlineViewDelegate methods. **/
+
+- (NSView *)outlineView:(NSOutlineView *)ov
+    viewForTableColumn:(NSTableColumn *)col item:(id)item
 {
+  NSString *ident = [col identifier];
+
+  if (item == nil)
+    item = _moduleNode;
+
+  if ([ident isEqualToString:@"name"])
+    {
+      NSTextField *label
+        = [ov makeViewWithIdentifier:@"name.label" owner:self];
+
+      if (label == nil)
+	{
+	  label = [[NSTextField alloc] initWithFrame:NSZeroRect];
+
+	  [label setFont:[NSFont systemFontOfSize:
+			  [NSFont smallSystemFontSize]]];
+	  [[label cell] setVerticallyCentered:YES];
+	  [label setEditable:NO];
+	  [label setDrawsBackground:NO];
+	  [label setBordered:NO];
+
+	  label.identifier = @"name.label";
+	}
+
+      if ([item isKindOfClass:[GtTreeNode class]])
+	[label setObjectValue:((GtTreeNode *)item).node.name];
+      else if ([item isKindOfClass:[NSArray class]])
+	[label setObjectValue:item[1]];
+
+      return label;
+    }
+  else if ([ident isEqualToString:@"timing"])
+    {
+      GtTransitionTimingView *view
+        = [ov makeViewWithIdentifier:@"timing.view" owner:self];
+
+      if (view == nil)
+	{
+	  view = [[GtTransitionTimingView alloc] initWithFrame:NSZeroRect];
+	  view.controller = self;
+	  view.identifier = @"timing.view";
+	}
+
+      if ([item isKindOfClass:[GtTreeNode class]])
+	{
+	  view.treeNode = item;
+	  view.key = nil;
+	}
+      else if ([item isKindOfClass:[NSArray class]])
+	{
+	  view.treeNode = item[0];
+	  view.key = item[1];
+	}
+
+      return view;
+    }
+
   return nil;
-}
-
-- (void)outlineView:(NSOutlineView *)ov setObjectValue:(id)object
-    forTableColumn:(NSTableColumn *)col byItem:(id)item
-{
 }
 
 /** NSTableViewDataSource methods. **/
@@ -225,6 +378,32 @@
   MgModuleState *state = _currentModule.moduleStates[row-1];
 
   return state.name;
+}
+
+/** NSTableViewDelegate methods. **/
+
+- (void)tableViewSelectionDidChange:(NSNotification *)note
+{
+  NSTableView *tv = [note object];
+  NSInteger row = [tv selectedRow];
+
+  if (tv == self.fromTableView)
+    {
+      if (row == 0)
+	_fromState = nil;
+      else
+	_fromState = _currentModule.moduleStates[row-1];
+    }
+  else if (tv == self.toTableView)
+    {
+      if (row == 0)
+	_toState = nil;
+      else
+	_toState = _currentModule.moduleStates[row-1];
+    }
+
+  [_items removeAllObjects];
+  [self.outlineView reloadData];
 }
 
 @end

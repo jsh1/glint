@@ -74,6 +74,7 @@
 		578DBA7218E97A5E007F2B16 /* GtTransitionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 578DBA7018E97A5E007F2B16 /* GtTransitionView.xib */; };
 		578DBA7518E97BA6007F2B16 /* GtTransitionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 578DBA7418E97BA6007F2B16 /* GtTransitionViewController.m */; };
 		579CAFD918C3F63A0051454F /* MgCoderExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 579CAFD818C3F63A0051454F /* MgCoderExtensions.m */; };
+		57AE9B6018EEFE5C009F5992 /* GtTransitionTimingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 57AE9B5F18EEFE5C009F5992 /* GtTransitionTimingView.m */; };
 		57B111B718D0BB8C00A41A64 /* GtViewerOverlayLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 57B111B618D0BB8C00A41A64 /* GtViewerOverlayLayer.m */; };
 		57DE109E18DDA99F00B8EC27 /* GtStateListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 57DE109D18DDA99F00B8EC27 /* GtStateListViewController.m */; };
 		57DE10A318DDF15900B8EC27 /* GtStateListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 57DE10A118DDF15900B8EC27 /* GtStateListView.xib */; };
@@ -223,6 +224,8 @@
 		579CAFD218C385310051454F /* MgMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgMacros.h; sourceTree = "<group>"; };
 		579CAFD718C3F63A0051454F /* MgCoderExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgCoderExtensions.h; sourceTree = "<group>"; };
 		579CAFD818C3F63A0051454F /* MgCoderExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgCoderExtensions.m; sourceTree = "<group>"; };
+		57AE9B5E18EEFE5C009F5992 /* GtTransitionTimingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtTransitionTimingView.h; path = src/GtTransitionTimingView.h; sourceTree = SOURCE_ROOT; };
+		57AE9B5F18EEFE5C009F5992 /* GtTransitionTimingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtTransitionTimingView.m; path = src/GtTransitionTimingView.m; sourceTree = SOURCE_ROOT; };
 		57B111B518D0BB8C00A41A64 /* GtViewerOverlayLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtViewerOverlayLayer.h; path = src/GtViewerOverlayLayer.h; sourceTree = "<group>"; };
 		57B111B618D0BB8C00A41A64 /* GtViewerOverlayLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtViewerOverlayLayer.m; path = src/GtViewerOverlayLayer.m; sourceTree = "<group>"; };
 		57DE109C18DDA99F00B8EC27 /* GtStateListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtStateListViewController.h; path = src/GtStateListViewController.h; sourceTree = "<group>"; };
@@ -433,6 +436,8 @@
 				57DE109D18DDA99F00B8EC27 /* GtStateListViewController.m */,
 				572BFA9F18D72814000E9B84 /* GtTabViewController.h */,
 				572BFAA018D72815000E9B84 /* GtTabViewController.m */,
+				57AE9B5E18EEFE5C009F5992 /* GtTransitionTimingView.h */,
+				57AE9B5F18EEFE5C009F5992 /* GtTransitionTimingView.m */,
 				578DBA7318E97BA6007F2B16 /* GtTransitionViewController.h */,
 				578DBA7418E97BA6007F2B16 /* GtTransitionViewController.m */,
 				5738567618C746D80010CFB7 /* GtTreeNode.h */,
@@ -601,6 +606,7 @@
 				5708BBCE18E4C2FE0054D5FE /* MgTimedTransition.m in Sources */,
 				57F567E918DBB388006E1B3C /* MgModuleLayer.m in Sources */,
 				57F567E118DB63B4006E1B3C /* MgImageLayerState.m in Sources */,
+				57AE9B6018EEFE5C009F5992 /* GtTransitionTimingView.m in Sources */,
 				575ACEFB18CFCFE100161C70 /* MgPathLayer.m in Sources */,
 				572BFAB318D74E21000E9B84 /* GtInspectorNumberControl.m in Sources */,
 				5708BBC818E4830D0054D5FE /* MgBase.m in Sources */,

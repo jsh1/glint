@@ -32,4 +32,9 @@
 @property(nonatomic, weak) IBOutlet NSTableView *fromTableView;
 @property(nonatomic, weak) IBOutlet NSTableView *toTableView;
 
+@property(nonatomic, strong) GtTreeNode *moduleNode;
+@property(nonatomic, strong) MgModuleLayer *currentModule;
+@property(nonatomic, strong) MgModuleState *fromState;
+@property(nonatomic, strong) MgModuleState *toState;
+
 @end
