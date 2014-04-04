@@ -111,7 +111,7 @@
   _defines.cornerRadius = true;
 
   t_ = trans != nil ? [trans evaluateTime:t forKey:@"drawingMode"] : t;
-  _drawingMode = t < .5 ? self.drawingMode : to.drawingMode;
+  _drawingMode = t_ < .5 ? self.drawingMode : to.drawingMode;
   _defines.drawingMode = true;
 
   t_ = trans != nil ? [trans evaluateTime:t forKey:@"fillColor"] : t;
