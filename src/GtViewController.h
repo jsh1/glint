@@ -68,6 +68,7 @@
 
 - (void)showSubviewController:(GtViewController *)controller;
 - (void)hideSubviewController:(GtViewController *)controller;
+- (void)maximizeSubviewControllers:(GtViewController *)controller;
 - (void)toggleSubviewController:(GtViewController *)controller;
 - (BOOL)subviewControllerIsVisible:(GtViewController *)controller;
 

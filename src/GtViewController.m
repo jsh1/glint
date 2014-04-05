@@ -219,6 +219,24 @@
     }
 }
 
+- (void)maximizeSubviewControllers:(GtViewController *)controller
+{
+  while (controller != nil)
+    {
+      GtViewController *parent = controller->_superviewController;
+      if (parent == nil)
+	break;
+
+      for (GtViewController *c in parent->_subviewControllers)
+	{
+	  if (c != controller)
+	    [parent hideSubviewController:c];
+	}
+
+      controller = parent;
+    }
+}
+
 - (void)toggleSubviewController:(GtViewController *)controller
 {
   GtViewController *parent = controller->_superviewController;

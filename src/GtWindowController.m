@@ -471,4 +471,13 @@ viewControllerClass(id sender)
   return on && off ? NSMixedState : on ? NSOnState : NSOffState;
 }
 
+- (IBAction)maximizeView:(id)sender
+{
+  [self foreachViewControllerWithClass:viewControllerClass(sender)
+   handler:^(GtViewController *obj)
+    {
+      [_viewController maximizeSubviewControllers:obj];
+    }];
+}
+
 @end

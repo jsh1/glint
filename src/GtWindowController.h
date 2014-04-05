@@ -61,5 +61,6 @@
 - (IBAction)showView:(id)sender;
 - (IBAction)toggleView:(id)sender;
 - (NSInteger)viewState:(id)sender;
+- (IBAction)maximizeView:(id)sender;
 
 @end
