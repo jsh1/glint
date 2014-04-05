@@ -37,4 +37,7 @@
 @property(nonatomic, strong) MgModuleState *fromState;
 @property(nonatomic, strong) MgModuleState *toState;
 
+- (MgNodeTransition *)nodeTransition:(GtTreeNode *)tn;
+- (MgNodeTransition *)nodeTransition:(GtTreeNode *)tn onlyIfExists:(BOOL)flag;
+
 @end

@@ -84,6 +84,7 @@
 
   [_items removeAllObjects];
   [self.outlineView reloadData];
+  [self.outlineView expandItem:nil expandChildren:YES];
 }
 
 - (void)invalidate
@@ -111,7 +112,6 @@
 {
   [_items removeAllObjects];
   [self.outlineView reloadData];
-
   [self.outlineView expandItem:nil expandChildren:YES];
 }
 
@@ -132,6 +132,7 @@
 
   [_items removeAllObjects];
   [self.outlineView reloadData];
+  [self.outlineView expandItem:nil expandChildren:YES];
 }
 
 - (void)updateCurrentState
@@ -162,6 +163,7 @@
 {
   [_items removeAllObjects];
   [self.outlineView reloadData];
+  [self.outlineView expandItem:nil expandChildren:YES];
 }
 
 - (void)documentNodeDidChange:(NSNotification *)note
@@ -193,6 +195,33 @@
     }
 }
 
+- (MgNodeTransition *)nodeTransition:(GtTreeNode *)tn
+{
+  return [self nodeTransition:tn onlyIfExists:NO];
+}
+
+- (MgNodeTransition *)nodeTransition:(GtTreeNode *)tn onlyIfExists:(BOOL)flag
+{
+  for (MgNodeTransition *trans in tn.node.transitions)
+    {
+      if (trans.from == _fromState && trans.to == _toState)
+	return trans;
+    }
+
+  if (flag)
+    return nil;
+
+  MgNodeTransition *trans = [MgNodeTransition transition];
+
+  trans.from = _fromState;
+  trans.to = _toState;
+
+  [self.document node:tn insertObject:trans
+   atIndex:NSIntegerMax forKey:@"transitions"];
+
+  return trans;
+}
+
 static BOOL
 showNodeStateForState(MgNodeState *st, MgModuleState *from, MgModuleState *to)
 {
@@ -205,6 +234,9 @@ showNodeStateForState(MgNodeState *st, MgModuleState *from, MgModuleState *to)
 static BOOL
 showNodeForState(GtTreeNode *tn, MgModuleState *from, MgModuleState *to)
 {
+  if ([tn.node isKindOfClass:[MgModuleLayer class]])
+    return NO;
+
   for (MgNodeState *st in tn.node.states)
     {
       if (showNodeStateForState(st, from, to))
@@ -310,21 +342,9 @@ showNodeForState(GtTreeNode *tn, MgModuleState *from, MgModuleState *to)
   if ([ident isEqualToString:@"name"])
     {
       NSTextField *label
-        = [ov makeViewWithIdentifier:@"name.label" owner:self];
+        = [ov makeViewWithIdentifier:ident owner:self];
 
-      if (label == nil)
-	{
-	  label = [[NSTextField alloc] initWithFrame:NSZeroRect];
-
-	  [label setFont:[NSFont systemFontOfSize:
-			  [NSFont smallSystemFontSize]]];
-	  [[label cell] setVerticallyCentered:YES];
-	  [label setEditable:NO];
-	  [label setDrawsBackground:NO];
-	  [label setBordered:NO];
-
-	  label.identifier = @"name.label";
-	}
+      [[label cell] setVerticallyCentered:YES];
 
       if ([item isKindOfClass:[GtTreeNode class]])
 	[label setObjectValue:((GtTreeNode *)item).node.name];
@@ -333,28 +353,14 @@ showNodeForState(GtTreeNode *tn, MgModuleState *from, MgModuleState *to)
 
       return label;
     }
-  else if ([ident isEqualToString:@"timing"])
+  else if ([ident isEqualToString:@"timing"]
+	   && [item isKindOfClass:[NSArray class]])
     {
       GtTransitionTimingView *view
-        = [ov makeViewWithIdentifier:@"timing.view" owner:self];
+	= [ov makeViewWithIdentifier:ident owner:self];
 
-      if (view == nil)
-	{
-	  view = [[GtTransitionTimingView alloc] initWithFrame:NSZeroRect];
-	  view.controller = self;
-	  view.identifier = @"timing.view";
-	}
-
-      if ([item isKindOfClass:[GtTreeNode class]])
-	{
-	  view.treeNode = item;
-	  view.key = nil;
-	}
-      else if ([item isKindOfClass:[NSArray class]])
-	{
-	  view.treeNode = item[0];
-	  view.key = item[1];
-	}
+      view.treeNode = item[0];
+      view.key = item[1];
 
       return view;
     }
@@ -404,6 +410,7 @@ showNodeForState(GtTreeNode *tn, MgModuleState *from, MgModuleState *to)
 
   [_items removeAllObjects];
   [self.outlineView reloadData];
+  [self.outlineView expandItem:nil expandChildren:YES];
 }
 
 @end
