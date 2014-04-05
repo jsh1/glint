@@ -35,6 +35,9 @@
 @implementation MgNodeTransition
 {
   NSMutableDictionary *_keyTiming;
+
+  double _begin, _duration;
+  BOOL _invalid;
 }
 
 + (instancetype)transition
@@ -53,14 +56,46 @@
   return self;
 }
 
+- (void)_validate
+{
+  if ([_keyTiming count] == 0)
+    _begin = _duration = 0;
+  else
+    {
+      double start = HUGE_VAL, end = -HUGE_VAL;
+
+      for (NSString *key in _keyTiming)
+	{
+	  MgTransitionTiming *timing = _keyTiming[key];
+
+	  double begin = timing.begin;
+	  double dur = timing.duration;
+
+	  start = fmin(start, begin);
+	  end = fmax(end, begin + dur);
+	}
+
+      _begin = start;
+      _duration = end - start;
+    }
+
+  _invalid = NO;
+}
+
 - (double)begin
 {
-  return _timing != nil ? _timing.begin : 0;
+  if (_invalid)
+    [self _validate];
+
+  return _begin;
 }
 
 - (double)duration
 {
-  return _timing != nil ? _timing.duration : 1;
+  if (_invalid)
+    [self _validate];
+
+  return _duration;
 }
 
 - (MgTransitionTiming *)timingForKey:(NSString *)key
@@ -71,6 +106,7 @@
 - (void)setTimingForKey:(MgTransitionTiming *)timing forKey:(NSString *)key
 {
   _keyTiming[key] = timing;
+  _invalid = YES;
 }
 
 - (BOOL)definesTimingForKey:(NSString *)key
@@ -97,7 +133,6 @@
   copy->_from = [_from mg_conditionalGraphCopy:map];
   copy->_to = [_to mg_conditionalGraphCopy:map];
   copy->_reversible = _reversible;
-  copy->_timing = [_timing copy];
 
   if (_keyTiming != nil)
     {
@@ -108,6 +143,8 @@
 	  MgTransitionTiming *timing = _keyTiming[key];
 	  [copy->_keyTiming setObject:[timing copy] forKey:key];
 	}
+
+      copy->_invalid = YES;
     }
 
   return copy;
@@ -128,8 +165,6 @@
     [c encodeConditionalObject:_to forKey:@"toState"];
   if (_reversible)
     [c encodeBool:_reversible forKey:@"reversible"];
-  if (_timing != nil)
-    [c encodeObject:_timing forKey:@"timing"];
   if (_keyTiming != nil)
     [c encodeObject:_keyTiming forKey:@"keyTiming"];
 }
@@ -147,16 +182,11 @@
   if ([c containsValueForKey:@"reversible"])
     _reversible = [c decodeBoolForKey:@"reversible"];
 
-  if ([c containsValueForKey:@"timing"])
-    {
-      _timing = [[c decodeObjectOfClass:[MgTransitionTiming class]
-		  forKey:@"timing"] mutableCopy];
-    }
-
-  if ([c containsValueForKey:@"timing"])
+  if ([c containsValueForKey:@"keyTiming"])
     {
       _keyTiming = [[c decodeObjectOfClass:[NSDictionary class]
 		     forKey:@"keyTiming"] mutableCopy];
+      _invalid = YES;
     }
 
   return self;

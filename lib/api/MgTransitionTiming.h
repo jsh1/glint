@@ -26,6 +26,8 @@
 
 @interface MgTransitionTiming : NSObject <NSCopying, NSSecureCoding>
 
+@property(nonatomic, assign, getter=isEnabled) BOOL enabled;
+
 @property(nonatomic, assign) double begin;
 @property(nonatomic, assign) double duration;
 

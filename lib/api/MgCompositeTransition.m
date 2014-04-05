@@ -39,19 +39,24 @@
 
   _transitions = [transitions copy];
 
-  double start = 0, end = 0;
-  
-  for (MgTransition *trans in _transitions)
+  if ([_transitions count] == 0)
+    _begin = _duration = 0;
+  else
     {
-      double begin = trans.begin;
-      double dur = trans.duration;
+      double start = HUGE_VAL, end = -HUGE_VAL;
+  
+      for (MgTransition *trans in _transitions)
+	{
+	  double begin = trans.begin;
+	  double dur = trans.duration;
 
-      start = fmin(start, begin);
-      end = fmax(end, begin + dur);
+	  start = fmin(start, begin);
+	  end = fmax(end, begin + dur);
+	}
+
+      _begin = start;
+      _duration = end - start;
     }
-
-  _begin = start;
-  _duration = end - start;
 
   return self;
 }

@@ -36,6 +36,7 @@
   if (self == nil)
     return nil;
 
+  _enabled = YES;
   _begin = 0;
   _duration = 1;
 
@@ -44,6 +45,9 @@
 
 - (double)evaluate:(double)t
 {
+  if (!_enabled)
+    return 1;
+
   t = (t - _begin) / _duration;
   
   if (_function != nil)
@@ -58,6 +62,7 @@
 {
   MgTransitionTiming *copy = [[[self class] alloc] init];
 
+  copy->_enabled = _enabled;
   copy->_begin = _begin;
   copy->_duration = _duration;
   copy->_function = _function;
@@ -74,6 +79,8 @@
 
 - (void)encodeWithCoder:(NSCoder *)c
 {
+  if (!_enabled)
+    [c encodeBool:_enabled forKey:@"enabled"];
   if (_begin != 0)
     [c encodeDouble:_begin forKey:@"begin"];
   if (_duration != 1)
@@ -87,6 +94,9 @@
   self = [self init];
   if (self == nil)
     return nil;
+
+  if ([c containsValueForKey:@"enabled"])
+    _enabled = [c decodeDoubleForKey:@"enabled"];
 
   if ([c containsValueForKey:@"begin"])
     _begin = [c decodeDoubleForKey:@"begin"];

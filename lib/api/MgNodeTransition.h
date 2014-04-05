@@ -33,8 +33,6 @@
 
 @property(nonatomic, assign, getter=isReversible) BOOL reversible;
 
-@property(nonatomic, copy) MgTransitionTiming *timing;
-
 - (MgTransitionTiming *)timingForKey:(NSString *)key;
 - (void)setTimingForKey:(MgTransitionTiming *)timing forKey:(NSString *)key;
 
