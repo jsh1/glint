@@ -67,4 +67,27 @@
   return color;
 }
 
++ (NSColor *)timelineItemFillColor
+{
+  static NSColor *color;
+
+  if (color == nil)
+    {
+      color = [NSColor colorWithCalibratedHue:BG_HUE
+	       saturation:.3 brightness:1 alpha:1];
+    }
+
+  return color;
+}
+
++ (NSColor *)timelineItemStrokeColor
+{
+  static NSColor *color;
+
+  if (color == nil)
+    color = [NSColor colorWithDeviceWhite:.2 alpha:.7];
+
+  return color;
+}
+
 @end

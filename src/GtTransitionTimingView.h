@@ -26,9 +26,11 @@
 
 @interface GtTransitionTimingView : NSView
 
-@property(nonatomic, weak) GtTransitionViewController *controller;
+@property(nonatomic, weak) IBOutlet GtTransitionViewController *controller;
 
 @property(nonatomic, strong) GtTreeNode *treeNode;
 @property(nonatomic, copy) NSString *key;
+
+@property NSBackgroundStyle backgroundStyle;
 
 @end

@@ -1280,10 +1280,12 @@ documentNodeChanged(GtDocument *self, GtTreeNode *tn)
 
       [node setValue:value forKey:key];
 
-      /* FIXME: heinous. */
+      /* FIXME: heinous. Also, will be called before unsetting the
+	 state-defines-key flag when undoing. */
 
       if ([key isEqualToString:@"mask"]
-	  || [key isEqualToString:@"node"])
+	  || [key isEqualToString:@"node"]
+	  || [key isEqualToString:@"sublayers"])
 	{
 	  documentGraphChanged(self);
 	}
@@ -1299,6 +1301,8 @@ documentNodeChanged(GtDocument *self, GtTreeNode *tn)
 {
   assert(value != nil);
   assert(idx >= 0);
+
+  /* FIXME: rewrite by calling -node:setValue:forKey: */
 
   MgNode *node = tn.node;
 
@@ -1329,6 +1333,8 @@ indexOfObjectInArray(NSArray *array, id value, NSInteger idx)
 
   if (idx == NSNotFound)
     return [array indexOfObjectIdenticalTo:value];
+
+  /* FIXME: rewrite by calling -node:setValue:forKey: */
 
   NSInteger count = [array count];
 
@@ -1370,6 +1376,8 @@ indexOfObjectInArray(NSArray *array, id value, NSInteger idx)
 {
   assert(value != nil);
 
+  /* FIXME: rewrite by calling -node:setValue:forKey: */
+
   MgNode *node = tn.node;
 
   NSArray *array = [node valueForKey:key];
@@ -1398,6 +1406,8 @@ indexOfObjectInArray(NSArray *array, id value, NSInteger idx)
 {
   MgNode *node = tn.node;
 
+  /* FIXME: rewrite by calling -node:setValue:forKey: */
+
   NSArray *array = [node valueForKey:key];
 
   idx = indexOfObjectInArray(array, oldValue, idx);
@@ -1422,6 +1432,8 @@ indexOfObjectInArray(NSArray *array, id value, NSInteger idx)
     by:(NSInteger)delta forKey:(NSString *)key
 {
   MgNode *node = tn.node;
+
+  /* FIXME: rewrite by calling -node:setValue:forKey: */
 
   NSArray *array = [node valueForKey:key];
 

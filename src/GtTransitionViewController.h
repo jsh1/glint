@@ -37,6 +37,10 @@
 @property(nonatomic, strong) MgModuleState *fromState;
 @property(nonatomic, strong) MgModuleState *toState;
 
+@property(nonatomic, assign) double timelineStart, timelineScale;
+
+@property(nonatomic, copy, readonly) MgTransitionTiming *defaultTiming;
+
 - (MgNodeTransition *)nodeTransition:(GtTreeNode *)tn;
 - (MgNodeTransition *)nodeTransition:(GtTreeNode *)tn onlyIfExists:(BOOL)flag;
 

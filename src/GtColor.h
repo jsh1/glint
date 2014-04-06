@@ -31,4 +31,7 @@
 + (NSColor *)viewerBackgroundColor;
 + (NSColor *)viewerBorderColor;
 
++ (NSColor *)timelineItemFillColor;
++ (NSColor *)timelineItemStrokeColor;
+
 @end

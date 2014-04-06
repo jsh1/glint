@@ -52,6 +52,9 @@
   if (self == nil)
     return nil;
 
+  _timelineStart = 0;
+  _timelineScale = 400;
+
   _items = [[NSMutableArray alloc] init];
 
   [[NSNotificationCenter defaultCenter]
@@ -108,6 +111,22 @@
   [super invalidate];
 }
 
+- (MgTransitionTiming *)defaultTiming
+{
+  static MgTransitionTiming *timing;
+  static dispatch_once_t once;
+
+  dispatch_once(&once, ^
+    {
+      timing = [[MgTransitionTiming alloc] init];
+      timing.duration = .25;
+      timing.function = [MgTimingFunction functionWithName:
+			 MgTimingFunctionDefault];
+    });
+
+  return timing;
+}
+
 - (void)updateDocumentNode
 {
   [_items removeAllObjects];
@@ -137,6 +156,7 @@
 
 - (void)updateCurrentState
 {
+#if 0
   MgModuleState *state = _currentModule.moduleState;
 
   NSInteger row = 0;
@@ -154,6 +174,7 @@
   _fromState = _toState = state;
   [self.fromTableView setSelectedRow:row];
   [self.toTableView setSelectedRow:row];
+#endif
 
   [self.fromTableView reloadData];
   [self.toTableView reloadData];
@@ -170,7 +191,7 @@
 {
   NSDictionary *info = [note userInfo];
 
-  [self.outlineView reloadItem:info[@"treeItem"]];
+  [self.outlineView reloadItem:info[@"treeItem"] reloadChildren:YES];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
@@ -366,6 +387,22 @@ showNodeForState(GtTreeNode *tn, MgModuleState *from, MgModuleState *to)
     }
 
   return nil;
+}
+
+- (NSIndexSet *)outlineView:(NSOutlineView *)ov
+     selectionIndexesForProposedSelection:(NSIndexSet *)indexes
+{
+  NSMutableIndexSet *ret = [NSMutableIndexSet indexSet];
+
+  for (NSInteger idx = [indexes firstIndex]; idx != NSNotFound;
+       idx = [indexes indexGreaterThanIndex:idx])
+    {
+      id item = [ov itemAtRow:idx];
+      if ([item isKindOfClass:[NSArray class]])
+	[ret addIndex:idx];
+    }
+
+  return ret;
 }
 
 /** NSTableViewDataSource methods. **/

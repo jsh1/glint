@@ -24,6 +24,102 @@
 
 #import "GtTransitionTimingView.h"
 
+#import "GtColor.h"
+#import "GtTransitionViewController.h"
+
+@interface MgFunction (GtTransitionTimingView)
+- (void)drawInRect:(NSRect)r;
+@end
+
 @implementation GtTransitionTimingView
+{
+  NSBackgroundStyle _backgroundStyle;
+}
+
+- (NSBackgroundStyle)backgroundStyle
+{
+  return _backgroundStyle;
+}
+
+- (void)setBackgroundStyle:(NSBackgroundStyle)style
+{
+  _backgroundStyle = style;
+  [self setNeedsDisplay:YES];
+}
+
+- (void)drawRect:(NSRect)r
+{
+  GtTransitionViewController *controller = self.controller;
+
+  MgNodeTransition *trans
+    = [controller nodeTransition:self.treeNode onlyIfExists:YES];
+  MgTransitionTiming *timing = [trans timingForKey:self.key];
+
+  BOOL using_default = timing == nil;
+
+  if (using_default)
+    timing = controller.defaultTiming;
+
+  double begin = timing.begin;
+  double duration = timing.duration;
+  MgFunction *function = timing.function;
+
+  double start = controller.timelineStart;
+  double scale = controller.timelineScale;
+
+  NSRect bounds = self.bounds;
+
+  NSRect timingR;
+  timingR.origin.x = bounds.origin.x + round((begin - start) * scale);
+  timingR.origin.y = bounds.origin.y + 1;
+  timingR.size.width = round(duration * scale);
+  timingR.size.height = bounds.size.height - 1;
+
+  if (!using_default)
+    {
+      [[GtColor timelineItemFillColor] setFill];
+      [NSBezierPath fillRect:timingR];
+    }
+
+  if (!using_default || _backgroundStyle != NSBackgroundStyleDark)
+    [[GtColor timelineItemStrokeColor] setStroke];
+  else
+    [[NSColor whiteColor] setStroke];
+
+  [function drawInRect:NSInsetRect(timingR, 2.5, 2.5)];
+  [NSBezierPath strokeRect:NSInsetRect(timingR, .5, .5)];
+}
+
+@end
+
+@implementation MgFunction (GtTransitionTimingView)
+
+- (void)drawInRect:(NSRect)r
+{
+}
+
+@end
+
+@implementation MgBezierTimingFunction (GtTransitionTimingView)
+
+- (void)drawInRect:(NSRect)r
+{
+  CGPoint p0 = self.p0;
+  CGPoint p1 = self.p1;
+
+  NSPoint c0 = r.origin;
+  NSPoint c1 = NSMakePoint(r.origin.x + p0.x * r.size.width,
+			   r.origin.y + p0.y * r.size.height);
+  NSPoint c2 = NSMakePoint(r.origin.x + p1.x * r.size.width,
+			   r.origin.y + p1.y * r.size.height);
+  NSPoint c3 = NSMakePoint(c0.x + r.size.width, c0.y + r.size.height);
+
+  NSBezierPath *path = [NSBezierPath bezierPath];
+
+  [path moveToPoint:c0];
+  [path curveToPoint:c3 controlPoint1:c1 controlPoint2:c2];
+
+  [path stroke];
+}
 
 @end

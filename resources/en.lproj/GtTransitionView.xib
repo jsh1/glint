@@ -73,6 +73,9 @@
                                             <customView id="5Ow-1w-s9o" customClass="GtTransitionTimingView">
                                                 <rect key="frame" x="161" y="1" width="326" height="22"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                <connections>
+                                                    <outlet property="controller" destination="-2" id="ywf-B6-Ahm"/>
+                                                </connections>
                                             </customView>
                                         </prototypeCellViews>
                                     </tableColumn>
