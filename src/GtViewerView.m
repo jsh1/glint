@@ -32,7 +32,7 @@
 #import "GtViewerViewController.h"
 #import "GtWindowController.h"
 
-#import "MgCoreAnimationLayer.h"
+#import "MgViewContext.h"
 #import "MgMacros.h"
 
 #define MIN_SCALE (1. / 32)
@@ -45,7 +45,8 @@
 
 @implementation GtViewerView
 {
-  MgCoreAnimationLayer *_nodeLayer;
+  MgViewContext *_viewContext;
+  CALayer *_nodeLayer;
   MgGroupLayer *_rootLayer;
   MgGroupLayer *_documentContainer;
   GtViewerOverlayLayer *_overlayLayer;
@@ -157,24 +158,9 @@
 
   layer.backgroundColor = [[GtColor viewerBackgroundColor] CGColor];
 
-  if (_nodeLayer == nil)
-    {
-      _nodeLayer = [MgCoreAnimationLayer layer];
-      _nodeLayer.delegate = [NSApp delegate];
-      [layer addSublayer:_nodeLayer];
-    }
-
-  if (_rootLayer == nil)
-    {
-      _rootLayer = [MgGroupLayer node];
-      _rootLayer.anchor = CGPointZero;
-      _nodeLayer.layer = _rootLayer;
-    }
-
   if (_documentContainer == nil)
     {
       _documentContainer = [MgGroupLayer node];
-      [_rootLayer addSublayer:_documentContainer];
     }
 
   if (_overlayLayer == nil)
@@ -182,7 +168,22 @@
       _overlayLayer = [GtViewerOverlayLayer node];
       _overlayLayer.view = self;
       _overlayLayer.anchor = CGPointZero;
+    }
+
+  if (_rootLayer == nil)
+    {
+      _rootLayer = [MgGroupLayer node];
+      _rootLayer.anchor = CGPointZero;
+      [_rootLayer addSublayer:_documentContainer];
       [_rootLayer addSublayer:_overlayLayer];
+    }
+
+  if (_nodeLayer == nil)
+    {
+      _viewContext = [MgViewContext contextWithLayer:_rootLayer];
+      _nodeLayer = _viewContext.viewLayer;
+      _nodeLayer.delegate = [NSApp delegate];
+      [layer addSublayer:_nodeLayer];
     }
 
   GtDocument *document = self.controller.document;
@@ -191,7 +192,8 @@
   CGFloat scale = self.viewScale;
   CGPoint center = self.viewCenter;
 
-  _nodeLayer.frame = bounds;
+  _nodeLayer.position = CGPointMake(CGRectGetMidX(bounds),
+				    CGRectGetMidY(bounds));
   _nodeLayer.contentsScale = [[self window] backingScaleFactor];
 
   _rootLayer.bounds = bounds;

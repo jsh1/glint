@@ -22,37 +22,62 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#ifndef MG_H
-#define MG_H
+#import "MgViewContext.h"
 
-#include "MgBase.h"
+#import "MgLayerInternal.h"
 
-#ifdef __OBJC__
-# import "MgBezierTimingFunction.h"
-# import "MgDrawingLayer.h"
-# import "MgFunction.h"
-# import "MgGradientLayer.h"
-# import "MgGradientLayerState.h"
-# import "MgGroupLayer.h"
-# import "MgGroupLayerState.h"
-# import "MgImageLayer.h"
-# import "MgImageLayerState.h"
-# import "MgImageProvider.h"
-# import "MgLayer.h"
-# import "MgLayerState.h"
-# import "MgModuleLayer.h"
-# import "MgModuleState.h"
-# import "MgNode.h"
-# import "MgNodeState.h"
-# import "MgNodeTransition.h"
-# import "MgPathLayer.h"
-# import "MgPathLayerState.h"
-# import "MgRectLayer.h"
-# import "MgRectLayerState.h"
-# import "MgTimingFunction.h"
-# import "MgTransition.h"
-# import "MgTransitionTiming.h"
-# import "MgViewContext.h"
-#endif
+#import <Foundation/Foundation.h>
+#import <QuartzCore/QuartzCore.h>
 
-#endif /* MG_H */
+@implementation MgViewContext
+{
+  MgLayer *_layer;
+
+  CALayer<MgViewLayer> *_viewLayer;
+}
+
++ (MgViewContext *)contextWithLayer:(MgLayer *)layer
+{
+  return [[self alloc] initWithLayer:layer];
+}
+
+- (id)initWithLayer:(MgLayer *)layer
+{
+  self = [super init];
+  if (self == nil)
+    return nil;
+
+  _layer = layer;
+
+  [_layer addObserver:self forKeyPath:@"version" options:0 context:nil];
+
+  return self;
+}
+
+- (void)dealloc
+{
+  [_layer removeObserver:self forKeyPath:@"version"];
+}
+
+- (CALayer *)viewLayer
+{
+  if (_viewLayer == nil)
+    {
+      Class cls = [[_layer class] viewLayerClass];
+      _viewLayer = [[cls alloc] initWithMgLayer:_layer];
+      [_viewLayer update];
+    }
+
+  return _viewLayer;
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
+     change:(NSDictionary *)dict context:(void *)ctx
+{
+  if ([keyPath isEqualToString:@"version"])
+    {
+      [_viewLayer update];
+    }
+}
+
+@end

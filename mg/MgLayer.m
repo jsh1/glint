@@ -26,6 +26,7 @@
 
 #import "MgCoderExtensions.h"
 #import "MgCoreGraphics.h"
+#import "MgFlatteningCALayer.h"
 #import "MgLayerState.h"
 #import "MgNodeInternal.h"
 
@@ -46,6 +47,11 @@
 + (BOOL)automaticallyNotifiesObserversOfPosition
 {
   return NO;
+}
+
++ (Class)viewLayerClass
+{
+  return [MgFlatteningCALayer class];
 }
 
 - (CGPoint)position

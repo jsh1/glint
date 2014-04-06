@@ -36,6 +36,8 @@ struct MgLayerRenderState
 
 @interface MgLayer ()
 
++ (Class)viewLayerClass;
+
 /** Methods for subclasses to override. **/
 
 - (void)_renderWithState:(MgLayerRenderState *)rs;

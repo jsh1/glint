@@ -22,37 +22,12 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#ifndef MG_H
-#define MG_H
+#import "MgViewContext.h"
 
-#include "MgBase.h"
+#import <QuartzCore/CALayer.h>
 
-#ifdef __OBJC__
-# import "MgBezierTimingFunction.h"
-# import "MgDrawingLayer.h"
-# import "MgFunction.h"
-# import "MgGradientLayer.h"
-# import "MgGradientLayerState.h"
-# import "MgGroupLayer.h"
-# import "MgGroupLayerState.h"
-# import "MgImageLayer.h"
-# import "MgImageLayerState.h"
-# import "MgImageProvider.h"
-# import "MgLayer.h"
-# import "MgLayerState.h"
-# import "MgModuleLayer.h"
-# import "MgModuleState.h"
-# import "MgNode.h"
-# import "MgNodeState.h"
-# import "MgNodeTransition.h"
-# import "MgPathLayer.h"
-# import "MgPathLayerState.h"
-# import "MgRectLayer.h"
-# import "MgRectLayerState.h"
-# import "MgTimingFunction.h"
-# import "MgTransition.h"
-# import "MgTransitionTiming.h"
-# import "MgViewContext.h"
-#endif
+@interface MgFlatteningCALayer : CALayer <MgViewLayer>
 
-#endif /* MG_H */
+@property(nonatomic) double currentTime;
+
+@end

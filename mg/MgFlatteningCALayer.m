@@ -22,36 +22,23 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "MgCoreAnimationLayer.h"
+#import "MgFlatteningCALayer.h"
 
 #import "MgLayer.h"
 
 #import <Foundation/Foundation.h>
 #import <QuartzCore/QuartzCore.h>
 
-/* FIXME: this is junk. Draws using CG, on the main thread, ignoring
-   animations. Will be superseded by something that translates the
-   node graph to a layer tree.
-
-   Using a CA client-side animation to drive our rendering during
-   Mg transitions, set up a property whose interpolated values will
-   match the current presentation time. */
-
-@interface MgCoreAnimationLayer ()
-@property(nonatomic) double currentTime;
-@end
-
 #define LONG_TIME (3600*24*365*10)
 
-@implementation MgCoreAnimationLayer
+@implementation MgFlatteningCALayer
 {
   MgLayer *_layer;
   double _currentTime;
   NSInteger _lastVersion;
-  BOOL _addedObserver;
   BOOL _addedAnimation;
 
-  __weak MgCoreAnimationLayer *_modelLayer;
+  __weak MgFlatteningCALayer *_modelLayer;
 }
 
 @synthesize currentTime = _currentTime;
@@ -74,7 +61,18 @@
     return [super needsDisplayForKey:key];
 }
 
-- (id)initWithLayer:(MgCoreAnimationLayer *)layer
+- (id)initWithMgLayer:(MgLayer *)layer
+{
+  self = [super init];
+  if (self == nil)
+    return nil;
+
+  _layer = layer;
+
+  return self;
+}
+
+- (id)initWithLayer:(MgFlatteningCALayer *)layer
 {
   self = [super init];
   if (self == nil)
@@ -88,51 +86,60 @@
   return self;
 }
 
-- (void)dealloc
-{
-  if (_addedObserver)
-    [_layer removeObserver:self forKeyPath:@"version"];
-}
-
-+ (BOOL)automaticallyNotifiesObserversOfLayer
-{
-  return NO;
-}
-
 - (MgLayer *)layer
 {
   return _layer;
 }
 
-- (void)setLayer:(MgLayer *)node
+- (void)update
 {
-  if (_layer != node)
+  NSInteger version = _layer.version;
+
+  if (version != _lastVersion)
     {
-      [self willChangeValueForKey:@"layer"];
+      _lastVersion = version;
 
-      [_layer removeObserver:self forKeyPath:@"version"];
+      self.bounds = _layer.bounds;
 
-      _layer = node;
-      _lastVersion = 0;
-
-      [_layer addObserver:self forKeyPath:@"version" options:0 context:nil];
-
-      _addedObserver = YES;
-      
       [self setNeedsDisplay];
-
-      [self didChangeValueForKey:@"layer"];
     }
 }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
-     change:(NSDictionary *)dict context:(void *)ctx
+- (void)drawInContext:(CGContextRef)ctx
 {
-  if ([keyPath isEqualToString:@"version"])
+  /* FIXME: -[CALayer modelLayer] seems to be broken for client-side
+     animation copies?
+
+     FIXME: and self.bounds seems to return CGRectZero, wtf!? */
+
+  MgFlatteningCALayer *model = _modelLayer;
+
+  CFTimeInterval now;
+  if (model == nil)
     {
-      if (_layer != nil && _layer.version != _lastVersion)
-	[self setNeedsDisplay];
+      model = self;
+      now = [self convertTime:CACurrentMediaTime() fromLayer:nil];
     }
+  else
+    {
+      now = self.currentTime;
+    }
+
+#if !TARGET_OS_IPHONE
+  CGContextSaveGState(ctx);
+  CGContextTranslateCTM(ctx, 0, model.bounds.size.height);
+  CGContextScaleCTM(ctx, 1, -1);
+#endif
+
+  MgLayer *layer = model->_layer;
+
+  CFTimeInterval next = [layer renderInContext:ctx presentationTime:now]; 
+
+  [model _updateCurrentTime:now nextTime:next];
+
+#if !TARGET_OS_IPHONE
+  CGContextRestoreGState(ctx);
+#endif
 }
 
 - (void)_updateCurrentTime:(CFTimeInterval)t nextTime:(CFTimeInterval)tn
@@ -159,45 +166,6 @@
 	  _addedAnimation = NO;
 	}
     }
-}
-
-- (void)drawInContext:(CGContextRef)ctx
-{
-  /* FIXME: -[CALayer modelLayer] seems to be broken for client-side
-     animation copies?
-
-     FIXME: and self.bounds seems to return CGRectZero, wtf!? */
-
-  MgCoreAnimationLayer *model = _modelLayer;
-
-  CFTimeInterval now;
-  if (model == nil)
-    {
-      model = self;
-      now = CACurrentMediaTime();
-    }
-  else
-    {
-      now = self.currentTime;
-    }
-
-#if !TARGET_OS_IPHONE
-  CGContextSaveGState(ctx);
-  CGContextTranslateCTM(ctx, 0, model.bounds.size.height);
-  CGContextScaleCTM(ctx, 1, -1);
-#endif
-
-  MgLayer *layer = model->_layer;
-
-  CFTimeInterval next = [layer renderInContext:ctx presentationTime:now]; 
-
-  model->_lastVersion = layer.version;
-
-  [model _updateCurrentTime:now nextTime:next];
-
-#if !TARGET_OS_IPHONE
-  CGContextRestoreGState(ctx);
-#endif
 }
 
 @end

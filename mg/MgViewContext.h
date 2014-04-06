@@ -24,10 +24,25 @@
 
 #import "MgBase.h"
 
-#import <QuartzCore/CALayer.h>
+@interface MgViewContext : NSObject
 
-@interface MgCoreAnimationLayer : CALayer
++ (MgViewContext *)contextWithLayer:(MgLayer *)layer;
 
-@property(nonatomic, strong) MgLayer *layer;
+- (id)initWithLayer:(MgLayer *)layer;
+
+@property(nonatomic, strong, readonly) MgLayer *layer;
+
+@property(nonatomic, strong, readonly) CALayer *viewLayer;
+
+@end
+
+
+@protocol MgViewLayer
+
+- (id)initWithMgLayer:(MgLayer *)layer;
+
+@property(nonatomic, strong, readonly) MgLayer *layer;
+
+- (void)update;
 
 @end

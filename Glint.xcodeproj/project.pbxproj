@@ -54,7 +54,6 @@
 		57AE9BAB18F0555B009F5992 /* MgBezierTimingFunction.mm in Sources */ = {isa = PBXBuildFile; fileRef = 57AE9B6618F0555A009F5992 /* MgBezierTimingFunction.mm */; };
 		57AE9BAC18F0555B009F5992 /* MgCoderExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 57AE9B6818F0555A009F5992 /* MgCoderExtensions.m */; };
 		57AE9BAD18F0555B009F5992 /* MgCompositeTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 57AE9B6A18F0555A009F5992 /* MgCompositeTransition.m */; };
-		57AE9BAE18F0555B009F5992 /* MgCoreAnimationLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 57AE9B6C18F0555A009F5992 /* MgCoreAnimationLayer.m */; };
 		57AE9BAF18F0555B009F5992 /* MgCoreGraphics.m in Sources */ = {isa = PBXBuildFile; fileRef = 57AE9B6E18F0555A009F5992 /* MgCoreGraphics.m */; };
 		57AE9BB018F0555B009F5992 /* MgDefaultTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 57AE9B7018F0555A009F5992 /* MgDefaultTransition.m */; };
 		57AE9BB118F0555B009F5992 /* MgDrawingLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 57AE9B7218F0555A009F5992 /* MgDrawingLayer.m */; };
@@ -84,6 +83,8 @@
 		57AE9BCA18F0555B009F5992 /* MgTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 57AE9BA618F0555B009F5992 /* MgTransition.m */; };
 		57AE9BCB18F0555B009F5992 /* MgTransitionTiming.m in Sources */ = {isa = PBXBuildFile; fileRef = 57AE9BA818F0555B009F5992 /* MgTransitionTiming.m */; };
 		57B111B718D0BB8C00A41A64 /* GtViewerOverlayLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 57B111B618D0BB8C00A41A64 /* GtViewerOverlayLayer.m */; };
+		57DA502E18F1A8BF009D58C1 /* MgViewContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 57DA502D18F1A8BF009D58C1 /* MgViewContext.m */; };
+		57DA503118F1A8C7009D58C1 /* MgFlatteningCALayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 57DA503018F1A8C7009D58C1 /* MgFlatteningCALayer.m */; };
 		57DE109E18DDA99F00B8EC27 /* GtStateListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 57DE109D18DDA99F00B8EC27 /* GtStateListViewController.m */; };
 		57DE10A318DDF15900B8EC27 /* GtStateListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 57DE10A118DDF15900B8EC27 /* GtStateListView.xib */; };
 		57E776B318BD3478007CD31F /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57E776B218BD3478007CD31F /* Quartz.framework */; };
@@ -180,8 +181,6 @@
 		57AE9B6818F0555A009F5992 /* MgCoderExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgCoderExtensions.m; sourceTree = "<group>"; };
 		57AE9B6918F0555A009F5992 /* MgCompositeTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgCompositeTransition.h; sourceTree = "<group>"; };
 		57AE9B6A18F0555A009F5992 /* MgCompositeTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgCompositeTransition.m; sourceTree = "<group>"; };
-		57AE9B6B18F0555A009F5992 /* MgCoreAnimationLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgCoreAnimationLayer.h; sourceTree = "<group>"; };
-		57AE9B6C18F0555A009F5992 /* MgCoreAnimationLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgCoreAnimationLayer.m; sourceTree = "<group>"; };
 		57AE9B6D18F0555A009F5992 /* MgCoreGraphics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgCoreGraphics.h; sourceTree = "<group>"; };
 		57AE9B6E18F0555A009F5992 /* MgCoreGraphics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgCoreGraphics.m; sourceTree = "<group>"; };
 		57AE9B6F18F0555A009F5992 /* MgDefaultTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgDefaultTransition.h; sourceTree = "<group>"; };
@@ -243,6 +242,10 @@
 		57AE9BA918F0555B009F5992 /* MgUnitBezier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgUnitBezier.h; sourceTree = "<group>"; };
 		57B111B518D0BB8C00A41A64 /* GtViewerOverlayLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtViewerOverlayLayer.h; path = src/GtViewerOverlayLayer.h; sourceTree = "<group>"; };
 		57B111B618D0BB8C00A41A64 /* GtViewerOverlayLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtViewerOverlayLayer.m; path = src/GtViewerOverlayLayer.m; sourceTree = "<group>"; };
+		57DA502C18F1A8BF009D58C1 /* MgViewContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgViewContext.h; sourceTree = "<group>"; };
+		57DA502D18F1A8BF009D58C1 /* MgViewContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgViewContext.m; sourceTree = "<group>"; };
+		57DA502F18F1A8C7009D58C1 /* MgFlatteningCALayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgFlatteningCALayer.h; sourceTree = "<group>"; };
+		57DA503018F1A8C7009D58C1 /* MgFlatteningCALayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgFlatteningCALayer.m; sourceTree = "<group>"; };
 		57DE109C18DDA99F00B8EC27 /* GtStateListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtStateListViewController.h; path = src/GtStateListViewController.h; sourceTree = "<group>"; };
 		57DE109D18DDA99F00B8EC27 /* GtStateListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtStateListViewController.m; path = src/GtStateListViewController.m; sourceTree = "<group>"; };
 		57DE10A218DDF15900B8EC27 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = resources/en.lproj/GtStateListView.xib; sourceTree = "<group>"; };
@@ -314,14 +317,14 @@
 				57AE9B6818F0555A009F5992 /* MgCoderExtensions.m */,
 				57AE9B6918F0555A009F5992 /* MgCompositeTransition.h */,
 				57AE9B6A18F0555A009F5992 /* MgCompositeTransition.m */,
-				57AE9B6B18F0555A009F5992 /* MgCoreAnimationLayer.h */,
-				57AE9B6C18F0555A009F5992 /* MgCoreAnimationLayer.m */,
 				57AE9B6D18F0555A009F5992 /* MgCoreGraphics.h */,
 				57AE9B6E18F0555A009F5992 /* MgCoreGraphics.m */,
 				57AE9B6F18F0555A009F5992 /* MgDefaultTransition.h */,
 				57AE9B7018F0555A009F5992 /* MgDefaultTransition.m */,
 				57AE9B7118F0555A009F5992 /* MgDrawingLayer.h */,
 				57AE9B7218F0555A009F5992 /* MgDrawingLayer.m */,
+				57DA502F18F1A8C7009D58C1 /* MgFlatteningCALayer.h */,
+				57DA503018F1A8C7009D58C1 /* MgFlatteningCALayer.m */,
 				57AE9B7318F0555A009F5992 /* MgFunction.h */,
 				57AE9B7418F0555A009F5992 /* MgFunction.m */,
 				57AE9B7518F0555A009F5992 /* MgGradientLayer.h */,
@@ -375,6 +378,8 @@
 				57AE9BA718F0555B009F5992 /* MgTransitionTiming.h */,
 				57AE9BA818F0555B009F5992 /* MgTransitionTiming.m */,
 				57AE9BA918F0555B009F5992 /* MgUnitBezier.h */,
+				57DA502C18F1A8BF009D58C1 /* MgViewContext.h */,
+				57DA502D18F1A8BF009D58C1 /* MgViewContext.m */,
 			);
 			path = mg;
 			sourceTree = "<group>";
@@ -583,10 +588,10 @@
 				57AE9BAF18F0555B009F5992 /* MgCoreGraphics.m in Sources */,
 				57AE9BC218F0555B009F5992 /* MgNodeTransition.m in Sources */,
 				57AE9BC818F0555B009F5992 /* MgTimedTransition.m in Sources */,
-				57AE9BAE18F0555B009F5992 /* MgCoreAnimationLayer.m in Sources */,
 				57AE9BBD18F0555B009F5992 /* MgModuleLayer.m in Sources */,
 				57AE9BB918F0555B009F5992 /* MgImageProvider.m in Sources */,
 				57AE9BC618F0555B009F5992 /* MgRectLayerState.m in Sources */,
+				57DA502E18F1A8BF009D58C1 /* MgViewContext.m in Sources */,
 				57AE9BB818F0555B009F5992 /* MgImageLayerState.m in Sources */,
 				572A5B2318C4CE2000AB8086 /* GtAppDelegate.m in Sources */,
 				57AE9BBF18F0555B009F5992 /* MgNode.m in Sources */,
@@ -599,6 +604,7 @@
 				572BFA9718D72256000E9B84 /* GtInspectorItem.m in Sources */,
 				5714A8C718BD322900ED67EE /* GtDocument.m in Sources */,
 				57AE9BCA18F0555B009F5992 /* MgTransition.m in Sources */,
+				57DA503118F1A8C7009D58C1 /* MgFlatteningCALayer.m in Sources */,
 				57AE9BC918F0555B009F5992 /* MgTimingFunction.m in Sources */,
 				57AE9BBC18F0555B009F5992 /* MgLayerState.m in Sources */,
 				5721E87A18C69363000DA2C3 /* GtColor.m in Sources */,
