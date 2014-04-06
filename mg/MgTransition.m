@@ -27,7 +27,6 @@
 #import "MgCompositeTransition.h"
 #import "MgDefaultTransition.h"
 #import "MgNodeState.h"
-#import "MgReversedTransition.h"
 #import "MgTimedTransition.h"
 
 #import <Foundation/Foundation.h>
@@ -52,11 +51,6 @@
     default:
       return [[MgCompositeTransition alloc] initWithArray:array];
     }
-}
-
-- (instancetype)reversedTransition
-{
-  return [[MgReversedTransition alloc] initWithTransition:self];
 }
 
 - (instancetype)transitionWithBegin:(double)begin speed:(double)speed;

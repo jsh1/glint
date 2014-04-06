@@ -30,7 +30,6 @@
 
 + (instancetype)transitionWithArray:(NSArray *)array;
 
-- (instancetype)reversedTransition;
 - (instancetype)transitionWithBegin:(double)begin speed:(double)speed;
 
 @property(nonatomic, assign, readonly) double begin;

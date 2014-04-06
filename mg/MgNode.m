@@ -321,9 +321,6 @@ static NSUInteger version_counter;
     {
       if (t.from == from_s && t.to == to_s)
 	return t;
-
-      if (t.reversible && t.from == to_s && t.to == from_s)
-	return [t reversedTransition];
     }
 
   return nil;
@@ -337,9 +334,6 @@ static NSUInteger version_counter;
     {
       if (t.from == from_s && t.to == nil)
 	return t;
-
-      if (t.reversible && t.from == nil && t.to == from_s)
-	return [t reversedTransition];
     }
 
   return nil;
@@ -353,9 +347,6 @@ static NSUInteger version_counter;
     {
       if (t.from == nil && t.to == to_s)
 	return t;
-
-      if (t.reversible && t.from == to_s && t.to == nil)
-	return [t reversedTransition];
     }
 
   return nil;

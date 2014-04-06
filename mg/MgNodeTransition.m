@@ -132,7 +132,6 @@
 
   copy->_from = [_from mg_conditionalGraphCopy:map];
   copy->_to = [_to mg_conditionalGraphCopy:map];
-  copy->_reversible = _reversible;
 
   if (_keyTiming != nil)
     {
@@ -163,8 +162,6 @@
     [c encodeConditionalObject:_from forKey:@"fromState"];
   if (_to != nil)
     [c encodeConditionalObject:_to forKey:@"toState"];
-  if (_reversible)
-    [c encodeBool:_reversible forKey:@"reversible"];
   if (_keyTiming != nil)
     [c encodeObject:_keyTiming forKey:@"keyTiming"];
 }
@@ -179,8 +176,6 @@
     _from = [c decodeObjectOfClass:[MgModuleState class] forKey:@"from"];
   if ([c containsValueForKey:@"to"])
     _to = [c decodeObjectOfClass:[MgModuleState class] forKey:@"to"];
-  if ([c containsValueForKey:@"reversible"])
-    _reversible = [c decodeBoolForKey:@"reversible"];
 
   if ([c containsValueForKey:@"keyTiming"])
     {

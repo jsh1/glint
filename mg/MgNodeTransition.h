@@ -31,8 +31,6 @@
 @property(nonatomic, strong) MgModuleState *from;
 @property(nonatomic, strong) MgModuleState *to;
 
-@property(nonatomic, assign, getter=isReversible) BOOL reversible;
-
 - (MgTransitionTiming *)timingForKey:(NSString *)key;
 - (void)setTimingForKey:(MgTransitionTiming *)timing forKey:(NSString *)key;
 

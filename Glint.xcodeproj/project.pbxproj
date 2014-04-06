@@ -79,7 +79,6 @@
 		57AE9BC418F0555B009F5992 /* MgPathLayerState.m in Sources */ = {isa = PBXBuildFile; fileRef = 57AE9B9A18F0555B009F5992 /* MgPathLayerState.m */; };
 		57AE9BC518F0555B009F5992 /* MgRectLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 57AE9B9C18F0555B009F5992 /* MgRectLayer.m */; };
 		57AE9BC618F0555B009F5992 /* MgRectLayerState.m in Sources */ = {isa = PBXBuildFile; fileRef = 57AE9B9E18F0555B009F5992 /* MgRectLayerState.m */; };
-		57AE9BC718F0555B009F5992 /* MgReversedTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 57AE9BA018F0555B009F5992 /* MgReversedTransition.m */; };
 		57AE9BC818F0555B009F5992 /* MgTimedTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 57AE9BA218F0555B009F5992 /* MgTimedTransition.m */; };
 		57AE9BC918F0555B009F5992 /* MgTimingFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 57AE9BA418F0555B009F5992 /* MgTimingFunction.m */; };
 		57AE9BCA18F0555B009F5992 /* MgTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 57AE9BA618F0555B009F5992 /* MgTransition.m */; };
@@ -233,8 +232,6 @@
 		57AE9B9C18F0555B009F5992 /* MgRectLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgRectLayer.m; sourceTree = "<group>"; };
 		57AE9B9D18F0555B009F5992 /* MgRectLayerState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgRectLayerState.h; sourceTree = "<group>"; };
 		57AE9B9E18F0555B009F5992 /* MgRectLayerState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgRectLayerState.m; sourceTree = "<group>"; };
-		57AE9B9F18F0555B009F5992 /* MgReversedTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgReversedTransition.h; sourceTree = "<group>"; };
-		57AE9BA018F0555B009F5992 /* MgReversedTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgReversedTransition.m; sourceTree = "<group>"; };
 		57AE9BA118F0555B009F5992 /* MgTimedTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgTimedTransition.h; sourceTree = "<group>"; };
 		57AE9BA218F0555B009F5992 /* MgTimedTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgTimedTransition.m; sourceTree = "<group>"; };
 		57AE9BA318F0555B009F5992 /* MgTimingFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgTimingFunction.h; sourceTree = "<group>"; };
@@ -369,8 +366,6 @@
 				57AE9B9C18F0555B009F5992 /* MgRectLayer.m */,
 				57AE9B9D18F0555B009F5992 /* MgRectLayerState.h */,
 				57AE9B9E18F0555B009F5992 /* MgRectLayerState.m */,
-				57AE9B9F18F0555B009F5992 /* MgReversedTransition.h */,
-				57AE9BA018F0555B009F5992 /* MgReversedTransition.m */,
 				57AE9BA118F0555B009F5992 /* MgTimedTransition.h */,
 				57AE9BA218F0555B009F5992 /* MgTimedTransition.m */,
 				57AE9BA318F0555B009F5992 /* MgTimingFunction.h */,
@@ -618,7 +613,6 @@
 				572BFAA118D72815000E9B84 /* GtTabViewController.m in Sources */,
 				57AE9BCB18F0555B009F5992 /* MgTransitionTiming.m in Sources */,
 				5738567B18C74CCC0010CFB7 /* AppKitExtensions.m in Sources */,
-				57AE9BC718F0555B009F5992 /* MgReversedTransition.m in Sources */,
 				57AE9BBA18F0555B009F5992 /* MgLayer.m in Sources */,
 				572BFAB018D74E21000E9B84 /* GtInspectorBoolControl.m in Sources */,
 				57AE9BB418F0555B009F5992 /* MgGradientLayerState.m in Sources */,
