@@ -25,6 +25,7 @@
 #import "MgGroupLayer.h"
 
 #import "MgCoderExtensions.h"
+#import "MgGroupCALayer.h"
 #import "MgGroupLayerState.h"
 #import "MgLayerInternal.h"
 #import "MgNodeInternal.h"
@@ -41,6 +42,11 @@
 + (Class)stateClass
 {
   return [MgGroupLayerState class];
+}
+
+- (Class)viewLayerClass
+{
+  return [MgGroupCALayer class];
 }
 
 + (BOOL)automaticallyNotifiesObserversOfGroup
@@ -189,8 +195,9 @@
 
   __block MgLayerRenderState r = *rs;
   r.alpha = group ? 1 : rs->alpha;
+  r.outermost = false;
 
-  if (group)
+  if (group && !rs->outermost)
     {
       CGContextSaveGState(r.ctx);
       CGContextBeginTransparencyLayer(r.ctx, NULL);
@@ -209,7 +216,7 @@
       r.next_time = fmin(r.next_time, [node markPresentationTime:r.time]);
     }
 
-  if (group)
+  if (group && !rs->outermost)
     {
       CGContextEndTransparencyLayer(r.ctx);
       CGContextRestoreGState(r.ctx);

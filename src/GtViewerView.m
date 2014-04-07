@@ -182,7 +182,6 @@
     {
       _viewContext = [MgViewContext contextWithLayer:_rootLayer];
       _nodeLayer = _viewContext.viewLayer;
-      _nodeLayer.delegate = [NSApp delegate];
       [layer addSublayer:_nodeLayer];
     }
 
@@ -192,11 +191,10 @@
   CGFloat scale = self.viewScale;
   CGPoint center = self.viewCenter;
 
-  _nodeLayer.position = CGPointMake(CGRectGetMidX(bounds),
-				    CGRectGetMidY(bounds));
   _nodeLayer.contentsScale = [[self window] backingScaleFactor];
 
-  _rootLayer.bounds = bounds;
+  _rootLayer.position = bounds.origin;
+  _rootLayer.bounds = CGRectMake(0, 0, bounds.size.width, bounds.size.height);
 
   _documentContainer.scale = scale;
   _documentContainer.position = center;

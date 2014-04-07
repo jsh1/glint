@@ -45,6 +45,11 @@
   GtViewerAdornmentMask _adornmentMask;
 
   id _adornmentImage;			/* CGImageRef */
+
+  CGSize _documentSize;
+  CGPoint _viewCenter;
+  CGFloat _viewScale;
+  CGAffineTransform _viewTransform;
 }
 
 - (id)init
@@ -199,19 +204,13 @@ rect_slice_8(CGRect content, CGRect bounds, size_t i)
 
 - (void)drawBorderInContext:(CGContextRef)ctx
 {
-  GtViewerView *view = self.view;
-  GtDocument *document = view.controller.document;
-
-  CGSize size = document.documentSize;
-  CGFloat scale = view.viewScale;
-  CGPoint center = view.viewCenter;
   CGRect bounds = self.bounds;
 
   CGRect docR;
-  docR.origin.x = center.x - size.width * scale * .5;
-  docR.origin.y = center.y - size.height * scale * .5;
-  docR.size.width = size.width * scale;
-  docR.size.height = size.height * scale;
+  docR.origin.x = _viewCenter.x - _documentSize.width * _viewScale * .5;
+  docR.origin.y = _viewCenter.y - _documentSize.height * _viewScale * .5;
+  docR.size.width = _documentSize.width * _viewScale;
+  docR.size.height = _documentSize.height * _viewScale;
 
   CGContextSaveGState(ctx);
 
@@ -238,7 +237,7 @@ rect_slice_8(CGRect content, CGRect bounds, size_t i)
 
   CGContextSaveGState(ctx);
   
-  m = CGAffineTransformConcat(m, [self.view viewTransform]);
+  m = CGAffineTransformConcat(m, _viewTransform);
 
   if (1)
     {
@@ -356,8 +355,7 @@ rect_slice_8(CGRect content, CGRect bounds, size_t i)
 
 - (void)drawWithState:(id<MgDrawingState>)st
 {
-  GtViewerView *view = self.view;
-  GtDocument *document = view.controller.document;
+  GtDocument *document = self.view.controller.document;
 
   [self drawBorderInContext:st.context];
 
@@ -424,9 +422,10 @@ rect_slice_8(CGRect content, CGRect bounds, size_t i)
   return NSNotFound;
 }
 
-- (void)updateSelectedNodes
+- (void)update
 {
-  GtWindowController *controller = self.view.controller.windowController;
+  GtViewerView *view = self.view;
+  GtWindowController *controller = view.controller.windowController;
   GtDocument *document = controller.document;
   NSArray *sel = controller.selection;
 
@@ -439,11 +438,23 @@ rect_slice_8(CGRect content, CGRect bounds, size_t i)
     {
       [self setNeedsDisplay];
     }
-}
 
-- (void)update
-{
-  [self updateSelectedNodes];
+  CGFloat scale = view.viewScale;
+  CGSize size = document.documentSize;
+  CGPoint center = view.viewCenter;
+  CGAffineTransform transform = view.viewTransform;
+
+  if (scale != _viewScale
+      || !CGSizeEqualToSize(size, _documentSize)
+      || !CGPointEqualToPoint(center, _viewCenter)
+      || !CGAffineTransformEqualToTransform(transform, _viewTransform))
+    {
+      _viewScale = scale;
+      _documentSize = size;
+      _viewCenter = center;
+      _viewTransform = transform;
+      [self setNeedsDisplay];
+    }
 }
 
 @end

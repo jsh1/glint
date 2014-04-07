@@ -49,7 +49,7 @@
   return NO;
 }
 
-+ (Class)viewLayerClass
+- (Class)viewLayerClass
 {
   return [MgFlatteningCALayer class];
 }
@@ -462,6 +462,7 @@
   rs.next_time = HUGE_VAL;
   rs.ctx = ctx;
   rs.alpha = 1;
+  rs.outermost = true;
 
   [self withPresentationTime:rs.time handler:^
     {
@@ -475,7 +476,9 @@
 
 - (void)_renderWithState:(MgLayerRenderState *)rs
 {
-  float alpha = rs->alpha * fmin(self.alpha, 1);
+  float alpha = rs->alpha;
+  if (!rs->outermost)
+    alpha = alpha * fmin(self.alpha, 1);
   if (!(alpha > 0))
     return;
 
@@ -484,26 +487,30 @@
 
   CGContextSaveGState(r.ctx);
 
-  CGContextConcatCTM(r.ctx, [self parentTransform]);
-
-  MgLayer *mask = self.mask;
-  if (mask != nil)
+  if (!rs->outermost)
     {
-      [mask withPresentationTime:r.time handler:^
-	{ 
-	  if (mask.enabled)
-	    {
-	      MgLayerRenderState rm = r;
-	      rm.alpha = 1;
-	      [mask _renderMaskWithState:&rm];
-	      r.next_time = fmin(rm.next_time,
-				 [mask markPresentationTime:rm.time]);
-	    }
-	}];
-    }
+      CGContextConcatCTM(r.ctx, [self parentTransform]);
 
-  CGContextSetBlendMode(rs->ctx, self.blendMode);
-  CGContextSetAlpha(rs->ctx, r.alpha);
+      MgLayer *mask = self.mask;
+      if (mask != nil)
+	{
+	  [mask withPresentationTime:r.time handler:^
+	    { 
+	      if (mask.enabled)
+		{
+		  MgLayerRenderState rm = r;
+		  rm.alpha = 1;
+		  rm.outermost = false;
+		  [mask _renderMaskWithState:&rm];
+		  r.next_time = fmin(rm.next_time,
+				     [mask markPresentationTime:rm.time]);
+		}
+	    }];
+	}
+
+      CGContextSetBlendMode(rs->ctx, self.blendMode);
+      CGContextSetAlpha(rs->ctx, r.alpha);
+    }
 
   [self _renderLayerWithState:&r];
 

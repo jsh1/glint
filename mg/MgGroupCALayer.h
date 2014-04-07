@@ -22,29 +22,10 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "MgLayer.h"
+#import "MgViewContext.h"
 
-typedef struct MgLayerRenderState MgLayerRenderState;
+#import <QuartzCore/CALayer.h>
 
-struct MgLayerRenderState
-{
-  CFTimeInterval time;
-  CFTimeInterval next_time;
-  CGContextRef ctx;
-  float alpha;
-  bool outermost;
-};
-
-@interface MgLayer ()
-
-- (Class)viewLayerClass;
-
-/** Methods for subclasses to override. **/
-
-- (void)_renderWithState:(MgLayerRenderState *)rs;
-- (void)_renderMaskWithState:(MgLayerRenderState *)rs;
-
-- (void)_renderLayerWithState:(MgLayerRenderState *)rs;
-- (void)_renderLayerMaskWithState:(MgLayerRenderState *)rs;
+@interface MgGroupCALayer : CALayer <MgViewLayer>
 
 @end

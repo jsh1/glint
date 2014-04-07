@@ -85,6 +85,7 @@
 		57B111B718D0BB8C00A41A64 /* GtViewerOverlayLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 57B111B618D0BB8C00A41A64 /* GtViewerOverlayLayer.m */; };
 		57DA502E18F1A8BF009D58C1 /* MgViewContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 57DA502D18F1A8BF009D58C1 /* MgViewContext.m */; };
 		57DA503118F1A8C7009D58C1 /* MgFlatteningCALayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 57DA503018F1A8C7009D58C1 /* MgFlatteningCALayer.m */; };
+		57DA503418F21D9C009D58C1 /* MgGroupCALayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 57DA503318F21D9C009D58C1 /* MgGroupCALayer.m */; };
 		57DE109E18DDA99F00B8EC27 /* GtStateListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 57DE109D18DDA99F00B8EC27 /* GtStateListViewController.m */; };
 		57DE10A318DDF15900B8EC27 /* GtStateListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 57DE10A118DDF15900B8EC27 /* GtStateListView.xib */; };
 		57E776B318BD3478007CD31F /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57E776B218BD3478007CD31F /* Quartz.framework */; };
@@ -246,6 +247,8 @@
 		57DA502D18F1A8BF009D58C1 /* MgViewContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgViewContext.m; sourceTree = "<group>"; };
 		57DA502F18F1A8C7009D58C1 /* MgFlatteningCALayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgFlatteningCALayer.h; sourceTree = "<group>"; };
 		57DA503018F1A8C7009D58C1 /* MgFlatteningCALayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgFlatteningCALayer.m; sourceTree = "<group>"; };
+		57DA503218F21D9C009D58C1 /* MgGroupCALayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgGroupCALayer.h; sourceTree = "<group>"; };
+		57DA503318F21D9C009D58C1 /* MgGroupCALayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgGroupCALayer.m; sourceTree = "<group>"; };
 		57DE109C18DDA99F00B8EC27 /* GtStateListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtStateListViewController.h; path = src/GtStateListViewController.h; sourceTree = "<group>"; };
 		57DE109D18DDA99F00B8EC27 /* GtStateListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtStateListViewController.m; path = src/GtStateListViewController.m; sourceTree = "<group>"; };
 		57DE10A218DDF15900B8EC27 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = resources/en.lproj/GtStateListView.xib; sourceTree = "<group>"; };
@@ -331,6 +334,8 @@
 				57AE9B7618F0555A009F5992 /* MgGradientLayer.m */,
 				57AE9B7718F0555A009F5992 /* MgGradientLayerState.h */,
 				57AE9B7818F0555A009F5992 /* MgGradientLayerState.m */,
+				57DA503218F21D9C009D58C1 /* MgGroupCALayer.h */,
+				57DA503318F21D9C009D58C1 /* MgGroupCALayer.m */,
 				57AE9B7918F0555A009F5992 /* MgGroupLayer.h */,
 				57AE9B7A18F0555A009F5992 /* MgGroupLayer.m */,
 				57AE9B7B18F0555A009F5992 /* MgGroupLayerState.h */,
@@ -592,6 +597,7 @@
 				57AE9BB918F0555B009F5992 /* MgImageProvider.m in Sources */,
 				57AE9BC618F0555B009F5992 /* MgRectLayerState.m in Sources */,
 				57DA502E18F1A8BF009D58C1 /* MgViewContext.m in Sources */,
+				57DA503418F21D9C009D58C1 /* MgGroupCALayer.m in Sources */,
 				57AE9BB818F0555B009F5992 /* MgImageLayerState.m in Sources */,
 				572A5B2318C4CE2000AB8086 /* GtAppDelegate.m in Sources */,
 				57AE9BBF18F0555B009F5992 /* MgNode.m in Sources */,
@@ -725,6 +731,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
+					"FIXME_PRIVATE_API_USAGE=1",
 					"$(inherited)",
 				);
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
@@ -749,6 +756,7 @@
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = "FIXME_PRIVATE_API_USAGE=1";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				SDKROOT = macosx;
 				WARNING_CFLAGS = "-Wall";

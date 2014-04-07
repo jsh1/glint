@@ -24,6 +24,8 @@
 
 #import "MgBase.h"
 
+@protocol MgViewLayer;
+
 @interface MgViewContext : NSObject
 
 + (MgViewContext *)contextWithLayer:(MgLayer *)layer;
@@ -34,14 +36,22 @@
 
 @property(nonatomic, strong, readonly) CALayer *viewLayer;
 
+/* For view layers. */
+
+- (void)updateViewLayer:(CALayer<MgViewLayer> *)layer;
+
+- (CALayer<MgViewLayer> *)makeViewLayerForLayer:(MgLayer *)src
+    candidateLayer:(CALayer *)layer;
+
 @end
 
 
 @protocol MgViewLayer
 
-- (id)initWithMgLayer:(MgLayer *)layer;
+- (id)initWithMgLayer:(MgLayer *)layer viewContext:(MgViewContext *)ctx;
 
 @property(nonatomic, strong, readonly) MgLayer *layer;
+@property(nonatomic, weak, readonly) MgViewContext *viewContext;
 
 - (void)update;
 
