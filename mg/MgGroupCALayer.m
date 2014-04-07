@@ -94,23 +94,10 @@
 
   /* FIXME: handle "group" property somehow. */
 
-  NSMapTable *map = [NSMapTable strongToStrongObjectsMapTable];
+  NSArray *sublayers = self.sublayers;
 
-  for (CALayer<MgViewLayer> *layer in self.sublayers)
-    {
-      [map setObject:layer forKey:layer.layer];
-    }
-
-  NSMutableArray *sublayers = [NSMutableArray array];
-
-  for (MgLayer *src in _layer.sublayers)
-    {
-      if (src.enabled)
-	{
-	  [sublayers addObject:[_viewContext makeViewLayerForLayer:src
-				candidateLayer:[map objectForKey:src]]];
-	}
-    }
+  sublayers = [_viewContext makeViewLayersForLayers:_layer.sublayers
+	       candidateLayers:sublayers];
 
   self.sublayers = sublayers;
 

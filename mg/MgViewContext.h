@@ -43,6 +43,9 @@
 - (CALayer<MgViewLayer> *)makeViewLayerForLayer:(MgLayer *)src
     candidateLayer:(CALayer *)layer;
 
+- (NSArray *)makeViewLayersForLayers:(NSArray *)src
+    candidateLayers:(NSArray *)layers;
+
 @end
 
 

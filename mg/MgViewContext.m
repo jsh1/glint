@@ -29,6 +29,8 @@
 #import <Foundation/Foundation.h>
 #import <QuartzCore/QuartzCore.h>
 
+#import "MgMacros.h"
+
 #if FIXME_PRIVATE_API_USAGE
 @interface CAFilter : NSObject
 + (id)filterWithType:(NSString *)str;
@@ -251,6 +253,98 @@ blendModeFilter(CGBlendMode blend_mode)
   view_layer.delegate = self;
 
   return view_layer;
+}
+
+- (NSArray *)makeViewLayersForLayers:(NSArray *)array
+    candidateLayers:(NSArray *)layers
+{
+  NSInteger count = [array count];
+
+  if (count == 0)
+    return @[];
+
+  __unsafe_unretained MgLayer **src_layers = STACK_ALLOC_ARC(MgLayer *, count);
+  __unsafe_unretained Class *src_classes = STACK_ALLOC_ARC(Class, count);
+
+  if (src_layers != NULL && src_classes != NULL)
+    {
+      NSInteger actual_count = 0;
+
+      for (MgLayer *src in array)
+	{
+	  if (src.enabled)
+	    {
+	      src_layers[actual_count] = src;
+	      src_classes[actual_count] = [src viewLayerClass];
+	      actual_count++;
+	    }
+	}
+
+      BOOL finished = NO;
+
+      /* First pass just checks for nothing changing, the common case. */
+	  
+      if ([layers count] == actual_count)
+	{
+	  finished = YES;
+
+	  for (NSInteger i = 0; i < actual_count; i++)
+	    {
+	      CALayer<MgViewLayer> *layer = layers[i];
+
+	      if (layer.layer != src_layers[i]
+		  || [layer class] != src_classes[i])
+		{
+		  finished = NO;
+		  break;
+		}
+	    }
+	}
+
+      /* Next pass rebuilds the array, reusing existing layers where
+	 possible. */
+
+      if (!finished)
+	{
+	  NSMapTable *map = [NSMapTable strongToStrongObjectsMapTable];
+
+	  for (CALayer<MgViewLayer> *layer in layers)
+	    {
+	      [map setObject:layer forKey:layer.layer];
+	    }
+
+	  NSMutableArray *new_layers = [NSMutableArray array];
+
+	  for (NSInteger i = 0; i < actual_count; i++)
+	    {
+	      MgLayer *src = src_layers[i];
+
+	      CALayer<MgViewLayer> *layer = [map objectForKey:src];
+
+	      if (layer == nil
+		  || layer.layer != src_layers[i]
+		  || [layer class] != src_classes[i])
+		{
+		  layer = [[src_classes[i] alloc] initWithMgLayer:
+			   src_layers[i] viewContext:self];
+		  layer.delegate = self;
+		}
+	      else
+		[map removeObjectForKey:src];
+
+	      [new_layers addObject:layer];
+	    }
+
+	  layers = new_layers;
+	}
+    }
+  else
+    layers = @[];
+
+  STACK_FREE(MgLayer *, count, src_layers);
+  STACK_FREE(Class, count, src_classes);
+
+  return layers;
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
