@@ -32,6 +32,7 @@
 #import "MgTransitionTiming.h"
 
 #import <Foundation/Foundation.h>
+#import <QuartzCore/QuartzCore.h>
 #import <libkern/OSAtomic.h>
 
 #import "MgMacros.h"

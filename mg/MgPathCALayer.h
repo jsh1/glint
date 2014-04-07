@@ -24,7 +24,7 @@
 
 #import "MgViewContext.h"
 
-#import <QuartzCore/CALayer.h>
+#import <QuartzCore/CAShapeLayer.h>
 
 @interface MgPathCALayer : CAShapeLayer <MgViewLayer>
 

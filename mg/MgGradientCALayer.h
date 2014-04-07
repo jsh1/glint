@@ -24,7 +24,7 @@
 
 #import "MgViewContext.h"
 
-#import <QuartzCore/CALayer.h>
+#import <QuartzCore/CAGradientLayer.h>
 
 @interface MgGradientCALayer : CAGradientLayer <MgViewLayer>
 

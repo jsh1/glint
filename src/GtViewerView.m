@@ -35,6 +35,8 @@
 #import "MgViewContext.h"
 #import "MgMacros.h"
 
+#import <QuartzCore/QuartzCore.h>
+
 #define MIN_SCALE (1. / 32)
 #define MAX_SCALE 32
 

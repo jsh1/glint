@@ -25,6 +25,7 @@
 #import "MgCoderExtensions.h"
 
 #import <Foundation/Foundation.h>
+#import <QuartzCore/QuartzCore.h>
 
 @implementation NSCoder (MgCoderExtensions)
 

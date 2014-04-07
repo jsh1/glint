@@ -78,8 +78,8 @@
 # endif
 
 @class NSArray, NSMutableArray, NSData, NSMutableData, NSDictionary,
-    NSMutableDictionary, NSSet, NSMutableSet, NSIndexSet, NSMutableIndexSet,
-    NSPointerArray, NSURL;
+    NSMutableDictionary, NSMapTable, NSSet, NSMutableSet, NSIndexSet,
+    NSMutableIndexSet, NSPointerArray, NSURL;
 @class MgActiveTransition, MgBezierTimingFunction, MgDrawingLayer,
     MgFunction, MgGradientLayer, MgGradientLayerState, MgGroupLayer,
     MgGroupLayerState, MgImageLayer, MgImageLayerState, MgImageProvider,
@@ -87,6 +87,7 @@
     MgNodeState, MgNodeTransition, MgPathLayer, MgPathLayerState,
     MgRectLayer, MgRectLayerState, MgTimingFunction, MgTransitionTiming,
     MgViewContext;
+@class CALayer;
 
 @protocol MgDrawingState, MgImageProvider;
 

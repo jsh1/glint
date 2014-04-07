@@ -28,6 +28,8 @@
 #import "MgLayerInternal.h"
 #import "MgNodeInternal.h"
 
+#import <Foundation/Foundation.h>
+
 @implementation MgDrawingLayer
 {
   BOOL _opaque;

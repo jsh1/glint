@@ -26,6 +26,7 @@
 
 #import <Foundation/Foundation.h>
 #import <ImageIO/ImageIO.h>
+#import <QuartzCore/QuartzCore.h>
 
 #import "MgMacros.h"
 

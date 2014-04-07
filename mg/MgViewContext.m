@@ -24,6 +24,7 @@
 
 #import "MgViewContext.h"
 
+#import "MgFlatteningCALayer.h"
 #import "MgLayerInternal.h"
 
 #import <Foundation/Foundation.h>
