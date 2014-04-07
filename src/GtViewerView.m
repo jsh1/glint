@@ -66,6 +66,13 @@
   return self;
 }
 
+- (void)dealloc
+{
+  MgLayer *documentNode = [_documentContainer.sublayers firstObject];
+
+  [documentNode removeObserver:self forKeyPath:@"version"];
+}
+
 + (BOOL)automaticallyNotifiesObserversOfViewCenter
 {
   return NO;
@@ -199,7 +206,19 @@
   _documentContainer.scale = scale;
   _documentContainer.position = center;
   _documentContainer.size = size;
-  _documentContainer.sublayers = @[document.documentNode];
+
+  MgLayer *documentNode = document.documentNode;
+  MgLayer *oldDocumentNode = [_documentContainer.sublayers firstObject];
+
+  if (oldDocumentNode != documentNode)
+    {
+      [oldDocumentNode removeObserver:self forKeyPath:@"version"];
+
+      _documentContainer.sublayers = @[documentNode];
+
+      [documentNode addObserver:self forKeyPath:@"version" options:0
+       context:nil];
+    }
 
   _overlayLayer.bounds = bounds;
 
@@ -218,6 +237,15 @@
 				| NSTrackingActiveInKeyWindow)
 		       owner:self userInfo:nil];
       [self addTrackingArea:_trackingArea];
+    }
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
+     change:(NSDictionary *)dict context:(void *)ctx
+{
+  if ([keyPath isEqualToString:@"version"])
+    {
+      [_overlayLayer redrawSelection];
     }
 }
 

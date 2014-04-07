@@ -73,6 +73,8 @@ typedef NS_OPTIONS(NSUInteger, GtViewerAdornmentMask)
 
 - (void)update;
 
+- (void)redrawSelection;
+
 - (NSInteger)hitTest:(CGPoint)p inAdornmentsOfNode:(GtTreeNode *)node;
 
 @end

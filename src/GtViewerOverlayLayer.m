@@ -355,14 +355,10 @@ rect_slice_8(CGRect content, CGRect bounds, size_t i)
 
 - (void)drawWithState:(id<MgDrawingState>)st
 {
-  GtDocument *document = self.view.controller.document;
-
   [self drawBorderInContext:st.context];
 
   for (GtTreeNode *tn in _selection)
     [self drawNode:tn inContext:st.context];
-
-  _lastVersion = document.documentNode.version;
 }
 
 - (NSInteger)hitTest:(CGPoint)point inAdornmentsOfNode:(GtTreeNode *)tn
@@ -424,19 +420,26 @@ rect_slice_8(CGRect content, CGRect bounds, size_t i)
 
 - (void)update
 {
+  BOOL needs_display = NO;
+
   GtViewerView *view = self.view;
   GtWindowController *controller = view.controller.windowController;
   GtDocument *document = controller.document;
+
   NSArray *sel = controller.selection;
 
   if (![_selection isEqual:sel])
     {
       _selection = [sel copy];
-      [self setNeedsDisplay];
+      needs_display = YES;
     }
-  else if (_lastVersion != document.documentNode.version)
+
+  NSInteger version = document.documentNode.version;
+
+  if (_lastVersion != version)
     {
-      [self setNeedsDisplay];
+      _lastVersion = version;
+      needs_display = YES;
     }
 
   CGFloat scale = view.viewScale;
@@ -453,6 +456,17 @@ rect_slice_8(CGRect content, CGRect bounds, size_t i)
       _documentSize = size;
       _viewCenter = center;
       _viewTransform = transform;
+      needs_display = YES;
+    }
+
+  if (needs_display)
+    [self setNeedsDisplay];
+}
+
+- (void)redrawSelection
+{
+  if ([_selection count] != 0)
+    {
       [self setNeedsDisplay];
     }
 }
