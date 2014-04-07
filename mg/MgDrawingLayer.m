@@ -22,18 +22,53 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "MgDrawingLayer.h"
+#import "MgDrawingLayerInternal.h"
 
+#import "MgDrawingCALayer.h"
 #import "MgLayerInternal.h"
 #import "MgNodeInternal.h"
 
 @implementation MgDrawingLayer
 {
+  BOOL _opaque;
+  NSInteger _drawingVersion;
   MgLayerRenderState *_rs;
+}
+
+- (Class)viewLayerClass
+{
+  return [MgDrawingCALayer class];
+}
+
++ (BOOL)automaticallyNotifiesObserversOfOpaque
+{
+  return NO;
+}
+
+- (BOOL)isOpaque
+{
+  return _opaque;
+}
+
+- (void)setOpaque:(BOOL)flag
+{
+  if (_opaque != flag)
+    {
+      [self willChangeValueForKey:@"opaque"];
+      _opaque = flag;
+      [self incrementVersion];
+      [self didChangeValueForKey:@"opaque"];
+    }
+}
+
+- (NSInteger)drawingVersion
+{
+  return _drawingVersion;
 }
 
 - (void)setNeedsDisplay
 {
+  _drawingVersion++;
   [self incrementVersion];
 }
 

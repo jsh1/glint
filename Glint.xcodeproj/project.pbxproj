@@ -90,6 +90,7 @@
 		57DA503A18F2B6E9009D58C1 /* MgPathCALayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 57DA503918F2B6E9009D58C1 /* MgPathCALayer.m */; };
 		57DA503D18F2B947009D58C1 /* MgImageCALayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 57DA503C18F2B947009D58C1 /* MgImageCALayer.m */; };
 		57DA504018F2BBFA009D58C1 /* MgGradientCALayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 57DA503F18F2BBFA009D58C1 /* MgGradientCALayer.m */; };
+		57DA504418F32CDD009D58C1 /* MgDrawingCALayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 57DA504218F32CDD009D58C1 /* MgDrawingCALayer.m */; };
 		57DE109E18DDA99F00B8EC27 /* GtStateListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 57DE109D18DDA99F00B8EC27 /* GtStateListViewController.m */; };
 		57DE10A318DDF15900B8EC27 /* GtStateListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 57DE10A118DDF15900B8EC27 /* GtStateListView.xib */; };
 		57E776B318BD3478007CD31F /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57E776B218BD3478007CD31F /* Quartz.framework */; };
@@ -261,6 +262,9 @@
 		57DA503C18F2B947009D58C1 /* MgImageCALayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgImageCALayer.m; sourceTree = "<group>"; };
 		57DA503E18F2BBFA009D58C1 /* MgGradientCALayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgGradientCALayer.h; sourceTree = "<group>"; };
 		57DA503F18F2BBFA009D58C1 /* MgGradientCALayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgGradientCALayer.m; sourceTree = "<group>"; };
+		57DA504118F32CDD009D58C1 /* MgDrawingCALayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgDrawingCALayer.h; sourceTree = "<group>"; };
+		57DA504218F32CDD009D58C1 /* MgDrawingCALayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgDrawingCALayer.m; sourceTree = "<group>"; };
+		57DA504318F32CDD009D58C1 /* MgDrawingLayerInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgDrawingLayerInternal.h; sourceTree = "<group>"; };
 		57DE109C18DDA99F00B8EC27 /* GtStateListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtStateListViewController.h; path = src/GtStateListViewController.h; sourceTree = "<group>"; };
 		57DE109D18DDA99F00B8EC27 /* GtStateListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtStateListViewController.m; path = src/GtStateListViewController.m; sourceTree = "<group>"; };
 		57DE10A218DDF15900B8EC27 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = resources/en.lproj/GtStateListView.xib; sourceTree = "<group>"; };
@@ -336,8 +340,11 @@
 				57AE9B6E18F0555A009F5992 /* MgCoreGraphics.m */,
 				57AE9B6F18F0555A009F5992 /* MgDefaultTransition.h */,
 				57AE9B7018F0555A009F5992 /* MgDefaultTransition.m */,
+				57DA504118F32CDD009D58C1 /* MgDrawingCALayer.h */,
+				57DA504218F32CDD009D58C1 /* MgDrawingCALayer.m */,
 				57AE9B7118F0555A009F5992 /* MgDrawingLayer.h */,
 				57AE9B7218F0555A009F5992 /* MgDrawingLayer.m */,
+				57DA504318F32CDD009D58C1 /* MgDrawingLayerInternal.h */,
 				57DA502F18F1A8C7009D58C1 /* MgFlatteningCALayer.h */,
 				57DA503018F1A8C7009D58C1 /* MgFlatteningCALayer.m */,
 				57AE9B7318F0555A009F5992 /* MgFunction.h */,
@@ -621,6 +628,7 @@
 				57AE9BB918F0555B009F5992 /* MgImageProvider.m in Sources */,
 				57AE9BC618F0555B009F5992 /* MgRectLayerState.m in Sources */,
 				57DA502E18F1A8BF009D58C1 /* MgViewContext.m in Sources */,
+				57DA504418F32CDD009D58C1 /* MgDrawingCALayer.m in Sources */,
 				57DA503418F21D9C009D58C1 /* MgGroupCALayer.m in Sources */,
 				57AE9BB818F0555B009F5992 /* MgImageLayerState.m in Sources */,
 				572A5B2318C4CE2000AB8086 /* GtAppDelegate.m in Sources */,

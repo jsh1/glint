@@ -87,7 +87,7 @@
     MgPathLayer, MgPathLayerState, MgRectLayer, MgRectLayerState,
     MgTimingFunction, MgTransition, MgTransitionTiming, MgViewContext;
 
-@protocol MgImageProvider;
+@protocol MgDrawingState, MgImageProvider;
 
 /* Graph copying scheme, i.e. to avoid copying each object more
    than once.

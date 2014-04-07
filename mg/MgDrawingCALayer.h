@@ -22,24 +22,12 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "MgLayer.h"
+#import "MgViewContext.h"
 
-@protocol MgDrawingState;
+#import "MgDrawingLayer.h"
 
-@interface MgDrawingLayer : MgLayer
+#import <QuartzCore/CALayer.h>
 
-@property(nonatomic, assign, getter=isOpaque) BOOL opaque;
-
-- (void)setNeedsDisplay;
-
-- (void)drawWithState:(id<MgDrawingState>)obj;
-
-- (void)clipWithState:(id<MgDrawingState>)obj;
-
-@end
-
-@protocol MgDrawingState
-
-@property(nonatomic, assign, readonly) CGContextRef context;
+@interface MgDrawingCALayer : CALayer <MgViewLayer, MgDrawingState>
 
 @end

@@ -22,24 +22,10 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "MgLayer.h"
+#import "MgDrawingLayer.h"
 
-@protocol MgDrawingState;
+@interface MgDrawingLayer ()
 
-@interface MgDrawingLayer : MgLayer
-
-@property(nonatomic, assign, getter=isOpaque) BOOL opaque;
-
-- (void)setNeedsDisplay;
-
-- (void)drawWithState:(id<MgDrawingState>)obj;
-
-- (void)clipWithState:(id<MgDrawingState>)obj;
-
-@end
-
-@protocol MgDrawingState
-
-@property(nonatomic, assign, readonly) CGContextRef context;
+@property(nonatomic, assign, readonly) NSInteger drawingVersion;
 
 @end
