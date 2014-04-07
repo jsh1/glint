@@ -28,6 +28,7 @@
 #import "MgCoreGraphics.h"
 #import "MgLayerInternal.h"
 #import "MgNodeInternal.h"
+#import "MgPathCALayer.h"
 #import "MgPathLayerState.h"
 
 #import <Foundation/Foundation.h>
@@ -39,6 +40,14 @@
 + (Class)stateClass
 {
   return [MgPathLayerState class];
+}
+
+- (Class)viewLayerClass
+{
+  /* FIXME: this always uses CAShapeLayer. May be better to flatten
+     to a bitmap in some cases? */
+
+  return [MgPathCALayer class];
 }
 
 + (BOOL)automaticallyNotifiesObserversOfPath

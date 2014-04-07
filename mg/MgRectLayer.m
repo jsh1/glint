@@ -28,6 +28,7 @@
 #import "MgCoreGraphics.h"
 #import "MgLayerInternal.h"
 #import "MgNodeInternal.h"
+#import "MgRectCALayer.h"
 #import "MgRectLayerState.h"
 
 #import <Foundation/Foundation.h>
@@ -39,6 +40,11 @@
 + (Class)stateClass
 {
   return [MgRectLayerState class];
+}
+
+- (Class)viewLayerClass
+{
+  return [MgRectCALayer class];
 }
 
 + (BOOL)automaticallyNotifiesObserversOfCornerRadius

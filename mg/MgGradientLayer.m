@@ -26,6 +26,7 @@
 
 #import "MgCoderExtensions.h"
 #import "MgCoreGraphics.h"
+#import "MgGradientCALayer.h"
 #import "MgGradientLayerState.h"
 #import "MgLayerInternal.h"
 #import "MgNodeInternal.h"
@@ -43,6 +44,14 @@
 + (Class)stateClass
 {
   return [MgGradientLayerState class];
+}
+
+- (Class)viewLayerClass
+{
+  if ([MgGradientCALayer supportsLayer:self])
+    return [MgGradientCALayer class];
+  else
+    return [super viewLayerClass];
 }
 
 + (BOOL)automaticallyNotifiesObserversOfColors

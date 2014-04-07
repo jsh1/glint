@@ -25,6 +25,7 @@
 #import "MgImageLayer.h"
 
 #import "MgCoderExtensions.h"
+#import "MgImageCALayer.h"
 #import "MgImageLayerState.h"
 #import "MgImageProvider.h"
 #import "MgLayerInternal.h"
@@ -41,6 +42,14 @@ static NSMutableSet *image_provider_classes;
 + (Class)stateClass
 {
   return [MgImageLayerState class];
+}
+
+- (Class)viewLayerClass
+{
+  if ([MgImageCALayer supportsLayer:self])
+    return [MgImageCALayer class];
+  else
+    return [super viewLayerClass];
 }
 
 + (void)registerImageProviderClass:(Class)cls
