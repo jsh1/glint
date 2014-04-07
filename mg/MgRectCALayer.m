@@ -92,7 +92,11 @@
 {
   [_viewContext updateViewLayer:self];
 
-  self.cornerRadius = _layer.cornerRadius;
+  CGFloat radius = _layer.cornerRadius;
+  CGRect bounds = _layer.bounds;
+
+  self.cornerRadius = fmin(radius, fmin(fabs(bounds.size.width),
+					fabs(bounds.size.height)) * .5);
 
   CGPathDrawingMode mode = _layer.drawingMode;
 
