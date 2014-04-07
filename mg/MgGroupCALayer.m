@@ -94,14 +94,16 @@
 
   /* FIXME: handle "group" property somehow. */
 
-  NSArray *sublayers = self.sublayers;
+  NSArray *old_sublayers = self.sublayers;
 
-  sublayers = [_viewContext makeViewLayersForLayers:_layer.sublayers
-	       candidateLayers:sublayers];
+  NSArray *new_sublayers
+    = [_viewContext makeViewLayersForLayers:_layer.sublayers
+       candidateLayers:old_sublayers];
 
-  self.sublayers = sublayers;
+  if (new_sublayers != old_sublayers)
+    self.sublayers = new_sublayers;
 
-  for (CALayer<MgViewLayer> *layer in sublayers)
+  for (CALayer<MgViewLayer> *layer in new_sublayers)
     [layer update];
 }
 

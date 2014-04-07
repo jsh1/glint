@@ -24,10 +24,12 @@
 
 #import "MgNodeInternal.h"
 
+#import "MgActiveTransition.h"
 #import "MgNodeState.h"
 #import "MgModuleState.h"
 #import "MgNodeTransition.h"
-#import "MgTransition.h"
+#import "MgTimingFunction.h"
+#import "MgTransitionTiming.h"
 
 #import <Foundation/Foundation.h>
 #import <libkern/OSAtomic.h>
@@ -47,9 +49,8 @@ static NSUInteger version_counter;
 {
   MgNodeState *_state;
   NSMutableArray *_states;
-  MgTransition *_transition;
-  MgNodeState *_transitionFrom;
   NSArray *_transitions;
+  MgActiveTransition *_activetransition;
   NSString *_name;
   NSPointerArray *_references;
   NSUInteger _version;
@@ -218,8 +219,7 @@ static NSUInteger version_counter;
   if (old_state == new_state)
     return;
 
-  MgTransition *trans = nil;
-  MgNodeState *trans_from = nil;
+  MgActiveTransition *trans = nil;
 
   NSNumber *speed_value = dict[@"speed"];
 
@@ -227,8 +227,8 @@ static NSUInteger version_counter;
     {
       NSMutableArray *transitions = [NSMutableArray array];
 
-      MgTransition *explicit_trans = [self _transitionFrom:old_state
-				      to:new_state];
+      MgNodeTransition *explicit_trans = [self _transitionFrom:old_state
+					  to:new_state];
       if (explicit_trans != nil)
 	{
 	  [transitions addObject:explicit_trans];
@@ -273,43 +273,45 @@ static NSUInteger version_counter;
 	    }
 	}
 
-      /* Add the default transition to catch any properties that weren't
-	 yet defined. */
+      double begin = [dict[@"begin"] doubleValue];
+      if (begin == 0)
+	begin = CACurrentMediaTime();
 
-      [transitions addObject:[MgTransition defaultTransitionWithOptions:dict]];
+      double speed = speed_value != nil ? [speed_value doubleValue] : 1;
 
-      trans = [MgTransition transitionWithArray:transitions];
+      double duration = [dict[@"duration"] doubleValue];
+      if (duration == 0)
+	duration = .25;
 
-      if (trans != nil)
-	{
-	  trans_from = old_state;
+      MgFunction *function = dict[@"function"];
+      if (function == nil)
+	function = [MgTimingFunction functionWithName:MgTimingFunctionDefault];
 
-	  double begin = [dict[@"begin"] doubleValue];
-	  if (begin == 0)
-	    begin = CACurrentMediaTime();
+      MgTransitionTiming *default_timing = [[MgTransitionTiming alloc] init];
+      default_timing.duration = duration;
+      default_timing.function = function;
 
-	  double speed = speed_value != nil ? [speed_value doubleValue] : 1;
+      MgNodeState *trans_from = old_state;
 
-	  trans = [trans transitionWithBegin:begin speed:speed];
+      /* If there's already an active transition running, sample it at
+	 the begin time of the new transition and use that as the from-
+	 state of the new transition. */
 
-	  /* If there's already an active transition running, sample
-	     it at the begin time of the new transition and use that
-	     as the from-state of the new transition. */
+      MgActiveTransition *old_trans = self.activeTransition;
+      if (old_trans != nil)
+	trans_from = [old_state evaluateTransition:old_trans atTime:begin];
 
-	  MgTransition *old_trans = self.transition;
-	  MgNodeState *old_from = self.transitionFrom;
+      trans = [[MgActiveTransition alloc] init];
 
-	  if (old_trans != nil && old_from != nil)
-	    {
-	      trans_from = [old_state evaluateTransition:old_trans
-			    atTime:begin to:old_from];
-	    }
-	}
+      trans.begin = begin;
+      trans.speed = speed;
+      trans.fromState = trans_from;
+      trans.nodeTransitions = transitions;
+      trans.defaultTiming = default_timing;
     }
 
   self.state = new_state;
-  self.transition = trans;
-  self.transitionFrom = trans_from;
+  self.activeTransition = trans;
 }
 
 - (MgNodeTransition *)_transitionFrom:(MgNodeState *)from to:(MgNodeState *)to
@@ -528,12 +530,12 @@ static NSUInteger version_counter;
   MgNodeState *old_state = self.state;
   MgNodeState *new_state = nil;
 
-  MgTransition *trans = self.transition;
+  MgActiveTransition *trans = self.activeTransition;
 
   if (trans != nil)
     {
-      new_state = [self.transitionFrom evaluateTransition:trans
-		   atTime:t to:old_state];
+      double tt = (t - trans.begin) * trans.speed;
+      new_state = [old_state evaluateTransition:trans atTime:tt];
     }
 
   if (new_state != nil)
@@ -547,13 +549,17 @@ static NSUInteger version_counter;
 
 - (CFTimeInterval)markPresentationTime:(CFTimeInterval)t
 {
-  MgTransition *trans = self.transition;
+  MgActiveTransition *trans = self.activeTransition;
 
-  if (trans != nil && !(t < trans.begin + trans.duration))
+  if (trans != nil)
     {
-      self.transition = nil;
-      self.transitionFrom = nil;
-      trans = nil;
+      double tt = (t - trans.begin) * trans.speed;
+
+      if (!(tt < trans.duration))
+	{
+	  self.activeTransition = nil;
+	  trans = nil;
+	}
     }
 
   return trans == nil ? HUGE_VAL : t;

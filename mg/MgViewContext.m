@@ -360,7 +360,7 @@ blendModeFilter(CGBlendMode blend_mode)
 
 - (id<CAAction>)actionForLayer:(CALayer *)layer forKey:(NSString *)key
 {
-  return (id)kCFNull;
+  return (__bridge id)kCFNull;
 }
 
 @end

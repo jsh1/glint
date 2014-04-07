@@ -26,6 +26,7 @@
 
 #import <Foundation/Foundation.h>
 
+#import "MgActiveTransition.h"
 #import "MgNodeTransition.h"
 
 #define SUPERSTATE ((MgGroupLayerState *)(self.superstate))
@@ -64,7 +65,7 @@
     [super setDefinesValue:flag forKey:key];
 }
 
-- (void)applyTransition:(MgTransition *)trans atTime:(double)t
+- (void)applyTransition:(MgActiveTransition *)trans atTime:(double)t
     to:(MgNodeState *)to_
 {
   MgGroupLayerState *to = (MgGroupLayerState *)to_;

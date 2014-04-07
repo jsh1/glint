@@ -24,20 +24,20 @@
 
 #import "MgBase.h"
 
-@interface MgTransition : NSObject
+@interface MgActiveTransition : NSObject
 
-+ (instancetype)defaultTransitionWithOptions:(NSDictionary *)dict;
+@property(nonatomic, assign) double begin;
+@property(nonatomic, assign) double speed;
 
-+ (instancetype)transitionWithArray:(NSArray *)array;
+@property(nonatomic, strong) MgNodeState *fromState;
 
-- (instancetype)transitionWithBegin:(double)begin speed:(double)speed;
+@property(nonatomic, copy) NSArray *nodeTransitions;
 
-@property(nonatomic, assign, readonly) double begin;
+@property(nonatomic, copy) MgTransitionTiming *defaultTiming;
+
 @property(nonatomic, assign, readonly) double duration;
 
-/** Evaluation. **/
-
-- (BOOL)definesTimingForKey:(NSString *)key;
+- (MgTransitionTiming *)timingForKey:(NSString *)key;
 
 - (double)evaluateTime:(double)t forKey:(NSString *)key;
 

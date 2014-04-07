@@ -27,7 +27,6 @@
 #import "MgFunction.h"
 #import "MgModuleState.h"
 #import "MgNodeState.h"
-#import "MgTransition.h"
 #import "MgTransitionTiming.h"
 
 #import <Foundation/Foundation.h>

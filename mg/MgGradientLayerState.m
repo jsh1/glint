@@ -24,6 +24,7 @@
 
 #import "MgGradientLayerState.h"
 
+#import "MgActiveTransition.h"
 #import "MgCoderExtensions.h"
 #import "MgCoreGraphics.h"
 #import "MgNodeTransition.h"
@@ -130,7 +131,7 @@
     [super setDefinesValue:flag forKey:key];
 }
 
-- (void)applyTransition:(MgTransition *)trans atTime:(double)t
+- (void)applyTransition:(MgActiveTransition *)trans atTime:(double)t
     to:(MgNodeState *)to_
 {
   MgGradientLayerState *to = (MgGradientLayerState *)to_;

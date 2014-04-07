@@ -60,15 +60,14 @@ extern NSString *const MgArchiveType;	/* UTI: org.unfactored.mg-archive */
 - (void)applyModuleState:(MgModuleState *)moduleState
     options:(NSDictionary *)dict;
 
-/* The currently active state transition. */
-
-@property(nonatomic, retain) MgTransition *transition;
-@property(nonatomic, retain) MgNodeState *transitionFrom;
-
 /* The explicit transitions defined by the receiver, an array of
    MgNodeTransition instances. */
 
 @property(nonatomic, copy) NSArray *transitions;
+
+/* The currently active state transition. */
+
+@property(nonatomic, retain) MgActiveTransition *activeTransition;
 
 /* True if the receiver is enabled. This property is never animatable,
    but is local to each state. */

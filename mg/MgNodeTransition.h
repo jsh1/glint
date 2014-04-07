@@ -22,14 +22,17 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "MgTransition.h"
+#import "MgBase.h"
 
-@interface MgNodeTransition : MgTransition <MgGraphCopying, NSSecureCoding>
+@interface MgNodeTransition : NSObject <MgGraphCopying, NSSecureCoding>
 
 + (instancetype)transition;
 
 @property(nonatomic, strong) MgModuleState *from;
 @property(nonatomic, strong) MgModuleState *to;
+
+@property(nonatomic, assign, readonly) double begin;
+@property(nonatomic, assign, readonly) double duration;
 
 - (MgTransitionTiming *)timingForKey:(NSString *)key;
 - (void)setTimingForKey:(MgTransitionTiming *)timing forKey:(NSString *)key;

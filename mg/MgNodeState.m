@@ -24,6 +24,7 @@
 
 #import "MgNodeState.h"
 
+#import "MgActiveTransition.h"
 #import "MgCoreGraphics.h"
 #import "MgModuleState.h"
 #import "MgNodeTransition.h"
@@ -225,19 +226,19 @@ state_depth(MgNodeState *s)
    format:@"does not define property %@", key];
 }
 
-- (MgNodeState *)evaluateTransition:(MgTransition *)trans atTime:(double)t
-    to:(MgNodeState *)to
+- (MgNodeState *)evaluateTransition:(MgActiveTransition *)trans
+    atTime:(double)t
 {
   MgNodeState *dest = [[self class] state];
 
-  dest.superstate = self;
+  dest.superstate = trans.fromState;
 
-  [dest applyTransition:trans atTime:t to:to];
+  [dest applyTransition:trans atTime:t to:self];
 
   return dest;
 }
 
-- (void)applyTransition:(MgTransition *)trans atTime:(double)t
+- (void)applyTransition:(MgActiveTransition *)trans atTime:(double)t
     to:(MgNodeState *)to
 {
   double t_ = trans != nil ? [trans evaluateTime:t forKey:@"enabled"] : t;

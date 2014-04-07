@@ -24,6 +24,7 @@
 
 #import "MgImageLayerState.h"
 
+#import "MgActiveTransition.h"
 #import "MgCoreGraphics.h"
 #import "MgCoderExtensions.h"
 #import "MgImageLayer.h"
@@ -92,7 +93,7 @@
     [super setDefinesValue:flag forKey:key];
 }
 
-- (void)applyTransition:(MgTransition *)trans atTime:(double)t
+- (void)applyTransition:(MgActiveTransition *)trans atTime:(double)t
     to:(MgNodeState *)to_
 {
   MgImageLayerState *to = (MgImageLayerState *)to_;

@@ -28,6 +28,7 @@
 #include "MgBase.h"
 
 #ifdef __OBJC__
+# import "MgActiveTransition.h"
 # import "MgBezierTimingFunction.h"
 # import "MgDrawingLayer.h"
 # import "MgFunction.h"
@@ -50,7 +51,6 @@
 # import "MgRectLayer.h"
 # import "MgRectLayerState.h"
 # import "MgTimingFunction.h"
-# import "MgTransition.h"
 # import "MgTransitionTiming.h"
 # import "MgViewContext.h"
 #endif
