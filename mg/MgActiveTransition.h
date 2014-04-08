@@ -26,12 +26,16 @@
 
 @interface MgActiveTransition : NSObject
 
+@property(nonatomic, assign, readonly) NSInteger identifier;
+
 @property(nonatomic, assign) double begin;
 @property(nonatomic, assign) double speed;
 
 @property(nonatomic, strong) MgNodeState *fromState;
 
 @property(nonatomic, copy) NSArray *nodeTransitions;
+
+@property(nonatomic, copy) NSSet *properties;
 
 @property(nonatomic, copy) MgTransitionTiming *defaultTiming;
 

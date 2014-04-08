@@ -24,8 +24,12 @@
 
 #import "MgViewContext.h"
 
+#import "MgActiveTransition.h"
+#import "MgBezierTimingFunction.h"
 #import "MgFlatteningCALayer.h"
 #import "MgLayerInternal.h"
+#import "MgNodeState.h"
+#import "MgTransitionTiming.h"
 
 #import <Foundation/Foundation.h>
 #import <QuartzCore/QuartzCore.h>
@@ -37,6 +41,12 @@
 + (id)filterWithType:(NSString *)str;
 @end
 #endif
+
+/* Define this to "1" to use the CG rendering path. */
+
+#define FORCE_DRAWING 0
+
+#define ANIMATION_KEY "org.unfactored.MgTransition"
 
 @implementation MgViewContext
 {
@@ -238,12 +248,67 @@ blendModeFilter(CGBlendMode blend_mode)
       layer.mask = view_layer;
       [view_layer update];
     }
+
+  CFTimeInterval now = CACurrentMediaTime();
+
+  [src markPresentationTime:now];
+
+  MgActiveTransition *transition = src.activeTransition;
+
+  if (transition != nil)
+    {
+      /* FIXME: something better. */
+
+      CAAnimationGroup *group = (id)[layer animationForKey:@ANIMATION_KEY];
+
+      if (group != nil)
+	{
+	  NSInteger ident = [[group valueForKey:@"identifier"] integerValue];
+
+	  if (transition.identifier != ident)
+	    {
+	      [layer removeAnimationForKey:@ANIMATION_KEY];
+	      group = nil;
+	    }
+	}
+
+      if (group == nil)
+	{
+	  group = [CAAnimationGroup animation];
+
+	  group.beginTime = transition.begin;
+	  group.duration = transition.duration;
+	  group.speed = transition.speed;
+
+	  if ([layer respondsToSelector:
+	       @selector(makeAnimationsForTransition:)])
+	    {
+	      group.animations
+	        = [layer makeAnimationsForTransition:transition];
+	    }
+	  else
+	    {
+	      group.animations = [self makeAnimationsForTransition:transition
+				  viewLayer:layer];
+	    }
+
+	  group.removedOnCompletion = YES;
+	  group.delegate = self;
+	  [group setValue:src forKey:@"layer"];
+	  [group setValue:@(transition.identifier) forKey:@"identifier"];
+
+	  [layer addAnimation:group forKey:@ANIMATION_KEY];
+	}
+    }
+  else
+    [layer removeAnimationForKey:@ANIMATION_KEY];
 }
 
 - (CALayer<MgViewLayer> *)makeViewLayerForLayer:(MgLayer *)src
     candidateLayer:(CALayer *)layer
 {
-  Class cls = [src viewLayerClass];
+  Class cls = (!FORCE_DRAWING ? [src viewLayerClass]
+	       : [MgFlatteningCALayer class]);
 
   if ([layer class] == cls && ((CALayer<MgViewLayer> *)layer).layer == src)
     return (CALayer<MgViewLayer> *)layer;
@@ -273,10 +338,20 @@ blendModeFilter(CGBlendMode blend_mode)
 
       for (MgLayer *src in array)
 	{
-	  if (src.enabled)
+	  /* During a transition, object is enabled if either from/to
+	     state say it is. */
+
+	  BOOL enabled = src.enabled;
+	  if (!enabled && src.activeTransition.fromState.enabled)
+	    enabled = YES;
+
+	  if (enabled)
 	    {
 	      src_layers[actual_count] = src;
-	      src_classes[actual_count] = [src viewLayerClass];
+	      if (!FORCE_DRAWING)
+		src_classes[actual_count] = [src viewLayerClass];
+	      else
+		src_classes[actual_count] = [MgFlatteningCALayer class];
 	      actual_count++;
 	    }
 	}
@@ -348,6 +423,112 @@ blendModeFilter(CGBlendMode blend_mode)
   return layers;
 }
 
++ (NSDictionary *)animationMap
+{
+  static NSDictionary *map;
+  static dispatch_once_t once;
+
+  dispatch_once(&once, ^
+    {
+      /* FIXME: having both enabled and alpha map to the opacity
+	 property won't work. We could combine them into one animation,
+	 unless their timing is different. Additive animations probably
+	 don't help, they "add" rather than "multiply" the values.
+
+	FIXME: also, skew? */
+
+      map = @{
+	@"enabled" : @"opacity",
+	@"position" : @"position",
+	@"anchor" : @"anchorPoint",
+	@"size" : @"bounds.size",
+	@"origin" : @"bounds.origin",
+	@"alpha" : @"opacity",
+	@"scale" : @"transform.scale.xy",
+	@"squeeze" : @"transform.scale.x",
+	@"rotation" : @"transform.rotation.z",
+      };
+    });
+
+  return map;
+}
+
+- (NSMutableArray *)makeAnimationsForTransition:(MgActiveTransition *)trans
+    viewLayer:(CALayer<MgViewLayer> *)layer
+{
+  MgLayer *src = layer.layer;
+  NSSet *properties = trans.properties;
+  MgNodeState *from_state = trans.fromState;
+  MgNodeState *to_state = src.state;
+
+  NSMutableArray *animations = [NSMutableArray array];
+
+  /* Handle simple keys with direct mapping from Mg -> CA properties. */
+
+  NSDictionary *map = nil;
+  if ([[layer class] respondsToSelector:@selector(animationMap)])
+    map = [[layer class] animationMap];
+  else
+    map = [[self class] animationMap];
+
+  for (NSString *key in map)
+    {
+      if ([properties containsObject:key])
+	{
+	  MgTransitionTiming *timing = [trans timingForKey:key];
+	  if (timing == nil)
+	    continue;
+
+	  /* FIXME: this is wrong -- we should query the value of the
+	     CA property in from/to versions of the view-layer, not
+	     the Mg key in the source object. */
+
+	  id from_value = [from_state valueForKey:key];
+	  id to_value = [to_state valueForKey:key];
+
+	  CAAnimation *anim = [self makeAnimationForTiming:timing
+			       key:map[key] from:from_value to:to_value];
+
+	  [animations addObject:anim];
+	}
+    }
+
+  return animations;
+}
+
+- (CAAnimation *)makeAnimationForTiming:(MgTransitionTiming *)timing
+    key:(NSString *)key from:(id)fromValue to:(id)toValue
+{
+  CABasicAnimation *anim = [CABasicAnimation animationWithKeyPath:key];
+
+  anim.beginTime = timing.begin;
+  anim.duration = timing.duration;
+  anim.fillMode = kCAFillModeBackwards;
+  anim.fromValue = fromValue;
+  anim.toValue = toValue;
+
+  MgFunction *fun = timing.function;
+
+  if (fun != nil)
+    {
+      if ([fun isKindOfClass:[MgBezierTimingFunction class]])
+	{
+	  CGPoint p1 = ((MgBezierTimingFunction *)fun).p0;
+	  CGPoint p2 = ((MgBezierTimingFunction *)fun).p1;
+
+	  CAMediaTimingFunction *fun
+	    = [[CAMediaTimingFunction alloc]
+	       initWithControlPoints:p1.x :p1.y :p2.x :p2.y];
+
+	  anim.timingFunction = fun;
+	}
+      else
+	NSLog(@"FIXME: unsupported timing function: %@", fun);
+    }
+
+  return anim;
+}
+
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
      change:(NSDictionary *)dict context:(void *)ctx
 {
@@ -362,6 +543,17 @@ blendModeFilter(CGBlendMode blend_mode)
 - (id<CAAction>)actionForLayer:(CALayer *)layer forKey:(NSString *)key
 {
   return (__bridge id)kCFNull;
+}
+
+/** CAAnimationDelegate methods. **/
+
+- (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
+{
+  /* Try to remove the transition. */
+
+  MgLayer *layer = [anim valueForKey:@"layer"];
+
+  [layer markPresentationTime:CACurrentMediaTime()];
 }
 
 @end

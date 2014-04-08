@@ -146,4 +146,29 @@
     self.strokeColor = NULL;
 }
 
++ (NSDictionary *)animationMap
+{
+  static NSDictionary *map;
+  static dispatch_once_t once;
+
+  dispatch_once(&once, ^
+    {
+      NSMutableDictionary *dict = [[MgViewContext animationMap] mutableCopy];
+
+      [dict addEntriesFromDictionary:@{
+	 @"path" : @"path",
+	 @"fillColor" : @"backgroundColor",
+	 @"strokeColor" : @"borderColor",
+	 @"lineWidth" : @"borderWidth",
+	 @"miterLimit" : @"miterLimit",
+	 @"lineDashPhase" : @"lineDashPhase",
+	 @"lineDashPattern" : @"lineDashPattern",
+       }];
+
+      map = [dict copy];
+    });
+
+  return map;
+}
+
 @end

@@ -51,7 +51,7 @@ static NSUInteger version_counter;
   MgNodeState *_state;
   NSMutableArray *_states;
   NSArray *_transitions;
-  MgActiveTransition *_activetransition;
+  MgActiveTransition *_activeTransition;
   NSString *_name;
   NSPointerArray *_references;
   NSUInteger _version;
@@ -110,6 +110,42 @@ static NSUInteger version_counter;
       [self willChangeValueForKey:@"state"];
       _state = state;
       [self incrementVersion];
+      [self didChangeValueForKey:@"state"];
+    }
+}
+
++ (BOOL)automaticallyNotifiesObserversOfActiveTransition
+{
+  return NO;
+}
+
+- (MgActiveTransition *)activeTransition
+{
+  return _activeTransition;
+}
+
+- (void)setActiveTransition:(MgActiveTransition *)trans
+{
+  if (_activeTransition != trans)
+    {
+      [self willChangeValueForKey:@"activeTransition"];
+      _activeTransition = trans;
+      [self incrementVersion];
+      [self didChangeValueForKey:@"activeTransition"];
+    }
+}
+
+- (void)setState:(MgNodeState *)state
+    activeTransition:(MgActiveTransition *)trans
+{
+  if (_state != state || _activeTransition != trans)
+    {
+      [self willChangeValueForKey:@"state"];
+      [self willChangeValueForKey:@"activeTransition"];
+      _state = state;
+      _activeTransition = trans;
+      [self incrementVersion];
+      [self didChangeValueForKey:@"activeTransition"];
       [self didChangeValueForKey:@"state"];
     }
 }
@@ -302,6 +338,15 @@ static NSUInteger version_counter;
       if (old_trans != nil)
 	trans_from = [old_state evaluateTransition:old_trans atTime:begin];
 
+      NSMutableSet *keys = [NSMutableSet set];
+      for (NSString *key in [[old_state class] allProperties])
+	{
+	  id from_value = [trans_from valueForKey:key];
+	  id to_value = [new_state valueForKey:key];
+	  if (from_value != to_value && ![from_value isEqual:to_value])
+	    [keys addObject:key];
+	}
+
       trans = [[MgActiveTransition alloc] init];
 
       trans.begin = begin;
@@ -309,10 +354,10 @@ static NSUInteger version_counter;
       trans.fromState = trans_from;
       trans.nodeTransitions = transitions;
       trans.defaultTiming = default_timing;
+      trans.properties = keys;
     }
 
-  self.state = new_state;
-  self.activeTransition = trans;
+  [self setState:new_state activeTransition:trans];
 }
 
 - (MgNodeTransition *)_transitionFrom:(MgNodeState *)from to:(MgNodeState *)to

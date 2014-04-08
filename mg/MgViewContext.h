@@ -46,6 +46,14 @@
 - (NSArray *)makeViewLayersForLayers:(NSArray *)src
     candidateLayers:(NSArray *)layers;
 
++ (NSDictionary *)animationMap;
+
+- (NSMutableArray *)makeAnimationsForTransition:(MgActiveTransition *)trans
+    viewLayer:(CALayer<MgViewLayer> *)layer;
+
+- (CAAnimation *)makeAnimationForTiming:(MgTransitionTiming *)timing
+    key:(NSString *)key from:(id)fromValue to:(id)toValue;
+
 @end
 
 
@@ -57,5 +65,11 @@
 @property(nonatomic, weak, readonly) MgViewContext *viewContext;
 
 - (void)update;
+
+@optional
+
++ (NSDictionary *)animationMap;
+
+- (NSArray *)makeAnimationsForTransition:(MgActiveTransition *)trans;
 
 @end

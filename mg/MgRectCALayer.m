@@ -114,4 +114,26 @@
     self.borderWidth = 0;
 }
 
++ (NSDictionary *)animationMap
+{
+  static NSDictionary *map;
+  static dispatch_once_t once;
+
+  dispatch_once(&once, ^
+    {
+      NSMutableDictionary *dict = [[MgViewContext animationMap] mutableCopy];
+
+      [dict addEntriesFromDictionary:@{
+	 @"cornerRadius" : @"cornerRadius",
+	 @"fillColor" : @"backgroundColor",
+	 @"strokeColor" : @"borderColor",
+	 @"lineWidth" : @"borderWidth",
+       }];
+
+      map = [dict copy];
+    });
+
+  return map;
+}
+
 @end

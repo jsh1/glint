@@ -30,13 +30,16 @@
 #import "MgTransitionTiming.h"
 
 #import <Foundation/Foundation.h>
+#import <libkern/OSAtomic.h>
 
 @implementation MgActiveTransition
 {
+  NSInteger _identifier;
   double _begin;
   double _speed;
   MgNodeState *_fromState;
   NSArray *_nodeTransitions;
+  NSSet *_properties;
   MgTransitionTiming *_defaultTiming;
 
   double _duration;
@@ -44,12 +47,17 @@
 
 - (id)init
 {
+  static int32_t next_id;
+
   self = [super init];
   if (self == nil)
     return nil;
 
+  _identifier = OSAtomicIncrement32(&next_id);
+
   _speed = 1;
   _nodeTransitions = @[];
+  _properties = [NSSet set];
 
   static MgTransitionTiming *default_timing;
   static dispatch_once_t once;
