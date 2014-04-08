@@ -476,7 +476,7 @@ blendModeFilter(CGBlendMode blend_mode)
       if ([properties containsObject:key])
 	{
 	  MgTransitionTiming *timing = [trans timingForKey:key];
-	  if (timing == nil)
+	  if (timing == nil || !timing.enabled)
 	    continue;
 
 	  /* FIXME: this is wrong -- we should query the value of the
