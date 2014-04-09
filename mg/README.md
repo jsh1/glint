@@ -11,8 +11,12 @@ designer through an app wrapping the API.
 - Each object may have multiple states, and authored transitions
 between those states.
 
-- Renders to CGContext, or translates dynamically to a CALayer/UIView
-hierarchy. Support multiple viewers of the same graph.
+- Renders either by translating the Mg graph to a CALayer/UIView
+hierarchy, or by drawing into a CGContext.
+
+Both modes are fully supported and interchangeable. Subgraphs can opt
+in and out of the CG-rasterized mode at any time, e.g. to take
+advantage of the different performance trade-offs.
 
 - Will attempt to integrate spring-dynamics simulation, trying to unify
 dynamics and declarative animations.
@@ -27,9 +31,6 @@ multiple parents).
 subclasses for that. This simplifies the API, and thus the app's user
 interface.
 
-- The enabled (aka hidden) property is not animatable. This allows
-hidden subtrees to be pruned before they get to the render tree.
-
 - Coordinate space is relative to top-left corner, on both Mac and iOS.
 
-- 2D only for now, but don't do anything that stops 2.5D later.
+- 2D only for now, but doesn't have anything that prevents 2.5D later.

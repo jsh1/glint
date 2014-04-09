@@ -86,6 +86,10 @@
     "group": {
       "displayName": "Group Compositing",
       "type": "bool"
+    },
+    "flattensSublayers": {
+      "displayName": "Flattened",
+      "type": "bool"
     }
   },
 

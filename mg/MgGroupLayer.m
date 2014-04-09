@@ -46,7 +46,10 @@
 
 - (Class)viewLayerClass
 {
-  return [MgGroupCALayer class];
+  if (!self.flattensSublayers)
+    return [MgGroupCALayer class];
+  else
+    return [super viewLayerClass];
 }
 
 + (BOOL)automaticallyNotifiesObserversOfGroup
@@ -69,6 +72,29 @@
       state.group = flag;
       [self incrementVersion];
       [self didChangeValueForKey:@"group"];
+    }
+}
+
++ (BOOL)automaticallyNotifiesObserversOfFlattensSublayers
+{
+  return NO;
+}
+
+- (BOOL)flattensSublayers
+{
+  return STATE.flattensSublayers;
+}
+
+- (void)setFlattensSublayers:(BOOL)flag
+{
+  MgGroupLayerState *state = STATE;
+
+  if (state.flattensSublayers != flag)
+    {
+      [self willChangeValueForKey:@"flattensSublayers"];
+      state.flattensSublayers = flag;
+      [self incrementVersion];
+      [self didChangeValueForKey:@"flattensSublayers"];
     }
 }
 

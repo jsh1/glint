@@ -27,6 +27,7 @@
 #import <Foundation/Foundation.h>
 
 #import "MgActiveTransition.h"
+#import "MgCoreGraphics.h"
 #import "MgNodeTransition.h"
 
 #define SUPERSTATE ((MgGroupLayerState *)(self.superstate))
@@ -34,9 +35,11 @@
 @implementation MgGroupLayerState
 {
   BOOL _group;
+  BOOL _flattensSublayers;
 
   struct {
     bool group;
+    bool flattensSublayers;
   } _defines;
 }
 
@@ -45,14 +48,18 @@
   [super setDefaults];
 
   _group = NO;
+  _flattensSublayers = NO;
 
   _defines.group = true;
+  _defines.flattensSublayers = true;
 }
 
 - (BOOL)definesValueForKey:(NSString *)key
 {
   if ([key isEqualToString:@"group"])
     return _defines.group;
+  else if ([key isEqualToString:@"flattensSublayers"])
+    return _defines.flattensSublayers;
   else
     return [super definesValueForKey:key];
 }
@@ -61,6 +68,8 @@
 {
   if ([key isEqualToString:@"group"])
     _defines.group = flag;
+  else if ([key isEqualToString:@"flattensSublayers"])
+    _defines.flattensSublayers = flag;
   else
     [super setDefinesValue:flag forKey:key];
 }
@@ -74,8 +83,12 @@
   [super applyTransition:trans atTime:t to:to];
 
   t_ = trans != nil ? [trans evaluateTime:t forKey:@"group"] : t;
-  _group = t_ < .5 ? self.group : to.group;
+  _group = MgBoolMix(self.group, to.group, t_);
   _defines.group = true;
+
+  t_ = trans != nil ? [trans evaluateTime:t forKey:@"flattensSublayers"] : t;
+  _flattensSublayers = MgBoolMix(self.flattensSublayers, to.flattensSublayers, t_);
+  _defines.flattensSublayers = true;
 }
 
 - (BOOL)isGroup
@@ -94,6 +107,22 @@
     SUPERSTATE.group = flag;
 }
 
+- (BOOL)flattensSublayers
+{
+  if (_defines.flattensSublayers)
+    return _flattensSublayers;
+  else
+    return SUPERSTATE.flattensSublayers;
+}
+
+- (void)setFlattensSublayers:(BOOL)flag
+{
+  if (_defines.flattensSublayers)
+    _flattensSublayers = flag;
+  else
+    SUPERSTATE.flattensSublayers = flag;
+}
+
 /** MgGraphCopying methods. **/
 
 - (id)graphCopy:(NSMapTable *)map
@@ -101,6 +130,7 @@
   MgGroupLayerState *copy = [super graphCopy:map];
 
   copy->_group = _group;
+  copy->_flattensSublayers = _flattensSublayers;
   copy->_defines = _defines;
 
   return copy;
@@ -114,6 +144,9 @@
 
   if (_defines.group)
     [c encodeBool:_group forKey:@"group"];
+
+  if (_defines.flattensSublayers)
+    [c encodeBool:_flattensSublayers forKey:@"flattensSublayers"];
 }
 
 - (id)initWithCoder:(NSCoder *)c
@@ -126,6 +159,12 @@
     {
       _group = [c decodeBoolForKey:@"group"];
       _defines.group = true;
+    }
+
+  if ([c containsValueForKey:@"flattensSublayers"])
+    {
+      _flattensSublayers = [c decodeBoolForKey:@"flattensSublayers"];
+      _defines.flattensSublayers = true;
     }
 
   return self;
