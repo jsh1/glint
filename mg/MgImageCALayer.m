@@ -107,25 +107,36 @@
       CGRect crop = _layer.cropRect;
       CGRect center = _layer.centerRect;
 
-      if (!CGRectIsEmpty(crop) || !CGRectIsEmpty(center))
-	{
-	  CGFloat width_r = 1/CGImageGetWidth(image);
-	  CGFloat height_r = 1/CGImageGetHeight(image);
+      bool crop_empty = CGRectIsEmpty(crop);
+      bool center_empty = CGRectIsEmpty(center);
 
+      double width_r = 0, height_r = 0;
+
+      if (!crop_empty || !center_empty)
+	{
+	  width_r = 1./CGImageGetWidth(image);
+	  height_r = 1./CGImageGetHeight(image);
+	}
+
+      if (!crop_empty)
+	{
 	  self.contentsRect = CGRectMake(crop.origin.x * width_r,
 					 crop.origin.y * height_r,
 					 crop.size.width * width_r,
 					 crop.size.height * height_r);
+	}
+      else
+	self.contentsRect = CGRectMake(0, 0, 1, 1);
+
+      if (!center_empty)
+	{
 	  self.contentsCenter = CGRectMake(center.origin.x * width_r,
 					   center.origin.y * height_r,
 					   center.size.width * width_r,
 					   center.size.height * height_r);
 	}
       else
-	{
-	  self.contentsRect = CGRectMake(0, 0, 1, 1);
-	  self.contentsCenter = CGRectMake(0, 0, 1, 1);
-	}
+	self.contentsCenter = CGRectMake(0, 0, 1, 1);
     }
   else
     self.contents = nil;
