@@ -41,10 +41,10 @@
 - (void)updateViewLayer:(CALayer<MgViewLayer> *)layer;
 
 - (CALayer<MgViewLayer> *)makeViewLayerForLayer:(MgLayer *)src
-    candidateLayer:(CALayer *)layer;
+    candidate:(CALayer *)layer;
 
-- (NSArray *)makeViewLayersForLayers:(NSArray *)src
-    candidateLayers:(NSArray *)layers;
+- (NSArray *)makeViewLayersForLayers:(NSArray *)array
+    candidates:(NSArray *)layers culler:(BOOL (^)(MgLayer *src))pred;
 
 + (NSDictionary *)animationMap;
 

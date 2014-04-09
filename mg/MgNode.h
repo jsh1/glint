@@ -69,11 +69,6 @@ extern NSString *const MgArchiveType;	/* UTI: org.unfactored.mg-archive */
 
 @property(nonatomic, retain) MgActiveTransition *activeTransition;
 
-/* True if the receiver is enabled. This property is never animatable,
-   but is local to each state. */
-
-@property(nonatomic, assign, getter=isEnabled) BOOL enabled;
-
 /* The name of the receiver. This property is global, i.e. does not
    vary by state. */
 

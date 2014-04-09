@@ -33,13 +33,6 @@
 #import <objc/runtime.h>
 
 @implementation MgNodeState
-{
-  BOOL _enabled;
-
-  struct {
-    bool enabled :1;
-  } _defines;
-}
 
 + (instancetype)state
 {
@@ -88,7 +81,7 @@
 {
   if (self == [MgNodeState class])
     {
-      return [NSSet setWithObjects:@"enabled", nil];
+      return [NSSet set];
     }
   else
     {
@@ -137,9 +130,6 @@
 
 - (void)setDefaults
 {
-  _enabled = YES;
-
-  _defines.enabled = true;
 }
 
 + (BOOL)accessInstanceVariablesDirectly
@@ -206,9 +196,6 @@ state_depth(MgNodeState *s)
 
 - (BOOL)definesValueForKey:(NSString *)key
 {
-  if ([key isEqualToString:@"enabled"])
-    return _defines.enabled;
-
   [NSException raise:@"MgNodeState"
    format:@"does not define property %@", key];
   return NO;
@@ -216,12 +203,6 @@ state_depth(MgNodeState *s)
 
 - (void)setDefinesValue:(BOOL)flag forKey:(NSString *)key
 {
-  if ([key isEqualToString:@"enabled"])
-    {
-      _defines.enabled = flag;
-      return;
-    }
-
   [NSException raise:@"MgNodeState"
    format:@"does not define property %@", key];
 }
@@ -241,25 +222,6 @@ state_depth(MgNodeState *s)
 - (void)applyTransition:(MgActiveTransition *)trans atTime:(double)t
     to:(MgNodeState *)to
 {
-  double t_ = trans != nil ? [trans evaluateTime:t forKey:@"enabled"] : t;
-  _enabled = MgBoolMix(self.enabled, to.enabled, t_);
-  _defines.enabled = true;
-}
-
-- (BOOL)isEnabled
-{
-  if (_defines.enabled)
-    return _enabled;
-  else
-    return self.superstate.enabled;
-}
-
-- (void)setEnabled:(BOOL)flag
-{
-  if (_defines.enabled)
-    _enabled = flag;
-  else
-    self.superstate.enabled = flag;
 }
 
 /** MgGraphCopying methods. **/
@@ -270,8 +232,6 @@ state_depth(MgNodeState *s)
 
   copy->_moduleState = [_moduleState mg_conditionalGraphCopy:map];
   copy->_superstate = [_superstate mg_graphCopy:map];
-  copy->_enabled = _enabled;
-  copy->_defines = _defines;
 
   return copy;
 }
@@ -290,9 +250,6 @@ state_depth(MgNodeState *s)
 
   if (_superstate != nil)
     [c encodeObject:_superstate forKey:@"superstate"];
-
-  if (_defines.enabled)
-    [c encodeBool:_enabled forKey:@"enabled"];
 }
 
 - (id)initWithCoder:(NSCoder *)c
@@ -315,12 +272,6 @@ state_depth(MgNodeState *s)
 
   if (_superstate == nil)
     _superstate = [[self class] defaultState];
-
-  if ([c containsValueForKey:@"enabled"])
-    {
-      _enabled = [c decodeBoolForKey:@"enabled"];
-      _defines.enabled = true;
-    }
 
   return self;
 }

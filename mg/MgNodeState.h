@@ -64,8 +64,4 @@
 - (void)applyTransition:(MgActiveTransition *)trans atTime:(double)t
     to:(MgNodeState *)to;
 
-/** MgNode properties. **/
-
-@property(nonatomic, assign, getter=isEnabled) BOOL enabled;
-
 @end

@@ -819,12 +819,12 @@ fract(CGFloat x)
 
   for (GtTreeNode *tn in self.windowController.selection)
     {
-      if ([nodes containsObject:tn.node])
-	continue;
+      if (![nodes containsObject:tn.node])
+	{
+	  [self node:tn setEnabled:![self nodeIsEnabled:tn]];
 
-      [self node:tn setValue:@(!tn.node.enabled) forKey:@"enabled"];
-
-      [nodes addObject:tn.node];
+	  [nodes addObject:tn.node];
+	}
     }
 }
 
@@ -834,7 +834,7 @@ fract(CGFloat x)
 
   for (GtTreeNode *tn in self.windowController.selection)
     {
-      if (tn.node.enabled)
+      if ([self nodeIsEnabled:tn])
 	on++;
       else
 	off++;
@@ -1480,6 +1480,40 @@ indexOfObjectInArray(NSArray *array, id value, NSInteger idx)
     }
 
   documentGraphChanged(self);
+}
+
+- (BOOL)nodeIsEnabled:(GtTreeNode *)tn
+{
+  id node = tn.node;
+  BOOL enabled = YES;
+
+  if ([node isKindOfClass:[MgLayer class]])
+    enabled = ((MgLayer *)node).alpha > 0;
+  else if ([node respondsToSelector:@selector(setEnabled:)])
+    enabled = [node isEnabled];
+
+  return enabled;
+}
+
+- (void)node:(GtTreeNode *)tn setEnabled:(BOOL)flag
+{
+  id node = tn.node;
+  id value = nil;
+  NSString *key = nil;
+
+  if ([node isKindOfClass:[MgLayer class]])
+    {
+      value = flag ? @1 : @0;
+      key = @"alpha";
+    }
+  else if ([node respondsToSelector:@selector(setEnabled:)])
+    {
+      value = @(flag);
+      key = @"enabled";
+    }
+
+  if (key != nil)
+    [self node:tn setValue:value forKey:key];
 }
 
 - (void)module:(MgModuleLayer *)node state:(MgModuleState *)state

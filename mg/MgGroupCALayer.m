@@ -24,7 +24,9 @@
 
 #import "MgGroupCALayer.h"
 
+#import "MgActiveTransition.h"
 #import "MgGroupLayer.h"
+#import "MgLayerState.h"
 
 #import <Foundation/Foundation.h>
 #import <QuartzCore/QuartzCore.h>
@@ -98,7 +100,16 @@
 
   NSArray *new_sublayers
     = [_viewContext makeViewLayersForLayers:_layer.sublayers
-       candidateLayers:old_sublayers];
+       candidates:old_sublayers culler:^BOOL (MgLayer *src)
+        {
+	  float alpha = src.alpha;
+
+	  MgActiveTransition *trans = src.activeTransition;
+	  if (trans != nil)
+	    alpha = fmaxf(alpha, ((MgLayerState *)trans.fromState).alpha);
+
+	  return !(alpha > 0);
+	}];
 
   if (new_sublayers != old_sublayers)
     self.sublayers = new_sublayers;

@@ -421,28 +421,6 @@ static NSUInteger version_counter;
     }
 }
 
-+ (BOOL)automaticallyNotifiesObserversOfEnabled
-{
-  return NO;
-}
-
-- (BOOL)isEnabled
-{
-  return self.state.enabled;
-}
-
-- (void)setEnabled:(BOOL)flag
-{
-  MgNodeState *state = self.state;
-  if (state.enabled != flag)
-    {
-      [self willChangeValueForKey:@"enabled"];
-      state.enabled = flag;
-      [self incrementVersion];
-      [self didChangeValueForKey:@"enabled"];
-    }
-}
-
 + (BOOL)automaticallyNotifiesObserversOfName
 {
   return NO;

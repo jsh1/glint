@@ -496,15 +496,12 @@
 	{
 	  [mask withPresentationTime:r.time handler:^
 	    { 
-	      if (mask.enabled)
-		{
-		  MgLayerRenderState rm = r;
-		  rm.alpha = 1;
-		  rm.outermost = false;
-		  [mask _renderMaskWithState:&rm];
-		  r.next_time = fmin(rm.next_time,
-				     [mask markPresentationTime:rm.time]);
-		}
+	      MgLayerRenderState rm = r;
+	      rm.alpha = 1;
+	      rm.outermost = false;
+	      [mask _renderMaskWithState:&rm];
+	      r.next_time = fmin(rm.next_time,
+				 [mask markPresentationTime:rm.time]);
 	    }];
 	}
 

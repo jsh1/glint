@@ -207,10 +207,7 @@
     {
       [node withPresentationTime:r.time handler:^
        {
-	 if (node.enabled)
-	   {
-	     [node _renderWithState:&r];
-	   }
+	 [node _renderWithState:&r];
        }];
 
       r.next_time = fmin(r.next_time, [node markPresentationTime:r.time]);

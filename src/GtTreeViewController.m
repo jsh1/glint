@@ -178,7 +178,10 @@ expandItem(NSOutlineView *ov, GtTreeNode *tn)
 {
   NSString *ident = [col identifier];
 
-  return [((GtTreeNode *)item).node valueForKey:ident];
+  if ([ident isEqualToString:@"enabled"])
+    return @([self.document nodeIsEnabled:item]);
+  else
+    return [((GtTreeNode *)item).node valueForKey:ident];
 }
 
 - (void)outlineView:(NSOutlineView *)ov setObjectValue:(id)object
@@ -186,7 +189,10 @@ expandItem(NSOutlineView *ov, GtTreeNode *tn)
 {
   NSString *ident = [col identifier];
 
-  [self.document node:item setValue:object forKey:ident];
+  if ([ident isEqualToString:@"enabled"])
+    [self.document node:item setEnabled:[object boolValue]];
+  else
+    [self.document node:item setValue:object forKey:ident];
 }
 
 - (BOOL)outlineView:(NSOutlineView *)ov writeItems:(NSArray *)items

@@ -82,7 +82,7 @@
 {
   if (_viewLayer == nil)
     {
-      _viewLayer = [self makeViewLayerForLayer:_layer candidateLayer:nil];
+      _viewLayer = [self makeViewLayerForLayer:_layer candidate:nil];
       [_viewLayer update];
 #if !TARGET_OS_IPHONE
       _viewLayer.geometryFlipped = YES;
@@ -244,7 +244,7 @@ blendModeFilter(CGBlendMode blend_mode)
   else
     {
       CALayer<MgViewLayer> *view_layer = [self makeViewLayerForLayer:mask
-					  candidateLayer:layer.mask];
+					  candidate:layer.mask];
       layer.mask = view_layer;
       [view_layer update];
     }
@@ -305,7 +305,7 @@ blendModeFilter(CGBlendMode blend_mode)
 }
 
 - (CALayer<MgViewLayer> *)makeViewLayerForLayer:(MgLayer *)src
-    candidateLayer:(CALayer *)layer
+    candidate:(CALayer *)layer
 {
   Class cls = (!FORCE_DRAWING ? [src viewLayerClass]
 	       : [MgFlatteningCALayer class]);
@@ -322,7 +322,7 @@ blendModeFilter(CGBlendMode blend_mode)
 }
 
 - (NSArray *)makeViewLayersForLayers:(NSArray *)array
-    candidateLayers:(NSArray *)layers
+    candidates:(NSArray *)layers culler:(BOOL (^)(MgLayer *src))pred
 {
   NSInteger count = [array count];
 
@@ -338,14 +338,7 @@ blendModeFilter(CGBlendMode blend_mode)
 
       for (MgLayer *src in array)
 	{
-	  /* During a transition, object is enabled if either from/to
-	     state say it is. */
-
-	  BOOL enabled = src.enabled;
-	  if (!enabled && src.activeTransition.fromState.enabled)
-	    enabled = YES;
-
-	  if (enabled)
+	  if (!pred || !pred(src))
 	    {
 	      src_layers[actual_count] = src;
 	      if (!FORCE_DRAWING)
@@ -430,15 +423,9 @@ blendModeFilter(CGBlendMode blend_mode)
 
   dispatch_once(&once, ^
     {
-      /* FIXME: having both enabled and alpha map to the opacity
-	 property won't work. We could combine them into one animation,
-	 unless their timing is different. Additive animations probably
-	 don't help, they "add" rather than "multiply" the values.
-
-	FIXME: also, skew? */
+      /* FIXME: no way to handle skew directly? */
 
       map = @{
-	@"enabled" : @"opacity",
 	@"position" : @"position",
 	@"anchor" : @"anchorPoint",
 	@"size" : @"bounds.size",
