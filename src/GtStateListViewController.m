@@ -25,6 +25,7 @@
 #import "GtStateListViewController.h"
 
 #import "GtDocument.h"
+#import "GtStateListItemView.h"
 #import "GtTreeNode.h"
 #import "GtWindowController.h"
 
@@ -66,10 +67,12 @@ static NSString *const GtStateListViewItemType = @"org.unfactored.gt-state-list-
 
 - (void)viewDidLoad
 {
-  [self.tableView registerForDraggedTypes:@[GtStateListViewItemType]];
+  [_tableView registerForDraggedTypes:@[GtStateListViewItemType]];
 
-  for (NSTableColumn *col in [self.tableView tableColumns])
+  for (NSTableColumn *col in [_tableView tableColumns])
     [[col dataCell] setVerticallyCentered:YES];
+
+  [_rowHeightSlider setDoubleValue:self.rowHeight];
 
   [self updateCurrentModule];
 }
@@ -81,8 +84,8 @@ static NSString *const GtStateListViewItemType = @"org.unfactored.gt-state-list-
 
   [self.windowController removeObserver:self forKeyPath:@"currentModule"];
 
-  [self.tableView setDelegate:nil];
-  [self.tableView setDataSource:nil];
+  [_tableView setDelegate:nil];
+  [_tableView setDataSource:nil];
 
   _moduleNode = nil;
   _currentModule = nil;
@@ -103,7 +106,7 @@ static NSString *const GtStateListViewItemType = @"org.unfactored.gt-state-list-
   [_currentModule addObserver:self forKeyPath:@"moduleState"
    options:0 context:NULL];
 
-  [self.tableView reloadData];
+  [_tableView reloadData];
   [self updateCurrentState];
 }
 
@@ -121,7 +124,18 @@ static NSString *const GtStateListViewItemType = @"org.unfactored.gt-state-list-
       row = row + 1;
     }
 
-  [self.tableView setSelectedRow:row];
+  [_tableView setSelectedRow:row];
+}
+
+- (void)state:(MgModuleState *)state setValue:(id)value forKey:(NSString *)key
+{
+  if ([key isEqualToString:@"superstate.name"])
+    {
+      value = [_currentModule moduleStateWithName:value];
+      key = @"superstate";
+    }
+
+  [self.document module:_currentModule state:state setValue:value forKey:key];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
@@ -133,12 +147,61 @@ static NSString *const GtStateListViewItemType = @"org.unfactored.gt-state-list-
     }
   else if ([keyPath isEqualToString:@"moduleStates"])
     {
-      [self.tableView reloadData];
+      [_tableView reloadData];
     }
   else if ([keyPath isEqualToString:@"moduleState"])
     {
       [self updateCurrentState];
     }
+}
+
+- (CGFloat)rowHeight
+{
+  return [_tableView rowHeight];
+}
+
+- (void)setRowHeight:(CGFloat)h
+{
+  [_tableView setRowHeight:h];
+  [_rowHeightSlider setDoubleValue:h];
+}
+
+- (IBAction)controlAction:(id)sender
+{
+  if (sender == _rowHeightSlider)
+    {
+      self.rowHeight = [sender doubleValue];
+    }
+}
+
+- (void)addSavedViewState:(NSMutableDictionary *)dict
+{
+  NSString *ident = [self identifier];
+  if (ident == nil)
+    return;
+
+  dict[ident] = @{
+    @"rowHeight" : @(self.rowHeight),
+  };
+
+  [super addSavedViewState:dict];
+}
+
+- (void)applySavedViewState:(NSDictionary *)dict
+{
+  NSString *ident = [self identifier];
+  if (ident == nil)
+    return;
+
+  NSDictionary *state = dict[ident];
+  if (state != nil)
+    {
+      CGFloat row_height = [state[@"rowHeight"] doubleValue];
+      if (row_height > 0)
+	self.rowHeight = row_height;
+    }
+
+  [super applySavedViewState:dict];
 }
 
 /** NSTableViewDataSource methods. **/
@@ -148,43 +211,21 @@ static NSString *const GtStateListViewItemType = @"org.unfactored.gt-state-list-
   return 1 + [_currentModule.moduleStates count];
 }
 
-- (id)tableView:(NSTableView *)tv objectValueForTableColumn:
-    (NSTableColumn *)col row:(NSInteger)row
-{
-  NSString *ident = [col identifier];
-
-  if (row == 0)
-    {
-      if ([ident isEqualToString:@"name"])
-	return @"Base State";
-      else
-	return nil;
-    }
-
-  id value = [_currentModule.moduleStates[row-1] valueForKey:ident];
-
-  if ([ident isEqualToString:@"superstate"])
-    value = [(MgModuleState *)value name];
-
-  return value;
-}
-
-- (void)tableView:(NSTableView *)tv setObjectValue:(id)value
-    forTableColumn:(NSTableColumn *)col row:(NSInteger)row
-{
-  if (row == 0)
-    return;
-
-  NSString *ident = [col identifier];
-
-  if ([ident isEqualToString:@"superstate"])
-    value = [_currentModule moduleStateWithName:value];
-
-  [self.document module:_currentModule
-   state:_currentModule.moduleStates[row-1] setValue:value forKey:ident];
-}
-
 /** NSTableViewDelegate methods. **/
+
+- (NSView *)tableView:(NSTableView *)tv
+    viewForTableColumn:(NSTableColumn *)col row:(NSInteger)row
+{
+  GtStateListItemView *view
+    = [tv makeViewWithIdentifier:[col identifier] owner:self];
+
+  if (row == 0)
+    view.state = nil;
+  else
+    view.state = _currentModule.moduleStates[row-1];
+
+  return view;
+}
 
 - (BOOL)tableView:(NSTableView *)tv shouldEditTableColumn:
     (NSTableColumn *)col row:(NSInteger)row
@@ -194,7 +235,7 @@ static NSString *const GtStateListViewItemType = @"org.unfactored.gt-state-list-
 
 - (void)tableViewSelectionDidChange:(NSNotification *)note
 {
-  NSInteger row = [self.tableView selectedRow];
+  NSInteger row = [_tableView selectedRow];
 
   MgModuleState *state = nil;
   if (row > 0)

@@ -22,26 +22,18 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#ifndef GT_BASE_H
-#define GT_BASE_H
+#import "GtBase.h"
 
-#include "Mg.h"
+@interface GtStateListItemView : NSView
 
-#ifdef __OBJC__
-#import <AppKit/AppKit.h>
-#endif
+@property(nonatomic, weak) IBOutlet GtStateListViewController *controller;
 
-#ifdef __OBJC__
-@class GtAppDelegate, GtDocument, GtInspectorBoolControl,
-    GtInspectorColorControl, GtInspectorControl,
-    GtInspectorNumberControl, GtInspectorItem,
-    GtInspectorStringControl, GtInspectorViewController,
-    GtNumericTextField, GtOutlineView, GtSplitView,
-    GtSplitViewController, GtStateListViewController,
-    GtStateListItemView, GtTransitionViewController,
-    GtTransitionTimingView, GtTreeViewController, GtTreeNode,
-    GtViewController, GtViewerView, GtViewerViewController,
-    GtWindowController;
-#endif
+@property(nonatomic, weak) IBOutlet NSImageView *thumbnailView;
+@property(nonatomic, weak) IBOutlet NSTextField *nameField;
+@property(nonatomic, weak) IBOutlet NSTextField *basedOnField;
 
-#endif /* GT_BASE_H */
+@property(nonatomic, strong) MgModuleState *state;
+
+- (IBAction)controlAction:(id)sender;
+
+@end

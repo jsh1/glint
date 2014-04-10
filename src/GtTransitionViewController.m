@@ -76,18 +76,18 @@
 
 - (void)viewDidLoad
 {
-  for (NSTableColumn *col in [self.outlineView tableColumns])
+  for (NSTableColumn *col in [_outlineView tableColumns])
     [[col dataCell] setVerticallyCentered:YES];
-  for (NSTableColumn *col in [self.fromTableView tableColumns])
+  for (NSTableColumn *col in [_fromTableView tableColumns])
     [[col dataCell] setVerticallyCentered:YES];
-  for (NSTableColumn *col in [self.toTableView tableColumns])
+  for (NSTableColumn *col in [_toTableView tableColumns])
     [[col dataCell] setVerticallyCentered:YES];
 
   [self updateDocumentNode];
 
   [_items removeAllObjects];
-  [self.outlineView reloadData];
-  [self.outlineView expandItem:nil expandChildren:YES];
+  [_outlineView reloadData];
+  [_outlineView expandItem:nil expandChildren:YES];
 }
 
 - (void)invalidate
@@ -99,14 +99,14 @@
   [self.windowController removeObserver:self forKeyPath:@"currentModule"];
   [self.document removeObserver:self forKeyPath:@"documentNode"];
 
-  [self.outlineView setDelegate:nil];
-  [self.outlineView setDataSource:nil];
+  [_outlineView setDelegate:nil];
+  [_outlineView setDataSource:nil];
 
-  [self.fromTableView setDelegate:nil];
-  [self.fromTableView setDataSource:nil];
+  [_fromTableView setDelegate:nil];
+  [_fromTableView setDataSource:nil];
 
-  [self.toTableView setDelegate:nil];
-  [self.toTableView setDataSource:nil];
+  [_toTableView setDelegate:nil];
+  [_toTableView setDataSource:nil];
 
   [super invalidate];
 }
@@ -130,8 +130,8 @@
 - (void)updateDocumentNode
 {
   [_items removeAllObjects];
-  [self.outlineView reloadData];
-  [self.outlineView expandItem:nil expandChildren:YES];
+  [_outlineView reloadData];
+  [_outlineView expandItem:nil expandChildren:YES];
 }
 
 - (void)updateCurrentModule
@@ -150,8 +150,8 @@
   [self updateCurrentState];
 
   [_items removeAllObjects];
-  [self.outlineView reloadData];
-  [self.outlineView expandItem:nil expandChildren:YES];
+  [_outlineView reloadData];
+  [_outlineView expandItem:nil expandChildren:YES];
 }
 
 - (void)updateCurrentState
@@ -172,26 +172,26 @@
   /* FIXME: not right. */
 
   _fromState = _toState = state;
-  [self.fromTableView setSelectedRow:row];
-  [self.toTableView setSelectedRow:row];
+  [_fromTableView setSelectedRow:row];
+  [_toTableView setSelectedRow:row];
 #endif
 
-  [self.fromTableView reloadData];
-  [self.toTableView reloadData];
+  [_fromTableView reloadData];
+  [_toTableView reloadData];
 }
 
 - (void)documentGraphDidChange:(NSNotification *)note
 {
   [_items removeAllObjects];
-  [self.outlineView reloadData];
-  [self.outlineView expandItem:nil expandChildren:YES];
+  [_outlineView reloadData];
+  [_outlineView expandItem:nil expandChildren:YES];
 }
 
 - (void)documentNodeDidChange:(NSNotification *)note
 {
   NSDictionary *info = [note userInfo];
 
-  [self.outlineView reloadItem:info[@"treeItem"] reloadChildren:YES];
+  [_outlineView reloadItem:info[@"treeItem"] reloadChildren:YES];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
@@ -207,8 +207,8 @@
     }
   else if ([keyPath isEqualToString:@"moduleStates"])
     {
-      [self.fromTableView reloadData];
-      [self.toTableView reloadData];
+      [_fromTableView reloadData];
+      [_toTableView reloadData];
     }
   else if ([keyPath isEqualToString:@"moduleState"])
     {
@@ -430,14 +430,14 @@ showNodeForState(GtTreeNode *tn, MgModuleState *from, MgModuleState *to)
   NSTableView *tv = [note object];
   NSInteger row = [tv selectedRow];
 
-  if (tv == self.fromTableView)
+  if (tv == _fromTableView)
     {
       if (row == 0)
 	_fromState = nil;
       else
 	_fromState = _currentModule.moduleStates[row-1];
     }
-  else if (tv == self.toTableView)
+  else if (tv == _toTableView)
     {
       if (row == 0)
 	_toState = nil;
@@ -446,8 +446,8 @@ showNodeForState(GtTreeNode *tn, MgModuleState *from, MgModuleState *to)
     }
 
   [_items removeAllObjects];
-  [self.outlineView reloadData];
-  [self.outlineView expandItem:nil expandChildren:YES];
+  [_outlineView reloadData];
+  [_outlineView expandItem:nil expandChildren:YES];
 }
 
 @end

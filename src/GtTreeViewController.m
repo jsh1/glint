@@ -73,18 +73,17 @@ static NSString *const GtTreeViewItemType = @"org.unfactored.gt-tree-view-item";
 
 - (void)viewDidLoad
 {
-  [self.outlineView registerForDraggedTypes:
-   @[GtTreeViewItemType, MgNodeType, MgArchiveType,
-     (id)kUTTypeFileURL, (id)kUTTypeImage]];
+  [_outlineView registerForDraggedTypes:@[GtTreeViewItemType, MgNodeType,
+   MgArchiveType, (id)kUTTypeFileURL, (id)kUTTypeImage]];
 
-  for (NSTableColumn *col in [self.outlineView tableColumns])
+  for (NSTableColumn *col in [_outlineView tableColumns])
     [[col dataCell] setVerticallyCentered:YES];
 
   [self updateDocumentNode];
   [self updateSelection];
 
-  [self.outlineView reloadData];
-  [self.outlineView expandItem:nil expandChildren:YES];
+  [_outlineView reloadData];
+  [_outlineView expandItem:nil expandChildren:YES];
 }
 
 - (void)invalidate
@@ -92,16 +91,16 @@ static NSString *const GtTreeViewItemType = @"org.unfactored.gt-tree-view-item";
   [self.document removeObserver:self forKeyPath:@"documentNode"];
   [self.windowController removeObserver:self forKeyPath:@"selection"];
 
-  [self.outlineView setDelegate:nil];
-  [self.outlineView setDataSource:nil];
+  [_outlineView setDelegate:nil];
+  [_outlineView setDataSource:nil];
 
   [super invalidate];
 }
 
 - (void)updateDocumentNode
 {
-  [self.outlineView reloadData];
-  [self.outlineView expandItem:nil expandChildren:YES];
+  [_outlineView reloadData];
+  [_outlineView expandItem:nil expandChildren:YES];
 }
 
 static void
@@ -119,22 +118,22 @@ expandItem(NSOutlineView *ov, GtTreeNode *tn)
   NSArray *selection = self.windowController.selection;
 
   for (GtTreeNode *tn in selection)
-    expandItem(self.outlineView, tn.parent);
+    expandItem(_outlineView, tn.parent);
 
-  [self.outlineView setSelectedItems:selection];
+  [_outlineView setSelectedItems:selection];
 }
 
 - (void)documentGraphDidChange:(NSNotification *)note
 {
-  [self.outlineView reloadData];
-  [self.outlineView setSelectedItems:self.windowController.selection];
+  [_outlineView reloadData];
+  [_outlineView setSelectedItems:self.windowController.selection];
 }
 
 - (void)documentNodeDidChange:(NSNotification *)note
 {
   NSDictionary *info = [note userInfo];
 
-  [self.outlineView reloadItem:info[@"treeItem"]];
+  [_outlineView reloadItem:info[@"treeItem"]];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
@@ -310,7 +309,7 @@ expandItem(NSOutlineView *ov, GtTreeNode *tn)
 
 - (void)outlineViewSelectionDidChange:(NSNotification *)notification
 {
-  self.windowController.selection = [self.outlineView selectedItems];
+  self.windowController.selection = [_outlineView selectedItems];
 }
 
 /** NSPasteboardOwner methods. **/

@@ -28,5 +28,12 @@
     <NSTableViewDataSource, NSTableViewDelegate>
 
 @property(nonatomic, weak) IBOutlet NSTableView *tableView;
+@property(nonatomic, weak) IBOutlet NSSlider *rowHeightSlider;
+
+@property(nonatomic, assign) CGFloat rowHeight;
+
+- (void)state:(MgModuleState *)state setValue:(id)value forKey:(NSString *)key;
+
+- (IBAction)controlAction:(id)sender;
 
 @end

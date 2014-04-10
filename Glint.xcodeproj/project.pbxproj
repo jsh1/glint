@@ -47,6 +47,7 @@
 		57618DB818C5D1B6004108D8 /* GtViewerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 57618DB618C5D1B6004108D8 /* GtViewerViewController.m */; };
 		57618DBB18C5D1F5004108D8 /* GtViewerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 57618DB918C5D1F5004108D8 /* GtViewerView.xib */; };
 		57618DBE18C5D538004108D8 /* CoreAnimationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 57618DBD18C5D538004108D8 /* CoreAnimationExtensions.m */; };
+		576BABB418F6E9900034BD85 /* GtStateListItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 576BABB318F6E9900034BD85 /* GtStateListItemView.m */; };
 		578DBA7218E97A5E007F2B16 /* GtTransitionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 578DBA7018E97A5E007F2B16 /* GtTransitionView.xib */; };
 		578DBA7518E97BA6007F2B16 /* GtTransitionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 578DBA7418E97BA6007F2B16 /* GtTransitionViewController.m */; };
 		57AE9B6018EEFE5C009F5992 /* GtTransitionTimingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 57AE9B5F18EEFE5C009F5992 /* GtTransitionTimingView.m */; };
@@ -170,6 +171,8 @@
 		57618DBA18C5D1F5004108D8 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = resources/en.lproj/GtViewerView.xib; sourceTree = "<group>"; };
 		57618DBC18C5D538004108D8 /* CoreAnimationExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CoreAnimationExtensions.h; path = src/CoreAnimationExtensions.h; sourceTree = "<group>"; };
 		57618DBD18C5D538004108D8 /* CoreAnimationExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CoreAnimationExtensions.m; path = src/CoreAnimationExtensions.m; sourceTree = "<group>"; };
+		576BABB218F6E9900034BD85 /* GtStateListItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtStateListItemView.h; path = src/GtStateListItemView.h; sourceTree = "<group>"; };
+		576BABB318F6E9900034BD85 /* GtStateListItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtStateListItemView.m; path = src/GtStateListItemView.m; sourceTree = "<group>"; };
 		578DBA7118E97A5E007F2B16 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = resources/en.lproj/GtTransitionView.xib; sourceTree = "<group>"; };
 		578DBA7318E97BA6007F2B16 /* GtTransitionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtTransitionViewController.h; path = src/GtTransitionViewController.h; sourceTree = "<group>"; };
 		578DBA7418E97BA6007F2B16 /* GtTransitionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtTransitionViewController.m; path = src/GtTransitionViewController.m; sourceTree = "<group>"; };
@@ -433,6 +436,8 @@
 				572A5B1918C4CD4100AB8086 /* GtSplitView.m */,
 				5721E87E18C6A2DF000DA2C3 /* GtSplitViewController.h */,
 				5721E87F18C6A2DF000DA2C3 /* GtSplitViewController.m */,
+				576BABB218F6E9900034BD85 /* GtStateListItemView.h */,
+				576BABB318F6E9900034BD85 /* GtStateListItemView.m */,
 				57DE109C18DDA99F00B8EC27 /* GtStateListViewController.h */,
 				57DE109D18DDA99F00B8EC27 /* GtStateListViewController.m */,
 				572BFA9F18D72814000E9B84 /* GtTabViewController.h */,
@@ -633,6 +638,7 @@
 				5738567818C746D80010CFB7 /* GtTreeNode.m in Sources */,
 				572A5B1E18C4CD4100AB8086 /* GtSplitView.m in Sources */,
 				57618DB718C5D1B6004108D8 /* GtViewerView.m in Sources */,
+				576BABB418F6E9900034BD85 /* GtStateListItemView.m in Sources */,
 				5714A8C018BD322900ED67EE /* main.m in Sources */,
 				572BFAB118D74E21000E9B84 /* GtInspectorColorControl.m in Sources */,
 				578DBA7518E97BA6007F2B16 /* GtTransitionViewController.m in Sources */,

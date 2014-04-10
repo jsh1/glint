@@ -67,7 +67,7 @@
 - (void)viewDidLoad
 {
   NSInteger colIndex = 0;
-  for (NSTableColumn *col in [self.outlineView tableColumns])
+  for (NSTableColumn *col in [_outlineView tableColumns])
     {
       if ([[col identifier] isEqualToString:@"value"])
 	_valueColumnIndex = colIndex;
@@ -75,12 +75,12 @@
       colIndex++;
     }
 
-  [self.outlineView setSelectionHighlightStyle:
+  [_outlineView setSelectionHighlightStyle:
    NSTableViewSelectionHighlightStyleNone];
 
   [self updateSelection];
 
-  [self.outlineView expandItem:nil expandChildren:NO];
+  [_outlineView expandItem:nil expandChildren:NO];
 }
 
 - (void)invalidate
@@ -90,8 +90,8 @@
   for (GtTreeNode *tn in _selection)
     [tn.node removeObserver:self forKeyPath:@"version"];
 
-  [self.outlineView setDelegate:nil];
-  [self.outlineView setDataSource:nil];
+  [_outlineView setDelegate:nil];
+  [_outlineView setDataSource:nil];
 
   _selection = nil;
 
@@ -170,15 +170,15 @@ common_superclass(Class c1, Class c2)
   _inspectorClass = cls;
   _inspectorTree = [GtInspectorItem inspectorTreeForClass:cls];
 
-  [self.outlineView reloadData];
+  [_outlineView reloadData];
 
   for (GtInspectorItem *subitem in _inspectorTree.subitems)
-    [self.outlineView expandItem:subitem];
+    [_outlineView expandItem:subitem];
 }
 
 - (void)updateValues
 {
-  NSOutlineView *view = self.outlineView;
+  NSOutlineView *view = _outlineView;
 
   NSInteger count = [view numberOfRows];
 
