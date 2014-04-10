@@ -37,6 +37,7 @@
     return nil;
 
   _indexOfResizableSubview = -1;
+  _initialSizes = @[];
 
   return self;
 }
@@ -80,8 +81,8 @@
     }
 
   [view adjustSubviews];
-  [view setPosition:300 ofDividerAtIndex:0];
   [view setIndexOfResizableSubview:self.indexOfResizableSubview];
+  [view setInitialSizes:self.initialSizes];
 }
 
 - (void)addSavedViewState:(NSMutableDictionary *)dict

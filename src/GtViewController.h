@@ -58,6 +58,8 @@
 - (void)foreachViewControllerWithClass:(Class)cls
     handler:(void (^)(id obj))block;
 
+- (GtViewController *)viewControllerWithIdentifier:(NSString *)ident;
+
 @property(nonatomic, weak, readonly) GtViewController *superviewController;
 @property(nonatomic, copy) NSArray *subviewControllers;
 
@@ -68,7 +70,7 @@
 
 - (void)showSubviewController:(GtViewController *)controller;
 - (void)hideSubviewController:(GtViewController *)controller;
-- (void)maximizeSubviewControllers:(GtViewController *)controller;
+- (void)maximizeSubviewController:(GtViewController *)controller;
 - (void)toggleSubviewController:(GtViewController *)controller;
 - (BOOL)subviewControllerIsVisible:(GtViewController *)controller;
 

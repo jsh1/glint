@@ -41,6 +41,7 @@
 @property(nonatomic, strong) GtTreeNode *currentModule;
 
 - (id)viewControllerWithClass:(Class)cls;
+- (id)viewControllerWithIdentifier:(NSString *)ident;
 
 - (void)invalidate;
 

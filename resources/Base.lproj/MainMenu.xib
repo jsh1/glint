@@ -1141,33 +1141,23 @@ CA
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="eu3-7i-yIM"/>
-                            <menuItem title="Maximize Canvas" keyEquivalent="" id="EBp-jm-guZ">
-                                <modifierMask key="keyEquivalentModifierMask"/>
+                            <menuItem title="Maximize Canvas" keyEquivalent="1" id="EBp-jm-guZ">
                                 <connections>
                                     <action selector="maximizeView:" target="-1" id="ms3-3U-XoB"/>
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="MqU-U6-9Nx"/>
-                            <menuItem title="Layers Panel" tag="1" keyEquivalent="" id="GuO-QX-tad">
-                                <modifierMask key="keyEquivalentModifierMask"/>
+                            <menuItem title="Project Panel" tag="101" keyEquivalent="2" id="GuO-QX-tad">
                                 <connections>
                                     <action selector="toggleView:" target="-1" id="Q2R-Ce-Chh"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Inspector Panel" tag="2" keyEquivalent="" id="VPf-Od-GO8">
-                                <modifierMask key="keyEquivalentModifierMask"/>
+                            <menuItem title="Inspector Panel" tag="102" keyEquivalent="3" id="VPf-Od-GO8">
                                 <connections>
                                     <action selector="toggleView:" target="-1" id="Fa5-0b-k4b"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="State Panel" tag="3" keyEquivalent="" id="5ui-gv-zFE">
-                                <modifierMask key="keyEquivalentModifierMask"/>
-                                <connections>
-                                    <action selector="toggleView:" target="-1" id="t4Z-VL-zFr"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem title="Transition Panel" tag="4" keyEquivalent="" id="Xnr-Lz-gQa">
-                                <modifierMask key="keyEquivalentModifierMask"/>
+                            <menuItem title="Transition Panel" tag="103" keyEquivalent="4" id="Xnr-Lz-gQa">
                                 <connections>
                                     <action selector="toggleView:" target="-1" id="Zti-UW-R8I"/>
                                 </connections>

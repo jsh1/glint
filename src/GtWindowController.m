@@ -134,6 +134,11 @@
   [_viewController foreachViewControllerWithClass:cls handler:block];
 }
 
+- (id)viewControllerWithIdentifier:(NSString *)ident
+{
+  return [_viewController viewControllerWithIdentifier:ident];
+}
+
 - (void)saveWindowState
 {
   if (![self isWindowLoaded] || [self window] == nil)
@@ -412,72 +417,77 @@ deepestLastChild(GtTreeNode *n)
     }];
 }
 
-static Class
-viewControllerClass(id sender)
+- (GtViewController *)viewControllerWithTag:(NSInteger)tag
 {
-  switch ([sender tag])
+  Class cls = Nil;
+  NSString *ident = nil;
+
+  switch (tag)
     {
     case 0:
-      return [GtViewerViewController class];
+      cls = [GtViewerViewController class];
+      break;
 
     case 1:
-      return [GtTreeViewController class];
+      cls = [GtTreeViewController class];
+      break;
 
     case 2:
-      return [GtInspectorViewController class];
+      cls = [GtInspectorViewController class];
+      break;
 
     case 3:
-      return [GtStateListViewController class];
+      cls = [GtStateListViewController class];
+      break;
 
     case 4:
-      return [GtTransitionViewController class];
+      cls = [GtTransitionViewController class];
+      break;
 
-    default:
-      return Nil;
+    case 101:
+      ident = @"GtSplitViewController.project";
+      break;
+
+    case 102:
+      ident = @"GtTabViewController.inspector-tab";
+      break;
+
+    case 103:
+      ident = @"GtTabViewController.timing-tab";
+      break;
     }
+
+  if (cls != Nil)
+    return [self viewControllerWithClass:cls];
+  else if (ident != nil)
+    return [self viewControllerWithIdentifier:ident];
+  else
+    return nil;
 }
 
 - (IBAction)showView:(id)sender
 {
-  [self foreachViewControllerWithClass:viewControllerClass(sender)
-   handler:^(GtViewController *obj)
-    {
-      [_viewController showSubviewController:obj];
-    }];
+  [_viewController showSubviewController:
+   [self viewControllerWithTag:[sender tag]]];
 }
 
 - (IBAction)toggleView:(id)sender
 {
-  [self foreachViewControllerWithClass:viewControllerClass(sender)
-   handler:^(GtViewController *obj)
-    {
-      [_viewController toggleSubviewController:obj];
-    }];
+  [_viewController toggleSubviewController:
+   [self viewControllerWithTag:[sender tag]]];
 }
 
 - (NSInteger)viewState:(id)sender
 {
-  __block NSInteger on = 0, off = 0;
-
-  [self foreachViewControllerWithClass:viewControllerClass(sender)
-   handler:^(GtViewController *obj)
-    {
-      if ([_viewController subviewControllerIsVisible:obj])
-	on++;
-      else
-	off++;
-    }];
-
-  return on && off ? NSMixedState : on ? NSOnState : NSOffState;
+  return ([_viewController subviewControllerIsVisible:
+	   [self viewControllerWithTag:[sender tag]]]
+	  ? NSOnState : NSOffState);
 }
 
 - (IBAction)maximizeView:(id)sender
 {
-  [self foreachViewControllerWithClass:viewControllerClass(sender)
-   handler:^(GtViewController *obj)
-    {
-      [_viewController maximizeSubviewControllers:obj];
-    }];
+  [_viewController maximizeSubviewController:
+   [self viewControllerWithTag:[sender tag]]];
 }
 
 @end

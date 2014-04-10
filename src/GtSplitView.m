@@ -106,34 +106,76 @@
   NSInteger count = [subviews count];
 
   if ([data count] != count * 3)
-    return;
-
-  NSRect bounds = [self bounds];
-  BOOL vertical = [self isVertical];
-  CGFloat size = vertical ? bounds.size.width : bounds.size.height;
-
-  for (NSInteger i = 0; i < count; i++)
     {
-      CGFloat x = round([data[i*3+0] doubleValue] * size);
-      CGFloat w = round([data[i*3+1] doubleValue] * size);
-      BOOL flag = [data[i*3+2] boolValue];
-
-      NSView *subview = subviews[i];
-      NSRect frame = bounds;
-
-      if (vertical)
+      data = self.initialSizes;
+      if ([data count] == count)
 	{
-	  frame.origin.x = x;
-	  frame.size.width = w;
-	}
-      else
-	{
-	  frame.origin.y = x;
-	  frame.size.height = w;
-	}
+	  CGFloat width[count];
+	  CGFloat p[count];
 
-      [subview setHidden:flag];
-      [subview setFrame:frame];
+	  CGFloat total_width = 0;
+	  NSInteger zero_count = 0;
+
+	  for (NSInteger i = 0; i < count; i++)
+	    {
+	      width[i] = [data[i] doubleValue];
+	      total_width += width[i];
+	      zero_count += width[i] == 0;
+	    }
+
+	  CGFloat thick = [self dividerThickness];
+
+	  NSRect bounds = [self bounds];
+	  BOOL vertical = [self isVertical];
+	  CGFloat size = vertical ? bounds.size.width : bounds.size.height;
+	  CGFloat zs = floor(size - ((count - 1) * thick
+				     + total_width) / zero_count);
+
+	  for (NSInteger i = 0; i < count; i++)
+	    {
+	      p[i] = i == 0 ? 0 : p[i-1] + width[i-1] + thick;
+
+	      if (zero_count > 0 && zs > 0)
+		{
+		  if (width[i] == 0)
+		    width[i] = zs;
+		}
+	      else
+		width[i] = floor((size - (count - 1) * thick) / count);
+	    }
+
+	  width[count-1] = size - p[count-1];
+	}
+    }
+  else
+    {
+      NSRect bounds = [self bounds];
+      BOOL vertical = [self isVertical];
+      CGFloat size = vertical ? bounds.size.width : bounds.size.height;
+
+      for (NSInteger i = 0; i < count; i++)
+	{
+	  CGFloat x = round([data[i*3+0] doubleValue] * size);
+	  CGFloat w = round([data[i*3+1] doubleValue] * size);
+	  BOOL flag = [data[i*3+2] boolValue];
+
+	  NSView *subview = subviews[i];
+	  NSRect frame = bounds;
+
+	  if (vertical)
+	    {
+	      frame.origin.x = x;
+	      frame.size.width = w;
+	    }
+	  else
+	    {
+	      frame.origin.y = x;
+	      frame.size.height = w;
+	    }
+
+	  [subview setHidden:flag];
+	  [subview setFrame:frame];
+	}
     }
 
   [self adjustSubviews];

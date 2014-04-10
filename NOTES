@@ -43,3 +43,23 @@ Issues
 
 9. Support fake-spring timing in transitions.
 
+10. Inspector should be unnecessary for 80% of operations.
+
+  - selected rect layers should have onscreen controls for colors, line
+    width, etc (they already have corner radius)
+
+  - similar for path layers (once, of course, path editing is done)
+
+  - image layers should have an onscreen button (?) to select image
+
+11. Add edge snapping while dragging.
+
+12. Add keyboard controls to canvas.
+
+  - cursor keys move objects.
+
+13. Show thumbnails.
+
+  - Layers panel.
+  - States panel.
+  - Inspected object.

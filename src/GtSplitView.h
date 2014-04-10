@@ -32,6 +32,7 @@
 }
 
 @property(nonatomic) NSInteger indexOfResizableSubview;
+@property(nonatomic, copy) NSArray *initialSizes;
 
 - (NSDictionary *)savedViewState;
 - (void)applySavedViewState:(NSDictionary *)dict;

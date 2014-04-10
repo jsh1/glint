@@ -152,6 +152,21 @@
     [obj foreachViewControllerWithClass:cls handler:block];
 }
 
+- (GtViewController *)viewControllerWithIdentifier:(NSString *)ident
+{
+  if ([[self identifier] isEqualToString:ident])
+    return self;
+
+  for (GtViewController *obj in _subviewControllers)
+    {
+      GtViewController *sub = [obj viewControllerWithIdentifier:ident];
+      if (sub != nil)
+	return sub;
+    }
+
+  return nil;
+}
+
 - (NSArray *)subviewControllers
 {
   return _subviewControllers;
@@ -219,7 +234,7 @@
     }
 }
 
-- (void)maximizeSubviewControllers:(GtViewController *)controller
+- (void)maximizeSubviewController:(GtViewController *)controller
 {
   while (controller != nil)
     {

@@ -28,5 +28,6 @@
 
 @property(nonatomic, assign, getter=isVertical) BOOL vertical;
 @property(nonatomic, assign) NSInteger indexOfResizableSubview;
+@property(nonatomic, copy) NSArray *initialSizes;
 
 @end
