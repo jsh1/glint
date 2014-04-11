@@ -28,7 +28,7 @@
 
 #import <Foundation/Foundation.h>
 
-@implementation MgNode (MgGraphCopying)
+@implementation NSObject (MgGraphCopying)
 
 - (id)mg_graphCopy
 {
@@ -60,7 +60,7 @@
   return copy;
 }
 
-- (id)mg_graphConditionalCopy:(NSMapTable *)map
+- (id)mg_conditionalGraphCopy:(NSMapTable *)map
 {
   id copy = [map objectForKey:self];
 

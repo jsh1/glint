@@ -56,9 +56,6 @@ static NSString *const GtTreeViewItemType = @"org.unfactored.gt-tree-view-item";
     return nil;
 
   [[NSNotificationCenter defaultCenter]
-   addObserver:self selector:@selector(documentGraphDidChange:)
-   name:GtDocumentGraphDidChange object:self.document];
-  [[NSNotificationCenter defaultCenter]
    addObserver:self selector:@selector(documentNodeDidChange:)
    name:GtDocumentNodeDidChange object:self.document];
 
@@ -123,17 +120,17 @@ expandItem(NSOutlineView *ov, GtTreeNode *tn)
   [_outlineView setSelectedItems:selection];
 }
 
-- (void)documentGraphDidChange:(NSNotification *)note
-{
-  [_outlineView reloadData];
-  [_outlineView setSelectedItems:self.windowController.selection];
-}
-
 - (void)documentNodeDidChange:(NSNotification *)note
 {
   NSDictionary *info = [note userInfo];
 
-  [_outlineView reloadItem:info[@"treeItem"]];
+  if ([info[@"graphChanged"] boolValue])
+    {
+      [_outlineView reloadData];
+      [_outlineView setSelectedItems:self.windowController.selection];
+    }
+  else
+    [_outlineView reloadItem:info[@"treeItem"]];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object

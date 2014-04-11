@@ -31,4 +31,6 @@
 
 - (void)showObjectContextMenuWithEvent:(NSEvent *)e forView:(NSView *)view;
 
+@property(nonatomic, strong, readonly) NSOperationQueue *thumbnailQueue;
+
 @end

@@ -24,7 +24,7 @@
 
 #import "MgBase.h"
 
-@interface MgModuleState : NSObject <NSSecureCoding>
+@interface MgModuleState : NSObject <MgGraphCopying, NSSecureCoding>
 
 + (instancetype)moduleState;
 

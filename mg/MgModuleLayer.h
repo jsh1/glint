@@ -44,4 +44,7 @@
 
 @property(nonatomic, strong) MgModuleState *moduleState;
 
+- (void)setModuleState:(MgModuleState *)state animated:(BOOL)flag;
+- (void)setModuleState:(MgModuleState *)state options:(NSDictionary *)dict;
+
 @end

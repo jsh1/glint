@@ -34,6 +34,8 @@
 
 @property(nonatomic, strong) MgModuleState *state;
 
+- (void)invalidateThumbnail;
+
 - (IBAction)controlAction:(id)sender;
 
 @end

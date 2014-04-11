@@ -127,11 +127,21 @@
 
 - (void)setModuleState:(MgModuleState *)state
 {
+  [self setModuleState:state options:@{}];
+}
+
+- (void)setModuleState:(MgModuleState *)state animated:(BOOL)flag
+{
+  [self setModuleState:state options:@{MgNodeAnimated : @(flag)}];
+}
+
+- (void)setModuleState:(MgModuleState *)state options:(NSDictionary *)dict
+{
   if (_moduleState != state)
     {
       [self willChangeValueForKey:@"moduleState"];
       _moduleState = state;
-      [self applyModuleState:state options:@{}];
+      [self applyModuleState:state options:dict];
       [self didChangeValueForKey:@"moduleState"];
     }
 }

@@ -32,6 +32,8 @@
 
 @property(nonatomic, assign) CGFloat rowHeight;
 
+@property(nonatomic, strong, readonly) MgModuleLayer *moduleLayer;
+
 - (void)state:(MgModuleState *)state setValue:(id)value forKey:(NSString *)key;
 
 - (IBAction)controlAction:(id)sender;

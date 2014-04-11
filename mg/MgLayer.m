@@ -549,12 +549,18 @@
 
 - (CGImageRef)copyImage
 {
+  return [self copyImageWithScale:1];
+}
+
+- (CGImageRef)copyImageWithScale:(CGFloat)s CF_RETURNS_RETAINED;
+{
   CGPoint origin = self.origin;
   CGSize size = self.size;
 
-  return MgImageCreateByDrawing(size.width, size.height, false,
+  return MgImageCreateByDrawing(ceil(size.width*s), ceil(size.height*s), false,
     ^(CGContextRef ctx)
     {
+      CGContextScaleCTM(ctx, s, s);
       CGContextTranslateCTM(ctx, 0, size.height);
       CGContextScaleCTM(ctx, 1, -1);
       CGContextTranslateCTM(ctx, origin.x, origin.y);

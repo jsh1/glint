@@ -114,3 +114,11 @@ extern NSString *const MgArchiveType;	/* UTI: org.unfactored.mg-archive */
 - (CFTimeInterval)markPresentationTime:(CFTimeInterval)t;
 
 @end
+
+/** Keys for -applyModuleState:options: dictionary. **/
+
+extern NSString *const MgNodeAnimated;
+extern NSString *const MgNodeTransitionSpeed;
+extern NSString *const MgNodeTransitionBegin;
+extern NSString *const MgNodeTransitionDuration;
+extern NSString *const MgNodeTransitionFunction;

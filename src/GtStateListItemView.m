@@ -24,6 +24,7 @@
 
 #import "GtStateListItemView.h"
 
+#import "GtAppDelegate.h"
 #import "GtColor.h"
 #import "GtStateListViewController.h"
 
@@ -31,17 +32,16 @@
 {
   MgModuleState *_state;
   NSBackgroundStyle _backgroundStyle;
+
+  NSOperation *_thumbnailOp;
+  NSImage *_thumbnailImage;
+  BOOL _pendingThumbnail;
 }
 
 - (void)dealloc
 {
   [_state removeObserver:self forKeyPath:@"name"];
   [_state removeObserver:self forKeyPath:@"superstate"];
-}
-
-- (void)awakeFromNib
-{
-  [self updateControls];
 }
 
 - (MgModuleState *)state
@@ -51,18 +51,18 @@
 
 - (void)setState:(MgModuleState *)state
 {
-  if (_state != state)
-    {
-      [_state removeObserver:self forKeyPath:@"name"];
-      [_state removeObserver:self forKeyPath:@"superstate"];
+  [_state removeObserver:self forKeyPath:@"name"];
+  [_state removeObserver:self forKeyPath:@"superstate"];
 
-      _state = state;
+  _state = state;
 
-      [_state addObserver:self forKeyPath:@"name" options:0 context:nil];
-      [_state addObserver:self forKeyPath:@"superstate" options:0 context:nil];
+  [_state addObserver:self forKeyPath:@"name" options:0 context:nil];
+  [_state addObserver:self forKeyPath:@"superstate" options:0 context:nil];
 
-      [self updateControls];
-    }
+  [self updateControls];
+
+  _thumbnailImage = nil;
+  [self updateThumbnail];
 }
 
 - (void)updateControls
@@ -80,8 +80,67 @@
 
   [_nameField setEnabled:_state != nil];
   [_basedOnField setEnabled:_state != nil];
+}
 
-  /* FIXME: thumbnail. */
+- (void)invalidateThumbnail
+{
+  if (!_pendingThumbnail)
+    {
+      _thumbnailImage = nil;
+      _pendingThumbnail = YES;
+
+      dispatch_time_t then = dispatch_time(DISPATCH_TIME_NOW,
+					   1LL * NSEC_PER_SEC);
+
+      dispatch_after(then, dispatch_get_main_queue(), ^
+	{
+	  _pendingThumbnail = NO;
+	  [self updateThumbnail];
+	});
+    }
+}
+
+- (void)updateThumbnail
+{
+  if (_thumbnailImage != nil)
+    {
+      [_thumbnailView setImage:_thumbnailImage];
+      return;
+    }
+
+  if (_thumbnailOp == nil)
+    {
+      NSMapTable *table = [NSMapTable strongToStrongObjectsMapTable];
+      MgModuleLayer *layer = [_controller.moduleLayer mg_graphCopy:table];
+
+      CGFloat sx = [_thumbnailView bounds].size.width / layer.size.width;
+      CGFloat sy = [_thumbnailView bounds].size.height / layer.size.height;
+      CGFloat s = fmin(sx, sy);
+
+      _thumbnailOp = [NSBlockOperation blockOperationWithBlock:^
+	{
+	  [layer setModuleState:[table objectForKey:_state] animated:NO];
+
+	  CGImageRef im = [layer copyImageWithScale:s];
+
+	  dispatch_async(dispatch_get_main_queue(), ^
+	    {
+	      _thumbnailOp = nil;
+	      if (im != nil)
+		{
+		  _thumbnailImage = [[NSImage alloc] initWithCGImage:im
+				     size:NSSizeFromCGSize(layer.size)];
+		  [_thumbnailView setImage:_thumbnailImage];
+		  CGImageRelease(im);
+		}
+	      else
+		_thumbnailImage = nil;
+	    });
+	}];
+
+      [((GtAppDelegate *)[NSApp delegate]).thumbnailQueue
+       addOperation:_thumbnailOp];
+    }
 }
 
 - (IBAction)controlAction:(id)sender

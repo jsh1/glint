@@ -44,6 +44,12 @@
 NSString *const MgNodeType = @"org.unfactored.mg-node";
 NSString *const MgArchiveType = @"org.unfactored.mg-archive";
 
+NSString *const MgNodeAnimated = @"animated";
+NSString *const MgNodeTransitionSpeed = @"speed";
+NSString *const MgNodeTransitionBegin = @"begin";
+NSString *const MgNodeTransitionDuration = @"duration";
+NSString *const MgNodeTransitionFunction = @"function";
+
 static NSUInteger version_counter;
 
 @implementation MgNode
@@ -258,9 +264,11 @@ static NSUInteger version_counter;
 
   MgActiveTransition *trans = nil;
 
-  NSNumber *speed_value = dict[@"speed"];
+  NSNumber *animated_value = dict[MgNodeAnimated];
+  NSNumber *speed_value = dict[MgNodeTransitionSpeed];
 
-  if (speed_value == nil || [speed_value doubleValue] != 0)
+  if ((animated_value == nil || [animated_value boolValue])
+      && (speed_value == nil || [speed_value doubleValue] != 0))
     {
       NSMutableArray *transitions = [NSMutableArray array];
 
@@ -310,17 +318,17 @@ static NSUInteger version_counter;
 	    }
 	}
 
-      double begin = [dict[@"begin"] doubleValue];
+      double begin = [dict[MgNodeTransitionBegin] doubleValue];
       if (begin == 0)
 	begin = CACurrentMediaTime();
 
       double speed = speed_value != nil ? [speed_value doubleValue] : 1;
 
-      double duration = [dict[@"duration"] doubleValue];
+      double duration = [dict[MgNodeTransitionDuration] doubleValue];
       if (duration == 0)
 	duration = .25;
 
-      MgFunction *function = dict[@"function"];
+      MgFunction *function = dict[MgNodeTransitionFunction];
       if (function == nil)
 	function = [MgTimingFunction functionWithName:MgTimingFunctionDefault];
 

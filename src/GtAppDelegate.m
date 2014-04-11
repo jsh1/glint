@@ -32,6 +32,7 @@
 @implementation GtAppDelegate
 {
   NSMenu *_copiedObjectMenu;
+  NSOperationQueue *_thumbnailQueue;
 }
 
 - (id)init
@@ -61,6 +62,17 @@
 - (void)showObjectContextMenuWithEvent:(NSEvent *)e forView:(NSView *)view
 {
   [NSMenu popUpContextMenu:_objectContextMenu withEvent:e forView:view];
+}
+
+- (NSOperationQueue *)thumbnailQueue
+{
+  if (_thumbnailQueue == nil)
+    {
+      _thumbnailQueue = [[NSOperationQueue alloc] init];
+      [_thumbnailQueue setName:@"GtAppDelegate.thumbnailQueue"];
+    }
+
+  return _thumbnailQueue;
 }
 
 /** NSApplicationDelegate methods. */

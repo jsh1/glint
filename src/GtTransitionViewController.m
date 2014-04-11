@@ -58,9 +58,6 @@
   _items = [[NSMutableArray alloc] init];
 
   [[NSNotificationCenter defaultCenter]
-   addObserver:self selector:@selector(documentGraphDidChange:)
-   name:GtDocumentGraphDidChange object:self.document];
-  [[NSNotificationCenter defaultCenter]
    addObserver:self selector:@selector(documentNodeDidChange:)
    name:GtDocumentNodeDidChange object:self.document];
 
@@ -180,18 +177,18 @@
   [_toTableView reloadData];
 }
 
-- (void)documentGraphDidChange:(NSNotification *)note
-{
-  [_items removeAllObjects];
-  [_outlineView reloadData];
-  [_outlineView expandItem:nil expandChildren:YES];
-}
-
 - (void)documentNodeDidChange:(NSNotification *)note
 {
   NSDictionary *info = [note userInfo];
 
-  [_outlineView reloadItem:info[@"treeItem"] reloadChildren:YES];
+  if ([info[@"graphChanged"] boolValue])
+    {
+      [_items removeAllObjects];
+      [_outlineView reloadData];
+      [_outlineView expandItem:nil expandChildren:YES];
+    }
+  else
+    [_outlineView reloadItem:info[@"treeItem"] reloadChildren:YES];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object

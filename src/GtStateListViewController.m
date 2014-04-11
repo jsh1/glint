@@ -36,7 +36,7 @@ static NSString *const GtStateListViewItemType = @"org.unfactored.gt-state-list-
 @implementation GtStateListViewController
 {
   GtTreeNode *_moduleNode;
-  MgModuleLayer *_currentModule;
+  MgModuleLayer *_moduleLayer;
 
   NSArray *_dragItems;			/* NSArray<MgModuleState> */
   NSPasteboard *_dragPasteboard;
@@ -59,6 +59,13 @@ static NSString *const GtStateListViewItemType = @"org.unfactored.gt-state-list-
   if (self == nil)
     return nil;
 
+  [[NSNotificationCenter defaultCenter]
+   addObserver:self selector:@selector(documentNodeDidChange:)
+   name:GtDocumentNodeDidChange object:self.document];
+
+  [self.document addObserver:self forKeyPath:@"documentNode"
+   options:0 context:NULL];
+
   [self.windowController addObserver:self forKeyPath:@"currentModule"
    options:0 context:NULL];
 
@@ -79,8 +86,10 @@ static NSString *const GtStateListViewItemType = @"org.unfactored.gt-state-list-
 
 - (void)invalidate
 {
-  [_currentModule removeObserver:self forKeyPath:@"moduleStates"];
-  [_currentModule removeObserver:self forKeyPath:@"moduleState"];
+  [_moduleLayer removeObserver:self forKeyPath:@"moduleStates"];
+  [_moduleLayer removeObserver:self forKeyPath:@"moduleState"];
+
+  [self.document removeObserver:self forKeyPath:@"documentNode"];
 
   [self.windowController removeObserver:self forKeyPath:@"currentModule"];
 
@@ -88,22 +97,22 @@ static NSString *const GtStateListViewItemType = @"org.unfactored.gt-state-list-
   [_tableView setDataSource:nil];
 
   _moduleNode = nil;
-  _currentModule = nil;
+  _moduleLayer = nil;
 
   [super invalidate];
 }
 
 - (void)updateCurrentModule
 {
-  [_currentModule removeObserver:self forKeyPath:@"moduleStates"];
-  [_currentModule removeObserver:self forKeyPath:@"moduleState"];
+  [_moduleLayer removeObserver:self forKeyPath:@"moduleStates"];
+  [_moduleLayer removeObserver:self forKeyPath:@"moduleState"];
 
   _moduleNode = self.windowController.currentModule;
-  _currentModule = (id)_moduleNode.node;
+  _moduleLayer = (id)_moduleNode.node;
 
-  [_currentModule addObserver:self forKeyPath:@"moduleStates"
+  [_moduleLayer addObserver:self forKeyPath:@"moduleStates"
    options:0 context:NULL];
-  [_currentModule addObserver:self forKeyPath:@"moduleState"
+  [_moduleLayer addObserver:self forKeyPath:@"moduleState"
    options:0 context:NULL];
 
   [_tableView reloadData];
@@ -112,13 +121,13 @@ static NSString *const GtStateListViewItemType = @"org.unfactored.gt-state-list-
 
 - (void)updateCurrentState
 {
-  MgModuleState *state = _currentModule.moduleState;
+  MgModuleState *state = _moduleLayer.moduleState;
 
   NSInteger row = 0;
 
   if (state != nil)
     {
-      row = [_currentModule.moduleStates indexOfObjectIdenticalTo:state];
+      row = [_moduleLayer.moduleStates indexOfObjectIdenticalTo:state];
       if (row == NSNotFound)
 	return;
       row = row + 1;
@@ -131,17 +140,59 @@ static NSString *const GtStateListViewItemType = @"org.unfactored.gt-state-list-
 {
   if ([key isEqualToString:@"superstate.name"])
     {
-      value = [_currentModule moduleStateWithName:value];
+      value = [_moduleLayer moduleStateWithName:value];
       key = @"superstate";
     }
 
-  [self.document module:_currentModule state:state setValue:value forKey:key];
+  [self.document module:_moduleLayer state:state setValue:value forKey:key];
+}
+
+- (void)documentNodeDidChange:(NSNotification *)note
+{
+  NSDictionary *info = [note userInfo];
+
+  GtTreeNode *tn = info[@"treeNode"];
+  MgModuleState *state = tn.node.state.moduleState;
+
+  NSInteger row = 0;
+
+  if (state != nil)
+    {
+      row = [_moduleLayer.moduleStates indexOfObjectIdenticalTo:state];
+      if (row == NSNotFound)
+	return;
+      row = row + 1;
+    }
+
+  GtStateListItemView *view
+    = [_tableView viewAtColumn:0 row:row makeIfNecessary:NO];
+
+  if (view != nil)
+    [view invalidateThumbnail];
+}
+
+- (void)invalidateThumbnails
+{
+  [_tableView enumerateAvailableRowViewsUsingBlock:^
+    (NSTableRowView *rowView, NSInteger row)
+    {
+      GtStateListItemView *view
+	= [_tableView viewAtColumn:0 row:row makeIfNecessary:NO];
+
+      if (view != nil)
+	[view invalidateThumbnail];
+    }];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
     change:(NSDictionary *)change context:(void *)context
 {
-  if ([keyPath isEqualToString:@"currentModule"])
+  if ([keyPath isEqualToString:@"documentNode"])
+    {
+      [self updateCurrentModule];
+      [self invalidateThumbnails];
+    }
+  else if ([keyPath isEqualToString:@"currentModule"])
     {
       [self updateCurrentModule];
     }
@@ -208,7 +259,7 @@ static NSString *const GtStateListViewItemType = @"org.unfactored.gt-state-list-
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tv
 {
-  return 1 + [_currentModule.moduleStates count];
+  return 1 + [_moduleLayer.moduleStates count];
 }
 
 /** NSTableViewDelegate methods. **/
@@ -222,7 +273,7 @@ static NSString *const GtStateListViewItemType = @"org.unfactored.gt-state-list-
   if (row == 0)
     view.state = nil;
   else
-    view.state = _currentModule.moduleStates[row-1];
+    view.state = _moduleLayer.moduleStates[row-1];
 
   return view;
 }
@@ -239,7 +290,7 @@ static NSString *const GtStateListViewItemType = @"org.unfactored.gt-state-list-
 
   MgModuleState *state = nil;
   if (row > 0)
-    state = _currentModule.moduleStates[row-1];
+    state = _moduleLayer.moduleStates[row-1];
 
   [self.document node:_moduleNode setValue:state forKey:@"moduleState"];
 }
@@ -253,7 +304,7 @@ static NSString *const GtStateListViewItemType = @"org.unfactored.gt-state-list-
        idx = [indexes indexGreaterThanIndex:idx])
     {
       if (idx > 0)
-	[items addObject:_currentModule.moduleStates[idx-1]];
+	[items addObject:_moduleLayer.moduleStates[idx-1]];
     }
 
   [pboard declareTypes:@[GtStateListViewItemType] owner:self];

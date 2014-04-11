@@ -32,7 +32,6 @@
 
 #import "FoundationExtensions.h"
 
-NSString *const GtDocumentGraphDidChange = @"GtDocumentGraphDidChange";
 NSString *const GtDocumentNodeDidChange = @"GtDocumentNodeDidChange";
 
 @implementation GtDocument
@@ -1143,18 +1142,11 @@ fract(CGFloat x)
 }
 
 static void
-documentGraphChanged(GtDocument *self)
-{
-  [[NSNotificationCenter defaultCenter]
-   postNotificationName:GtDocumentGraphDidChange object:self];
-}
-
-static void
-documentNodeChanged(GtDocument *self, GtTreeNode *tn)
+documentNodeChanged(GtDocument *self, GtTreeNode *tn, BOOL graphChanged)
 {
   [[NSNotificationCenter defaultCenter]
    postNotificationName:GtDocumentNodeDidChange object:self
-   userInfo:@{@"treeItem": tn}];
+   userInfo:@{@"treeItem": tn, @"graphChanged" : @(graphChanged)}];
 }
 
 - (void)node:(GtTreeNode *)tn addNodeState:(MgNodeState *)state
@@ -1283,16 +1275,11 @@ documentNodeChanged(GtDocument *self, GtTreeNode *tn)
       /* FIXME: heinous. Also, will be called before unsetting the
 	 state-defines-key flag when undoing. */
 
-      if ([key isEqualToString:@"mask"]
-	  || [key isEqualToString:@"node"]
-	  || [key isEqualToString:@"sublayers"])
-	{
-	  documentGraphChanged(self);
-	}
-      else
-	{
-	  documentNodeChanged(self, tn);
-	}
+      BOOL graph = ([key isEqualToString:@"mask"]
+		    || [key isEqualToString:@"node"]
+		    || [key isEqualToString:@"sublayers"]);
+
+      documentNodeChanged(self, tn, graph);
     }
 }
 
@@ -1322,7 +1309,7 @@ documentNodeChanged(GtDocument *self, GtTreeNode *tn)
   [m_array insertObject:value atIndex:idx];
   [node setValue:m_array forKey:key];
 
-  documentGraphChanged(self);
+  documentNodeChanged(self, tn, YES);
 }
 
 static NSInteger
@@ -1398,7 +1385,7 @@ indexOfObjectInArray(NSArray *array, id value, NSInteger idx)
   [m_array replaceObjectAtIndex:idx withObject:value];
   [node setValue:m_array forKey:key];
 
-  documentGraphChanged(self);
+  documentNodeChanged(self, tn, YES);
 }
 
 - (void)node:(GtTreeNode *)tn removeObject:(id)oldValue
@@ -1425,7 +1412,7 @@ indexOfObjectInArray(NSArray *array, id value, NSInteger idx)
   [m_array removeObjectAtIndex:idx];
   [node setValue:m_array forKey:key];
 
-  documentGraphChanged(self);
+  documentNodeChanged(self, tn, YES);
 }
 
 - (void)node:(GtTreeNode *)tn moveObject:(id)value atIndex:(NSInteger)idx
@@ -1479,7 +1466,7 @@ indexOfObjectInArray(NSArray *array, id value, NSInteger idx)
       [node setValue:m_array forKey:key];
     }
 
-  documentGraphChanged(self);
+  documentNodeChanged(self, tn, YES);
 }
 
 - (BOOL)nodeIsEnabled:(GtTreeNode *)tn

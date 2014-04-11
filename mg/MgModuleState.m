@@ -41,6 +41,18 @@
   return [super init];
 }
 
+/** MgGraphCopying methods. **/
+
+- (id)graphCopy:(NSMapTable *)map
+{
+  MgModuleState *copy = [[[self class] alloc] init];
+
+  copy->_name = [_name copy];
+  copy->_superstate = [_superstate mg_graphCopy:map];
+
+  return copy;
+}
+
 /** NSSecureCoding methods. **/
 
 + (BOOL)supportsSecureCoding

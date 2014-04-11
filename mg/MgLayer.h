@@ -75,6 +75,7 @@
     presentationTime:(CFTimeInterval)t;
 
 - (CGImageRef)copyImage CF_RETURNS_RETAINED;
+- (CGImageRef)copyImageWithScale:(CGFloat)s CF_RETURNS_RETAINED;
 
 /** Methods for subclasses to override. **/
 
