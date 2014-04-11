@@ -26,6 +26,7 @@
 
 #import "GtAppDelegate.h"
 #import "GtColor.h"
+#import "GtThumbnailView.h"
 #import "GtStateListViewController.h"
 
 @implementation GtStateListItemView
@@ -34,7 +35,7 @@
   NSBackgroundStyle _backgroundStyle;
 
   NSOperation *_thumbnailOp;
-  NSImage *_thumbnailImage;
+  id _thumbnailImage;			/* CGImageRef */
   BOOL _pendingThumbnail;
 }
 
@@ -82,6 +83,12 @@
   [_basedOnField setEnabled:_state != nil];
 }
 
+- (void)setFrameSize:(NSSize)s
+{
+  [super setFrameSize:s];
+  [_thumbnailView setNeedsDisplay:YES];
+}
+
 - (void)invalidateThumbnail
 {
   if (!_pendingThumbnail)
@@ -104,7 +111,7 @@
 {
   if (_thumbnailImage != nil)
     {
-      [_thumbnailView setImage:_thumbnailImage];
+      [_thumbnailView setImage:(__bridge CGImageRef)_thumbnailImage];
       return;
     }
 
@@ -128,9 +135,8 @@
 	      _thumbnailOp = nil;
 	      if (im != nil)
 		{
-		  _thumbnailImage = [[NSImage alloc] initWithCGImage:im
-				     size:NSSizeFromCGSize(layer.size)];
-		  [_thumbnailView setImage:_thumbnailImage];
+		  _thumbnailImage = (__bridge id)im;
+		  [_thumbnailView setImage:im];
 		  CGImageRelease(im);
 		}
 	      else

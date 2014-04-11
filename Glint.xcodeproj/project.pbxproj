@@ -48,6 +48,7 @@
 		57618DBB18C5D1F5004108D8 /* GtViewerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 57618DB918C5D1F5004108D8 /* GtViewerView.xib */; };
 		57618DBE18C5D538004108D8 /* CoreAnimationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 57618DBD18C5D538004108D8 /* CoreAnimationExtensions.m */; };
 		576BABB418F6E9900034BD85 /* GtStateListItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 576BABB318F6E9900034BD85 /* GtStateListItemView.m */; };
+		577D5F1D18F8581800E3A7F3 /* GtThumbnailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 577D5F1C18F8581800E3A7F3 /* GtThumbnailView.m */; };
 		578DBA7218E97A5E007F2B16 /* GtTransitionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 578DBA7018E97A5E007F2B16 /* GtTransitionView.xib */; };
 		578DBA7518E97BA6007F2B16 /* GtTransitionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 578DBA7418E97BA6007F2B16 /* GtTransitionViewController.m */; };
 		57AE9B6018EEFE5C009F5992 /* GtTransitionTimingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 57AE9B5F18EEFE5C009F5992 /* GtTransitionTimingView.m */; };
@@ -173,6 +174,8 @@
 		57618DBD18C5D538004108D8 /* CoreAnimationExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CoreAnimationExtensions.m; path = src/CoreAnimationExtensions.m; sourceTree = "<group>"; };
 		576BABB218F6E9900034BD85 /* GtStateListItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtStateListItemView.h; path = src/GtStateListItemView.h; sourceTree = "<group>"; };
 		576BABB318F6E9900034BD85 /* GtStateListItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtStateListItemView.m; path = src/GtStateListItemView.m; sourceTree = "<group>"; };
+		577D5F1B18F8581800E3A7F3 /* GtThumbnailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtThumbnailView.h; path = src/GtThumbnailView.h; sourceTree = "<group>"; };
+		577D5F1C18F8581800E3A7F3 /* GtThumbnailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtThumbnailView.m; path = src/GtThumbnailView.m; sourceTree = "<group>"; };
 		578DBA7118E97A5E007F2B16 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = resources/en.lproj/GtTransitionView.xib; sourceTree = "<group>"; };
 		578DBA7318E97BA6007F2B16 /* GtTransitionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtTransitionViewController.h; path = src/GtTransitionViewController.h; sourceTree = "<group>"; };
 		578DBA7418E97BA6007F2B16 /* GtTransitionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtTransitionViewController.m; path = src/GtTransitionViewController.m; sourceTree = "<group>"; };
@@ -440,6 +443,8 @@
 				576BABB318F6E9900034BD85 /* GtStateListItemView.m */,
 				57DE109C18DDA99F00B8EC27 /* GtStateListViewController.h */,
 				57DE109D18DDA99F00B8EC27 /* GtStateListViewController.m */,
+				577D5F1B18F8581800E3A7F3 /* GtThumbnailView.h */,
+				577D5F1C18F8581800E3A7F3 /* GtThumbnailView.m */,
 				572BFA9F18D72814000E9B84 /* GtTabViewController.h */,
 				572BFAA018D72815000E9B84 /* GtTabViewController.m */,
 				57AE9B5E18EEFE5C009F5992 /* GtTransitionTimingView.h */,
@@ -620,6 +625,7 @@
 				57DA504418F32CDD009D58C1 /* MgDrawingCALayer.m in Sources */,
 				57DA503418F21D9C009D58C1 /* MgGroupCALayer.m in Sources */,
 				57AE9BB818F0555B009F5992 /* MgImageLayerState.m in Sources */,
+				577D5F1D18F8581800E3A7F3 /* GtThumbnailView.m in Sources */,
 				572A5B2318C4CE2000AB8086 /* GtAppDelegate.m in Sources */,
 				57AE9BBF18F0555B009F5992 /* MgNode.m in Sources */,
 				57AE9BB718F0555B009F5992 /* MgImageLayer.m in Sources */,

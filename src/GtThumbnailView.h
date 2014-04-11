@@ -24,17 +24,10 @@
 
 #import "GtBase.h"
 
-@interface GtColor : NSColor
+@interface GtThumbnailView : NSView
 
-+ (NSColor *)windowBackgroundColor;
+/* Actually "retain", but that's not allowed. */
 
-+ (NSColor *)viewerBackgroundColor;
-+ (NSColor *)viewerBorderColor;
-
-+ (NSColor *)timelineItemFillColor;
-+ (NSColor *)timelineItemStrokeColor;
-
-+ (NSColor *)thumbnailBorderColor;
-+ (CGColorRef)thumbnailBackgroundCGColor;
+@property(nonatomic, assign) CGImageRef image;
 
 @end

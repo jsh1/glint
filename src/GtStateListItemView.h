@@ -28,7 +28,7 @@
 
 @property(nonatomic, weak) IBOutlet GtStateListViewController *controller;
 
-@property(nonatomic, weak) IBOutlet NSImageView *thumbnailView;
+@property(nonatomic, weak) IBOutlet GtThumbnailView *thumbnailView;
 @property(nonatomic, weak) IBOutlet NSTextField *nameField;
 @property(nonatomic, weak) IBOutlet NSTextField *basedOnField;
 

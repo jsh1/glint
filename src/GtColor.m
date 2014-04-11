@@ -24,6 +24,8 @@
 
 #import "GtColor.h"
 
+#import "MgCoreGraphics.h"
+
 #define BG_HUE (204./360.)
 
 @implementation GtColor
@@ -86,6 +88,62 @@
 
   if (color == nil)
     color = [NSColor colorWithDeviceWhite:.2 alpha:.7];
+
+  return color;
+}
+
++ (NSColor *)thumbnailBorderColor
+{
+  return [NSColor lightGrayColor];
+}
+
+#define CHECK_SIZE 2
+#define PATTERN_SIZE 16
+
+static void
+draw_check_pattern(void *info, CGContextRef ctx)
+{
+  CGColorRef color = [[GtColor thumbnailBorderColor] CGColor];
+  CGContextSetFillColorWithColor(ctx, color);
+
+  bool flag = false;
+
+  for (CGFloat y = 0; y < PATTERN_SIZE; y += CHECK_SIZE, flag = !flag)
+    {
+      for (CGFloat x = 0; x < PATTERN_SIZE; x += CHECK_SIZE, flag = !flag)
+	{
+	  if (flag)
+	    CGContextFillRect(ctx, CGRectMake(x, y, CHECK_SIZE, CHECK_SIZE));
+	}
+    }
+}
+
++ (CGColorRef)thumbnailBackgroundCGColor
+{
+  static CGColorRef color;
+
+  if (color == NULL)
+    {
+      CGPatternCallbacks callbacks = {0, draw_check_pattern, 0};
+      CGRect bounds = CGRectMake(0, 0, PATTERN_SIZE, PATTERN_SIZE);
+
+      CGPatternRef pattern = CGPatternCreate(NULL, bounds,
+				CGAffineTransformIdentity,
+				PATTERN_SIZE, PATTERN_SIZE,
+				kCGPatternTilingConstantSpacing,
+				true, &callbacks);
+
+      if (pattern != NULL)
+	{
+	  CGColorSpaceRef space = CGColorSpaceCreatePattern(NULL);
+	  CGFloat components = 1;
+
+	  color = CGColorCreateWithPattern(space, pattern, &components);
+
+	  CGColorSpaceRelease(space);
+	  CGPatternRelease(pattern);
+	}
+    }
 
   return color;
 }

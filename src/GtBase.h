@@ -38,7 +38,7 @@
     GtInspectorStringControl, GtInspectorViewController,
     GtNumericTextField, GtOutlineView, GtSplitView,
     GtSplitViewController, GtStateListViewController,
-    GtStateListItemView, GtTransitionViewController,
+    GtStateListItemView, GtThumbnailView, GtTransitionViewController,
     GtTransitionTimingView, GtTreeViewController, GtTreeNode,
     GtViewController, GtViewerView, GtViewerViewController,
     GtWindowController;

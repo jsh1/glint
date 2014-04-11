@@ -49,11 +49,6 @@
                                                 <rect key="frame" x="1" y="1" width="260" height="96"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
-                                                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" id="EAR-8a-Fbe">
-                                                        <rect key="frame" x="10" y="10" width="122" height="76"/>
-                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="NRM-9O-3Pe"/>
-                                                    </imageView>
                                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="S1J-c2-uNl">
                                                         <rect key="frame" x="138" y="74" width="114" height="14"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
@@ -78,12 +73,16 @@
                                                             <action selector="controlAction:" target="gfd-zZ-oh7" id="tIE-MG-Ll1"/>
                                                         </connections>
                                                     </textField>
+                                                    <customView id="cvf-d3-Ht7" customClass="GtThumbnailView">
+                                                        <rect key="frame" x="5" y="5" width="127" height="86"/>
+                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                    </customView>
                                                 </subviews>
                                                 <connections>
                                                     <outlet property="basedOnField" destination="UYY-If-Ef5" id="l8y-Rd-miW"/>
                                                     <outlet property="controller" destination="-2" id="taF-ob-WGu"/>
                                                     <outlet property="nameField" destination="S1J-c2-uNl" id="iaL-Rb-QJ9"/>
-                                                    <outlet property="thumbnailView" destination="EAR-8a-Fbe" id="ht0-zy-Dsp"/>
+                                                    <outlet property="thumbnailView" destination="cvf-d3-Ht7" id="olc-Zi-jSC"/>
                                                 </connections>
                                             </customView>
                                         </prototypeCellViews>
