@@ -154,7 +154,7 @@
 	return YES;
     }
 
-  return NO;
+  return state == nil;
 }
 
 static size_t

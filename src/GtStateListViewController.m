@@ -154,21 +154,18 @@ static NSString *const GtStateListViewItemType = @"org.unfactored.gt-state-list-
   GtTreeNode *tn = info[@"treeNode"];
   MgModuleState *state = tn.node.state.moduleState;
 
-  NSInteger row = 0;
-
-  if (state != nil)
+  [_tableView enumerateAvailableRowViewsUsingBlock:^
+    (NSTableRowView *rowView, NSInteger row)
     {
-      row = [_moduleLayer.moduleStates indexOfObjectIdenticalTo:state];
-      if (row == NSNotFound)
-	return;
-      row = row + 1;
-    }
+      MgModuleState *row_state = (row == 0 ? nil
+				  : _moduleLayer.moduleStates[row-1]);
 
-  GtStateListItemView *view
-    = [_tableView viewAtColumn:0 row:row makeIfNecessary:NO];
-
-  if (view != nil)
-    [view invalidateThumbnail];
+      if (state == row_state || [row_state isDescendantOf:state])
+	{
+	  GtStateListItemView *view = [rowView viewAtColumn:0];
+	  [view invalidateThumbnail];
+	}
+    }];
 }
 
 - (void)invalidateThumbnails

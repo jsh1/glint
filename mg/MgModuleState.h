@@ -36,4 +36,7 @@
 
 @property(nonatomic, strong) MgModuleState *superstate;
 
+- (BOOL)isDescendantOf:(MgModuleState *)state;
+- (MgNodeState *)ancestorSharedWith:(MgModuleState *)state;
+
 @end

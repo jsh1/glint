@@ -41,6 +41,54 @@
   return [super init];
 }
 
+- (BOOL)isDescendantOf:(MgModuleState *)state
+{
+  for (MgModuleState *s = self; s != nil; s = s.superstate)
+    {
+      if (s == state)
+	return YES;
+    }
+
+  return state == nil;
+}
+
+static size_t
+state_depth(MgModuleState *s)
+{
+  size_t depth = 0;
+  while (s != nil)
+    s = s.superstate, depth++;
+  return depth;
+}
+
+- (MgModuleState *)ancestorSharedWith:(MgModuleState *)s2
+{
+  MgModuleState *s1 = self;
+
+  if (s1 == nil)
+    return s2;
+  if (s2 == nil)
+    return s1;
+  if (s1 == s2)
+    return s1;
+
+  size_t s1_depth = state_depth(s1);
+  size_t s2_depth = state_depth(s2);
+
+  while (s1_depth > s2_depth)
+    s1 = s1.superstate, s1_depth--;
+  while (s2_depth > s1_depth)
+    s2 = s2.superstate, s2_depth--;
+
+  while (s1 != s2)
+    {
+      s1 = s1.superstate;
+      s2 = s2.superstate;
+    }
+
+  return s1;
+}
+
 /** MgGraphCopying methods. **/
 
 - (id)graphCopy:(NSMapTable *)map
