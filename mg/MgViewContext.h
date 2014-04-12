@@ -56,6 +56,9 @@
 
 @end
 
+typedef CAAnimation *(^MgViewAnimationBlock)(MgViewContext *ctx,
+    CALayer<MgViewLayer> *layer, NSString *key, MgTransitionTiming *timing,
+    id fromValue, id toValue);
 
 @protocol MgViewLayer
 

@@ -448,36 +448,49 @@ blendModeFilter(CGBlendMode blend_mode)
   MgNodeState *from_state = trans.fromState;
   MgNodeState *to_state = src.state;
 
-  NSMutableArray *animations = [NSMutableArray array];
-
-  /* Handle simple keys with direct mapping from Mg -> CA properties. */
-
   NSDictionary *map = nil;
   if ([[layer class] respondsToSelector:@selector(animationMap)])
     map = [[layer class] animationMap];
   else
     map = [[self class] animationMap];
 
-  for (NSString *key in map)
+  NSMutableArray *animations = [NSMutableArray array];
+
+  for (NSString *key in [[[src class] stateClass] allProperties])
     {
-      if ([properties containsObject:key])
+      if (![properties containsObject:key])
+	continue;
+
+      id map_value = map[key];
+      if (map_value == nil)
+	continue;
+
+      MgTransitionTiming *timing = [trans timingForKey:key];
+      if (timing == nil || !timing.enabled)
+	continue;
+
+      /* FIXME: this is wrong -- we should query the value of the CA
+	 property in from/to versions of the view-layer, not the Mg key
+	 in the source object. */
+
+      id from_value = [from_state valueForKey:key];
+      id to_value = [to_state valueForKey:key];
+
+      CAAnimation *anim = nil;
+
+      if ([map_value isKindOfClass:[NSString class]])
 	{
-	  MgTransitionTiming *timing = [trans timingForKey:key];
-	  if (timing == nil || !timing.enabled)
-	    continue;
-
-	  /* FIXME: this is wrong -- we should query the value of the
-	     CA property in from/to versions of the view-layer, not
-	     the Mg key in the source object. */
-
-	  id from_value = [from_state valueForKey:key];
-	  id to_value = [to_state valueForKey:key];
-
-	  CAAnimation *anim = [self makeAnimationForTiming:timing
-			       key:map[key] from:from_value to:to_value];
-
-	  [animations addObject:anim];
+	  anim = [self makeAnimationForTiming:timing
+		  key:map_value from:from_value to:to_value];
 	}
+      else
+	{
+	  anim = ((MgViewAnimationBlock)map_value)(self, layer, key, timing,
+						   from_value, to_value);
+	}
+
+      if (anim != nil)
+	[animations addObject:anim];
     }
 
   return animations;
