@@ -87,6 +87,7 @@ extern NSString *const GtDocumentNodeDidChange;
 - (IBAction)nextModuleState:(id)sender;
 - (IBAction)previousModuleState:(id)sender;
 - (IBAction)parentModuleState:(id)sender;
+- (IBAction)gotoModuleState:(id)sender;
 
 - (void)removeTreeNodeFromParent:(GtTreeNode *)tn;
 - (void)replaceTreeNode:(GtTreeNode *)tn with:(MgNode *)node;

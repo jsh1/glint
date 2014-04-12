@@ -1090,6 +1090,19 @@ fract(CGFloat x)
     [self node:module setValue:state.superstate forKey:@"moduleState"];
 }
 
+- (IBAction)gotoModuleState:(id)sender
+{
+  GtTreeNode *module = self.windowController.currentModule;
+  MgModuleLayer *layer = (MgModuleLayer *)module.node;
+  NSInteger idx = [sender tag];
+  MgModuleState *state = nil;
+
+  if (idx > 0)
+    state = layer.moduleStates[idx-1];
+
+  [self node:module setValue:state forKey:@"moduleState"];
+}
+
 - (BOOL)canRemoveModuleState
 {
   GtTreeNode *module = self.windowController.currentModule;

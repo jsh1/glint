@@ -13,6 +13,7 @@
         </customObject>
         <customObject id="k3f-FM-D6D" customClass="GtAppDelegate">
             <connections>
+                <outlet property="mainStatesMenu" destination="JaC-oL-wFu" id="BWt-eo-TtL"/>
                 <outlet property="objectContextMenu" destination="LAS-Xx-swP" id="TPs-UW-lei"/>
                 <outlet property="objectMenu" destination="GTL-ta-mVl" id="G43-6n-B0y"/>
             </connections>
@@ -772,6 +773,23 @@ CA
                                 <connections>
                                     <action selector="previousModuleState:" target="-1" id="FdI-Zh-iUU"/>
                                 </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="wOm-D7-S0j"/>
+                            <menuItem title="Go To State" id="v3Z-wd-RCs">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="Go To State" id="JaC-oL-wFu">
+                                    <items>
+                                        <menuItem title="Base State" keyEquivalent="`" id="SPF-bA-DJi">
+                                            <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
+                                            <connections>
+                                                <action selector="gotoModuleState:" target="-1" id="CDM-Qa-W7r"/>
+                                            </connections>
+                                        </menuItem>
+                                    </items>
+                                    <connections>
+                                        <outlet property="delegate" destination="k3f-FM-D6D" id="6lA-qZ-t7N"/>
+                                    </connections>
+                                </menu>
                             </menuItem>
                         </items>
                     </menu>

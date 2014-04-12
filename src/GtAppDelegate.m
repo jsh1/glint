@@ -25,6 +25,7 @@
 #import "GtAppDelegate.h"
 
 #import "GtDocument.h"
+#import "GtTreeNode.h"
 #import "GtWindowController.h"
 
 #import "CoreAnimationExtensions.h"
@@ -131,21 +132,66 @@
     document = nil;
 
   GtWindowController *controller = document.windowController;
-    
-  for (NSMenuItem *item in [menu itemArray])
-    {
-      SEL action = [item action];
 
-      if (action == @selector(toggleEnabled:))
-	[item setState:[document toggleEnabledState]];
-      else if (action == @selector(toggleLayerGroup:))
-	[item setState:[document toggleLayerGroupState]];
-      else if (action == @selector(setBlendMode:))
-	[item setState:[document setBlendModeState:item]];
-      else if (action == @selector(setAlpha:))
-	[item setState:[document setAlphaState:item]];
-      else if (action == @selector(toggleView:))
-	[item setState:[controller viewState:item]];
+  if (menu == self.mainStatesMenu)
+    {
+      MgModuleLayer *layer = (MgModuleLayer *)controller.currentModule.node;
+      NSArray *states = layer.moduleStates;
+      MgModuleState *current_state = layer.moduleState;
+
+      NSInteger statesCount = [states count];
+      NSInteger menuCount = [[menu itemArray] count];
+
+      for (NSInteger i = menuCount - 1; i >= 1 + statesCount; i--)
+	{
+	  [menu removeItemAtIndex:i];
+	  menuCount--;
+	}
+
+      [(NSMenuItem *)[menu itemArray][0] setState:current_state == nil];
+
+      for (NSInteger i = 1; i < statesCount + 1; i++)
+	{
+	  MgModuleState *state = states[i-1];
+	  NSString *name = state.name;
+
+	  NSMenuItem *item = nil;
+	  if (i < menuCount)
+	    {
+	      item = [menu itemArray][i];
+	      [item setTitle:name];
+	    }
+	  else
+	    {
+	      item = [[NSMenuItem alloc] initWithTitle:name
+			action:@selector(gotoModuleState:) keyEquivalent:
+			[NSString stringWithFormat:@"%d", (int)i]];
+	      [item setKeyEquivalentModifierMask:
+	       NSCommandKeyMask | NSAlternateKeyMask];
+	      [item setTag:i];
+	      [menu addItem:item];
+	    }
+
+	  [item setState:state == current_state];
+	}
+    }
+  else
+    {
+      for (NSMenuItem *item in [menu itemArray])
+	{
+	  SEL action = [item action];
+
+	  if (action == @selector(toggleEnabled:))
+	    [item setState:[document toggleEnabledState]];
+	  else if (action == @selector(toggleLayerGroup:))
+	    [item setState:[document toggleLayerGroupState]];
+	  else if (action == @selector(setBlendMode:))
+	    [item setState:[document setBlendModeState:item]];
+	  else if (action == @selector(setAlpha:))
+	    [item setState:[document setAlphaState:item]];
+	  else if (action == @selector(toggleView:))
+	    [item setState:[controller viewState:item]];
+	}
     }
 }
 

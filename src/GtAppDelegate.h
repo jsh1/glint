@@ -29,6 +29,8 @@
 @property(nonatomic, weak) IBOutlet NSMenu *objectMenu;
 @property(nonatomic, strong) IBOutlet NSMenu *objectContextMenu;
 
+@property(nonatomic, weak) IBOutlet NSMenu *mainStatesMenu;
+
 - (void)showObjectContextMenuWithEvent:(NSEvent *)e forView:(NSView *)view;
 
 @property(nonatomic, strong, readonly) NSOperationQueue *thumbnailQueue;
