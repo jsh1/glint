@@ -9,22 +9,23 @@
       "class": "GtSplitViewController",
       "identifierSuffix": ".project",
       "vertical": false,
+      "initialSizes": [280, 0],
       "subviewControllers": [
-	{
-	  "class": "GtTabViewController",
-	  "identifierSuffix": ".project-tab[0]",
-	  "subviewControllers": [
-	    {
-	      "class": "GtTreeViewController"
-	    }
-	  ]
-	},
         {
 	  "class": "GtTabViewController",
 	  "identifierSuffix": ".project-tab[1]",
 	  "subviewControllers": [
 	    {
 	      "class": "GtStateListViewController"
+	    }
+	  ]
+	},
+	{
+	  "class": "GtTabViewController",
+	  "identifierSuffix": ".project-tab[0]",
+	  "subviewControllers": [
+	    {
+	      "class": "GtTreeViewController"
 	    }
 	  ]
 	}
