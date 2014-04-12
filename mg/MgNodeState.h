@@ -30,7 +30,7 @@
 
 + (instancetype)defaultState;
 
-+ (NSSet *)allProperties;
++ (NSArray *)allProperties;
 
 - (id)init;
 

@@ -46,7 +46,7 @@
   return state;
 }
 
-+ (NSSet *)allProperties
++ (NSArray *)allProperties
 {
   static NSMapTable *table;
   static dispatch_queue_t queue;
@@ -59,33 +59,35 @@
       table = [NSMapTable strongToStrongObjectsMapTable];
     });
 
-  __block NSSet *result = nil;
+  __block NSArray *result = nil;
 
   dispatch_sync(queue, ^
     {
-      NSSet *set = [table objectForKey:self];
+      NSArray *array = [table objectForKey:self];
 
-      if (set == nil)
+      if (array == nil)
 	{
-	  set = [self _allProperties];
-	  [table setObject:set forKey:self];
+	  array = [self _allProperties];
+	  [table setObject:array forKey:self];
 	}
 
-      result = set;
+      result = array;
     });
 
   return result;
 }
 
-+ (NSSet *)_allProperties
++ (NSArray *)_allProperties
 {
   if (self == [MgNodeState class])
     {
-      return [NSSet set];
+      return @[];
     }
   else
     {
-      NSMutableSet *set = [NSMutableSet set];
+      NSMutableArray *array = [[NSMutableArray alloc] init];
+
+      [array addObjectsFromArray:[[self superclass] allProperties]];
 
       /* Add all non-readonly objc properties defined by the class. */
 
@@ -115,16 +117,14 @@
 	      if (!read_only)
 		{
 		  const char *name = property_getName(plist[i]);
-		  [set addObject:[NSString stringWithUTF8String:name]];
+		  [array addObject:[NSString stringWithUTF8String:name]];
 		}
 	    }
 	}
 
       free(plist);
 
-      [set unionSet:[[self superclass] allProperties]];
-
-      return [set copy];
+      return [array copy];
     }
 }
 
