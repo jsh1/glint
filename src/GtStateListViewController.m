@@ -212,6 +212,7 @@ static NSString *const GtStateListViewItemType = @"org.unfactored.gt-state-list-
 {
   [_tableView setRowHeight:h];
   [_rowHeightSlider setDoubleValue:h];
+  [self invalidateThumbnails];
 }
 
 - (IBAction)controlAction:(id)sender
