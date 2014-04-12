@@ -423,6 +423,22 @@ blendModeFilter(CGBlendMode blend_mode)
 
   dispatch_once(&once, ^
     {
+      /* FIXME: why do we need to negate the values being used in
+	 the transform.rotation.z key-path? Seems like a bug somewhere.
+	 Ideally would use [CAValueFunction rotateZ], but would need
+	 to get the right concatenation behavior somehow. */
+
+      MgViewAnimationBlock rotation_block = ^(MgViewContext *ctx,
+	  CALayer<MgViewLayer> *layer, NSString *key, MgTransitionTiming
+	  *timing, id fromValue, id toValue)
+	{	
+	  fromValue = @(-[fromValue doubleValue]);
+	  toValue = @(-[toValue doubleValue]);
+
+	  return [ctx makeAnimationForTiming:timing
+		  key:@"transform.rotation.z" from:fromValue to:toValue];
+	};
+
       /* FIXME: no way to handle skew directly? */
 
       map = @{
@@ -433,7 +449,7 @@ blendModeFilter(CGBlendMode blend_mode)
 	@"alpha" : @"opacity",
 	@"scale" : @"transform.scale.xy",
 	@"squeeze" : @"transform.scale.x",
-	@"rotation" : @"transform.rotation.z",
+	@"rotation" : rotation_block,
       };
     });
 
