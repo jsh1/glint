@@ -23,9 +23,10 @@
    SOFTWARE. */
 
 #import "GtViewController.h"
+#import "GtInspectorControl.h"
 
 @interface GtInspectorViewController : GtViewController
-    <NSOutlineViewDataSource, NSOutlineViewDelegate>
+    <GtInspectorDelegate, NSOutlineViewDataSource, NSOutlineViewDelegate>
 
 @property(nonatomic, weak) IBOutlet NSOutlineView *outlineView;
 

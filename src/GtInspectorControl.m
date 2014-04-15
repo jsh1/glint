@@ -30,7 +30,6 @@
 #import "GtInspectorItem.h"
 #import "GtInspectorNumberControl.h"
 #import "GtInspectorStringControl.h"
-#import "GtInspectorViewController.h"
 
 #define LEFT_COLUMN_WIDTH 50
 #define RIGHT_COLUMN_X_INSET 8
@@ -38,7 +37,7 @@
 @implementation GtInspectorControl
 {
   GtInspectorItem *_item;
-  __weak GtInspectorViewController *_controller;
+  __weak id<GtInspectorDelegate> _delegate;
 }
 
 static Class
@@ -66,12 +65,12 @@ controlClass(GtInspectorItem *item)
 }
 
 + (instancetype)controlForItem:(GtInspectorItem *)item
-    controller:(GtInspectorViewController *)controller
+    delegate:(id<GtInspectorDelegate>)delegate
 {
   Class cls = controlClass(item);
 
   if (cls != nil)
-    return [cls controlForItem:item controller:controller];
+    return [cls controlForItem:item delegate:delegate];
   else
     return nil;
 }
@@ -87,14 +86,14 @@ controlClass(GtInspectorItem *item)
 }
 
 - (id)initWithItem:(GtInspectorItem *)item
-    controller:(GtInspectorViewController *)controller
+    delegate:(id<GtInspectorDelegate>)delegate
 {
   self = [super initWithFrame:NSZeroRect];
   if (self == nil)
     return nil;
 
   _item = item;
-  _controller = controller;
+  _delegate = delegate;
 
   return self;
 }
@@ -121,7 +120,7 @@ controlClass(GtInspectorItem *item)
 
 - (IBAction)takeValue:(id)sender
 {
-  [_controller setInspectedValue:self.objectValue forKey:self.item.key];
+  [_delegate setInspectedValue:self.objectValue forKey:self.item.key];
 }
 
 - (CGRect)leftColumnRect

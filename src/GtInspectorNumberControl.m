@@ -79,9 +79,9 @@ control_row_count(GtInspectorNumberControlType type)
 }
 
 + (instancetype)controlForItem:(GtInspectorItem *)item
-    controller:(GtInspectorViewController *)controller
+    delegate:(id<GtInspectorDelegate>)delegate
 {
-  return [[self alloc] initWithItem:item controller:controller];
+  return [[self alloc] initWithItem:item delegate:delegate];
 }
 
 + (CGFloat)controlHeightForItem:(GtInspectorItem *)item
@@ -90,9 +90,9 @@ control_row_count(GtInspectorNumberControlType type)
 }
 
 - (id)initWithItem:(GtInspectorItem *)item
-    controller:(GtInspectorViewController *)controller
+    delegate:(id<GtInspectorDelegate>)delegate
 {
-  self = [super initWithItem:item controller:controller];
+  self = [super initWithItem:item delegate:delegate];
   if (self == nil)
     return nil;
 

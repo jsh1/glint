@@ -27,7 +27,7 @@
 @implementation GtInspectorStringControl
 
 + (instancetype)controlForItem:(GtInspectorItem *)item
-    controller:(GtInspectorViewController *)controller
+    delegate:(id<GtInspectorDelegate>)delegate
 {
   return nil;
 }

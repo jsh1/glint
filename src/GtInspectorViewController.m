@@ -328,7 +328,7 @@ common_superclass(Class c1, Class c2)
     }
   else
     {
-      return [GtInspectorControl controlForItem:item controller:self];
+      return [GtInspectorControl controlForItem:item delegate:self];
     }
 }
 

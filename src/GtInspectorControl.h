@@ -24,20 +24,29 @@
 
 #import "GtBase.h"
 
+@protocol GtInspectorDelegate <NSObject>
+
+- (id)inspectedValueForKey:(NSString *)key;
+
+- (void)setInspectedValue:(id)value forKey:(NSString *)key;
+
+@end
+
+
 @interface GtInspectorControl : NSView
 
 + (instancetype)controlForItem:(GtInspectorItem *)item
-    controller:(GtInspectorViewController *)controller;
+    delegate:(id<GtInspectorDelegate>)delegate;
 
 + (CGFloat)controlHeightForItem:(GtInspectorItem *)item;
 
 /* designated initializer, should only be called by subclasses. */
 
 - (id)initWithItem:(GtInspectorItem *)item
-    controller:(GtInspectorViewController *)controller;
+    delegate:(id<GtInspectorDelegate>)delegate;
 
 @property(nonatomic, retain, readonly) GtInspectorItem *item;
-@property(nonatomic, weak, readonly) GtInspectorViewController *controller;
+@property(nonatomic, weak, readonly) id<GtInspectorDelegate> delegate;
 
 @property(nonatomic, retain) id objectValue;
 
