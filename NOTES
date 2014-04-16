@@ -11,20 +11,12 @@ Issues
 
   If multiple objects, take bounding rect from common parent.
 
-7. Add transition editing view
+7. Finish transition editing view
 
-  Header has two popup buttons: from and to states, with "Any". Outline
-  view of all objects (layers) that have state changes between the two
-  selected states, expanding the object shows the properties that the
-  state modifies. Simple timeline on right hand side (begin, duration,
-  function).
-
-  Or an alternate method:
-
-  Combine state chooser and transition editor into a single horizontal
-  panel: narrow table view on each side listing all states (and
+  Narrow table view on each side listing all states (and
   Any/Super), and wider middle outline view with the layers and
   properties that change between the two states, and their timeline.
+
   Selecting a state on either side switches to that state and moves the
   time scrubber all the way to the left or right, so that the picked
   state is visible. Dragging the time scrubber then plays through the
@@ -33,6 +25,11 @@ Issues
   When a state is selected in left/right it's grayed out of the other
   view, and states representing explicitly-defined transitions are
   highlighted somehow (bold?)
+
+  Checkbox next to each key allowing the animation to be disabled.
+
+  How do we visually communicate the difference between explicit
+  ("A->B") and chained ("A->Any; Any->B") transitions?
 
 8. Finish inspector
 
@@ -56,7 +53,7 @@ Issues
 
 12. Add keyboard controls to canvas.
 
-  - cursor keys move objects.
+  - cursor keys move objects. [done]
 
 13. Show thumbnails.
 

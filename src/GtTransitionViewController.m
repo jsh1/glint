@@ -293,6 +293,10 @@ showNodeForState(GtTreeNode *tn, MgModuleState *from, MgModuleState *to)
 	count++;
     }
 
+  /* FIXME: cache this set somewhere? */
+
+  NSMutableSet *set = [[NSMutableSet alloc] init];
+
   for (MgNodeState *st in ((GtTreeNode *)item).node.states)
     {
       if (showNodeStateForState(st, _fromState, _toState))
@@ -300,10 +304,12 @@ showNodeForState(GtTreeNode *tn, MgModuleState *from, MgModuleState *to)
 	  for (NSString *key in [[st class] allProperties])
 	    {
 	      if ([st definesValueForKey:key])
-		count++;
+		[set addObject:key];
 	    }
 	}
     }
+
+  count += [set count];
 
   return count;
 }
@@ -323,19 +329,28 @@ showNodeForState(GtTreeNode *tn, MgModuleState *from, MgModuleState *to)
 	return tn;
     }
 
+  NSMutableSet *set = [[NSMutableSet alloc] init];
+
   for (MgNodeState *st in ((GtTreeNode *)item).node.states)
     {
       if (showNodeStateForState(st, _fromState, _toState))
 	{
 	  for (NSString *key in [[st class] allProperties])
 	    {
-	      if ([st definesValueForKey:key] && idx-- == 0)
-		{
-		  NSArray *data = @[item, key];
-		  [_items addObject:data];
-		  return data;
-		}
+	      if ([st definesValueForKey:key])
+		[set addObject:key];
 	    }
+	}
+    }
+
+  for (NSString *key in [[set allObjects] sortedArrayUsingSelector:
+			 @selector(caseInsensitiveCompare:)])
+    {
+      if (idx-- == 0)
+	{
+	  NSArray *data = @[item, key];
+	  [_items addObject:data];
+	  return data;
 	}
     }
 
