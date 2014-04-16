@@ -89,7 +89,13 @@ NSString *const GtDocumentNodeDidChange = @"GtDocumentNodeDidChange";
   if (!CGSizeEqualToSize(_documentSize, s))
     {
       [self willChangeValueForKey:@"documentSize"];
+
       _documentSize = s;
+
+      MgLayer *root = self.documentNode;
+      root.size = s;
+      root.position = self.documentCenter;
+
       [self didChangeValueForKey:@"documentSize"];
     }
 }
