@@ -32,6 +32,8 @@
 
 #import "FoundationExtensions.h"
 
+#import "MgMacros.h"
+
 NSString *const GtDocumentNodeDidChange = @"GtDocumentNodeDidChange";
 
 @implementation GtDocument
@@ -1038,6 +1040,26 @@ fract(CGFloat x)
     }
 
   return on && off ? NSMixedState : on ? NSOnState : NSOffState;
+}
+
+- (void)moveObjects:(CGPoint (^)(CGPoint p))fun
+{
+  NSMutableSet *nodes = [NSMutableSet set];
+
+  for (GtTreeNode *tn in self.windowController.selection)
+    {
+      MgLayer *layer = (MgLayer *)tn.node;
+      if (![layer isKindOfClass:[MgLayer class]])
+	continue;
+
+      if ([nodes containsObject:layer])
+	continue;
+
+      CGPoint p = fun(layer.position);
+      [self node:tn setValue:BOX(p) forKey:@"position"];
+
+      [nodes addObject:layer];
+    }
 }
 
 - (IBAction)addModuleState:(id)sender

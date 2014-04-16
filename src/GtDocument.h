@@ -83,6 +83,8 @@ extern NSString *const GtDocumentNodeDidChange;
 - (IBAction)setAlpha:(id)sender;
 - (NSInteger)setAlphaState:(id)sender;
 
+- (void)moveObjects:(CGPoint (^)(CGPoint p))fun;
+
 - (IBAction)addModuleState:(id)sender;
 - (IBAction)removeModuleState:(id)sender;
 

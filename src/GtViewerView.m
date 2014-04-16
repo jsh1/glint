@@ -770,6 +770,60 @@
   self.viewScale = s;
 }
 
+- (BOOL)acceptsFirstResponder
+{
+  return YES;
+}
+
+- (void)keyDown:(NSEvent *)e
+{
+  NSString *chars = [e charactersIgnoringModifiers];
+
+  if ([chars length] == 1)
+    {
+      GtDocument *document = self.controller.document;
+      CGFloat delta = !([e modifierFlags] & NSShiftKeyMask) ? 1 : 5;
+
+      switch ([chars characterAtIndex:0])
+	{
+	case NSLeftArrowFunctionKey:
+	  [document moveObjects:^CGPoint (CGPoint p)
+	    {
+	      return CGPointMake(p.x - delta, p.y);
+	    }];
+	  return;
+
+	case NSRightArrowFunctionKey:
+	  [document moveObjects:^CGPoint (CGPoint p)
+	    {
+	      return CGPointMake(p.x + delta, p.y);
+	    }];
+	  return;
+
+	case NSUpArrowFunctionKey:
+	  [document moveObjects:^CGPoint (CGPoint p)
+	    {
+	      return CGPointMake(p.x, p.y - delta);
+	    }];
+	  return;
+
+	case NSDownArrowFunctionKey:
+	  [document moveObjects:^CGPoint (CGPoint p)
+	    {
+	      return CGPointMake(p.x, p.y + delta);
+	    }];
+	  return;
+
+	case 0x7f:			/* backspace */
+	case NSDeleteFunctionKey:
+	  [document delete:self];
+	  return;
+	}
+    }
+
+  [super keyDown:e];
+}
+
 - (NSDragOperation)draggingEntered:(id <NSDraggingInfo>)sender
 {
   NSPasteboard *pboard = [sender draggingPasteboard];
