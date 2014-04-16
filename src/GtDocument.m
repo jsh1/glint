@@ -1532,6 +1532,21 @@ indexOfObjectInArray(NSArray *array, id value, NSInteger idx)
     }
 }
 
+- (void)setDocumentValue:(id)value forKey:(NSString *)key
+{
+  id oldValue = [self valueForKey:key];
+
+  if (oldValue != value && ![oldValue isEqual:value])
+    {
+      [self registerUndo:^
+        {
+	  [self setDocumentValue:oldValue forKey:key];
+	}];
+
+      [self setValue:value forKey:key];
+    }
+}
+
 - (BOOL)validateUserInterfaceItem:(id <NSValidatedUserInterfaceItem>)item
 {
   SEL action = [item action];

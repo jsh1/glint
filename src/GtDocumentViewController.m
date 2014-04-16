@@ -22,18 +22,64 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "GtViewController.h"
-#import "GtInspectorControl.h"
+#import "GtDocumentViewController.h"
 
-@interface GtInspectorViewController : GtViewController
-    <GtInspectorDelegate, NSOutlineViewDataSource, NSOutlineViewDelegate>
+#import "GtDocument.h"
+#import "GtInspectorItem.h"
 
-@property(nonatomic, weak) IBOutlet NSOutlineView *outlineView;
+@implementation GtDocumentViewController
 
-@property(nonatomic, strong) GtInspectorItem *inspectorTree;
+- (NSString *)title
+{
+  return @"Document";
+}
 
-- (void)reloadData;
-- (void)reloadValues;
-- (void)expandToplevelItems;
+- (id)initWithWindowController:(GtWindowController *)windowController
+{
+  self = [super initWithWindowController:windowController];
+  if (self == nil)
+    return nil;
+
+  [self.document addObserver:self forKeyPath:@"documentSize"
+   options:0 context:NULL];
+
+  return self;
+}
+
+- (void)viewDidLoad
+{
+  [super viewDidLoad];
+
+  self.inspectorTree = [GtInspectorItem
+			inspectorTreeForClass:[GtDocument class]];
+}
+
+- (void)invalidate
+{
+  [self.document removeObserver:self forKeyPath:@"documentSize"];
+
+  [super invalidate];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
+    change:(NSDictionary *)change context:(void *)context
+{
+  if (object == self.document)
+    {
+      [self reloadValues];
+    }
+}
+
+/** GtInspectorDelegate methods. **/
+
+- (id)inspectedValueForKey:(NSString *)key
+{
+  return [self.document valueForKey:key];
+}
+
+- (void)setInspectedValue:(id)value forKey:(NSString *)key
+{
+  [self.document setDocumentValue:value forKey:key];
+}
 
 @end

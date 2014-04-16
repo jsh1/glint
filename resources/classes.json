@@ -247,5 +247,13 @@
       "displayName": "Draws After End",
       "type": "bool"
     }
+  },
+
+  "GtDocument": {
+    "documentSize": {
+      "displayName": "Size",
+      "type": "CGSize",
+      "units": "pixels"
+    }
   }
 }

@@ -3,7 +3,7 @@
   "identifierSuffix": ".main",
   "vertical": true,
   "indexOfResizableSubview": 1,
-  "initialSizes": [200, 0, 280],
+  "initialSizes": [200, 0, 300],
   "subviewControllers": [
     {
       "class": "GtSplitViewController",
@@ -57,7 +57,10 @@
       "identifierSuffix": ".inspector-tab",
       "subviewControllers": [
 	{
-	  "class": "GtInspectorViewController"
+	  "class": "GtPropertiesViewController"
+	},
+	{
+	  "class": "GtDocumentViewController"
 	}
       ]
     }

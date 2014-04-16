@@ -53,5 +53,12 @@
       "startRadius", "endRadius",
       "drawsBeforeStart", "drawsAfterEnd"
     ]
+  },
+
+  "GtDocument": {
+    "displayName": "Document",
+    "properties": [
+      "documentSize"
+    ]
   }
 }

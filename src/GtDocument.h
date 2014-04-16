@@ -108,4 +108,6 @@ extern NSString *const GtDocumentNodeDidChange;
 - (void)module:(MgModuleLayer *)node state:(MgModuleState *)state
     setValue:(id)value forKey:(NSString *)key;
 
+- (void)setDocumentValue:(id)value forKey:(NSString *)key;
+
 @end

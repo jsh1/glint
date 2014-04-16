@@ -24,11 +24,8 @@
 
 #import "GtInspectorViewController.h"
 
-#import "GtDocument.h"
 #import "GtInspectorControl.h"
 #import "GtInspectorItem.h"
-#import "GtTreeNode.h"
-#import "GtWindowController.h"
 
 #define LABEL_HEIGHT 22
 
@@ -36,8 +33,6 @@
 
 @implementation GtInspectorViewController
 {
-  NSArray *_selection;			/* NSArray<GtTreeNode> */
-  Class _inspectorClass;
   GtInspectorItem *_inspectorTree;
   NSInteger _valueColumnIndex;
 }
@@ -45,23 +40,6 @@
 + (NSString *)viewNibName
 {
   return @"GtInspectorView";
-}
-
-- (NSString *)title
-{
-  return @"Inspector";
-}
-
-- (id)initWithWindowController:(GtWindowController *)windowController
-{
-  self = [super initWithWindowController:windowController];
-  if (self == nil)
-    return nil;
-
-  [self.windowController addObserver:self forKeyPath:@"selection" options:0
-   context:NULL];
-
-  return self;
 }
 
 - (void)viewDidLoad
@@ -77,106 +55,40 @@
 
   [_outlineView setSelectionHighlightStyle:
    NSTableViewSelectionHighlightStyleNone];
-
-  [self updateSelection];
-
-  [_outlineView expandItem:nil expandChildren:NO];
 }
 
 - (void)invalidate
 {
-  [self.windowController removeObserver:self forKeyPath:@"selection"];
-
-  for (GtTreeNode *tn in _selection)
-    [tn.node removeObserver:self forKeyPath:@"version"];
-
   [_outlineView setDelegate:nil];
   [_outlineView setDataSource:nil];
-
-  _selection = nil;
 
   [super invalidate];
 }
 
-static size_t
-class_depth(Class c)
+- (GtInspectorItem *)inspectorTree
 {
-  size_t depth = 0;
-  while (c != Nil)
-    {
-      c = [c superclass];
-      depth++;
-    }
-  return depth;
+  return _inspectorTree;
 }
 
-static Class
-common_superclass(Class c1, Class c2)
+- (void)setInspectorTree:(GtInspectorItem *)item
 {
-  if (c1 == Nil)
-    return c2;
-  if (c2 == Nil)
-    return c1;
-  if (c1 == c2)
-    return c1;
-
-  size_t c1_depth = class_depth(c1);
-  size_t c2_depth = class_depth(c2);
-
-  while (c1_depth > c2_depth)
-    c1 = [c1 superclass], c1_depth--;
-  while (c2_depth > c1_depth)
-    c2 = [c2 superclass], c2_depth--;
-
-  while (c1 != c2)
+  if (_inspectorTree != item)
     {
-      c1 = [c1 superclass];
-      c2 = [c2 superclass];
-    }
+      _inspectorTree = item;
 
-  return c1;
+      [self reloadData];
+      [self expandToplevelItems];
+    }
+  else
+    [self reloadValues];
 }
 
-- (void)updateSelection
+- (void)reloadData
 {
-  NSArray *selection = self.windowController.selection;
-
-  if ([_selection isEqual:selection])
-    return;
-
-  for (GtTreeNode *tn in _selection)
-    [tn.node removeObserver:self forKeyPath:@"version"];
-
-  _selection = [selection copy];
-
-  for (GtTreeNode *tn in _selection)
-    [tn.node addObserver:self forKeyPath:@"version" options:0 context:NULL];
-
-  Class cls = Nil;
-
-  for (GtTreeNode *tn in _selection)
-    {
-      Class tn_class = [tn.node class];
-
-      if (cls == Nil)
-	cls = tn_class;
-      else
-	cls = common_superclass(cls, tn_class);
-    }
-
-  if (![cls isSubclassOfClass:[MgNode class]])
-    cls = Nil;
-
-  _inspectorClass = cls;
-  _inspectorTree = [GtInspectorItem inspectorTreeForClass:cls];
-
   [_outlineView reloadData];
-
-  for (GtInspectorItem *subitem in _inspectorTree.subitems)
-    [_outlineView expandItem:subitem];
 }
 
-- (void)updateValues
+- (void)reloadValues
 {
   NSOutlineView *view = _outlineView;
 
@@ -194,50 +106,23 @@ common_superclass(Class c1, Class c2)
     }
 }
 
+- (void)expandToplevelItems
+{
+  [_outlineView expandItem:_inspectorTree];
+
+  for (GtInspectorItem *subitem in _inspectorTree.subitems)
+    [_outlineView expandItem:subitem];
+}
+
+/** GtInspectorDelegate methods. **/
+
 - (id)inspectedValueForKey:(NSString *)key
 {
-  NSInteger count = [_selection count];
-
-  if (count == 0)
-    return nil;
-
-  id value = [((GtTreeNode *)_selection[0]).node valueForKey:key];
-
-  if (count > 1)
-    {
-      for (NSInteger i = 1; i < count; i++)
-	{
-	  id value_i = [((GtTreeNode *)_selection[i]).node valueForKey:key];
-
-	  if (value != value_i && ![value isEqual:value_i])
-	    return nil;
-	}
-    }
-
-  return value;
+  return nil;
 }
 
 - (void)setInspectedValue:(id)value forKey:(NSString *)key
 {
-  GtDocument *document = self.document;
-
-  for (GtTreeNode *tn in _selection)
-    {
-      [document node:tn setValue:value forKey:key];
-    }
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
-    change:(NSDictionary *)change context:(void *)context
-{
-  if ([keyPath isEqualToString:@"selection"])
-    {
-      [self updateSelection];
-    }
-  else if ([keyPath isEqualToString:@"version"])
-    {
-      [self updateValues];
-    }
 }
 
 /** NSOutlineViewDataSource methods. **/
