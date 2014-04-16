@@ -41,6 +41,8 @@ static NSString *const GtStateListViewItemType = @"org.unfactored.gt-state-list-
   NSArray *_dragItems;			/* NSArray<MgModuleState> */
   NSPasteboard *_dragPasteboard;
   NSDragOperation _dragOperation;
+
+  NSInteger _ignoreSelection;
 }
 
 + (NSString *)viewNibName
@@ -115,7 +117,10 @@ static NSString *const GtStateListViewItemType = @"org.unfactored.gt-state-list-
   [_moduleLayer addObserver:self forKeyPath:@"moduleState"
    options:0 context:NULL];
 
+  _ignoreSelection++;
   [_tableView reloadData];
+  _ignoreSelection--;
+
   [self updateCurrentState];
 }
 
@@ -284,6 +289,9 @@ static NSString *const GtStateListViewItemType = @"org.unfactored.gt-state-list-
 
 - (void)tableViewSelectionDidChange:(NSNotification *)note
 {
+  if (_ignoreSelection > 0)
+    return;
+
   NSInteger row = [_tableView selectedRow];
 
   MgModuleState *state = nil;
