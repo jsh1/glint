@@ -370,6 +370,80 @@ makeSelectionArray(NSMapTable *added)
 			  return ((GtTreeNode *)obj).node;}]];
 }
 
+- (IBAction)duplicate:(id)sender
+{
+  NSMutableSet *set = [NSMutableSet set];
+  NSMapTable *added = [NSMapTable strongToStrongObjectsMapTable];
+
+  for (GtTreeNode *tn in self.windowController.selection)
+    {
+      if ([set containsObject:tn.node])
+	continue;
+
+      GtTreeNode *parent = [tn containingGroup];
+      if (parent == nil)
+	continue;
+
+      MgNode *copy = [tn.node mg_graphCopy];
+      if (copy == nil)
+	continue;
+
+      makeNameUnique(copy, parent.node);
+
+      NSInteger idx = NSIntegerMax;
+      for (GtTreeNode *n = tn; n != nil; n = n.parent)
+	{
+	  if (n.parent == parent)
+	    {
+	      if ([n.parentKey isEqualToString:@"sublayers"])
+		idx = n.parentIndex + 1;
+	      break;
+	    }
+	}
+
+      [self node:parent insertObject:copy atIndex:idx forKey:@"sublayers"];
+      [added setObject:parent forKey:copy];
+
+      [set addObject:tn.node];
+    }
+
+  self.windowController.selection = makeSelectionArray(added);
+}
+
+- (IBAction)alias:(id)sender
+{
+  NSMutableSet *set = [NSMutableSet set];
+  NSMapTable *added = [NSMapTable strongToStrongObjectsMapTable];
+
+  for (GtTreeNode *tn in self.windowController.selection)
+    {
+      if ([set containsObject:tn])
+	continue;
+
+      GtTreeNode *parent = [tn containingGroup];
+      if (parent == nil)
+	continue;
+
+      NSInteger idx = NSIntegerMax;
+      for (GtTreeNode *n = tn; n != nil; n = n.parent)
+	{
+	  if (n.parent == parent)
+	    {
+	      if ([n.parentKey isEqualToString:@"sublayers"])
+		idx = n.parentIndex + 1;
+	      break;
+	    }
+	}
+
+      [self node:parent insertObject:tn.node atIndex:idx forKey:@"sublayers"];
+      [added setObject:parent forKey:tn.node];
+
+      [set addObject:tn];
+    }
+
+  self.windowController.selection = makeSelectionArray(added);
+}
+
 - (IBAction)copyDocument:(id)sender
 {
   NSPasteboard *pboard = [NSPasteboard generalPasteboard];

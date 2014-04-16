@@ -59,6 +59,8 @@ extern NSString *const GtDocumentNodeDidChange;
 - (IBAction)delete:(id)sender;
 - (IBAction)cut:(id)sender;
 - (IBAction)copy:(id)sender;
+- (IBAction)duplicate:(id)sender;
+- (IBAction)alias:(id)sender;
 - (IBAction)copyDocument:(id)sender;
 - (IBAction)paste:(id)sender;
 - (BOOL)canPaste;
