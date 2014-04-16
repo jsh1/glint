@@ -91,6 +91,29 @@ static NSMutableSet *image_provider_classes;
     }
 }
 
++ (BOOL)automaticallyNotifiesObserversOfInterpolationQuality
+{
+  return NO;
+}
+
+- (CGInterpolationQuality)interpolationQuality
+{
+  return STATE.interpolationQuality;
+}
+
+- (void)setInterpolationQuality:(CGInterpolationQuality)q
+{
+  MgImageLayerState *state = STATE;
+
+  if (state.interpolationQuality != q)
+    {
+      [self willChangeValueForKey:@"interpolationQuality"];
+      state.interpolationQuality = q;
+      [self incrementVersion];
+      [self didChangeValueForKey:@"interpolationQuality"];
+    }
+}
+
 + (BOOL)automaticallyNotifiesObserversOfCropRect
 {
   return NO;
@@ -181,9 +204,17 @@ static NSMutableSet *image_provider_classes;
       CGContextTranslateCTM(rs->ctx, 0, self.bounds.size.height);
       CGContextScaleCTM(rs->ctx, 1, -1);
 
-      /* FIXME: implement 9-part and tiling. */
+      /* FIXME: implement 9-part and tiling.
+	 FIXME: is interpolationQuality part of the gstate? */
+
+      CGInterpolationQuality old_quality
+        = CGContextGetInterpolationQuality(rs->ctx);
+
+      CGContextSetInterpolationQuality(rs->ctx, self.interpolationQuality);
 
       CGContextDrawImage(rs->ctx, self.bounds, im);
+
+      CGContextSetInterpolationQuality(rs->ctx, old_quality);
 
       CGContextRestoreGState(rs->ctx);
 

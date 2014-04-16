@@ -104,6 +104,30 @@
     {
       self.contents = (__bridge id)image;
 
+      CGInterpolationQuality quality = _layer.interpolationQuality;
+                      
+      NSString *min_filter = nil, *mag_filter = nil;
+      switch (quality)
+	{
+	case kCGInterpolationNone:
+	  min_filter = mag_filter = kCAFilterNearest;
+	  break;
+
+	case kCGInterpolationLow:
+	  min_filter = mag_filter = kCAFilterLinear;
+	  break;
+
+	case kCGInterpolationDefault:
+	case kCGInterpolationMedium:
+	case kCGInterpolationHigh:
+	  min_filter = kCAFilterTrilinear;
+	  mag_filter = kCAFilterLinear;
+	  break;
+	}
+
+      self.minificationFilter = min_filter;
+      self.magnificationFilter = mag_filter;
+
       CGRect crop = _layer.cropRect;
       CGRect center = _layer.centerRect;
 

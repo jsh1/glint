@@ -31,6 +31,8 @@
 
 @property(nonatomic, strong) id<MgImageProvider> imageProvider;
 
+@property(nonatomic, assign) CGInterpolationQuality interpolationQuality;
+
 @property(nonatomic, assign) CGRect cropRect;
 @property(nonatomic, assign) CGRect centerRect;
 

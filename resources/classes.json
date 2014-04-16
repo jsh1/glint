@@ -185,6 +185,11 @@
       "displayName": "Image",
       "type": "MgImageProvider"
     },
+    "interpolationQuality": {
+      "displayName": "Interpolation",
+      "type": "enum",
+      "values": ["Default", "None", "Low", "Medium", "High"]
+    },
     "cropRect": {
       "displayName": "Crop",
       "type": "CGRect",

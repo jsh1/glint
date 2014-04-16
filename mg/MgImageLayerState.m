@@ -38,12 +38,14 @@
 @implementation MgImageLayerState
 {
   id<MgImageProvider> _imageProvider;
+  CGInterpolationQuality _interpolationQuality;
   CGRect _cropRect;
   CGRect _centerRect;
   BOOL _repeats;
 
   struct {
     bool imageProvider;
+    bool interpolationQuality;
     bool cropRect;
     bool centerRect;
     bool repeats;
@@ -55,11 +57,13 @@
   [super setDefaults];
 
   _imageProvider = nil;
+  _interpolationQuality = kCGInterpolationDefault;
   _cropRect = CGRectZero;
   _centerRect = CGRectZero;
   _repeats = NO;
 
   _defines.imageProvider = true;
+  _defines.interpolationQuality = true;
   _defines.cropRect = true;
   _defines.centerRect = true;
   _defines.repeats = true;
@@ -69,6 +73,8 @@
 {
   if ([key isEqualToString:@"imageProvider"])
     return _defines.imageProvider;
+  else if ([key isEqualToString:@"interpolationQuality"])
+    return _defines.interpolationQuality;
   else if ([key isEqualToString:@"cropRect"])
     return _defines.cropRect;
   else if ([key isEqualToString:@"centerRect"])
@@ -83,6 +89,8 @@
 {
   if ([key isEqualToString:@"imageProvider"])
     _defines.imageProvider = flag;
+  else if ([key isEqualToString:@"interpolationQuality"])
+    _defines.interpolationQuality = flag;
   else if ([key isEqualToString:@"cropRect"])
     _defines.cropRect = flag;
   else if ([key isEqualToString:@"centerRect"])
@@ -104,6 +112,10 @@
   t_ = trans != nil ? [trans evaluateTime:t forKey:@"imageProvider"] : t;
   _imageProvider = t_ < .5 ? self.imageProvider : to.imageProvider;
   _defines.imageProvider = true;
+
+  t_ = trans != nil ? [trans evaluateTime:t forKey:@"interpolationQuality"] : t;
+  _interpolationQuality = t_ < .5 ? self.interpolationQuality : to.interpolationQuality;
+  _defines.interpolationQuality = true;
 
   t_ = trans != nil ? [trans evaluateTime:t forKey:@"cropRect"] : t;
   _cropRect = MgRectMix(self.cropRect, to.cropRect, t_);
@@ -132,6 +144,22 @@
     _imageProvider = p;
   else
     SUPERSTATE.imageProvider = p;
+}
+
+- (CGInterpolationQuality)interpolationQuality
+{
+  if (_defines.interpolationQuality)
+    return _interpolationQuality;
+  else
+    return SUPERSTATE.interpolationQuality;
+}
+
+- (void)setInterpolationQuality:(CGInterpolationQuality)q
+{
+  if (_defines.interpolationQuality)
+    _interpolationQuality = q;
+  else
+    SUPERSTATE.interpolationQuality = q;
 }
 
 - (CGRect)cropRect
@@ -189,6 +217,7 @@
   MgImageLayerState *copy = [super graphCopy:map];
 
   copy->_imageProvider = _imageProvider;
+  copy->_interpolationQuality = _interpolationQuality;
   copy->_cropRect = _cropRect;
   copy->_centerRect = _centerRect;
   copy->_repeats = _repeats;
@@ -208,6 +237,9 @@
     {
       [c encodeObject:_imageProvider forKey:@"imageProvider"];
     }
+
+  if (_defines.interpolationQuality)
+    [c encodeInt:_interpolationQuality forKey:@"interpolationQuality"];
 
   if (_defines.cropRect)
     [c mg_encodeCGRect:_cropRect forKey:@"cropRect"];
@@ -231,6 +263,12 @@
 			[MgImageLayer imageProviderClasses]
 			forKey:@"imageProvider"];
       _defines.imageProvider = true;
+    }
+
+  if ([c containsValueForKey:@"interpolationQuality"])
+    {
+      _interpolationQuality = [c decodeIntForKey:@"interpolationQuality"];
+      _defines.interpolationQuality = true;
     }
 
   if ([c containsValueForKey:@"cropRect"])
