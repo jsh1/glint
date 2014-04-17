@@ -48,6 +48,7 @@
 @property(nonatomic, retain, readonly) GtInspectorItem *item;
 @property(nonatomic, weak, readonly) id<GtInspectorDelegate> delegate;
 
+@property(nonatomic, assign, getter=isEnabled) BOOL enabled;
 @property(nonatomic, retain) id objectValue;
 
 - (void)layoutSubviews;

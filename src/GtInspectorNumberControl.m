@@ -154,6 +154,20 @@ control_row_count(GtInspectorNumberControlType type)
   return self;
 }
 
+- (BOOL)isEnabled
+{
+  return [_sliders[0] isEnabled];
+}
+
+- (void)setEnabled:(BOOL)flag
+{
+  for (NSInteger i = 0; i < _rowCount; i++)
+    {
+      [_numberFields[i] setEnabled:flag];
+      [_sliders[i] setEnabled:flag];
+    }
+}
+
 - (id)objectValue
 {
   if (_type == GtInspectorNumberControlTypeScalar)

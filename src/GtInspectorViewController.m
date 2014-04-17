@@ -102,6 +102,7 @@
 	{
 	  assert(control.item == [view itemAtRow:i]);
 	  control.objectValue = [self inspectedValueForKey:control.item.key];
+	  [self updateControlEnabled:control];
 	}
     }
 }
@@ -112,6 +113,19 @@
 
   for (GtInspectorItem *subitem in _inspectorTree.subitems)
     [_outlineView expandItem:subitem];
+}
+
+- (void)updateControlEnabled:(GtInspectorControl *)control
+{
+  GtInspectorItem *item = control.item;
+  NSString *condition = item.disabledIf;
+
+  control.enabled = condition == nil || ![self conditionValue:condition];
+}
+
+- (BOOL)conditionValue:(NSString *)cond
+{
+  return NO;
 }
 
 /** GtInspectorDelegate methods. **/
@@ -213,7 +227,12 @@
     }
   else
     {
-      return [GtInspectorControl controlForItem:item delegate:self];
+      GtInspectorControl *control
+        = [GtInspectorControl controlForItem:item delegate:self];
+
+      [self updateControlEnabled:control];
+
+      return control;
     }
 }
 

@@ -69,6 +69,16 @@
   return self;
 }
 
+- (BOOL)isEnabled
+{
+  return [_colorWell isEnabled];
+}
+
+- (void)setEnabled:(BOOL)flag
+{
+  [_colorWell setEnabled:flag];
+}
+
 - (id)objectValue
 {
   return (__bridge id)[[_colorWell color] CGColor];

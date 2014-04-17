@@ -37,6 +37,15 @@
   return 0;
 }
 
+- (BOOL)isEnabled
+{
+  return YES;
+}
+
+- (void)setEnabled:(BOOL)flag
+{
+}
+
 - (id)objectValue
 {
   return nil;

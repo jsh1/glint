@@ -98,6 +98,15 @@ controlClass(GtInspectorItem *item)
   return self;
 }
 
+- (BOOL)isEnabled
+{
+  return YES;
+}
+
+- (void)setEnabled:(BOOL)flag
+{
+}
+
 - (id)objectValue
 {
   return nil;

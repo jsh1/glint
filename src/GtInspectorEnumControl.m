@@ -96,6 +96,16 @@
   return self;
 }
 
+- (BOOL)isEnabled
+{
+  return [_button isEnabled];
+}
+
+- (void)setEnabled:(BOOL)flag
+{
+  [_button setEnabled:flag];
+}
+
 - (id)objectValue
 {
   return @([[_button selectedItem] tag]);
