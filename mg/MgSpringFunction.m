@@ -49,7 +49,7 @@ typedef float (^MgSpringEval)(float t);
   _mass = 1;
   _stiffness = 250;
   _damping = 22;
-  _initialVelocity = .5;
+  _initialVelocity = 0;
 
   return self;
 }
