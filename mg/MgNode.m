@@ -28,6 +28,7 @@
 #import "MgNodeState.h"
 #import "MgModuleState.h"
 #import "MgNodeTransition.h"
+#import "MgSpringFunction.h"
 #import "MgTimingFunction.h"
 #import "MgTransitionTiming.h"
 
@@ -324,13 +325,13 @@ static NSUInteger version_counter;
 
       double speed = speed_value != nil ? [speed_value doubleValue] : 1;
 
-      double duration = [dict[MgNodeTransitionDuration] doubleValue];
-      if (duration == 0)
-	duration = .25;
-
       MgFunction *function = dict[MgNodeTransitionFunction];
       if (function == nil)
-	function = [MgTimingFunction functionWithName:MgTimingFunctionDefault];
+	function = [[MgSpringFunction alloc] init];
+
+      double duration = [dict[MgNodeTransitionDuration] doubleValue];
+      if (duration == 0)
+	duration = 1;
 
       MgTransitionTiming *default_timing = [[MgTransitionTiming alloc] init];
       default_timing.duration = duration;

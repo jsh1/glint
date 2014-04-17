@@ -85,8 +85,8 @@
     MgGroupLayerState, MgImageLayer, MgImageLayerState, MgImageProvider,
     MgLayer, MgLayerState, MgModuleLayer, MgModuleState, MgNode,
     MgNodeState, MgNodeTransition, MgPathLayer, MgPathLayerState,
-    MgRectLayer, MgRectLayerState, MgTimingFunction, MgTransitionTiming,
-    MgViewContext;
+    MgRectLayer, MgRectLayerState, MgSpringFunction, MgTimingFunction,
+    MgTransitionTiming, MgViewContext;
 @class CALayer;
 
 @protocol MgDrawingState, MgImageProvider;

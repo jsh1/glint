@@ -76,6 +76,7 @@
 
 #ifdef __OBJC__
 # define BOX(x) [NSValue valueWithBytes:&(x) objCType:@encode(__typeof__(x))]
+# define UNBOX(x, p) [x getValue:&p]
 #endif
 
 #endif /* MG_MACROS_H */

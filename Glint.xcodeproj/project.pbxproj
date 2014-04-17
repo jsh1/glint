@@ -43,6 +43,8 @@
 		572BFABB18D76363000E9B84 /* GtNumericTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 572BFABA18D76363000E9B84 /* GtNumericTextField.m */; };
 		5738567818C746D80010CFB7 /* GtTreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 5738567718C746D80010CFB7 /* GtTreeNode.m */; };
 		5738567B18C74CCC0010CFB7 /* AppKitExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5738567A18C74CCC0010CFB7 /* AppKitExtensions.m */; };
+		573E1D7B190012D00072A09F /* MgSpringFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 573E1D7A190012D00072A09F /* MgSpringFunction.m */; };
+		573E1D7E190016AE0072A09F /* MgValueExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 573E1D7D190016AE0072A09F /* MgValueExtensions.m */; };
 		574A0AAA18FE8A3600FCB9E9 /* GtPropertiesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 574A0AA918FE8A3600FCB9E9 /* GtPropertiesViewController.m */; };
 		574A0AAD18FE8C3200FCB9E9 /* GtDocumentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 574A0AAC18FE8C3200FCB9E9 /* GtDocumentViewController.m */; };
 		57618DB718C5D1B6004108D8 /* GtViewerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 57618DB418C5D1B6004108D8 /* GtViewerView.m */; };
@@ -167,6 +169,10 @@
 		5738567718C746D80010CFB7 /* GtTreeNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtTreeNode.m; path = src/GtTreeNode.m; sourceTree = "<group>"; };
 		5738567918C74CCC0010CFB7 /* AppKitExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppKitExtensions.h; path = src/AppKitExtensions.h; sourceTree = "<group>"; };
 		5738567A18C74CCC0010CFB7 /* AppKitExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppKitExtensions.m; path = src/AppKitExtensions.m; sourceTree = "<group>"; };
+		573E1D79190012D00072A09F /* MgSpringFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgSpringFunction.h; sourceTree = "<group>"; };
+		573E1D7A190012D00072A09F /* MgSpringFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgSpringFunction.m; sourceTree = "<group>"; };
+		573E1D7C190016AE0072A09F /* MgValueExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MgValueExtensions.h; sourceTree = "<group>"; };
+		573E1D7D190016AE0072A09F /* MgValueExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MgValueExtensions.m; sourceTree = "<group>"; };
 		574A0AA818FE8A3600FCB9E9 /* GtPropertiesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtPropertiesViewController.h; path = src/GtPropertiesViewController.h; sourceTree = "<group>"; };
 		574A0AA918FE8A3600FCB9E9 /* GtPropertiesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtPropertiesViewController.m; path = src/GtPropertiesViewController.m; sourceTree = "<group>"; };
 		574A0AAB18FE8C3200FCB9E9 /* GtDocumentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtDocumentViewController.h; path = src/GtDocumentViewController.h; sourceTree = "<group>"; };
@@ -402,11 +408,15 @@
 				57AE9B9C18F0555B009F5992 /* MgRectLayer.m */,
 				57AE9B9D18F0555B009F5992 /* MgRectLayerState.h */,
 				57AE9B9E18F0555B009F5992 /* MgRectLayerState.m */,
+				573E1D79190012D00072A09F /* MgSpringFunction.h */,
+				573E1D7A190012D00072A09F /* MgSpringFunction.m */,
 				57AE9BA318F0555B009F5992 /* MgTimingFunction.h */,
 				57AE9BA418F0555B009F5992 /* MgTimingFunction.m */,
 				57AE9BA718F0555B009F5992 /* MgTransitionTiming.h */,
 				57AE9BA818F0555B009F5992 /* MgTransitionTiming.m */,
 				57AE9BA918F0555B009F5992 /* MgUnitBezier.h */,
+				573E1D7C190016AE0072A09F /* MgValueExtensions.h */,
+				573E1D7D190016AE0072A09F /* MgValueExtensions.m */,
 				57DA502C18F1A8BF009D58C1 /* MgViewContext.h */,
 				57DA502D18F1A8BF009D58C1 /* MgViewContext.m */,
 			);
@@ -609,11 +619,13 @@
 				57AE9BAB18F0555B009F5992 /* MgBezierTimingFunction.mm in Sources */,
 				57AE9BC418F0555B009F5992 /* MgPathLayerState.m in Sources */,
 				57DA504018F2BBFA009D58C1 /* MgGradientCALayer.m in Sources */,
+				573E1D7B190012D00072A09F /* MgSpringFunction.m in Sources */,
 				572BFAB218D74E21000E9B84 /* GtInspectorEnumControl.m in Sources */,
 				57AE9BB218F0555B009F5992 /* MgFunction.m in Sources */,
 				5721E88018C6A2DF000DA2C3 /* GtSplitViewController.m in Sources */,
 				572A5B2018C4CD4100AB8086 /* GtWindowController.m in Sources */,
 				572BFABB18D76363000E9B84 /* GtNumericTextField.m in Sources */,
+				573E1D7E190016AE0072A09F /* MgValueExtensions.m in Sources */,
 				57AE9BB518F0555B009F5992 /* MgGroupLayer.m in Sources */,
 				57DA503D18F2B947009D58C1 /* MgImageCALayer.m in Sources */,
 				57B111B718D0BB8C00A41A64 /* GtViewerOverlayLayer.m in Sources */,

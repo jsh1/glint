@@ -22,38 +22,15 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#ifndef MG_H
-#define MG_H
+#import "MgFunction.h"
 
-#include "MgBase.h"
+@interface MgSpringFunction : MgFunction
 
-#ifdef __OBJC__
-# import "MgActiveTransition.h"
-# import "MgBezierTimingFunction.h"
-# import "MgDrawingLayer.h"
-# import "MgFunction.h"
-# import "MgGradientLayer.h"
-# import "MgGradientLayerState.h"
-# import "MgGroupLayer.h"
-# import "MgGroupLayerState.h"
-# import "MgImageLayer.h"
-# import "MgImageLayerState.h"
-# import "MgImageProvider.h"
-# import "MgLayer.h"
-# import "MgLayerState.h"
-# import "MgModuleLayer.h"
-# import "MgModuleState.h"
-# import "MgNode.h"
-# import "MgNodeState.h"
-# import "MgNodeTransition.h"
-# import "MgPathLayer.h"
-# import "MgPathLayerState.h"
-# import "MgRectLayer.h"
-# import "MgRectLayerState.h"
-# import "MgSpringFunction.h"
-# import "MgTimingFunction.h"
-# import "MgTransitionTiming.h"
-# import "MgViewContext.h"
-#endif
+@property(nonatomic, assign) CGFloat mass;
+@property(nonatomic, assign) CGFloat stiffness;
+@property(nonatomic, assign) CGFloat damping;
+@property(nonatomic, assign) CGFloat initialVelocity;
 
-#endif /* MG_H */
+- (double)durationForEpsilon:(double)eps;
+
+@end

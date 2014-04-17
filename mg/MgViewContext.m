@@ -29,7 +29,9 @@
 #import "MgFlatteningCALayer.h"
 #import "MgLayerInternal.h"
 #import "MgNodeState.h"
+#import "MgSpringFunction.h"
 #import "MgTransitionTiming.h"
+#import "MgValueExtensions.h"
 
 #import <Foundation/Foundation.h>
 #import <QuartzCore/QuartzCore.h>
@@ -515,32 +517,56 @@ blendModeFilter(CGBlendMode blend_mode)
 - (CAAnimation *)makeAnimationForTiming:(MgTransitionTiming *)timing
     key:(NSString *)key from:(id)fromValue to:(id)toValue
 {
-  CABasicAnimation *anim = [CABasicAnimation animationWithKeyPath:key];
-
-  anim.beginTime = timing.begin;
-  anim.duration = timing.duration;
-  anim.fillMode = kCAFillModeBackwards;
-  anim.fromValue = fromValue;
-  anim.toValue = toValue;
+  CAAnimation *anim = nil;
 
   MgFunction *fun = timing.function;
 
-  if (fun != nil)
+  if (fun == nil || [fun isKindOfClass:[MgBezierTimingFunction class]])
     {
-      if ([fun isKindOfClass:[MgBezierTimingFunction class]])
-	{
-	  CGPoint p1 = ((MgBezierTimingFunction *)fun).p0;
-	  CGPoint p2 = ((MgBezierTimingFunction *)fun).p1;
+      CABasicAnimation *basic = [CABasicAnimation animationWithKeyPath:key];
 
+      basic.fromValue = fromValue;
+      basic.toValue = toValue;
+
+      CGPoint p1 = ((MgBezierTimingFunction *)fun).p0;
+      CGPoint p2 = ((MgBezierTimingFunction *)fun).p1;
+
+      if (fun != nil)
+	{
 	  CAMediaTimingFunction *fun
 	    = [[CAMediaTimingFunction alloc]
 	       initWithControlPoints:p1.x :p1.y :p2.x :p2.y];
 
-	  anim.timingFunction = fun;
+	  basic.timingFunction = fun;
 	}
-      else
-	NSLog(@"FIXME: unsupported timing function: %@", fun);
+
+      anim = basic;
     }
+  else
+    {
+      CAKeyframeAnimation *keyframe
+        = [CAKeyframeAnimation animationWithKeyPath:key];
+
+      NSMutableArray *values = [[NSMutableArray alloc] init];
+
+      double dur = timing.duration;
+      double interval = .1;
+
+      for (double t = 0; t < dur; t += interval)
+	{
+	  double ts = [fun evaluateScalar:t];
+	  [values addObject:[fromValue mg_mixWith:toValue at:ts]];
+	}
+
+      keyframe.values = values;
+      keyframe.calculationMode = kCAAnimationCubic;
+
+      anim = keyframe;
+    }
+
+  anim.beginTime = timing.begin;
+  anim.duration = timing.duration;
+  anim.fillMode = kCAFillModeBackwards;
 
   return anim;
 }
