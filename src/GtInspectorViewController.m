@@ -44,6 +44,11 @@
 
 - (void)viewDidLoad
 {
+  /* FIXME: disabling layer-per-view mode makes things faster. I'm not sure
+     why..? (Even when only a single control is being updated.) */
+
+  [self.view setCanDrawSubviewsIntoLayer:YES];
+
   NSInteger colIndex = 0;
   for (NSTableColumn *col in [_outlineView tableColumns])
     {
