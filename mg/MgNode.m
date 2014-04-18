@@ -560,24 +560,21 @@ static NSUInteger version_counter;
 
 - (void)withPresentationTime:(CFTimeInterval)t handler:(void (^)(void))thunk
 {
-  MgNodeState *old_state = self.state;
-  MgNodeState *new_state = nil;
-
   MgActiveTransition *trans = self.activeTransition;
 
-  if (trans != nil)
+  if (trans == nil)
+    thunk();
+  else
     {
+      MgNodeState *old_state = _state;
+
       double tt = (t - trans.begin) * trans.speed;
-      new_state = [old_state evaluateTransition:trans atTime:tt];
+      _state = [old_state evaluateTransition:trans atTime:tt];
+
+      thunk();
+
+      _state = old_state;
     }
-
-  if (new_state != nil)
-    self.state = new_state;
-
-  thunk();
-
-  if (new_state != nil)
-    self.state = old_state;
 }
 
 - (CFTimeInterval)markPresentationTime:(CFTimeInterval)t
