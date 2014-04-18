@@ -22,20 +22,10 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "GtViewController.h"
-#import "GtInspectorControl.h"
+#import "GtBase.h"
 
-@interface GtInspectorViewController : GtViewController
-    <GtInspectorDelegate, NSOutlineViewDataSource, NSOutlineViewDelegate>
+@interface GtInspectorView : NSView
 
-@property(nonatomic, weak) IBOutlet NSOutlineView *outlineView;
-
-@property(nonatomic, assign, getter=isHidden) BOOL hidden;
-
-@property(nonatomic, strong) GtInspectorItem *inspectorTree;
-
-- (void)reloadData;
-- (void)reloadValues;
-- (void)expandToplevelItems;
+@property(nonatomic, weak) IBOutlet GtInspectorViewController *controller;
 
 @end

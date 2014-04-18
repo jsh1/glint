@@ -5,6 +5,9 @@ Issues
 
 5. Can't change document size.
 
+  PARTIALLY RESOLVED: Document inspector allows this, but would be nice
+  to have popup with common/customized sizes.
+
 6. -group: should inherit geometry from single object.
 
   If one object, copy bounds and transform into group, and reset object.
@@ -31,6 +34,12 @@ Issues
   How do we visually communicate the difference between explicit
   ("A->B") and chained ("A->Any; Any->B") transitions?
 
+  How do we edit [timing] functions? Perhaps mouse-over a block, which
+  shows a popover containing the controls? Or in the inspector..
+
+  How do we edit default timing values? Should they be per-transition
+  or per-document?
+
 8. Finish inspector
 
   - Color picker needs popover with pickable color image.
@@ -40,20 +49,23 @@ Issues
 
 9. Support fake-spring timing in transitions.
 
+  RESOLVED: added MgSpringFunction, animations using this translate to
+  CA keyframe animations in layer-hosted mode.
+
 10. Inspector should be unnecessary for 80% of operations.
 
-  - selected rect layers should have onscreen controls for colors, line
+  - Selected rect layers should have onscreen controls for colors, line
     width, etc (they already have corner radius)
 
-  - similar for path layers (once, of course, path editing is done)
+  - Similar for path layers (once, of course, path editing is done)
 
-  - image layers should have an onscreen button (?) to select image
+  - Image layers should have an onscreen button (?) to select image
 
 11. Add edge snapping while dragging.
 
 12. Add keyboard controls to canvas.
 
-  - cursor keys move objects. [done]
+  - Cursor keys move objects. [done]
 
 13. Show thumbnails.
 
@@ -64,4 +76,14 @@ Issues
 14. Option to hide content outside document bounds
 
   (Instead of just darkening it.)
+
+15. Path editing for MgPathLayer
+
+  Does this have to be a special mode? Or is there a way to let it live
+  alongside the usual onscreen layer controls?
+
+16. Add "measure mode"
+
+  Mouse over an object with Option held should display distance from
+  selection to that object.
 

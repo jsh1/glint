@@ -35,6 +35,7 @@
 {
   GtInspectorItem *_inspectorTree;
   NSInteger _valueColumnIndex;
+  BOOL _hidden;
 }
 
 + (NSString *)viewNibName
@@ -81,43 +82,75 @@
     {
       _inspectorTree = item;
 
-      [self reloadData];
-      [self expandToplevelItems];
+      if (!_hidden)
+	{
+	  [self reloadData];
+	  [self expandToplevelItems];
+	}
     }
   else
     [self reloadValues];
 }
 
+- (BOOL)isHidden
+{
+  return _hidden;
+}
+
+- (void)setHidden:(BOOL)flag
+{
+  if (_hidden != flag)
+    {
+      _hidden = flag;
+
+      if (!_hidden)
+	{
+	  [self reloadData];
+	  [self expandToplevelItems];
+	}
+    }
+}
+
 - (void)reloadData
 {
-  [_outlineView reloadData];
+  if (!_hidden)
+    {
+      [_outlineView reloadData];
+    }
 }
 
 - (void)reloadValues
 {
-  NSOutlineView *view = _outlineView;
-
-  NSInteger count = [view numberOfRows];
-
-  for (NSInteger i = 0; i < count; i++)
+  if (!_hidden)
     {
-      GtInspectorControl *control = [view viewAtColumn:_valueColumnIndex
-				     row:i makeIfNecessary:NO];
-      if (control != nil)
+      NSOutlineView *view = _outlineView;
+
+      NSInteger count = [view numberOfRows];
+
+      for (NSInteger i = 0; i < count; i++)
 	{
-	  assert(control.item == [view itemAtRow:i]);
-	  control.objectValue = [self inspectedValueForKey:control.item.key];
-	  [self updateControlEnabled:control];
+	  GtInspectorControl *control = [view viewAtColumn:_valueColumnIndex
+					 row:i makeIfNecessary:NO];
+	  if (control != nil)
+	    {
+	      assert(control.item == [view itemAtRow:i]);
+	      control.objectValue = [self inspectedValueForKey:
+				     control.item.key];
+	      [self updateControlEnabled:control];
+	    }
 	}
     }
 }
 
 - (void)expandToplevelItems
 {
-  [_outlineView expandItem:_inspectorTree];
+  if (!_hidden)
+    {
+      [_outlineView expandItem:_inspectorTree];
 
-  for (GtInspectorItem *subitem in _inspectorTree.subitems)
-    [_outlineView expandItem:subitem];
+      for (GtInspectorItem *subitem in _inspectorTree.subitems)
+	[_outlineView expandItem:subitem];
+    }
 }
 
 - (void)updateControlEnabled:(GtInspectorControl *)control
