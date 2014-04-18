@@ -27,7 +27,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="280" height="529"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <size key="intercellSpacing" width="3" height="2"/>
-                                <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="0.89803928136825562" green="0.91372555494308472" blue="0.92156869173049927" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <tableViewGridLines key="gridStyleMask" dashed="YES"/>
                                 <color key="gridColor" white="0.80000000000000004" alpha="0.5" colorSpace="deviceWhite"/>
                                 <tableColumns>
