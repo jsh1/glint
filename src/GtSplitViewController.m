@@ -37,6 +37,7 @@
     return nil;
 
   _indexOfResizableSubview = -1;
+  _canCollapseSubviews = YES;
   _initialSizes = @[];
 
   return self;
@@ -135,13 +136,13 @@
 
 - (BOOL)splitView:(NSSplitView *)view canCollapseSubview:(NSView *)subview
 {
-  return YES;
+  return self.canCollapseSubviews;
 }
 
 - (BOOL)splitView:(NSSplitView *)view shouldCollapseSubview:(NSView *)subview
     forDoubleClickOnDividerAtIndex:(NSInteger)idx
 {
-  return YES;
+  return NO;
 }
 
 - (BOOL)splitView:(NSSplitView *)view shouldHideDividerAtIndex:(NSInteger)idx

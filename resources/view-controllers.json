@@ -9,6 +9,7 @@
       "class": "GtSplitViewController",
       "identifierSuffix": ".project",
       "vertical": false,
+      "canCollapseSubviews": false,
       "initialSizes": [280, 0],
       "subviewControllers": [
         {

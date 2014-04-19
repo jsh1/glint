@@ -27,6 +27,7 @@
 @interface GtSplitViewController : GtViewController <NSSplitViewDelegate>
 
 @property(nonatomic, assign, getter=isVertical) BOOL vertical;
+@property(nonatomic, assign) BOOL canCollapseSubviews;
 @property(nonatomic, assign) NSInteger indexOfResizableSubview;
 @property(nonatomic, copy) NSArray *initialSizes;
 
