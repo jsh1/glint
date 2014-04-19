@@ -455,7 +455,7 @@ CA
                                     <action selector="toggleEnabled:" target="-1" id="sGG-bA-mMX"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Group Compositing" keyEquivalent="g" id="WDL-FO-qWu">
+                            <menuItem title="Pass Through" keyEquivalent="p" id="WDL-FO-qWu">
                                 <modifierMask key="keyEquivalentModifierMask" control="YES"/>
                                 <connections>
                                     <action selector="toggleLayerGroup:" target="-1" id="E0n-Vc-ToP"/>
@@ -1237,7 +1237,7 @@ CA
                         <action selector="toggleEnabled:" target="-1" id="u80-eg-6A6"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Group Compositing" keyEquivalent="g" id="Y8X-kD-bis">
+                <menuItem title="Pass Through" keyEquivalent="p" id="Y8X-kD-bis">
                     <modifierMask key="keyEquivalentModifierMask" control="YES"/>
                     <connections>
                         <action selector="toggleLayerGroup:" target="-1" id="liw-Gr-v5e"/>

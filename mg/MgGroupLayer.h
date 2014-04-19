@@ -26,13 +26,19 @@
 
 @interface MgGroupLayer : MgLayer
 
-/* When true, the layer also creates a compositing group. When false it
-   acts as transform-only group, i.e. no compositing group is created,
-   and the layer's blend mode and mask are ignored. */
-
-@property(nonatomic, assign, getter=isGroup) BOOL group;
+/* When true the layer pre-composites all its content into a buffer,
+   before sending anything to the render server. The behavior is
+   undefined if the content extends outside the bounds of the receiver.
+   Defaults to false. */
 
 @property(nonatomic, assign) BOOL flattensSublayers;
+
+/* When false, the layer also creates a compositing group, otherwise it
+   acts as a transform-only group, i.e. no compositing group is
+   created, and the layer's blend mode and mask are ignored, similar to
+   the "Pass Through" blend mode in Photoshop. Defaults to true. */
+
+@property(nonatomic, assign, getter=isPassThrough) BOOL passThrough;
 
 /* The array of sublayers comprising this group. */
 

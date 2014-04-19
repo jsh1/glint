@@ -936,7 +936,7 @@ fract(CGFloat x)
       if ([nodes containsObject:layer])
 	continue;
 
-      [self node:tn setValue:@(!layer.group) forKey:@"group"];
+      [self node:tn setValue:@(!layer.passThrough) forKey:@"passThrough"];
 
       [nodes addObject:layer];
     }
@@ -952,7 +952,7 @@ fract(CGFloat x)
       if (![layer isKindOfClass:[MgGroupLayer class]])
 	continue;
 
-      if (layer.group)
+      if (layer.passThrough)
 	on++;
       else
 	off++;
@@ -1670,7 +1670,7 @@ indexOfObjectInArray(NSArray *array, id value, NSInteger idx)
 	{
 	  if (action == @selector(setBlendMode:)
 	      && [tn.node isKindOfClass:[MgGroupLayer class]]
-	      && !((MgGroupLayer *)tn.node).group)
+	      && ((MgGroupLayer *)tn.node).passThrough)
 	    continue;
 
 	  if ([tn.node isKindOfClass:[MgLayer class]])

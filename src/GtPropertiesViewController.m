@@ -157,13 +157,13 @@ common_superclass(Class c1, Class c2)
 
 - (BOOL)conditionValue:(NSString *)cond
 {
-  if ([cond isEqualToString:@"ANY(!MgGroupLayer.group)"])
+  if ([cond isEqualToString:@"ANY(MgGroupLayer.passThrough)"])
     {
       for (GtTreeNode *tn in _selection)
 	{
 	  MgNode *node = tn.node;
 	  if ([node isKindOfClass:[MgGroupLayer class]]
-	      && !((MgGroupLayer *)node).group)
+	      && ((MgGroupLayer *)node).passThrough)
 	    return YES;
 	}
     }

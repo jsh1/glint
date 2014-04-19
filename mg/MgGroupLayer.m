@@ -48,7 +48,7 @@
 {
   if (!self.flattensSublayers)
     {
-      if (self.group)
+      if (!self.passThrough)
 	return [MgGroupCALayer class];
       else
 	return [MgGroupCATransformLayer class];
@@ -57,26 +57,26 @@
   return [super viewLayerClass];
 }
 
-+ (BOOL)automaticallyNotifiesObserversOfGroup
++ (BOOL)automaticallyNotifiesObserversOfPassThrough
 {
   return NO;
 }
 
-- (BOOL)isGroup
+- (BOOL)isPassThrough
 {
-  return STATE.group;
+  return STATE.passThrough;
 }
 
-- (void)setGroup:(BOOL)flag
+- (void)setPassThrough:(BOOL)flag
 {
   MgGroupLayerState *state = STATE;
 
-  if (state.group != flag)
+  if (state.passThrough != flag)
     {
-      [self willChangeValueForKey:@"group"];
-      state.group = flag;
+      [self willChangeValueForKey:@"passThrough"];
+      state.passThrough = flag;
       [self incrementVersion];
-      [self didChangeValueForKey:@"group"];
+      [self didChangeValueForKey:@"passThrough"];
     }
 }
 
@@ -222,13 +222,13 @@
   if ([self.sublayers count] == 0)
     return;
 
-  BOOL group = self.group;
+  BOOL passThrough = self.passThrough;
 
   __block MgLayerRenderState r = *rs;
-  r.alpha = group ? 1 : rs->alpha;
+  r.alpha = !passThrough ? 1 : rs->alpha;
   r.outermost = false;
 
-  if (group && !rs->outermost)
+  if (!passThrough && !rs->outermost)
     {
       CGContextSaveGState(r.ctx);
       CGContextBeginTransparencyLayer(r.ctx, NULL);
@@ -244,7 +244,7 @@
       r.next_time = fmin(r.next_time, [node markPresentationTime:r.time]);
     }
 
-  if (group && !rs->outermost)
+  if (!passThrough && !rs->outermost)
     {
       CGContextEndTransparencyLayer(r.ctx);
       CGContextRestoreGState(r.ctx);
@@ -255,7 +255,7 @@
 
 - (BOOL)_isPassThroughGroup
 {
-  return !self.group;
+  return self.passThrough;
 }
 
 /** MgGraphCopying methods. **/

@@ -11,7 +11,7 @@
   "MgGroupLayer": {
     "displayName": "Group",
     "properties": [
-      "group", "flattensSublayers"
+      "passThrough", "flattensSublayers"
     ]
   },
 

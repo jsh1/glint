@@ -34,11 +34,11 @@
 
 @implementation MgGroupLayerState
 {
-  BOOL _group;
+  BOOL _passThrough;
   BOOL _flattensSublayers;
 
   struct {
-    bool group;
+    bool passThrough;
     bool flattensSublayers;
   } _defines;
 }
@@ -47,17 +47,17 @@
 {
   [super setDefaults];
 
-  _group = NO;
+  _passThrough = YES;
   _flattensSublayers = NO;
 
-  _defines.group = true;
+  _defines.passThrough = true;
   _defines.flattensSublayers = true;
 }
 
 - (BOOL)definesValueForKey:(NSString *)key
 {
-  if ([key isEqualToString:@"group"])
-    return _defines.group;
+  if ([key isEqualToString:@"passThrough"])
+    return _defines.passThrough;
   else if ([key isEqualToString:@"flattensSublayers"])
     return _defines.flattensSublayers;
   else
@@ -66,8 +66,8 @@
 
 - (void)setDefinesValue:(BOOL)flag forKey:(NSString *)key
 {
-  if ([key isEqualToString:@"group"])
-    _defines.group = flag;
+  if ([key isEqualToString:@"passThrough"])
+    _defines.passThrough = flag;
   else if ([key isEqualToString:@"flattensSublayers"])
     _defines.flattensSublayers = flag;
   else
@@ -82,29 +82,29 @@
 
   [super applyTransition:trans atTime:t to:to];
 
-  t_ = trans != nil ? [trans evaluateTime:t forKey:@"group"] : t;
-  _group = MgBoolMix(self.group, to.group, t_);
-  _defines.group = true;
+  t_ = trans != nil ? [trans evaluateTime:t forKey:@"passThrough"] : t;
+  _passThrough = MgBoolMix(self.passThrough, to.passThrough, t_);
+  _defines.passThrough = true;
 
   t_ = trans != nil ? [trans evaluateTime:t forKey:@"flattensSublayers"] : t;
   _flattensSublayers = MgBoolMix(self.flattensSublayers, to.flattensSublayers, t_);
   _defines.flattensSublayers = true;
 }
 
-- (BOOL)isGroup
+- (BOOL)isPassThrough
 {
-  if (_defines.group)
-    return _group;
+  if (_defines.passThrough)
+    return _passThrough;
   else
-    return SUPERSTATE.group;
+    return SUPERSTATE.passThrough;
 }
 
-- (void)setGroup:(BOOL)flag
+- (void)setPassThrough:(BOOL)flag
 {
-  if (_defines.group)
-    _group = flag;
+  if (_defines.passThrough)
+    _passThrough = flag;
   else
-    SUPERSTATE.group = flag;
+    SUPERSTATE.passThrough = flag;
 }
 
 - (BOOL)flattensSublayers
@@ -129,7 +129,7 @@
 {
   MgGroupLayerState *copy = [super graphCopy:map];
 
-  copy->_group = _group;
+  copy->_passThrough = _passThrough;
   copy->_flattensSublayers = _flattensSublayers;
   copy->_defines = _defines;
 
@@ -142,8 +142,8 @@
 {
   [super encodeWithCoder:c];
 
-  if (_defines.group)
-    [c encodeBool:_group forKey:@"group"];
+  if (_defines.passThrough)
+    [c encodeBool:_passThrough forKey:@"passThrough"];
 
   if (_defines.flattensSublayers)
     [c encodeBool:_flattensSublayers forKey:@"flattensSublayers"];
@@ -155,10 +155,10 @@
   if (self == nil)
     return nil;
 
-  if ([c containsValueForKey:@"group"])
+  if ([c containsValueForKey:@"passThrough"])
     {
-      _group = [c decodeBoolForKey:@"group"];
-      _defines.group = true;
+      _passThrough = [c decodeBoolForKey:@"passThrough"];
+      _defines.passThrough = true;
     }
 
   if ([c containsValueForKey:@"flattensSublayers"])

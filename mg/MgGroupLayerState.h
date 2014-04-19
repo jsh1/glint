@@ -26,7 +26,7 @@
 
 @interface MgGroupLayerState : MgLayerState
 
-@property(nonatomic, assign, getter=isGroup) BOOL group;
+@property(nonatomic, assign, getter=isPassThrough) BOOL passThrough;
 @property(nonatomic, assign) BOOL flattensSublayers;
 
 @end
