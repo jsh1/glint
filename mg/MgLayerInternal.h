@@ -47,4 +47,6 @@ struct MgLayerRenderState
 - (void)_renderLayerWithState:(MgLayerRenderState *)rs;
 - (void)_renderLayerMaskWithState:(MgLayerRenderState *)rs;
 
+- (BOOL)_isPassThroughGroup;
+
 @end

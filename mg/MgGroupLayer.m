@@ -47,9 +47,14 @@
 - (Class)viewLayerClass
 {
   if (!self.flattensSublayers)
-    return [MgGroupCALayer class];
-  else
-    return [super viewLayerClass];
+    {
+      if (self.group)
+	return [MgGroupCALayer class];
+      else
+	return [MgGroupCATransformLayer class];
+    }
+
+  return [super viewLayerClass];
 }
 
 + (BOOL)automaticallyNotifiesObserversOfGroup
@@ -246,6 +251,11 @@
     }
 
   rs->next_time = r.next_time;
+}
+
+- (BOOL)_isPassThroughGroup
+{
+  return !self.group;
 }
 
 /** MgGraphCopying methods. **/

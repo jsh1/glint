@@ -85,7 +85,7 @@
 
   "MgGroupLayer": {
     "group": {
-      "displayName": "Group Compositing",
+      "displayName": "Composites",
       "type": "bool"
     },
     "flattensSublayers": {

@@ -491,21 +491,25 @@
     {
       CGContextConcatCTM(r.ctx, [self parentTransform]);
 
-      MgLayer *mask = self.mask;
-      if (mask != nil)
+      if (![self _isPassThroughGroup])
 	{
-	  [mask withPresentationTime:r.time handler:^
-	    { 
-	      MgLayerRenderState rm = r;
-	      rm.alpha = 1;
-	      rm.outermost = false;
-	      [mask _renderMaskWithState:&rm];
-	      r.next_time = fmin(rm.next_time,
-				 [mask markPresentationTime:rm.time]);
-	    }];
+	  MgLayer *mask = self.mask;
+	  if (mask != nil)
+	    {
+	      [mask withPresentationTime:r.time handler:^
+		{ 
+		  MgLayerRenderState rm = r;
+		  rm.alpha = 1;
+		  rm.outermost = false;
+		  [mask _renderMaskWithState:&rm];
+		  r.next_time = fmin(rm.next_time,
+				     [mask markPresentationTime:rm.time]);
+		}];
+	    }
+
+	  CGContextSetBlendMode(rs->ctx, self.blendMode);
 	}
 
-      CGContextSetBlendMode(rs->ctx, self.blendMode);
       CGContextSetAlpha(rs->ctx, r.alpha);
     }
 
@@ -545,6 +549,11 @@
 - (void)_renderLayerMaskWithState:(MgLayerRenderState *)rs
 {
   /* FIXME: render mask to an image and clip to it. */
+}
+
+- (BOOL)_isPassThroughGroup
+{
+  return NO;
 }
 
 - (CGImageRef)copyImage

@@ -238,17 +238,21 @@ blendModeFilter(CGBlendMode blend_mode)
   layer.position = src.position;
   layer.affineTransform = CGAffineTransformMake(m11, m12, m21, m22, 0, 0);
   layer.opacity = src.alpha;
-  layer.compositingFilter = blendModeFilter(src.blendMode);
 
-  MgLayer *mask = src.mask;
-  if (mask == nil)
-    layer.mask = nil;
-  else
+  if (![src _isPassThroughGroup])
     {
-      CALayer<MgViewLayer> *view_layer = [self makeViewLayerForLayer:mask
-					  candidate:layer.mask];
-      layer.mask = view_layer;
-      [view_layer update];
+      MgLayer *mask = src.mask;
+      if (mask == nil)
+	layer.mask = nil;
+      else
+	{
+	  CALayer<MgViewLayer> *view_layer = [self makeViewLayerForLayer:mask
+					      candidate:layer.mask];
+	  layer.mask = view_layer;
+	  [view_layer update];
+	}
+
+      layer.compositingFilter = blendModeFilter(src.blendMode);
     }
 
   CFTimeInterval now = CACurrentMediaTime();

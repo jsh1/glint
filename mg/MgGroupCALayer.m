@@ -31,6 +31,31 @@
 #import <Foundation/Foundation.h>
 #import <QuartzCore/QuartzCore.h>
 
+static void
+layoutSublayers(CALayer *self, MgGroupLayer *layer, MgViewContext *ctx)
+{
+  NSArray *old_sublayers = self.sublayers;
+
+  NSArray *new_sublayers
+    = [ctx makeViewLayersForLayers:layer.sublayers
+       candidates:old_sublayers culler:^BOOL (MgLayer *src)
+        {
+	  float alpha = src.alpha;
+
+	  MgActiveTransition *trans = src.activeTransition;
+	  if (trans != nil)
+	    alpha = fmaxf(alpha, ((MgLayerState *)trans.fromState).alpha);
+
+	  return !(alpha > 0);
+	}];
+
+  if (new_sublayers != old_sublayers)
+    self.sublayers = new_sublayers;
+
+  for (CALayer<MgViewLayer> *layer in new_sublayers)
+    [layer update];
+}
+
 @implementation MgGroupCALayer
 {
   MgGroupLayer *_layer;
@@ -94,28 +119,78 @@
 {
   [_viewContext updateViewLayer:self];
 
-  /* FIXME: handle "group" property somehow. */
+  layoutSublayers(self, _layer, _viewContext);
+}
 
-  NSArray *old_sublayers = self.sublayers;
+@end
 
-  NSArray *new_sublayers
-    = [_viewContext makeViewLayersForLayers:_layer.sublayers
-       candidates:old_sublayers culler:^BOOL (MgLayer *src)
-        {
-	  float alpha = src.alpha;
+/* FIXME: it sucks that this is a verbatim copy of the above class, but
+   I'm resisting macroizing it. */
 
-	  MgActiveTransition *trans = src.activeTransition;
-	  if (trans != nil)
-	    alpha = fmaxf(alpha, ((MgLayerState *)trans.fromState).alpha);
+@implementation MgGroupCATransformLayer
+{
+  MgGroupLayer *_layer;
+  __weak MgViewContext *_viewContext;
 
-	  return !(alpha > 0);
-	}];
+  NSInteger _lastVersion;
+}
 
-  if (new_sublayers != old_sublayers)
-    self.sublayers = new_sublayers;
+- (id)initWithMgLayer:(MgLayer *)layer viewContext:(MgViewContext *)ctx
+{
+  self = [super init];
+  if (self == nil)
+    return nil;
 
-  for (CALayer<MgViewLayer> *layer in new_sublayers)
-    [layer update];
+  if (![layer isKindOfClass:[MgGroupLayer class]])
+    return nil;
+
+  _layer = (MgGroupLayer *)layer;
+  _viewContext = ctx;
+
+  [self setNeedsLayout];
+
+  return self;
+}
+
+- (id)initWithLayer:(MgGroupCATransformLayer *)layer
+{
+  self = [super init];
+  if (self == nil)
+    return nil;
+
+  _layer = layer->_layer;
+  _lastVersion = layer->_lastVersion;
+
+  return self;
+}
+
+- (MgLayer *)layer
+{
+  return _layer;
+}
+
+- (MgViewContext *)viewContext
+{
+  return _viewContext;
+}
+
+- (void)update
+{
+  NSInteger version = _layer.version;
+
+  if (version != _lastVersion)
+    {
+      _lastVersion = version;
+
+      [self setNeedsLayout];
+    }
+}
+
+- (void)layoutSublayers
+{
+  [_viewContext updateViewLayer:self];
+
+  layoutSublayers(self, _layer, _viewContext);
 }
 
 @end

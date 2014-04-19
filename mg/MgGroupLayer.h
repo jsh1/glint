@@ -26,6 +26,10 @@
 
 @interface MgGroupLayer : MgLayer
 
+/* When true, the layer also creates a compositing group. When false it
+   acts as transform-only group, i.e. no compositing group is created,
+   and the layer's blend mode and mask are ignored. */
+
 @property(nonatomic, assign, getter=isGroup) BOOL group;
 
 @property(nonatomic, assign) BOOL flattensSublayers;

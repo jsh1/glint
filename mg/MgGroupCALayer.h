@@ -27,5 +27,7 @@
 #import <QuartzCore/CALayer.h>
 
 @interface MgGroupCALayer : CALayer <MgViewLayer>
+@end
 
+@interface MgGroupCATransformLayer : CATransformLayer <MgViewLayer>
 @end
