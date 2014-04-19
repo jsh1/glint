@@ -34,6 +34,10 @@ Issues
   How do we visually communicate the difference between explicit
   ("A->B") and chained ("A->Any; Any->B") transitions?
 
+  - switch to a single list of transitions, prepopulated with X->Any
+  and Any->X forall states X. Allow X->Y transitions to be added
+  manually.
+
   How do we edit [timing] functions? Perhaps mouse-over a block, which
   shows a popover containing the controls? Or in the inspector..
 
