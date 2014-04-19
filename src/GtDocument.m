@@ -253,12 +253,12 @@ NSString *const GtDocumentNodeDidChange = @"GtDocumentNodeDidChange";
 }
 
 static void
-makeNameUnique(MgNode *node, MgNode *parent)
+makeNameUnique(MgNode *node, MgNode *parent, BOOL always_number)
 {
   for (NSInteger i = 1;; i++)
     {
       NSString *name = node.name;
-      if (i > 1)
+      if (always_number || i > 1)
 	name = [NSString stringWithFormat:@"%@ %ld", name, (long)i];
 
       __block BOOL unique = YES;
@@ -390,7 +390,7 @@ makeSelectionArray(NSMapTable *added)
       if (copy == nil)
 	continue;
 
-      makeNameUnique(copy, parent.node);
+      makeNameUnique(copy, parent.node, NO);
 
       NSInteger idx = NSIntegerMax;
       for (GtTreeNode *n = tn; n != nil; n = n.parent)
@@ -528,7 +528,7 @@ fract(CGFloat x)
 	layer.name = [[[url path] lastPathComponent] stringByDeletingPathExtension];
       else
 	layer.name = @"Pasted Image";
-      makeNameUnique(layer, parent.node);
+      makeNameUnique(layer, parent.node, NO);
 
       CGImageRef im = [image_provider mg_providedImage];
 
@@ -715,7 +715,7 @@ fract(CGFloat x)
       else
 	return nil;
 
-      makeNameUnique(layer, parent_group);
+      makeNameUnique(layer, parent_group, YES);
       MgLayer *container = parent_group != root_layer ? parent_group : nil;
       initializeLayerFromContainer(layer, container);
 
@@ -797,8 +797,7 @@ fract(CGFloat x)
 
   MgGroupLayer *layer = [MgGroupLayer node];
   layer.name = @"Group";
-  if (container == master)
-    makeNameUnique(layer, container_group);
+  makeNameUnique(layer, container_group, YES);
 
   initializeLayerFromContainer(layer, container_group);
 
