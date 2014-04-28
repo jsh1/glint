@@ -61,6 +61,21 @@ control_type(GtInspectorItem *item)
     return GtInspectorNumberControlTypeScalar;
 }
 
+static GtNumberType
+number_type(GtInspectorItem *item)
+{
+  NSString *units = item.units;
+  if ([units isEqualToString:@"pixels"])
+    return GtNumberTypePixels;
+  else if ([units isEqualToString:@"angle"])
+    return GtNumberTypeAngle;
+  else if ([units isEqualToString:@"normalized"]
+	   || [units isEqualToString:@"percentage"])
+    return GtNumberTypePercentage;
+  else
+    return GtNumberTypeUnknown;
+}
+
 static NSInteger
 control_row_count(GtInspectorNumberControlType type)
 {
@@ -115,6 +130,8 @@ control_row_count(GtInspectorNumberControlType type)
 	slider_max = 1;
     }
 
+  GtNumberType numberType = number_type(item);
+
   for (NSInteger i = 0; i < _rowCount; i++)
     {
       NSSlider *slider = [[NSSlider alloc] initWithFrame:NSZeroRect];
@@ -134,9 +151,11 @@ control_row_count(GtInspectorNumberControlType type)
       GtNumericTextField *field = [[GtNumericTextField alloc]
 				   initWithFrame:NSZeroRect];
 
+      field.type = numberType;
+
       [[field cell] setControlSize:NSSmallControlSize];
       [[field cell] setVerticallyCentered:YES];
-      [field setAlignment:NSCenterTextAlignment];
+//      [field setAlignment:NSCenterTextAlignment];
       [field setFont:
        [NSFont systemFontOfSize:[NSFont smallSystemFontSize]]];
       [field setDrawsBackground:NO];

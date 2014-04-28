@@ -22,39 +22,18 @@
    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE. */
 
-#import "GtNumericTextField.h"
+#import "GtBase.h"
 
-@implementation GtNumericTextField
-
-- (id)initWithFrame:(NSRect)frame
+typedef NS_ENUM(NSInteger, GtNumberType)
 {
-  self = [super initWithFrame:frame];
-  if (self == nil)
-    return nil;
+  GtNumberTypeUnknown,
+  GtNumberTypePixels,
+  GtNumberTypeAngle,
+  GtNumberTypePercentage,
+};
 
-  [[self cell] setFormatter:[[GtNumberFormatter alloc] init]];
+@interface GtNumberFormatter : NSFormatter
 
-  return self;
-}
-
-- (GtNumberType)type
-{
-  return ((GtNumberFormatter *)[[self cell] formatter]).type;
-}
-
-- (void)setType:(GtNumberType)type
-{
-  ((GtNumberFormatter *)[[self cell] formatter]).type = type;
-}
-
-- (void)setObjectValue:(id)value
-{
-  [super setObjectValue:value];
-}
-
-- (id)objectValue
-{
-  return [super objectValue];
-}
+@property(nonatomic, assign) GtNumberType type;
 
 @end

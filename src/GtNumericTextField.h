@@ -24,17 +24,11 @@
 
 #import "GtBase.h"
 
-typedef NS_ENUM(NSInteger, GtNumericTextFieldType)
-{
-  GtNumericTextFieldTypeUnknown,
-  GtNumericTextFieldTypePixels,
-  GtNumericTextFieldTypeAngle,
-  GtNumericTextFieldTypeScale,
-};
+#import "GtNumberFormatter.h"
 
 @interface GtNumericTextField : NSTextField
 
-@property(nonatomic, assign) GtNumericTextFieldType type;
+@property(nonatomic, assign) GtNumberType type;
 
 @property(nonatomic, assign) id objectValue;
 

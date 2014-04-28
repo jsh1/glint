@@ -39,30 +39,35 @@
     "scale": {
       "displayName": "Scale",
       "type": "CGFloat",
+      "units": "percentage",
       "sliderMin": 0,
       "sliderMax": 4
     },
     "squeeze": {
       "displayName": "Squeeze",
       "type": "CGFloat",
+      "units": "percentage",
       "sliderMin": 0,
       "sliderMax": 4
     },
     "skew": {
       "displayName": "Skew",
       "type": "CGFloat",
+      "units": "percentage",
       "sliderMin": 0,
       "sliderMax": 4
     },
     "rotation": {
       "displayName": "Rotation",
       "type": "double",
+      "units": "angle",
       "sliderMin": -3.141259,
       "sliderMax": 3.141259
     },
     "alpha": {
       "displayName": "Alpha",
       "type": "float",
+      "units": "percentage",
       "min": 0,
       "max": 1
     },
@@ -169,6 +174,7 @@
     "lineDashPhase": {
       "displayName": "Dash Phase",
       "type": "CGFloat",
+      "units": "pixels",
       "min": 0,
       "sliderMax": 20
     },

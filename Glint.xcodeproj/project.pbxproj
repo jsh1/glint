@@ -48,6 +48,7 @@
 		574A0AAA18FE8A3600FCB9E9 /* GtPropertiesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 574A0AA918FE8A3600FCB9E9 /* GtPropertiesViewController.m */; };
 		574A0AAD18FE8C3200FCB9E9 /* GtDocumentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 574A0AAC18FE8C3200FCB9E9 /* GtDocumentViewController.m */; };
 		57560D0419014B3E00083890 /* GtInspectorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 57560D0319014B3E00083890 /* GtInspectorView.m */; };
+		575BB06F190EA34F004A620F /* GtNumberFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 575BB06E190EA34F004A620F /* GtNumberFormatter.m */; };
 		57618DB718C5D1B6004108D8 /* GtViewerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 57618DB418C5D1B6004108D8 /* GtViewerView.m */; };
 		57618DB818C5D1B6004108D8 /* GtViewerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 57618DB618C5D1B6004108D8 /* GtViewerViewController.m */; };
 		57618DBB18C5D1F5004108D8 /* GtViewerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 57618DB918C5D1F5004108D8 /* GtViewerView.xib */; };
@@ -180,6 +181,8 @@
 		574A0AAC18FE8C3200FCB9E9 /* GtDocumentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtDocumentViewController.m; path = src/GtDocumentViewController.m; sourceTree = "<group>"; };
 		57560D0219014B3E00083890 /* GtInspectorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtInspectorView.h; path = src/GtInspectorView.h; sourceTree = "<group>"; };
 		57560D0319014B3E00083890 /* GtInspectorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtInspectorView.m; path = src/GtInspectorView.m; sourceTree = "<group>"; };
+		575BB06B190EA346004A620F /* GtNumberFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtNumberFormatter.h; path = src/GtNumberFormatter.h; sourceTree = "<group>"; };
+		575BB06E190EA34F004A620F /* GtNumberFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtNumberFormatter.m; path = src/GtNumberFormatter.m; sourceTree = "<group>"; };
 		57618DB318C5D1B6004108D8 /* GtViewerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtViewerView.h; path = src/GtViewerView.h; sourceTree = "<group>"; };
 		57618DB418C5D1B6004108D8 /* GtViewerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GtViewerView.m; path = src/GtViewerView.m; sourceTree = "<group>"; };
 		57618DB518C5D1B6004108D8 /* GtViewerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GtViewerViewController.h; path = src/GtViewerViewController.h; sourceTree = "<group>"; };
@@ -456,6 +459,8 @@
 				57560D0319014B3E00083890 /* GtInspectorView.m */,
 				572BFA9418D72255000E9B84 /* GtInspectorViewController.h */,
 				572BFA9518D72255000E9B84 /* GtInspectorViewController.m */,
+				575BB06B190EA346004A620F /* GtNumberFormatter.h */,
+				575BB06E190EA34F004A620F /* GtNumberFormatter.m */,
 				572BFAB918D76363000E9B84 /* GtNumericTextField.h */,
 				572BFABA18D76363000E9B84 /* GtNumericTextField.m */,
 				574A0AA818FE8A3600FCB9E9 /* GtPropertiesViewController.h */,
@@ -641,6 +646,7 @@
 				57618DBE18C5D538004108D8 /* CoreAnimationExtensions.m in Sources */,
 				57AE9BC018F0555B009F5992 /* MgNodePasteboard.m in Sources */,
 				57AE9BB618F0555B009F5992 /* MgGroupLayerState.m in Sources */,
+				575BB06F190EA34F004A620F /* GtNumberFormatter.m in Sources */,
 				57DA503718F2B478009D58C1 /* MgRectCALayer.m in Sources */,
 				57AE9BAF18F0555B009F5992 /* MgCoreGraphics.m in Sources */,
 				57AE9BC218F0555B009F5992 /* MgNodeTransition.m in Sources */,

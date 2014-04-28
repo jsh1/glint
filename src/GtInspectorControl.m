@@ -31,7 +31,7 @@
 #import "GtInspectorNumberControl.h"
 #import "GtInspectorStringControl.h"
 
-#define LEFT_COLUMN_WIDTH 50
+#define LEFT_COLUMN_WIDTH 55
 #define RIGHT_COLUMN_X_INSET 8
 
 @implementation GtInspectorControl
