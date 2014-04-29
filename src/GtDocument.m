@@ -64,6 +64,7 @@ NSString *const GtDocumentNodeDidChange = @"GtDocumentNodeDidChange";
   root.name = @"Root";
   root.size = CGSizeMake(width, height);
   root.position = CGPointMake(width * .5, height * .5);
+  root.passThrough = NO;
 
   self.documentSize = CGSizeMake(width, height);
   self.documentNode = root;
