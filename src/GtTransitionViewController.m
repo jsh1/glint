@@ -110,10 +110,11 @@
 
   dispatch_once(&once, ^
     {
+      /* Matches MgNode.m. But should be defined by document. */
+
       timing = [[MgTransitionTiming alloc] init];
-      timing.duration = .25;
-      timing.function = [MgTimingFunction functionWithName:
-			 MgTimingFunctionDefault];
+      timing.duration = 1;
+      timing.function = [[MgSpringFunction alloc] init];
     });
 
   return timing;
