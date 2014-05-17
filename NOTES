@@ -8,7 +8,7 @@ Issues
   PARTIALLY RESOLVED: Document inspector allows this, but would be nice
   to have popup with common/customized sizes.
 
-6. -group: should inherit geometry from single object.
+6. -group: should inherit geometry from source objects.
 
   If one object, copy bounds and transform into group, and reset object.
 
@@ -39,7 +39,8 @@ Issues
   manually.
 
   How do we edit [timing] functions? Perhaps mouse-over a block, which
-  shows a popover containing the controls? Or in the inspector..
+  shows a popover containing the controls? Or in the inspector, perhaps
+  by using a new dedicated tab.
 
   How do we edit default timing values? Should they be per-transition
   or per-document?
@@ -90,4 +91,3 @@ Issues
 
   Mouse over an object with Option held should display distance from
   selection to that object.
-

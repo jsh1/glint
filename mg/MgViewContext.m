@@ -29,7 +29,6 @@
 #import "MgFlatteningCALayer.h"
 #import "MgLayerInternal.h"
 #import "MgNodeState.h"
-#import "MgSpringFunction.h"
 #import "MgTransitionTiming.h"
 #import "MgValueExtensions.h"
 
