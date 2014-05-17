@@ -73,11 +73,9 @@
 
 - (void)viewDidLoad
 {
+  for (NSTableColumn *col in [_tableView tableColumns])
+    [[col dataCell] setVerticallyCentered:YES];
   for (NSTableColumn *col in [_outlineView tableColumns])
-    [[col dataCell] setVerticallyCentered:YES];
-  for (NSTableColumn *col in [_fromTableView tableColumns])
-    [[col dataCell] setVerticallyCentered:YES];
-  for (NSTableColumn *col in [_toTableView tableColumns])
     [[col dataCell] setVerticallyCentered:YES];
 
   [self updateDocumentNode];
@@ -96,14 +94,11 @@
   [self.windowController removeObserver:self forKeyPath:@"currentModule"];
   [self.document removeObserver:self forKeyPath:@"documentNode"];
 
+  [_tableView setDelegate:nil];
+  [_tableView setDataSource:nil];
+
   [_outlineView setDelegate:nil];
   [_outlineView setDataSource:nil];
-
-  [_fromTableView setDelegate:nil];
-  [_fromTableView setDataSource:nil];
-
-  [_toTableView setDelegate:nil];
-  [_toTableView setDataSource:nil];
 
   [super invalidate];
 }
@@ -169,12 +164,10 @@
   /* FIXME: not right. */
 
   _fromState = _toState = state;
-  [_fromTableView setSelectedRow:row];
-  [_toTableView setSelectedRow:row];
+  [_tableView setSelectedRow:row];
 #endif
 
-  [_fromTableView reloadData];
-  [_toTableView reloadData];
+  [_tableView reloadData];
 }
 
 - (void)documentNodeDidChange:(NSNotification *)note
@@ -204,8 +197,7 @@
     }
   else if ([keyPath isEqualToString:@"moduleStates"])
     {
-      [_fromTableView reloadData];
-      [_toTableView reloadData];
+      [_tableView reloadData];
     }
   else if ([keyPath isEqualToString:@"moduleState"])
     {
@@ -421,17 +413,22 @@ showNodeForState(GtTreeNode *tn, MgModuleState *from, MgModuleState *to)
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tv
 {
-  return 1 + [_currentModule.moduleStates count];
+  return [_currentModule.moduleStates count] * 2;
 }
 
 - (id)tableView:(NSTableView *)tv objectValueForTableColumn:
     (NSTableColumn *)col row:(NSInteger)row
 {
-  if (row == 0)
+  NSInteger state_idx = row >> 1;
+  BOOL any = (row & 1) == 0;
+
+  if ([[col identifier] isEqualToString:@"to"])
+    any = !any;
+
+  if (any)
     return @"Any";
 
-  MgModuleState *state = _currentModule.moduleStates[row-1];
-
+  MgModuleState *state = _currentModule.moduleStates[state_idx];
   return state.name;
 }
 
@@ -442,20 +439,15 @@ showNodeForState(GtTreeNode *tn, MgModuleState *from, MgModuleState *to)
   NSTableView *tv = [note object];
   NSInteger row = [tv selectedRow];
 
-  if (tv == _fromTableView)
-    {
-      if (row == 0)
-	_fromState = nil;
-      else
-	_fromState = _currentModule.moduleStates[row-1];
-    }
-  else if (tv == _toTableView)
-    {
-      if (row == 0)
-	_toState = nil;
-      else
-	_toState = _currentModule.moduleStates[row-1];
-    }
+  NSInteger state_idx = row >> 1;
+  BOOL from_any = (row & 1) == 0;
+
+  MgModuleState *state = _currentModule.moduleStates[state_idx];
+  
+  if (from_any)
+    _fromState = nil, _toState = state;
+  else
+    _fromState = state, _toState = nil;
 
   [_items removeAllObjects];
   [_outlineView reloadData];

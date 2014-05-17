@@ -28,9 +28,8 @@
     <NSOutlineViewDataSource, NSOutlineViewDelegate,
      NSTableViewDataSource, NSTableViewDelegate>
 
+@property(nonatomic, weak) IBOutlet NSTableView *tableView;
 @property(nonatomic, weak) IBOutlet NSOutlineView *outlineView;
-@property(nonatomic, weak) IBOutlet NSTableView *fromTableView;
-@property(nonatomic, weak) IBOutlet NSTableView *toTableView;
 
 @property(nonatomic, strong) GtTreeNode *moduleNode;
 @property(nonatomic, strong) MgModuleLayer *currentModule;
