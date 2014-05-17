@@ -96,6 +96,28 @@
 
 - (void)drawInRect:(NSRect)r
 {
+  NSBezierPath *path = [NSBezierPath bezierPath];
+
+  [path moveToPoint:r.origin];
+
+  /* FIXME: could use fewer path segments by calculating path control
+     points to make a cubic interpolation of the points, but this is
+     easy and good enough for now.. */
+
+  double interval = 5 / r.size.width;
+
+  for (double t = 0; t < 1; t += interval)
+    {
+      double ts = [self evaluateScalar:t];
+
+      CGPoint p1 = CGPointMake(t, ts);
+      NSPoint c1 = NSMakePoint(r.origin.x + p1.x * r.size.width,
+			       r.origin.y + p1.y * r.size.height);
+
+      [path lineToPoint:c1];
+    }
+
+  [path stroke];
 }
 
 @end
