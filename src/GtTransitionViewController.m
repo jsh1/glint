@@ -31,6 +31,8 @@
 
 #import "AppKitExtensions.h"
 
+#define DRAG_THRESH 2
+
 @implementation GtTransitionViewController
 {
   NSMutableArray *_items;
@@ -231,6 +233,115 @@
    atIndex:NSIntegerMax forKey:@"transitions"];
 
   return trans;
+}
+
+- (BOOL)mouseDown:(NSEvent *)e inTimingView:(GtTransitionTimingView *)view
+    dragMode:(GtTransitionViewControllerDragMode)mode
+{
+  BOOL dragging = NO;
+
+  NSPoint p0 = [view convertPoint:[e locationInWindow] fromView:nil];
+
+  NSInteger col = [_outlineView columnWithIdentifier:@"timing"];
+
+  NSIndexSet *sel = [_outlineView selectedRowIndexes];
+
+  NSMapTable *item_map = [NSMapTable strongToStrongObjectsMapTable];
+
+  for (NSInteger idx = [sel firstIndex]; idx != NSNotFound;
+       idx = [sel indexGreaterThanIndex:idx])
+    {
+      NSArray *item = [_outlineView itemAtRow:idx];
+      if (![item isKindOfClass:[NSArray class]])
+	continue;
+
+      GtTreeNode *tn = item[0];
+      NSString *key = item[1];
+
+      MgNodeTransition *trans = [self nodeTransition:tn onlyIfExists:NO];
+
+      MgTransitionTiming *timing = [trans timingForKey:key];
+      if (timing == nil)
+	timing = self.defaultTiming;
+
+      [item_map setObject:timing forKey:item];
+    }
+
+  while (1)
+    {
+      [CATransaction flush];
+
+      e = [[view window] nextEventMatchingMask:NSAnyEventMask];
+      if ([e type] != NSLeftMouseDragged)
+	break;
+
+      NSPoint p1 = [view convertPoint:[e locationInWindow] fromView:nil];
+
+      CGFloat dx = round(p1.x - p0.x);
+
+      if (!dragging && fabs(dx) > DRAG_THRESH)
+	dragging = YES;
+
+      if (!dragging)
+	continue;
+
+      for (NSArray *item in item_map)
+	{
+	  GtTreeNode *tn = item[0];
+	  NSString *key = item[1];
+
+	  MgNodeTransition *trans = [self nodeTransition:tn onlyIfExists:NO];
+
+	  MgTransitionTiming *timing = [item_map objectForKey:item];
+
+	  double begin = timing.begin;
+	  double dur = timing.duration;
+
+	  double scale_r = 1 / _timelineScale;
+
+	  switch (mode)
+	    {
+	    case GtTransitionViewControllerDragNone:
+	      break;
+
+	    case GtTransitionViewControllerDragStart:
+	      begin += dx * scale_r;
+	      dur -= dx * scale_r;
+	      break;
+
+	    case GtTransitionViewControllerDragEnd:
+	      dur += dx * scale_r;
+	      break;
+	      
+	    case GtTransitionViewControllerDragInside:
+	      begin += dx * scale_r;
+	      break;
+	    }
+
+	  if (begin != timing.begin || dur != timing.duration)
+	    {
+	      timing = [timing copy];
+	      timing.begin = begin;
+	      timing.duration = dur;
+	    }
+
+	  [self.document node:tn transition:trans
+	   setTiming:timing forKey:key];
+	}
+
+      /* FIXME: this shouldn't be necessary..? */
+
+      [_outlineView enumerateAvailableRowViewsUsingBlock:^
+       (NSTableRowView *rowView, NSInteger row)
+         {
+	   if ([sel containsIndex:row])
+	     {
+	       [[rowView viewAtColumn:col] setNeedsDisplay:YES];
+	     }
+	 }];
+    }
+
+  return dragging;
 }
 
 static BOOL

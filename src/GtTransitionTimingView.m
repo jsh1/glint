@@ -31,6 +31,8 @@
 - (void)drawInRect:(NSRect)r;
 @end
 
+#define CLICK_DISTANCE 4
+
 @implementation GtTransitionTimingView
 {
   NSBackgroundStyle _backgroundStyle;
@@ -88,6 +90,55 @@
 
   [function drawInRect:NSInsetRect(timingR, 2.5, 2.5)];
   [NSBezierPath strokeRect:NSInsetRect(timingR, .5, .5)];
+}
+
+/* FIXME: overriding -mouseDown: /seems/ to work, but it requires that
+   we run our mouse-drag code without letting NSOutlineView update the
+   selection for the current event (calling super's -mouseDown: first
+   means we don't see any drag events). So we should probably try to
+   emulate some of the standard click-select behavior before jumping
+   into our drag-loop..? But that's a huge pain to implement
+   correctly.. */
+
+- (void)mouseDown:(NSEvent *)e
+{
+  GtTransitionViewController *controller = self.controller;
+
+  MgNodeTransition *trans
+    = [controller nodeTransition:self.treeNode onlyIfExists:YES];
+  MgTransitionTiming *timing = [trans timingForKey:self.key];
+
+  BOOL using_default = timing == nil;
+
+  if (using_default)
+    timing = controller.defaultTiming;
+
+  NSPoint p = [self convertPoint:[e locationInWindow] fromView:nil];
+
+  NSRect bounds = self.bounds;
+
+  double start = controller.timelineStart;
+  double scale = controller.timelineScale;
+
+  CGFloat start_x = bounds.origin.x + (timing.begin - start) * scale;
+  CGFloat end_x = bounds.origin.x + timing.duration * scale;
+
+  GtTransitionViewControllerDragMode mode = GtTransitionViewControllerDragNone;
+
+  if (!(fabs(p.x - start_x) > CLICK_DISTANCE))
+    mode = GtTransitionViewControllerDragStart;
+  else if (!(fabs(p.x - end_x) > CLICK_DISTANCE))
+    mode = GtTransitionViewControllerDragEnd;
+  else if (p.x >= start_x && p.x < end_x)
+    mode = GtTransitionViewControllerDragInside;
+
+  BOOL dragged = NO;
+
+  if (mode != GtTransitionViewControllerDragNone)
+    dragged = [self.controller mouseDown:e inTimingView:self dragMode:mode];
+
+  if (!dragged)
+    [super mouseDown:e];
 }
 
 @end

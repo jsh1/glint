@@ -24,6 +24,14 @@
 
 #import "GtViewController.h"
 
+typedef NS_ENUM(NSInteger, GtTransitionViewControllerDragMode)
+{
+  GtTransitionViewControllerDragNone,
+  GtTransitionViewControllerDragStart,
+  GtTransitionViewControllerDragEnd,
+  GtTransitionViewControllerDragInside,
+};
+
 @interface GtTransitionViewController : GtViewController
     <NSOutlineViewDataSource, NSOutlineViewDelegate,
      NSTableViewDataSource, NSTableViewDelegate>
@@ -42,5 +50,8 @@
 
 - (MgNodeTransition *)nodeTransition:(GtTreeNode *)tn;
 - (MgNodeTransition *)nodeTransition:(GtTreeNode *)tn onlyIfExists:(BOOL)flag;
+
+- (BOOL)mouseDown:(NSEvent *)e inTimingView:(GtTransitionTimingView *)view
+  dragMode:(GtTransitionViewControllerDragMode)mode;
 
 @end
