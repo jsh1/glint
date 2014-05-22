@@ -102,9 +102,13 @@
   return _keyTiming[key];
 }
 
-- (void)setTimingForKey:(MgTransitionTiming *)timing forKey:(NSString *)key
+- (void)setTiming:(MgTransitionTiming *)timing forKey:(NSString *)key
 {
-  _keyTiming[key] = timing;
+  if (timing != nil)
+    _keyTiming[key] = timing;
+  else
+    [_keyTiming removeObjectForKey:key];
+
   _invalid = YES;
 }
 

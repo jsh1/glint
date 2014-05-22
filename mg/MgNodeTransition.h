@@ -35,6 +35,6 @@
 @property(nonatomic, assign, readonly) double duration;
 
 - (MgTransitionTiming *)timingForKey:(NSString *)key;
-- (void)setTimingForKey:(MgTransitionTiming *)timing forKey:(NSString *)key;
+- (void)setTiming:(MgTransitionTiming *)timing forKey:(NSString *)key;
 
 @end
