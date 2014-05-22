@@ -106,6 +106,9 @@ extern NSString *const GtDocumentNodeDidChange;
 - (void)node:(GtTreeNode *)tn moveObject:(id)value atIndex:(NSInteger)idx
     by:(NSInteger)delta forKey:(NSString *)key;
 
+- (void)node:(GtTreeNode *)tn transition:(MgNodeTransition *)trans
+    setTiming:(MgTransitionTiming *)timing forKey:(NSString *)key;
+
 - (BOOL)nodeIsEnabled:(GtTreeNode *)tn;
 - (void)node:(GtTreeNode *)tn setEnabled:(BOOL)flag;
 

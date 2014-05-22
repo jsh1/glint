@@ -1584,6 +1584,24 @@ indexOfObjectInArray(NSArray *array, id value, NSInteger idx)
   documentNodeChanged(self, tn, YES);
 }
 
+- (void)node:(GtTreeNode *)tn transition:(MgNodeTransition *)trans
+    setTiming:(MgTransitionTiming *)timing forKey:(NSString *)key
+{
+  MgTransitionTiming *oldTiming = [trans timingForKey:key];
+
+  if (timing != oldTiming)
+    {
+      [self registerUndo:^
+	{
+	  [self node:tn transition:trans setTiming:oldTiming forKey:key];
+	}];
+
+      [trans setTiming:timing forKey:key];
+    }
+
+  /* FIXME: post some kind of notification. */
+}
+
 - (BOOL)nodeIsEnabled:(GtTreeNode *)tn
 {
   id node = tn.node;
