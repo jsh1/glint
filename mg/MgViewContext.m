@@ -531,11 +531,11 @@ blendModeFilter(CGBlendMode blend_mode)
       basic.fromValue = fromValue;
       basic.toValue = toValue;
 
-      CGPoint p1 = ((MgBezierTimingFunction *)fun).p0;
-      CGPoint p2 = ((MgBezierTimingFunction *)fun).p1;
-
       if (fun != nil)
 	{
+	  CGPoint p1 = ((MgBezierTimingFunction *)fun).p0;
+	  CGPoint p2 = ((MgBezierTimingFunction *)fun).p1;
+
 	  CAMediaTimingFunction *fun
 	    = [[CAMediaTimingFunction alloc]
 	       initWithControlPoints:p1.x :p1.y :p2.x :p2.y];
