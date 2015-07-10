@@ -169,6 +169,32 @@
   return node != nil && CGRectContainsPoint(node.bounds, p);
 }
 
+static void
+draw_rect(CGContextRef ctx, bool stroke,
+	  CGRect r, CGFloat radius, CGFloat width)
+{
+  if (stroke)
+    r = CGRectInset(r, width * (CGFloat).5, width * (CGFloat).5);
+
+  if (radius == 0)
+    {
+      if (!stroke)
+	CGContextFillRect(ctx, r);
+      else
+	CGContextStrokeRectWithWidth(ctx, r, width);
+    }
+  else
+    {
+      if (stroke)
+	CGContextSetLineWidth(ctx, width);
+      CGContextBeginPath(ctx);
+      CGPathRef p = MgPathCreateWithRoundRect(r, radius);
+      CGContextAddPath(ctx, p);
+      CGPathRelease(p);
+      CGContextDrawPath(ctx, stroke ? kCGPathStroke : kCGPathFill);
+    }
+}
+
 - (void)_renderLayerWithState:(MgLayerRenderState *)rs
 {
   CGContextSaveGState(rs->ctx);
@@ -176,33 +202,29 @@
   CGFloat radius = self.cornerRadius;
   CGPathDrawingMode mode = self.drawingMode;
 
-  if (radius == 0 && (mode == kCGPathFill || mode == kCGPathEOFill))
+  switch (mode)
     {
+    case kCGPathFill:
+    case kCGPathEOFill:
+    case kCGPathFillStroke:
+    case kCGPathEOFillStroke:
       CGContextSetFillColorWithColor(rs->ctx, self.fillColor);
-      CGContextFillRect(rs->ctx, self.bounds);
+      draw_rect(rs->ctx, false, self.bounds, radius, 0);
+      break;
+    default:
+      break;
     }
-  else if (radius == 0 && mode == kCGPathStroke)
-    {
-      CGContextSetStrokeColorWithColor(rs->ctx, self.strokeColor);
-      CGContextStrokeRectWithWidth(rs->ctx, self.bounds, self.lineWidth);
-    }
-  else
-    {
-      CGContextSetFillColorWithColor(rs->ctx, self.fillColor);
-      CGContextSetStrokeColorWithColor(rs->ctx, self.strokeColor);
-      CGContextSetLineWidth(rs->ctx, self.lineWidth);
 
-      CGContextBeginPath(rs->ctx);
-      if (radius == 0)
-	CGContextAddRect(rs->ctx, self.bounds);
-      else
-	{
-	  CGPathRef p = MgPathCreateWithRoundRect(self.bounds, radius);
-	  CGContextAddPath(rs->ctx, p);
-	  CGPathRelease(p);
-	}
-
-      CGContextDrawPath(rs->ctx, self.drawingMode);
+  switch (mode)
+    {
+    case kCGPathStroke:
+    case kCGPathFillStroke:
+    case kCGPathEOFillStroke:
+      CGContextSetStrokeColorWithColor(rs->ctx, self.strokeColor);
+      draw_rect(rs->ctx, true, self.bounds, radius, self.lineWidth);
+      break;
+    default:
+      break;
     }
 
   CGContextRestoreGState(rs->ctx);
