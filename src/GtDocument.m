@@ -131,7 +131,7 @@ NSString *const GtDocumentNodeDidChange = @"GtDocumentNodeDidChange";
 
 + (BOOL)autosavesInPlace
 {
-  return NO;
+  return YES;
 }
 
 - (NSData *)dataOfType:(NSString *)type error:(NSError **)err
