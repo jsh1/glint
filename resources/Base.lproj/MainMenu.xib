@@ -1177,17 +1177,27 @@ CA
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="MqU-U6-9Nx"/>
-                            <menuItem title="Project Panel" tag="101" keyEquivalent="2" id="GuO-QX-tad">
+                            <menuItem title="States Panel" tag="3" keyEquivalent="2" id="TN0-qi-99Z">
+                                <connections>
+                                    <action selector="toggleView:" target="-1" id="jhW-vk-dIj"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Layers Panel" tag="1" keyEquivalent="3" id="GuO-QX-tad">
                                 <connections>
                                     <action selector="toggleView:" target="-1" id="Q2R-Ce-Chh"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Inspector Panel" tag="102" keyEquivalent="3" id="VPf-Od-GO8">
+                            <menuItem title="Inspector Panel" tag="2" keyEquivalent="4" id="VPf-Od-GO8">
                                 <connections>
                                     <action selector="toggleView:" target="-1" id="Fa5-0b-k4b"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Transition Panel" tag="103" keyEquivalent="4" id="Xnr-Lz-gQa">
+                            <menuItem title="Document Panel" tag="5" keyEquivalent="5" id="TJ9-wh-LJK">
+                                <connections>
+                                    <action selector="toggleView:" target="-1" id="7II-fz-5tg"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Transition Panel" tag="4" keyEquivalent="6" id="Xnr-Lz-gQa">
                                 <connections>
                                     <action selector="toggleView:" target="-1" id="Zti-UW-R8I"/>
                                 </connections>

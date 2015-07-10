@@ -27,7 +27,8 @@
 #import "GtAppDelegate.h"
 #import "GtColor.h"
 #import "GtDocument.h"
-#import "GtInspectorViewController.h"
+#import "GtDocumentViewController.h"
+#import "GtPropertiesViewController.h"
 #import "GtStateListViewController.h"
 #import "GtTransitionViewController.h"
 #import "GtTreeNode.h"
@@ -438,7 +439,7 @@ deepestLastChild(GtTreeNode *n)
       break;
 
     case 2:
-      cls = [GtInspectorViewController class];
+      cls = [GtPropertiesViewController class];
       break;
 
     case 3:
@@ -447,6 +448,10 @@ deepestLastChild(GtTreeNode *n)
 
     case 4:
       cls = [GtTransitionViewController class];
+      break;
+
+    case 5:
+      cls = [GtDocumentViewController class];
       break;
 
     case 101:
