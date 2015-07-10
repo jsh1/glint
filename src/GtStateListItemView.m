@@ -122,7 +122,9 @@
 
       CGFloat sx = [_thumbnailView bounds].size.width / layer.size.width;
       CGFloat sy = [_thumbnailView bounds].size.height / layer.size.height;
-      CGFloat s = fmin(sx, sy);
+
+      /* Note, self.window may still be nil. */
+      CGFloat s = fmin(sx, sy) * _controller.view.window.backingScaleFactor;
 
       _thumbnailOp = [NSBlockOperation blockOperationWithBlock:^
 	{
