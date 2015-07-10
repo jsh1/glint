@@ -32,6 +32,8 @@
 
 - (id)initWithLayer:(MgLayer *)layer;
 
+@property(nonatomic, assign) CGFloat contentsScale;
+
 @property(nonatomic, strong, readonly) MgLayer *layer;
 
 @property(nonatomic, strong, readonly) CALayer *viewLayer;

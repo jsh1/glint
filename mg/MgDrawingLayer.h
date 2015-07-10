@@ -42,4 +42,6 @@
 
 @property(nonatomic, assign, readonly) CGContextRef context;
 
+@property(nonatomic, assign, readonly) CGFloat contextScale;
+
 @end

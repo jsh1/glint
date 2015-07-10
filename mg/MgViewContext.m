@@ -52,6 +52,7 @@
 @implementation MgViewContext
 {
   MgLayer *_layer;
+  CGFloat _contentsScale;
 
   CALayer<MgViewLayer> *_viewLayer;
 }
@@ -68,6 +69,7 @@
     return nil;
 
   _layer = layer;
+  _contentsScale = 1;
 
   [_layer addObserver:self forKeyPath:@"version" options:0 context:nil];
 
@@ -77,6 +79,20 @@
 - (void)dealloc
 {
   [_layer removeObserver:self forKeyPath:@"version"];
+}
+
+- (void)setContentsScale:(CGFloat)s
+{
+  if (_contentsScale != s)
+    {
+      _contentsScale = s;
+      [_viewLayer update];
+    }
+}
+
+- (CGFloat)contentsScale
+{
+  return _contentsScale;
 }
 
 - (CALayer *)viewLayer
@@ -240,6 +256,8 @@ blendModeFilter(CGBlendMode blend_mode)
 
   if (![src _isPassThroughGroup])
     {
+      layer.contentsScale = _contentsScale;
+
       MgLayer *mask = src.mask;
       if (mask == nil)
 	layer.mask = nil;

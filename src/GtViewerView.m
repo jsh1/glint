@@ -194,13 +194,13 @@
       [layer addSublayer:_nodeLayer];
     }
 
+  _viewContext.contentsScale = self.window.backingScaleFactor;
+
   GtDocument *document = self.controller.document;
   CGSize size = document.documentSize;
   CGRect bounds = [layer bounds];
   CGFloat scale = self.viewScale;
   CGPoint center = self.viewCenter;
-
-  _nodeLayer.contentsScale = [[self window] backingScaleFactor];
 
   _rootLayer.position = bounds.origin;
   _rootLayer.bounds = CGRectMake(0, 0, bounds.size.width, bounds.size.height);

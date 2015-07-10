@@ -31,6 +31,7 @@ struct MgLayerRenderState
   CFTimeInterval time;
   CFTimeInterval next_time;
   CGContextRef ctx;
+  CGFloat scale;
   float alpha;
   bool outermost;
 };

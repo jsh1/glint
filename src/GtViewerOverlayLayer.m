@@ -225,7 +225,7 @@ rect_slice_8(CGRect content, CGRect bounds, size_t i)
   CGContextRestoreGState(ctx);
 }
 
-- (void)drawNode:(GtTreeNode *)tn inContext:(CGContextRef)ctx
+- (void)drawNode:(GtTreeNode *)tn withState:(id<MgDrawingState>)st
 {
   /* FIXME: concatenating into one matrix only works because everything
      is affine, that may change... */
@@ -234,6 +234,9 @@ rect_slice_8(CGRect content, CGRect bounds, size_t i)
   MgLayer *container = getLayerAndTransform(tn, &m);
   if (container == nil)
     return;
+
+  CGContextRef ctx = st.context;
+  CGFloat scale = st.contextScale;
 
   CGContextSaveGState(ctx);
   
@@ -327,11 +330,11 @@ rect_slice_8(CGRect content, CGRect bounds, size_t i)
 
 	  if (im == NULL)
 	    {
-	      size_t w = ADORNMENT_SIZE;
+	      size_t w = ADORNMENT_SIZE * scale;
 	      im = MgImageCreateByDrawing(w, w, false, ^(CGContextRef ctx)
 		{
 		  CGFloat c = w * .5;
-		  CGFloat r = (ADORNMENT_SIZE-4)*.5;
+		  CGFloat r = (w - 4) * .5;
 
 		  drawBlackAndWhite(ctx, ^(CGColorRef color)
 		    {
@@ -358,7 +361,7 @@ rect_slice_8(CGRect content, CGRect bounds, size_t i)
   [self drawBorderInContext:st.context];
 
   for (GtTreeNode *tn in _selection)
-    [self drawNode:tn inContext:st.context];
+    [self drawNode:tn withState:st];
 }
 
 - (NSInteger)hitTest:(CGPoint)point inAdornmentsOfNode:(GtTreeNode *)tn

@@ -451,16 +451,24 @@
 
 - (CFTimeInterval)renderInContext:(CGContextRef)ctx
 {
-  return [self renderInContext:ctx presentationTime:CACurrentMediaTime()];
+  return [self renderInContext:ctx scale:1
+	  presentationTime:CACurrentMediaTime()];
 }
 
-- (CFTimeInterval)renderInContext:(CGContextRef)ctx
+- (CFTimeInterval)renderInContext:(CGContextRef)ctx scale:(CGFloat)scale
+{
+  return [self renderInContext:ctx scale:scale
+	  presentationTime:CACurrentMediaTime()];
+}
+
+- (CFTimeInterval)renderInContext:(CGContextRef)ctx scale:(CGFloat)scale
     presentationTime:(CFTimeInterval)t;
 {
   __block MgLayerRenderState rs;
   rs.time = t;
   rs.next_time = HUGE_VAL;
   rs.ctx = ctx;
+  rs.scale = scale;
   rs.alpha = 1;
   rs.outermost = true;
 
@@ -575,7 +583,7 @@
       CGContextTranslateCTM(ctx, origin.x, origin.y);
       CGAffineTransform m = [self parentTransform];
       CGContextConcatCTM(ctx, CGAffineTransformInvert(m));
-      [self renderInContext:ctx];
+      [self renderInContext:ctx scale:s];
     });
 }
 

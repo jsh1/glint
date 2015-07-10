@@ -121,4 +121,9 @@
   return _rs != NULL ? _rs->ctx : NULL;
 }
 
+- (CGFloat)contextScale
+{
+  return _rs != NULL ? _rs->scale : 1;
+}
+
 @end

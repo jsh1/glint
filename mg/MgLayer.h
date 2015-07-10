@@ -72,7 +72,9 @@
 
 - (CFTimeInterval)renderInContext:(CGContextRef)ctx;
 - (CFTimeInterval)renderInContext:(CGContextRef)ctx
-    presentationTime:(CFTimeInterval)t;
+    scale:(CGFloat)scale;
+- (CFTimeInterval)renderInContext:(CGContextRef)ctx
+    scale:(CGFloat)scale presentationTime:(CFTimeInterval)t;
 
 - (CGImageRef)copyImage CF_RETURNS_RETAINED;
 - (CGImageRef)copyImageWithScale:(CGFloat)s CF_RETURNS_RETAINED;

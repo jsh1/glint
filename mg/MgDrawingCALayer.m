@@ -38,6 +38,7 @@
   NSInteger _lastDrawingVersion;
 
   CGContextRef _context;
+  CGFloat _contextScale;
 }
 
 + (id)defaultValueForKey:(NSString *)key
@@ -120,10 +121,12 @@
 - (void)drawInContext:(CGContextRef)ctx
 {
   _context = ctx;
+  _contextScale = self.contentsScale;
 
   [_layer drawWithState:self];
 
   _context = NULL;
+  _contextScale = 0;
 }
 
 /** MgDrawingState methods. **/
@@ -131,6 +134,11 @@
 - (CGContextRef)context
 {
   return _context;
+}
+
+- (CGFloat)contextScale
+{
+  return _contextScale;
 }
 
 @end

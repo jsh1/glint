@@ -140,7 +140,8 @@
 
   MgLayer *layer = model->_layer;
 
-  CFTimeInterval next = [layer renderInContext:ctx presentationTime:now]; 
+  CFTimeInterval next = [layer renderInContext:ctx scale:self.contentsScale
+			 presentationTime:now];
 
   [model _updateCurrentTime:now nextTime:next];
 }
