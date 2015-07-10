@@ -46,7 +46,7 @@ static NSString *const GtTreeViewItemType = @"org.unfactored.gt-tree-view-item";
 
 - (NSString *)title
 {
-  return @"Objects";
+  return @"Layers";
 }
 
 - (id)initWithWindowController:(GtWindowController *)windowController
