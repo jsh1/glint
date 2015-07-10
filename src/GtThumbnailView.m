@@ -59,7 +59,7 @@
 {
   CALayer *layer = [self layer];
 
-  GtThumbnailViewImageLayer *image_layer = [layer.sublayers firstObject];
+  GtThumbnailViewImageLayer *image_layer = (id)[layer.sublayers firstObject];
 
   if (image_layer == nil)
     {

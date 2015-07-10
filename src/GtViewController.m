@@ -32,13 +32,11 @@
   __weak GtViewController *_superviewController;
   NSMutableArray *_subviewControllers;
   NSString *_identifierSuffix;
-  BOOL _viewHasBeenLoaded;
 }
 
 @synthesize windowController = _windowController;
 @synthesize identifierSuffix = _identifierSuffix;
 @synthesize superviewController = _superviewController;
-@synthesize viewHasBeenLoaded = _viewHasBeenLoaded;
 
 + (GtViewController *)viewControllerWithDictionary:(NSDictionary *)dict
     windowController:(GtWindowController *)windowController
@@ -296,42 +294,28 @@
   return [self view];
 }
 
-- (void)viewDidLoad
-{
-}
-
-- (void)loadView
-{
-  [super loadView];
-
-  _viewHasBeenLoaded = YES;
-
-  if ([self view] != nil)
-    [self viewDidLoad];
-}
-
-- (void)viewWillAppear
+- (void)viewWillMount
 {
   for (GtViewController *c in _subviewControllers)
-    [c viewWillAppear];
+    [c viewWillMount];
 }
 
-- (void)viewDidAppear
+- (void)viewDidMount
 {
   for (GtViewController *c in _subviewControllers)
-    [c viewDidAppear];
+    [c viewDidMount];
 }
 
-- (void)viewWillDisappear
+- (void)viewWillUnmount
 {
   for (GtViewController *c in _subviewControllers)
-    [c viewWillDisappear];
+    [c viewWillUnmount];
 }
 
-- (void)viewDidDisappear
+- (void)viewDidUnmount
 {
   for (GtViewController *c in _subviewControllers)
-    [c viewDidDisappear];
+    [c viewDidUnmount];
 }
 
 - (void)addSavedViewState:(NSMutableDictionary *)dict
@@ -356,21 +340,21 @@
 
       [view setFrame:[superview bounds]];
 
-      [self viewWillAppear];
+      [self viewWillMount];
 
       [superview addSubview:view];
 
-      [self viewDidAppear];
+      [self viewDidMount];
     }
 }
 
 - (void)removeFromContainer
 {
-  [self viewWillDisappear];
+  [self viewWillUnmount];
 
   [[self view] removeFromSuperview];
 
-  [self viewDidDisappear];
+  [self viewDidUnmount];
 }
 
 @end

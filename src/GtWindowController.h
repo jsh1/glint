@@ -28,7 +28,7 @@
 
 @property(nonatomic, weak) IBOutlet NSView *mainView;
 
-@property(nonatomic, weak, readonly) GtDocument *document;
+@property(assign) GtDocument *document;
 
 @property(nonatomic, strong, readonly) GtTreeNode *tree;
 

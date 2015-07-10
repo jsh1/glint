@@ -66,20 +66,20 @@
   return [super initialFirstResponder];
 }
 
-- (void)viewWillAppear
+- (void)viewWillMount
 {
   GtSplitView *view = (GtSplitView *)[self view];
+  NSArray *subcontrollers = self.subviewControllers;
 
   [view setSubviews:@[]];
 
-  for (GtViewController *c in self.subviewControllers)
-    {
-      NSView *sub = [c view];
-      [sub setFrame:[view bounds]];
-      [c viewWillAppear];
-      [view addSubview:sub];
-      [c viewDidAppear];
-    }
+  for (GtViewController *c in subcontrollers)
+    [c.view setFrame:[view bounds]];
+
+  [super viewWillMount];
+
+  for (GtViewController *c in subcontrollers)
+    [view addSubview:c.view];
 
   [view adjustSubviews];
   [view setIndexOfResizableSubview:self.indexOfResizableSubview];

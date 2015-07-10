@@ -57,7 +57,7 @@
   [self updateSegments];
 }
 
-- (void)viewWillAppear
+- (void)viewWillMount
 {
   [self updateSelectedView];
 }

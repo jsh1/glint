@@ -31,8 +31,6 @@
 
 + (NSString *)viewNibName;
 
-@property(nonatomic, copy, readonly) NSString *title;
-
 - (NSString *)identifier;
 
 @property(nonatomic, copy) NSString *identifierSuffix;
@@ -41,15 +39,11 @@
 
 - (void)invalidate;
 
-@property(nonatomic, assign, readonly) BOOL viewHasBeenLoaded;
+- (void)viewWillMount;
+- (void)viewDidMount;
 
-- (void)viewDidLoad;
-
-- (void)viewWillAppear;
-- (void)viewDidAppear;
-
-- (void)viewWillDisappear;
-- (void)viewDidDisappear;
+- (void)viewWillUnmount;
+- (void)viewDidUnmount;
 
 @property(nonatomic, weak, readonly) GtWindowController *windowController;
 @property(nonatomic, weak, readonly) GtDocument *document;

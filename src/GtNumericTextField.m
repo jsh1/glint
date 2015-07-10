@@ -47,14 +47,4 @@
   ((GtNumberFormatter *)[[self cell] formatter]).type = type;
 }
 
-- (void)setObjectValue:(id)value
-{
-  [super setObjectValue:value];
-}
-
-- (id)objectValue
-{
-  return [super objectValue];
-}
-
 @end

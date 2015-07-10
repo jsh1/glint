@@ -30,8 +30,6 @@
 
 @property(nonatomic, assign) GtNumberType type;
 
-@property(nonatomic, assign) id objectValue;
-
 @property(nonatomic, assign) double minValue;
 @property(nonatomic, assign) double maxValue;
 @property(nonatomic, assign) double increment;

@@ -108,7 +108,8 @@
   if (!opened)
     {
       [controller openDocumentWithContentsOfURL:[NSURL fileURLWithPath:file]
-       display:YES error:&err];
+       display:YES completionHandler:
+       ^(NSDocument *doc, BOOL already_open, NSError *err) {}];
     }
 
   return err == nil;

@@ -64,6 +64,11 @@
   return [super document];
 }
 
+- (void)setDocument:(GtDocument *)doc
+{
+  [super setDocument:doc];
+}
+
 - (GtTreeNode *)tree
 {
   MgNode *rootNode = self.document.documentNode;
